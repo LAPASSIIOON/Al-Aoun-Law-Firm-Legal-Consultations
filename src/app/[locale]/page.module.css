@@ -1,476 +1,268 @@
-/* ══ HERO ══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   الصفحة الرئيسية — اتجاه «الزمرّد الفخم» (dark-first)
+   خلفية زمرّد غامق · تمييز نحاسي · طباعة ضخمة تحريرية
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ══ HERO ══ */
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(4rem, 9vw, 8rem);
+  padding-block: clamp(4rem, 9vw, 8rem) clamp(4rem, 9vw, 8rem);
   background:
-    radial-gradient(120% 80% at 50% -10%, var(--color-primary-50) 0%, var(--surface) 60%);
+    radial-gradient(130% 90% at 85% -10%, var(--emerald-800) 0%, var(--emerald-900) 55%),
+    var(--emerald-900);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 2px;
+  background: var(--copper-gradient);
 }
 
 .heroInner {
   position: relative;
   z-index: 2;
-  max-width: 54rem;
+  max-inline-size: 46rem;
 }
 
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--link-accent);
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--copper-400);
+  margin-block-end: var(--space-2);
 }
 
-:lang(ar) .eyebrow {
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.9375rem;
-}
+:lang(ar) .eyebrow { letter-spacing: 0; }
 
 .eyebrowDot {
-  inline-size: 6px;
-  block-size: 6px;
-  border-radius: 999px;
-  background: var(--color-accent-500);
+  inline-size: 6px; block-size: 6px; border-radius: 50%;
+  background: var(--copper-500);
+  box-shadow: 0 0 12px var(--copper-500);
 }
 
 .headline {
-  margin-block-start: var(--space-3);
-  font-size: clamp(2.25rem, 5.5vw, 4rem);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  color: var(--color-primary-900);
-  max-width: 20ch;
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--parchment);
+  max-width: 17ch;
+  font-weight: 700;
 }
 
 :lang(ar) .headline {
   letter-spacing: 0;
-  line-height: 1.32;
-  max-width: 24ch;
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.22;
+  max-width: 20ch;
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
 }
+
+/* القوس البنيوي تحت العنوان — يحمل العلامة، «الإسناد من الأسفل» */
+.heroArcWrap {
+  position: relative;
+  margin-block: var(--space-3) var(--space-2);
+  inline-size: clamp(11rem, 26vw, 16rem);
+  block-size: clamp(3rem, 7vw, 4.25rem);
+}
+
+.heroArc { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
+.heroArc :global(svg) { stroke: var(--copper-500); }
+
+.heroArcMark {
+  position: absolute;
+  inset-block-end: 6%;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+:lang(ar) .heroArcMark { transform: translateX(50%); }
 
 .subhead {
-  margin-block-start: var(--space-3);
-  font-size: clamp(1.0625rem, 1.6vw, 1.3125rem);
+  font-size: var(--step-lg);
   line-height: 1.6;
-  color: var(--ink-muted);
-  max-width: 46ch;
-  font-weight: 400;
-}
-
-:lang(ar) .subhead {
-  line-height: 1.85;
-}
-
-.ctaRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.875rem;
-  margin-block-start: var(--space-4);
-}
-
-.ctaPrimary {
-  background: var(--color-primary-900);
-  color: #fff;
-  font-weight: 600;
-  font-size: 1rem;
-  padding-inline: 1.625rem;
-  padding-block: 0.9375rem;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
-
-.ctaPrimary:hover {
-  background: var(--color-primary-800);
-  transform: translateY(-1px);
-}
-
-.ctaSecondary {
-  color: var(--color-primary-900);
-  font-weight: 600;
-  font-size: 1rem;
-  padding-inline: 1.625rem;
-  padding-block: 0.9375rem;
-  border: 1px solid var(--border-input);
-  border-radius: var(--radius-sm);
-  transition: border-color var(--dur-fast) var(--ease-out),
-    background var(--dur-fast) var(--ease-out);
-}
-
-.ctaSecondary:hover {
-  border-color: var(--color-primary-900);
-  background: var(--surface-raised);
-}
-
-/* Values strip under hero */
-.values {
-  margin-block-start: clamp(2.5rem, 5vw, 4rem);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 2rem;
-  padding-block-start: var(--space-3);
-  border-block-start: 1px solid var(--border);
-  max-width: 54rem;
-}
-
-.valueItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--color-primary-800);
-}
-
-.valueMark {
-  inline-size: 1.25rem;
-  block-size: 0.65rem;
-  color: var(--color-accent-600);
-  flex-shrink: 0;
-}
-
-/* Watermark mark behind hero */
-.heroWatermark {
-  position: absolute;
-  z-index: 1;
-  inset-block-start: -6%;
-  inset-inline-end: -8%;
-  inline-size: clamp(22rem, 45vw, 42rem);
-  color: var(--color-primary-100);
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-@media (max-width: 720px) {
-  .heroWatermark {
-    inset-inline-end: -30%;
-    inset-block-start: auto;
-    inset-block-end: -6%;
-    opacity: 0.5;
-  }
-}
-
-/* ══ SECTION SHELL ═════════════════════════════════════ */
-.section {
-  padding-block: clamp(3.5rem, 7vw, 6rem);
-}
-
-.sectionAlt {
-  background: var(--surface-raised);
-  border-block: 1px solid var(--border);
-}
-
-.sectionHead {
-  max-width: 44rem;
+  color: var(--emerald-200);
+  max-width: 44ch;
   margin-block-end: var(--space-4);
 }
 
-.sEyebrow {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--link-accent);
-  text-transform: uppercase;
+:lang(ar) .subhead { font-size: var(--step-lg-ar); line-height: 1.85; }
+
+.ctaRow { display: flex; flex-wrap: wrap; gap: 0.875rem; }
+
+.ctaPrimary {
+  display: inline-flex; align-items: center;
+  font-size: 1rem; font-weight: 700;
+  color: var(--emerald-950);
+  background: var(--copper-gradient);
+  padding-inline: 1.75rem; padding-block: 0.9375rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-glow);
+  transition: filter var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.ctaPrimary:hover { filter: brightness(1.08); transform: translateY(-2px); }
+
+.ctaSecondary {
+  display: inline-flex; align-items: center;
+  font-size: 1rem; font-weight: 600;
+  color: var(--parchment);
+  border: 1px solid var(--emerald-500);
+  padding-inline: 1.75rem; padding-block: 0.9375rem;
+  border-radius: var(--radius-sm);
+  transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.ctaSecondary:hover { border-color: var(--copper-500); color: var(--copper-300); }
+
+/* شريط القيم */
+.values {
+  display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem;
+  list-style: none; margin: var(--space-5) 0 0; padding: var(--space-3) 0 0;
+  border-block-start: 1px solid var(--emerald-700);
 }
 
-:lang(ar) .sEyebrow {
-  letter-spacing: 0;
-  text-transform: none;
-  font-size: 0.9375rem;
+.valueItem {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.9375rem; font-weight: 500; color: var(--emerald-200);
 }
+
+.valueMark { color: var(--copper-400); flex-shrink: 0; }
+
+/* ══ الأقسام العامة ══ */
+.section { padding-block: clamp(3.5rem, 8vw, 6.5rem); background: var(--emerald-900); }
+.sectionAlt { padding-block: clamp(3.5rem, 8vw, 6.5rem); background: var(--emerald-950); }
+
+.sectionHead { max-inline-size: 44rem; margin-block-end: var(--space-4); }
+
+.sEyebrow {
+  font-size: 0.875rem; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--copper-400); margin-block-end: 0.75rem;
+}
+:lang(ar) .sEyebrow { letter-spacing: 0; }
 
 .sHeading {
-  margin-block-start: 0.75rem;
-  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  color: var(--color-primary-900);
+  font-size: var(--step-2xl); line-height: 1.15; letter-spacing: -0.02em;
+  color: var(--parchment);
 }
-
-:lang(ar) .sHeading {
-  letter-spacing: 0;
-  line-height: 1.4;
-}
+:lang(ar) .sHeading { letter-spacing: 0; line-height: 1.3; font-size: var(--step-2xl-ar); }
 
 .sBody {
   margin-block-start: var(--space-2);
-  font-size: 1.0625rem;
-  line-height: 1.7;
-  color: var(--ink-muted);
-  max-width: 54ch;
+  font-size: var(--step-lg); line-height: 1.7; color: var(--emerald-200);
 }
+:lang(ar) .sBody { font-size: var(--step-lg-ar); line-height: 1.85; }
 
-.flag {
-  display: inline-block;
-  margin-block-start: var(--space-2);
-  font-size: 0.8125rem;
-  color: var(--color-warning-text);
-  background: var(--color-warning-bg);
-  border: 1px solid color-mix(in srgb, var(--color-warning) 25%, transparent);
-  border-radius: var(--radius-sm);
-  padding-inline: 0.75rem;
-  padding-block: 0.3125rem;
-}
-
-/* ══ DIFFERENTIATORS ═══════════════════════════════════ */
+/* ══ المميزات (grid) ══ */
 .diffGrid {
-  display: grid;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.25rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-  .diffGrid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1000px) {
-  .diffGrid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .diffCard {
-  position: relative;
-  padding: var(--space-3);
-  padding-block-start: var(--space-4);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: box-shadow var(--dur-med) var(--ease-out),
-    transform var(--dur-med) var(--ease-out);
+  background: var(--emerald-800);
+  border: 1px solid var(--emerald-700);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
 }
-
-.diffCard::before {
-  content: '';
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  block-size: 3px;
-  background: var(--brand-gradient);
-  transform: scaleX(0);
-  transform-origin: inline-start;
-  transition: transform var(--dur-med) var(--ease-out);
-}
-
 .diffCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--copper-600);
   box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
-
-.diffCard:hover::before {
-  transform: scaleX(1);
 }
 
 .diffNum {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--color-accent-600);
-  letter-spacing: 0.08em;
+  font-size: 0.875rem; font-weight: 700; color: var(--copper-400);
+  font-variant-numeric: tabular-nums;
+}
+.diffTitle { margin-block: 0.75rem 0.5rem; font-size: var(--step-xl); color: var(--parchment); }
+:lang(ar) .diffTitle { font-size: var(--step-xl-ar); }
+.diffBody { font-size: 1rem; line-height: 1.65; color: var(--emerald-200); }
+
+/* ══ خطوات التقديم ══ */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+.step { position: relative; padding-block-start: var(--space-3); border-block-start: 2px solid var(--emerald-700); }
+.step::before {
+  content: ''; position: absolute; inset-block-start: -2px; inset-inline-start: 0;
+  inline-size: 3rem; block-size: 2px; background: var(--copper-gradient);
+}
+.stepNum { font-size: 0.875rem; font-weight: 700; color: var(--copper-400); font-variant-numeric: tabular-nums; }
+.stepTitle { margin-block: 0.5rem; font-size: var(--step-lg); color: var(--parchment); }
+:lang(ar) .stepTitle { font-size: var(--step-lg-ar); }
+.stepBody { font-size: 0.9375rem; line-height: 1.6; color: var(--emerald-200); }
+
+/* ══ مجالات الممارسة ══ */
+.practiceGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+
+.practiceCard {
+  display: flex; flex-direction: column;
+  background: var(--emerald-800);
+  border: 1px solid var(--emerald-700);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+}
+.practiceCard:hover { transform: translateY(-4px); border-color: var(--copper-600); box-shadow: var(--shadow-md); }
+
+.practiceIcon { color: var(--copper-400); margin-block-end: var(--space-2); }
+.practiceTitle { font-size: var(--step-xl); color: var(--parchment); }
+:lang(ar) .practiceTitle { font-size: var(--step-xl-ar); }
+.practiceBody { margin-block: 0.5rem var(--space-3); font-size: 1rem; line-height: 1.65; color: var(--emerald-200); flex-grow: 1; }
+.practiceCta { font-size: 0.9375rem; font-weight: 600; color: var(--copper-400); }
+.practiceCta:hover { color: var(--copper-300); }
+
+/* ══ قسم الاستشارة (CTA داكن مميّز) ══ */
+.consult {
+  position: relative; overflow: hidden;
+  padding-block: clamp(4rem, 9vw, 7rem);
+  background:
+    radial-gradient(120% 100% at 15% 0%, var(--emerald-800) 0%, var(--emerald-950) 60%),
+    var(--emerald-950);
 }
 
-.diffTitle {
-  margin-block-start: 0.75rem;
-  font-size: 1.1875rem;
-  font-weight: 700;
-  color: var(--color-primary-900);
+.consultInner { position: relative; z-index: 2; max-inline-size: 40rem; }
+.consultHeading { font-size: var(--step-2xl); line-height: 1.15; color: var(--parchment); }
+:lang(ar) .consultHeading { line-height: 1.3; font-size: var(--step-2xl-ar); }
+.consultBody { margin-block: var(--space-2) var(--space-3); font-size: var(--step-lg); line-height: 1.7; color: var(--emerald-200); }
+:lang(ar) .consultBody { font-size: var(--step-lg-ar); line-height: 1.85; }
+
+.consultBtn {
+  display: inline-flex; align-items: center;
+  font-size: 1.0625rem; font-weight: 700;
+  color: var(--emerald-950); background: var(--copper-gradient);
+  padding-inline: 2rem; padding-block: 1rem; border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-glow);
+  transition: filter var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.consultBtn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+
+.consultDisclaimer { margin-block-start: var(--space-3); font-size: 0.8125rem; color: var(--emerald-300); }
+
+.consultArc {
+  position: absolute; inset-block-end: -20%; inset-inline-start: -5%;
+  inline-size: 30rem; block-size: 30rem; opacity: 0.05; z-index: 1;
+  color: var(--copper-300);
 }
 
-.diffBody {
-  margin-block-start: 0.5rem;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--ink-muted);
-}
-
-/* ══ INTAKE STEPS ══════════════════════════════════════ */
-.steps {
-  display: grid;
-  gap: 1.25rem;
-  counter-reset: step;
-}
-
-@media (min-width: 780px) {
-  .steps { grid-template-columns: repeat(3, 1fr); }
-}
-
-.step {
-  position: relative;
-  padding: var(--space-3);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-.stepNum {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2.25rem;
-  block-size: 2.25rem;
-  border-radius: 999px;
-  background: var(--color-primary-900);
-  color: #fff;
-  font-weight: 700;
-  font-size: 1rem;
+/* ══ عناصر مشتركة ══ */
+.flag {
+  display: inline-block;
+  background: color-mix(in srgb, var(--copper-600) 15%, transparent);
+  border: 1px solid var(--copper-700);
+  color: var(--copper-300);
+  font-size: 0.8125rem; font-weight: 600;
+  padding-inline: 0.75rem; padding-block: 0.375rem;
+  border-radius: var(--radius-sm);
   margin-block-end: var(--space-2);
 }
 
-.stepTitle {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--color-primary-900);
-  margin-block-end: 0.375rem;
-}
-
-.stepBody {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--ink-muted);
-}
-
-/* ══ PRACTICE AREAS ════════════════════════════════════ */
-.practiceGrid {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-  .practiceGrid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (min-width: 1000px) {
-  .practiceGrid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.practiceCard {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  padding: var(--space-3);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: box-shadow var(--dur-med) var(--ease-out),
-    border-color var(--dur-med) var(--ease-out);
-}
-
-.practiceCard:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-primary-300);
-}
-
-.practiceIcon {
-  inline-size: 2.75rem;
-  color: var(--color-primary-800);
-  margin-block-end: 0.25rem;
-}
-
-.practiceTitle {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-primary-900);
-}
-
-.practiceBody {
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--ink-muted);
-  flex-grow: 1;
-}
-
-.practiceCta {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--link-accent);
-  margin-block-start: 0.5rem;
-}
-
-/* ══ CONSULT CTA (dark) ════════════════════════════════ */
-.consult {
-  position: relative;
-  overflow: hidden;
-  background: var(--ink-surface);
-  color: #fff;
-  padding-block: clamp(4rem, 8vw, 6.5rem);
-  text-align: center;
-}
-
-.consultArc {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-start: -1px;
-  inline-size: 100%;
-  block-size: auto;
-  opacity: 0.25;
-}
-
-.consultInner {
-  position: relative;
-  z-index: 2;
-  max-width: 40rem;
-  margin-inline: auto;
-}
-
-.consultHeading {
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-}
-
-:lang(ar) .consultHeading {
-  letter-spacing: 0;
-  line-height: 1.4;
-}
-
-.consultBody {
-  margin-block-start: var(--space-2);
-  font-size: 1.0625rem;
-  color: var(--color-primary-200);
-}
-
-.consultBtn {
-  display: inline-block;
-  margin-block-start: var(--space-3);
-  background: #fff;
-  color: var(--color-primary-900);
-  font-weight: 700;
-  font-size: 1rem;
-  padding-inline: 1.75rem;
-  padding-block: 0.9375rem;
-  border-radius: var(--radius-sm);
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.consultBtn:hover {
-  transform: translateY(-1px);
-}
-
-.consultDisclaimer {
-  margin-block-start: var(--space-3);
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--color-primary-300);
-  max-width: 42ch;
-  margin-inline: auto;
-}
-
-/* ══ scroll reveal ═════════════════════════════════════ */
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  animation: reveal var(--dur-slow) var(--ease-out) forwards;
-}
-
-@keyframes reveal {
-  to { opacity: 1; transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; animation: none; }
+/* ظهور تدريجي */
+.reveal { animation: rise var(--dur-slow) var(--ease-out) both; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   padding-block: clamp(3rem, 6vw, 5rem);
-  background: radial-gradient(120% 90% at 100% 0%, var(--color-primary-50), var(--surface) 65%);
+  background: radial-gradient(120% 90% at 100% 0%, var(--emerald-800), var(--emerald-900) 65%);
   border-block-end: 1px solid var(--border);
 }
 
@@ -21,7 +21,7 @@
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.15;
   letter-spacing: -0.015em;
-  color: var(--color-primary-900);
+  color: var(--parchment);
   max-width: 24ch;
 }
 
@@ -39,9 +39,9 @@
   display: inline-block;
   margin-block-start: var(--space-2);
   font-size: 0.8125rem;
-  color: var(--color-warning-text);
-  background: var(--color-warning-bg);
-  border: 1px solid color-mix(in srgb, var(--color-warning) 25%, transparent);
+  color: var(--copper-300);
+  background: color-mix(in srgb, var(--copper-600) 15%, transparent);
+  border: 1px solid var(--copper-700);
   border-radius: var(--radius-sm);
   padding-inline: 0.75rem;
   padding-block: 0.3125rem;
@@ -63,7 +63,7 @@
 .blockHeading {
   font-size: 1.375rem;
   font-weight: 700;
-  color: var(--color-primary-900);
+  color: var(--parchment);
   margin-block-end: var(--space-2);
 }
 
@@ -92,8 +92,8 @@
 .consultBtn {
   display: inline-block;
   margin-block-start: var(--space-3);
-  background: #fff;
-  color: var(--color-primary-900);
+  background: var(--copper-gradient);
+  color: var(--emerald-950);
   font-weight: 700;
   padding-inline: 1.75rem;
   padding-block: 0.9375rem;

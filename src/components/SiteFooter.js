@@ -36,7 +36,7 @@ export async function SiteFooter() {
 
       <div className={`container ${styles.bottom}`}>
         <span className={styles.disclaimer}>{t('disclaimer')}</span>
-        <span>© {new Date().getFullYear()} {tBrand('fullName')} — {t('rights')}</span>
+        <span>{"\u00A9"} {new Date().getFullYear()} {tBrand('fullName')} {"\u2014"} {t('rights')}</span>
       </div>
     </footer>
   );

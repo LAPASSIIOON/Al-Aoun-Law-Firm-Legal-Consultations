@@ -17,21 +17,41 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-/**
- * @param {{ params: Promise<{ locale: string }> }} props
- */
+/** @param {{ params: Promise<{ locale: string }> }} props */
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'meta' });
+  const otherLocale = locale === 'ar' ? 'en' : 'ar';
   return {
-    title: t('title'),
+    title: {
+      default: t('title'),
+      template: t('titleTemplate'),
+    },
     description: t('description'),
+    keywords: t('keywords'),
+    icons: {
+      icon: [
+        { url: '/icons/favicon-32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/icons/favicon-48.png', sizes: '48x48', type: 'image/png' },
+      ],
+      apple: '/icons/apple-touch-icon.png',
+    },
+    alternates: {
+      languages: { ar: '/ar', en: '/en' },
+    },
+    openGraph: {
+      type: 'website',
+      locale: locale === 'ar' ? 'ar_KW' : 'en_US',
+      alternateLocale: otherLocale === 'ar' ? 'ar_KW' : 'en_US',
+      title: t('title'),
+      description: t('description'),
+      siteName: t('title'),
+    },
+    robots: { index: true, follow: true },
   };
 }
 
-/**
- * @param {{ children: import('react').ReactNode, params: Promise<{ locale: string }> }} props
- */
+/** @param {{ children: import('react').ReactNode, params: Promise<{ locale: string }> }} props */
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
@@ -43,7 +63,7 @@ export default async function LocaleLayout({ children, params }) {
       <body>
         <NextIntlClientProvider locale={locale}>
           <SiteHeader />
-          <main>{children}</main>
+          <main id="main">{children}</main>
           <SiteFooter />
         </NextIntlClientProvider>
       </body>

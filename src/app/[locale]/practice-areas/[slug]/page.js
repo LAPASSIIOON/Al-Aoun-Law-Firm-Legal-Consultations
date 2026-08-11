@@ -1,6 +1,5 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
-import { GradientRule } from '@/components/GradientRule.js';
 import styles from './page.module.css';
 
 /**
@@ -16,33 +15,34 @@ export default async function PracticeAreaPage() {
 
   return (
     <>
-      <header className={styles.header}>
+      <section className={styles.hero}>
         <div className="container">
-          <p className={styles.eyebrow}>{t('eyebrow')}</p>
+          <span className={styles.eyebrow}>{t('eyebrow')}</span>
           <h1 className={styles.title}>{t('title')}</h1>
-          <div className={styles.rule}>
-            <GradientRule />
-          </div>
           <p className={styles.intro}>{t('intro')}</p>
-          <span className={styles.contentFlag}>CONTENT REQUIRED</span>
-        </div>
-      </header>
-
-      <section className={styles.section}>
-        <div className="container">
-          <h2 className={styles.sectionHeading}>{t('servicesHeading')}</h2>
-          <p className={styles.servicesPlaceholder}>
-            {t('servicesPlaceholder')}
-          </p>
+          <span className={styles.flag}>CONTENT REQUIRED</span>
         </div>
       </section>
 
-      <section className={styles.ctaSection}>
+      <section className={styles.body}>
         <div className="container">
-          <h2 className={styles.ctaHeading}>{t('ctaHeading')}</h2>
-          <Link href="/#consult" className={styles.ctaButton}>
-            {t('cta')}
-          </Link>
+          <div className={styles.grid}>
+            <div>
+              <h2 className={styles.blockHeading}>{t('servicesHeading')}</h2>
+              <div className={styles.placeholder}>{t('servicesFlag')}</div>
+            </div>
+            <div>
+              <h2 className={styles.blockHeading}>{t('whoHeading')}</h2>
+              <div className={styles.placeholder}>{t('whoFlag')}</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.consult}>
+        <div className="container">
+          <h2 className={styles.consultHeading}>{t('ctaHeading')}</h2>
+          <Link href="/#consult" className={styles.consultBtn}>{t('cta')}</Link>
         </div>
       </section>
     </>

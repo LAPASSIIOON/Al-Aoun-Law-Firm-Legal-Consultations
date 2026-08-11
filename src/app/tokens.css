@@ -92,3 +92,25 @@
     var(--color-primary-700) 100%
   );
 }
+
+/* ── طبقة نظام التصميم (v1.1 + هوية العون الحقيقية) ───────────── */
+:root {
+  /* ظلال هادئة — لا ظلال ملوّنة صارخة، مناسبة لطابع مهني وقور */
+  --shadow-sm: 0 1px 2px rgba(20, 30, 54, 0.06);
+  --shadow-md: 0 4px 16px rgba(20, 30, 54, 0.08);
+  --shadow-lg: 0 12px 40px rgba(20, 30, 54, 0.12);
+
+  /* حاويات وشبكة */
+  --container-wide: 82rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+
+  /* حركة — خفيفة ومهنية */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-med: 320ms;
+  --dur-slow: 640ms;
+
+  /* لون خلفية القسم الغامق (سيادة الكحلي) */
+  --ink-surface: var(--color-primary-900);
+  --ink-surface-2: var(--color-primary-950);
+}

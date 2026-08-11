@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
-import { AlAounMark } from './AlAounMark.js';
+import { AlAounLogo } from './AlAounLogo.js';
 import styles from './SiteFooter.module.css';
 
 export async function SiteFooter() {
@@ -13,8 +13,7 @@ export async function SiteFooter() {
       <div className={`container ${styles.top}`}>
         <div className={styles.brandCol}>
           <span className={styles.brandRow}>
-            <AlAounMark size={40} variant="white" title={tBrand('fullName')} />
-            <span className={styles.brandName}>{tBrand('fullName')}</span>
+            <AlAounLogo height={56} variant="white" />
           </span>
           <p className={styles.tagline}>{t('tagline')}</p>
         </div>

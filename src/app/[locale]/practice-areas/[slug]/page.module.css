@@ -1,0 +1,94 @@
+.header {
+  padding-block: var(--space-5);
+  border-block-end: 1px solid var(--border);
+}
+
+.eyebrow {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--link-accent);
+  margin-block-end: var(--space-1);
+}
+
+.title {
+  font-size: var(--step-2xl);
+  color: var(--ink);
+  max-width: 26ch;
+}
+
+:lang(ar) .title {
+  font-size: var(--step-2xl-ar);
+}
+
+.rule {
+  margin-block-start: var(--space-2);
+}
+
+.intro {
+  margin-block-start: var(--space-3);
+  color: var(--ink-muted);
+  font-size: var(--step-lg);
+  max-width: 60ch;
+}
+
+:lang(ar) .intro {
+  font-size: var(--step-lg-ar);
+}
+
+.contentFlag {
+  display: inline-block;
+  margin-block-start: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-warning-text);
+  background: var(--color-warning-bg);
+  border-radius: var(--radius-sm);
+  padding-inline: 0.625rem;
+  padding-block: 0.25rem;
+}
+
+.section {
+  padding-block: var(--space-5);
+}
+
+.sectionHeading {
+  font-size: var(--step-xl);
+  color: var(--ink);
+}
+
+:lang(ar) .sectionHeading {
+  font-size: var(--step-xl-ar);
+}
+
+.servicesPlaceholder {
+  margin-block-start: var(--space-2);
+  color: var(--ink-muted);
+  border: 1px dashed var(--border-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.ctaSection {
+  background: var(--color-primary-900);
+  color: #fff;
+  padding-block: var(--space-5);
+  text-align: center;
+}
+
+.ctaHeading {
+  font-size: var(--step-xl);
+  margin-block-end: var(--space-2);
+}
+
+:lang(ar) .ctaHeading {
+  font-size: var(--step-xl-ar);
+}
+
+.ctaButton {
+  display: inline-block;
+  background: #fff;
+  color: var(--color-primary-900);
+  font-weight: 700;
+  padding-inline: 1.75rem;
+  padding-block: 0.875rem;
+  border-radius: var(--radius-sm);
+}

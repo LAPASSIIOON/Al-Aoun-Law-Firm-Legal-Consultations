@@ -1,0 +1,57 @@
+.footer {
+  background: var(--color-primary-900);
+  color: var(--color-primary-100);
+  margin-block-start: var(--space-6);
+}
+
+.top {
+  padding-block: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 720px) {
+  .top {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+}
+
+.firmName {
+  font-size: var(--step-lg);
+  font-weight: 700;
+  color: #fff;
+  margin-block-end: var(--space-1);
+}
+
+:lang(ar) .firmName {
+  font-size: var(--step-lg-ar);
+}
+
+.disclaimer {
+  color: var(--color-primary-200);
+  font-size: 0.875rem;
+  max-width: 32rem;
+}
+
+.contactHeading {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-primary-200);
+  margin-block-end: var(--space-1);
+}
+
+.placeholder {
+  font-size: 0.875rem;
+  color: var(--color-primary-300);
+}
+
+.bottom {
+  border-block-start: 1px solid var(--color-primary-800);
+  padding-block: var(--space-2);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-primary-300);
+}

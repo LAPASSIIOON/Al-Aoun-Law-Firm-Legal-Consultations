@@ -1,0 +1,94 @@
+/**
+ * توكِنز الهوية — منسوخة حرفيًا من:
+ * «مجموعة العون — قرارات الهوية والمعمارية v1.1» §٢.
+ * لا تُغيَّر هذه القيم هنا؛ أي تعديل يجب أن يبدأ من ملف القرارات نفسه.
+ *
+ * الوضع الداكن غير مُفعَّل في هذا النموذج البصري عمدًا:
+ * سلوك القوس (عنصر التوقيع) على الخلفية الداكنة #0E1423 غير محسوم بعد
+ * من العميل [CLIENT APPROVAL REQUIRED] — راجع البند ٦.٣ في وثيقة القرارات.
+ */
+
+:root {
+  /* Primary — Indigo H222.4° */
+  --color-primary-50: #F4F6FA;
+  --color-primary-100: #E9EDF6;
+  --color-primary-200: #CFD8ED;
+  --color-primary-300: #A8B9E1;
+  --color-primary-400: #738FD3;
+  --color-primary-500: #4169C8;
+  --color-primary-600: #2D51A9;
+  --color-primary-700: #223F87; /* حبر الأزرار / الواجهة العامل */
+  --color-primary-800: #1A2F61;
+  --color-primary-900: #141E36; /* الحبر الرسمي — مطابق تمامًا لملفات اللوجو */
+  --color-primary-950: #0E1423;
+
+  /* Accent — Cyan H200° (مشتق من طرفَي القوس) */
+  --color-accent-400: #64B8E3;
+  --color-accent-500: #30A1D9; /* ممنوع كنص على خلفية فاتحة — 2.91:1 فاشل */
+  --color-accent-600: #2283B4;
+  --color-accent-700: #1D6A90; /* نص سماوي آمن على الفاتح — 5.97:1 */
+  --color-accent-950: #112732;
+
+  /* Neutral — Graphite H222° @ S 8–14% */
+  --color-neutral-50: #F6F7F8;
+  --color-neutral-200: #DADCE1;
+  --color-neutral-500: #7B818E; /* حدود حقول الإدخال — 3.91:1 */
+  --color-neutral-600: #636874;
+  --color-neutral-900: #2D3139;
+  --color-neutral-950: #1D1F26;
+
+  /* Semantic */
+  --color-success: #1C7D5A;
+  --color-success-text: #176E4E;
+  --color-success-bg: #E1F4ED;
+  --color-warning: #A0630D;
+  --color-warning-text: #8D4A07;
+  --color-warning-bg: #FCF1DE;
+  --color-error: #B42722;
+  --color-error-text: #A7201B;
+  --color-error-bg: #FBEAE9;
+
+  /* الاستخدام الدلالي */
+  --surface: #FFFFFF;
+  --surface-raised: var(--color-primary-50);
+  --ink: var(--color-primary-900);
+  --ink-muted: var(--color-neutral-600);
+  --border: var(--color-neutral-200);
+  --border-input: var(--color-neutral-500);
+  --link: var(--color-primary-700);
+  --link-accent: var(--color-accent-700);
+
+  /* الطباعة */
+  --font-latin: 'IBM Plex Sans Variable', system-ui, sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+
+  /* تحجيم عربي أكبر ~6–8% من اللاتيني عند نفس الحجم البصري */
+  --step-body: 1rem;
+  --step-body-ar: 1.0625rem;
+  --step-lg: 1.25rem;
+  --step-lg-ar: 1.3375rem;
+  --step-xl: 1.75rem;
+  --step-xl-ar: 1.875rem;
+  --step-2xl: 2.75rem;
+  --step-2xl-ar: 2.9375rem;
+  --step-3xl: 3.75rem;
+  --step-3xl-ar: 4rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6.5rem;
+
+  --container-max: 76rem;
+
+  /* تدرج الشعار — يُستخدم فقط كخط 2–4px (فواصل/تحتيات/مؤشر نشط)، ممنوع كخلفية */
+  --brand-gradient: linear-gradient(
+    90deg,
+    var(--color-accent-500) 0%,
+    var(--color-primary-700) 100%
+  );
+}

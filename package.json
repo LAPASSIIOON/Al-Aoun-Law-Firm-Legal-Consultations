@@ -1,0 +1,20 @@
+{
+  "name": "al-aoun-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "مجموعة العون — الموقع الإلكتروني. نموذج بصري أولي (صفحتان: الرئيسية + مجال ممارسة) قبل بناء نظام المكوّنات الكامل.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "next-intl": "4.13.6",
+    "@fontsource-variable/ibm-plex-sans": "5.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "5.3.0"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Al-Aoun Group",
+    "description": "Al-Aoun Group for Legal Consultations — early visual prototype"
+  },
+  "nav": {
+    "home": "Home",
+    "practiceAreas": "Practice Areas",
+    "about": "About",
+    "contact": "Contact",
+    "consult": "Request a Consultation"
+  },
+  "hero": {
+    "eyebrow": "Al-Aoun Group for Legal Consultations",
+    "headline": "Support and grounding, in the legal sense",
+    "subhead": "From your first question to a clear decision — with precise expertise and full confidentiality.",
+    "ctaPrimary": "Request a Consultation",
+    "ctaSecondary": "Browse Practice Areas"
+  },
+  "trust": {
+    "heading": "Before we begin",
+    "body": "[CONTENT REQUIRED — Firm overview: founding, scope of work, what distinguishes the approach. No figure, achievement, or unapproved name is written here.]"
+  },
+  "intake": {
+    "heading": "How it starts",
+    "step1Title": "Initial routing",
+    "step1Body": "A short form to understand the nature of your request and route it to the right team — case facts are not collected at this stage.",
+    "step2Title": "Conflict check",
+    "step2Body": "We verify there is no conflict of interest before any further contact.",
+    "step3Title": "Secure channel",
+    "step3Body": "Once cleared, we open a direct, secured channel with the relevant team."
+  },
+  "practiceAreas": {
+    "heading": "Practice Areas",
+    "subhead": "[CONTENT REQUIRED — The approved practice-area list has not been delivered yet. The card below illustrates the display structure only.]",
+    "placeholderCard": {
+      "title": "[Practice Area — CONTENT REQUIRED]",
+      "description": "[Brief description — CONTENT REQUIRED]",
+      "cta": "Details"
+    }
+  },
+  "practiceAreaPage": {
+    "eyebrow": "Practice Area",
+    "title": "[Practice area name — CONTENT REQUIRED]",
+    "intro": "[Practice area overview — CONTENT REQUIRED. This page is a visual prototype of the practice-area page structure, not final content.]",
+    "servicesHeading": "Services in this area",
+    "servicesPlaceholder": "[Services list — CONTENT REQUIRED]",
+    "ctaHeading": "Need a consultation in this area?",
+    "cta": "Request a Consultation"
+  },
+  "footer": {
+    "firmName": "Al-Aoun Group for Legal Consultations",
+    "disclaimer": "This site's content is for general informational purposes and does not constitute legal advice.",
+    "contactHeading": "Contact",
+    "contactPlaceholder": "[Full contact details — CONTENT REQUIRED]",
+    "privacyLink": "Privacy Policy",
+    "rights": "All rights reserved"
+  },
+  "langSwitch": {
+    "label": "العربية"
+  }
+}

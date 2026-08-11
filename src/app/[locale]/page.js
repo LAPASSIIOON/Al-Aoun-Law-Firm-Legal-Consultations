@@ -19,11 +19,8 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ══ HERO ══ */}
+      {/* ══ HERO — الطباعة هي البطل، والقوس عنصر بنيوي يحمل العنوان ══ */}
       <section className={styles.hero}>
-        <div className={styles.heroWatermark} aria-hidden="true">
-          <AlAounMark size={640} title="" />
-        </div>
         <div className="container">
           <div className={`${styles.heroInner} ${styles.reveal}`}>
             <span className={styles.eyebrow}>
@@ -31,6 +28,10 @@ export default async function HomePage() {
               {tHero('eyebrow')}
             </span>
             <h1 className={styles.headline}>{tHero('headline')}</h1>
+            <div className={styles.heroArcWrap} aria-hidden="true">
+              <Arc tone="accent" className={styles.heroArc} />
+              <AlAounMark size={72} title="" className={styles.heroArcMark} />
+            </div>
             <p className={styles.subhead}>{tHero('subhead')}</p>
             <div className={styles.ctaRow}>
               <Link href="/#consult" className={styles.ctaPrimary}>

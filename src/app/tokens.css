@@ -1,68 +1,65 @@
 /**
- * توكِنز الهوية — منسوخة حرفيًا من:
- * «مجموعة العون — قرارات الهوية والمعمارية v1.1» §٢.
- * لا تُغيَّر هذه القيم هنا؛ أي تعديل يجب أن يبدأ من ملف القرارات نفسه.
+ * توكِنز هوية مجموعة العون — اتجاه «الزمرّد الفخم» (Luxe Emerald)
+ * خلفية داكنة درامية (زمرّد/تيل غامق) + تمييز نحاسي دافي + نيوترال دافي.
+ * فخم · مودرن · بريميوم · متفرّد — بعيد عن الكحلي التقليدي.
  *
- * الوضع الداكن غير مُفعَّل في هذا النموذج البصري عمدًا:
- * سلوك القوس (عنصر التوقيع) على الخلفية الداكنة #0E1423 غير محسوم بعد
- * من العميل [CLIENT APPROVAL REQUIRED] — راجع البند ٦.٣ في وثيقة القرارات.
+ * اللوجو يُستخدم بنسخته البيضاء على الأسطح الداكنة.
  */
 
 :root {
-  /* Primary — Indigo H222.4° */
-  --color-primary-50: #F4F6FA;
-  --color-primary-100: #E9EDF6;
-  --color-primary-200: #CFD8ED;
-  --color-primary-300: #A8B9E1;
-  --color-primary-400: #738FD3;
-  --color-primary-500: #4169C8;
-  --color-primary-600: #2D51A9;
-  --color-primary-700: #223F87; /* حبر الأزرار / الواجهة العامل */
-  --color-primary-800: #1A2F61;
-  --color-primary-900: #141E36; /* الحبر الرسمي — مطابق تمامًا لملفات اللوجو */
-  --color-primary-950: #0E1423;
+  /* ── الزمرّد/التيل — اللون الأساسي (خلفيات داكنة) ── */
+  --emerald-950: #061A16;  /* أعمق خلفية */
+  --emerald-900: #08201C;  /* الخلفية الرئيسية */
+  --emerald-800: #0C2C26;  /* أسطح مرفوعة */
+  --emerald-700: #103A32;  /* بطاقات / حدود داكنة */
+  --emerald-600: #16493F;
+  --emerald-500: #1E5E51;  /* حدود واضحة */
+  --emerald-400: #2E7D6C;
+  --emerald-300: #5AA695;  /* نص ثانوي على الداكن */
+  --emerald-200: #9AC7BC;  /* نص خافت على الداكن */
+  --emerald-100: #C8E2DB;
 
-  /* Accent — Cyan H200° (مشتق من طرفَي القوس) */
-  --color-accent-400: #64B8E3;
-  --color-accent-500: #30A1D9; /* ممنوع كنص على خلفية فاتحة — 2.91:1 فاشل */
-  --color-accent-600: #2283B4;
-  --color-accent-700: #1D6A90; /* نص سماوي آمن على الفاتح — 5.97:1 */
-  --color-accent-950: #112732;
+  /* ── النحاسي/الكوبر — لون التمييز (CTA, خطوط, تفاصيل) ── */
+  --copper-700: #9A5A28;
+  --copper-600: #B87333;   /* التمييز الأساسي */
+  --copper-500: #CD8A4A;
+  --copper-400: #D89860;   /* أفتح — نص تمييز على الداكن */
+  --copper-300: #E4B183;   /* هايلايت */
+  --copper-gradient: linear-gradient(100deg, #B87333 0%, #E4B183 50%, #A0632C 100%);
 
-  /* Neutral — Graphite H222° @ S 8–14% */
-  --color-neutral-50: #F6F7F8;
-  --color-neutral-200: #DADCE1;
-  --color-neutral-500: #7B818E; /* حدود حقول الإدخال — 3.91:1 */
-  --color-neutral-600: #636874;
-  --color-neutral-900: #2D3139;
-  --color-neutral-950: #1D1F26;
+  /* ── النيوترال الدافي (نص وخلفيات فاتحة نادرة) ── */
+  --sand-50: #F6F3EC;      /* أبيض دافي — للأقسام الفاتحة النادرة */
+  --sand-100: #EDE8DC;
+  --sand-200: #D8D0C0;
+  --parchment: #F4F0E8;    /* نص العناوين على الداكن */
+  --ink-warm: #1A1712;     /* نص داكن على الأسطح الفاتحة */
 
-  /* Semantic */
-  --color-success: #1C7D5A;
-  --color-success-text: #176E4E;
-  --color-success-bg: #E1F4ED;
-  --color-warning: #A0630D;
-  --color-warning-text: #8D4A07;
-  --color-warning-bg: #FCF1DE;
-  --color-error: #B42722;
-  --color-error-text: #A7201B;
-  --color-error-bg: #FBEAE9;
+  /* ── دلالات الاستخدام ── */
+  --surface: var(--emerald-900);        /* الخلفية الافتراضية داكنة */
+  --surface-raised: var(--emerald-800);
+  --surface-card: var(--emerald-800);
+  --surface-light: var(--sand-50);      /* قسم فاتح نادر للتباين */
 
-  /* الاستخدام الدلالي */
-  --surface: #FFFFFF;
-  --surface-raised: var(--color-primary-50);
-  --ink: var(--color-primary-900);
-  --ink-muted: var(--color-neutral-600);
-  --border: var(--color-neutral-200);
-  --border-input: var(--color-neutral-500);
-  --link: var(--color-primary-700);
-  --link-accent: var(--color-accent-700);
+  --ink: var(--parchment);              /* النص الأساسي فاتح */
+  --ink-strong: #FFFFFF;
+  --ink-muted: var(--emerald-200);      /* نص ثانوي */
+  --ink-faint: var(--emerald-300);
+  --ink-on-light: var(--ink-warm);      /* نص على الأسطح الفاتحة */
+  --ink-muted-on-light: #5A5347;
 
-  /* الطباعة */
+  --border: var(--emerald-700);
+  --border-strong: var(--emerald-500);
+  --border-on-light: var(--sand-200);
+
+  --accent: var(--copper-600);
+  --accent-text: var(--copper-400);     /* تمييز نصّي على الداكن */
+  --accent-text-on-light: var(--copper-700);
+  --link: var(--copper-400);
+
+  /* ── الطباعة ── */
   --font-latin: 'IBM Plex Sans Variable', system-ui, sans-serif;
   --font-arabic: 'IBM Plex Sans Arabic', system-ui, sans-serif;
 
-  /* تحجيم عربي أكبر ~6–8% من اللاتيني عند نفس الحجم البصري */
   --step-body: 1rem;
   --step-body-ar: 1.0625rem;
   --step-lg: 1.25rem;
@@ -75,7 +72,9 @@
   --step-3xl-ar: 4rem;
 
   --radius-sm: 4px;
-  --radius-md: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
@@ -84,33 +83,39 @@
   --space-6: 6.5rem;
 
   --container-max: 76rem;
-
-  /* تدرج الشعار — يُستخدم فقط كخط 2–4px (فواصل/تحتيات/مؤشر نشط)، ممنوع كخلفية */
-  --brand-gradient: linear-gradient(
-    90deg,
-    var(--color-accent-500) 0%,
-    var(--color-primary-700) 100%
-  );
-}
-
-/* ── طبقة نظام التصميم (v1.1 + هوية العون الحقيقية) ───────────── */
-:root {
-  /* ظلال هادئة — لا ظلال ملوّنة صارخة، مناسبة لطابع مهني وقور */
-  --shadow-sm: 0 1px 2px rgba(20, 30, 54, 0.06);
-  --shadow-md: 0 4px 16px rgba(20, 30, 54, 0.08);
-  --shadow-lg: 0 12px 40px rgba(20, 30, 54, 0.12);
-
-  /* حاويات وشبكة */
   --container-wide: 82rem;
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
-  /* حركة — خفيفة ومهنية */
+  /* ظلال دافئة عميقة تناسب الأسطح الداكنة */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 40px rgba(184, 115, 51, 0.12);
+
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-fast: 160ms;
   --dur-med: 320ms;
-  --dur-slow: 640ms;
+  --dur-slow: 680ms;
 
-  /* لون خلفية القسم الغامق (سيادة الكحلي) */
-  --ink-surface: var(--color-primary-900);
-  --ink-surface-2: var(--color-primary-950);
+  /* أسماء متوافقة مع الكود القديم (لتفادي كسر المراجع) */
+  --color-primary-900: var(--emerald-900);
+  --color-primary-950: var(--emerald-950);
+  --color-primary-800: var(--emerald-800);
+  --color-primary-700: var(--emerald-700);
+  --color-primary-200: var(--emerald-200);
+  --color-primary-100: var(--emerald-100);
+  --color-primary-300: var(--emerald-300);
+  --color-primary-50: var(--emerald-800);
+  --color-accent-600: var(--copper-600);
+  --color-accent-700: var(--copper-700);
+  --color-accent-500: var(--copper-500);
+  --color-neutral-200: var(--emerald-700);
+  --color-neutral-600: var(--emerald-200);
+  --color-neutral-500: var(--emerald-500);
+  --ink-surface: var(--emerald-900);
+  --ink-surface-2: var(--emerald-950);
+  --surface: var(--emerald-900);
+  --brand-gradient: var(--copper-gradient);
+  --link-accent: var(--copper-400);
+  --border-input: var(--emerald-500);
 }

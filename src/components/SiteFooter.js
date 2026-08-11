@@ -13,8 +13,8 @@ export async function SiteFooter() {
       <div className={`container ${styles.top}`}>
         <div className={styles.brandCol}>
           <span className={styles.brandRow}>
-            <AlAounMark size={36} title={tBrand('fullName')} />
-            <span className={styles.brandName}>{tBrand('name')}</span>
+            <AlAounMark size={40} variant="white" title={tBrand('fullName')} />
+            <span className={styles.brandName}>{tBrand('fullName')}</span>
           </span>
           <p className={styles.tagline}>{t('tagline')}</p>
         </div>

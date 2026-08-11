@@ -14,9 +14,9 @@ export async function SiteHeader() {
     <header className={styles.header}>
       <div className={`container ${styles.bar}`}>
         <Link href="/" className={styles.brand} aria-label={tBrand('fullName')}>
-          <AlAounMark size={34} />
+          <AlAounMark size={40} variant="white" priority />
           <span>
-            <span className={styles.brandName}>{tBrand('name')}</span>
+            <span className={styles.brandName}>{tBrand('fullName')}</span>
             <span className={styles.brandSince}>{tBrand('since')}</span>
           </span>
         </Link>

@@ -1,8 +1,8 @@
-/* نموذج «رواق العون» — عنّابي/حجر + عمارة كويتية حقيقية + المؤسِّس */
+/* «رواق العون» — عمارة كويتية حقيقية + عنّابي/حجر */
 .page {
   --stone-0:#F4F1EA; --stone:#EAE4D9; --stone-2:#DED6C7; --ink:#221E1C;
   --wine:#5E2A2E; --wine-deep:#3A1D20; --wine-bright:#7C2A2E;
-  --gray-warm:#8B8178; --metal:#9AA0A6; --on-dark:#F1EBE2; --on-dark-2:#CDBBB2;
+  --gray-warm:#8B8178; --metal:#9AA0A6; --on-dark:#F3EEE6; --on-dark-2:#D8C9BE;
   --serif:'Cormorant', Georgia, serif; --naskh:'Amiri', serif;
   --sans:'Archivo Variable', system-ui, sans-serif; --ar:'IBM Plex Sans Arabic', sans-serif;
   background: var(--stone-0); color: var(--ink);
@@ -11,59 +11,61 @@
 :lang(ar) .kicker { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.95rem; }
 
 /* ── الهيرو ── */
-.hero { position: relative; min-block-size: 100svh; overflow: hidden; }
-.stage { position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(60% 55% at 50% 42%, rgba(243,228,198,0.5), transparent 60%),
-    radial-gradient(120% 90% at 50% 120%, rgba(94,42,46,0.18), transparent 55%),
-    linear-gradient(180deg, var(--stone) 0%, var(--stone-2) 100%); }
-.grain { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.4;
-  background-image: radial-gradient(rgba(34,30,28,0.05) 1px, transparent 1px); background-size: 3px 3px; mix-blend-mode: multiply; }
+.hero { position: relative; min-block-size: 100svh; overflow: hidden; background: var(--wine-deep); }
+.heroMedia { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.heroImg { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; filter: saturate(0.82) contrast(1.04) brightness(0.9); transform: scale(1.06); animation: kb 26s ease-in-out infinite alternate; }
+@keyframes kb { from { transform: scale(1.06) translateY(0); } to { transform: scale(1.14) translateY(-1.5%); } }
+@media (prefers-reduced-motion: reduce) { .heroImg { animation: none; } }
+.heroScrim { position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(34,26,24,0.55) 0%, transparent 22%, transparent 55%, rgba(58,29,32,0.72) 100%),
+    linear-gradient(90deg, rgba(58,29,32,0.35), transparent 45%); }
+
 .overlay { position: relative; z-index: 2; min-block-size: 100svh; display: flex; flex-direction: column;
   padding: clamp(1.75rem,4vw,3rem) clamp(1.5rem,4vw,4.5rem) clamp(1.75rem,4vw,3rem); }
+.onImage .word { color: var(--on-dark); opacity: 0.95; }
+.onImage .headline { color: var(--on-dark); text-shadow: 0 2px 40px rgba(20,12,12,0.5); }
+.onImage .meta { color: #E8B7AC; }
 .masthead { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
-.word { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.04em; color: var(--ink); opacity: 0.82; }
+.word { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.04em; }
 :lang(ar) .word { font-family: var(--ar); letter-spacing: 0; }
-.meta { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--wine); }
+.meta { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; }
 :lang(ar) .meta { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.8rem; }
-.rule { display: block; block-size: 1px; margin-block-start: 1.1rem; background: linear-gradient(90deg, var(--wine), transparent 55%); }
-.center { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; padding-block-end: clamp(1rem,4vh,3rem); }
-.headline { font-family: var(--serif); font-weight: 500; font-size: clamp(2.4rem,5.6vw,5.25rem); line-height: 1.03; color: var(--ink); max-width: 15ch; letter-spacing: -0.005em; text-shadow: 0 1px 40px rgba(244,241,234,0.55); }
-:lang(ar) .headline { font-family: var(--naskh); font-weight: 700; line-height: 1.18; max-width: 20ch; }
+.rule { display: block; block-size: 1px; margin-block-start: 1.1rem; background: linear-gradient(90deg, var(--wine-bright), transparent 55%); }
+.center { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; padding-block-end: clamp(1rem,4vh,2.5rem); }
+.headline { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem,6vw,5.75rem); line-height: 1.02; max-width: 16ch; letter-spacing: -0.005em; }
+:lang(ar) .headline { font-family: var(--naskh); font-weight: 700; line-height: 1.16; max-width: 22ch; }
 .heroFoot { display: flex; justify-content: flex-start; }
-.scroll { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gray-warm); }
+.scroll { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--on-dark-2); }
 :lang(ar) .scroll { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.85rem; }
 
-/* ── قصر العدل ── */
-.arch { position: relative; min-block-size: 88svh; overflow: hidden; display: flex; align-items: flex-end; }
-.archImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: saturate(0.8) sepia(0.06) contrast(1.03) brightness(0.99); }
-.archScrim { position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(58,29,32,0.05) 0%, transparent 30%, rgba(34,30,28,0.15) 60%, rgba(58,29,32,0.78) 100%); }
-.archText { position: relative; z-index: 2; padding: clamp(2rem,6vw,5rem); display: flex; flex-direction: column; gap: 0.9rem; max-width: 40rem; }
-.archHeading { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem,4.5vw,3.75rem); line-height: 1.06; color: var(--on-dark); max-width: 18ch; }
-:lang(ar) .archHeading { font-family: var(--naskh); font-weight: 700; line-height: 1.25; }
-.archCaption { font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-2); }
-:lang(ar) .archCaption { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.9rem; }
-.arch .kicker { color: #E0A9A0; }
+/* ── قسم صورة كامل (قصر العدل / المجمّع القضائي) ── */
+.full { position: relative; min-block-size: 90svh; overflow: hidden; display: flex; align-items: flex-end; background: var(--wine-deep); }
+.fullImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.fullImg.warm { filter: saturate(0.8) sepia(0.06) contrast(1.03) brightness(0.96); }
+.fullScrim { position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(34,30,28,0.1) 0%, transparent 35%, rgba(34,30,28,0.2) 62%, rgba(58,29,32,0.82) 100%); }
+.fullText { position: relative; z-index: 2; padding: clamp(2rem,6vw,5rem); display: flex; flex-direction: column; gap: 0.9rem; max-width: 42rem; }
+.fullHeading { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem,4.4vw,3.75rem); line-height: 1.06; color: var(--on-dark); max-width: 20ch; }
+:lang(ar) .fullHeading { font-family: var(--naskh); font-weight: 700; line-height: 1.25; }
+.fullCaption { font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--on-dark-2); }
+:lang(ar) .fullCaption { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.9rem; }
+.full .kicker { color: #E8B7AC; }
 
 /* ── المؤسِّس ── */
 .founder { background: var(--stone-0); padding: clamp(4rem,10vh,8rem) clamp(1.5rem,4vw,4.5rem); }
 .founderGrid { display: grid; gap: clamp(2rem,5vw,4.5rem); grid-template-columns: 1fr; align-items: center; max-width: 72rem; margin-inline: auto; }
 @media (min-width: 860px) { .founderGrid { grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr); } }
 .founderPhoto { margin: 0; position: relative; }
-.founderPhoto img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top center; filter: grayscale(0.15) contrast(1.02); }
-.founderPhoto::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(94,42,46,0.25); pointer-events: none; }
+.founderPhoto img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: top center; filter: grayscale(0.12) contrast(1.02); }
+.founderPhoto::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(94,42,46,0.28); pointer-events: none; }
 .founderName { font-family: var(--serif); font-weight: 600; font-size: clamp(2rem,3.6vw,3rem); line-height: 1.04; color: var(--ink); margin-block-start: 0.75rem; }
 :lang(ar) .founderName { font-family: var(--naskh); font-weight: 700; line-height: 1.2; }
-.founderTitle { display: block; margin-block-start: 0.65rem; font-family: var(--sans); font-size: 0.95rem; color: var(--wine); letter-spacing: 0.01em; }
+.founderTitle { display: block; margin-block-start: 0.65rem; font-family: var(--sans); font-size: 0.95rem; color: var(--wine); }
 :lang(ar) .founderTitle { font-family: var(--ar); }
 .founderBio { margin-block-start: 1.5rem; font-family: var(--serif); font-size: clamp(1.2rem,1.7vw,1.5rem); line-height: 1.5; color: var(--ink); max-width: 46ch; }
 :lang(ar) .founderBio { font-family: var(--ar); font-size: clamp(1.0625rem,1.4vw,1.2rem); line-height: 1.9; }
 .creds { margin-block-start: 1.75rem; display: flex; flex-direction: column; gap: 0.85rem; border-block-start: 1px solid rgba(94,42,46,0.2); padding-block-start: 1.5rem; }
-.cred { display: flex; align-items: baseline; gap: 0.75rem; font-family: var(--sans); font-size: 0.95rem; color: var(--gray-warm); }
+.cred { display: flex; align-items: baseline; gap: 0.75rem; font-family: var(--sans); font-size: 0.92rem; color: var(--gray-warm); }
 :lang(ar) .cred { font-family: var(--ar); }
 .credMark { flex: 0 0 auto; inline-size: 6px; block-size: 6px; margin-block-start: 0.4rem; background: var(--wine); border-radius: 50%; }
-
-/* ── ختام ── */
-.after { background: var(--wine-deep); color: var(--on-dark); padding: clamp(5rem,14vh,9rem) clamp(1.5rem,4vw,4rem); display: flex; justify-content: center; }
-.afterLine { font-family: var(--serif); font-size: clamp(1.5rem,3vw,2.4rem); line-height: 1.35; max-width: 30ch; text-align: center; color: var(--on-dark); }
-:lang(ar) .afterLine { font-family: var(--naskh); font-weight: 400; line-height: 1.7; }

@@ -1,0 +1,43 @@
+/* نموذج «رواق العون» — عنّابي/حجر + فراغ معماري 3D */
+.page {
+  --stone-0:#F4F1EA; --stone:#EAE4D9; --stone-2:#DED6C7; --ink:#221E1C;
+  --wine:#5E2A2E; --wine-deep:#3E1D20; --wine-bright:#7C2A2E;
+  --gray-warm:#8B8178; --metal:#9AA0A6; --on-dark:#F1EBE2;
+  --serif:'Cormorant', Georgia, serif; --naskh:'Amiri', serif;
+  --sans:'Archivo Variable', system-ui, sans-serif; --ar:'IBM Plex Sans Arabic', sans-serif;
+  background: var(--stone-0); color: var(--ink);
+}
+.hero { position: relative; min-block-size: 100svh; overflow: hidden; }
+/* الخلفية الأساسية + fallback (ضوء دافئ عبر قوس على حجر) */
+.stage { position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(60% 55% at 50% 42%, rgba(243,228,198,0.55), transparent 60%),
+    radial-gradient(120% 90% at 50% 120%, rgba(94,42,46,0.20), transparent 55%),
+    linear-gradient(180deg, var(--stone) 0%, var(--stone-2) 100%);
+}
+.grain { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.4;
+  background-image: radial-gradient(rgba(34,30,28,0.05) 1px, transparent 1px); background-size: 3px 3px; mix-blend-mode: multiply; }
+
+.overlay { position: relative; z-index: 2; min-block-size: 100svh; display: flex; flex-direction: column;
+  padding: clamp(1.75rem,4vw,3rem) clamp(1.5rem,4vw,4rem) clamp(1.75rem,4vw,3rem); }
+.masthead { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.word { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.04em; color: var(--ink); opacity: 0.82; }
+:lang(ar) .word { font-family: var(--ar); letter-spacing: 0; }
+.meta { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--wine); }
+:lang(ar) .meta { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.8rem; }
+.rule { display: block; block-size: 1px; margin-block-start: 1.1rem; background: linear-gradient(90deg, var(--wine), transparent 60%); }
+
+.center { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; text-align: start; gap: clamp(0.9rem,2.2vh,1.4rem); padding-block-end: clamp(1rem,4vh,3rem); }
+.kicker { font-family: var(--sans); font-size: 0.74rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--wine-bright); }
+:lang(ar) .kicker { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.95rem; }
+.headline { font-family: var(--serif); font-weight: 500; font-size: clamp(2.3rem,5.4vw,5rem); line-height: 1.04; color: var(--ink); max-width: 16ch; letter-spacing: -0.005em; text-shadow: 0 1px 30px rgba(244,241,234,0.5); }
+:lang(ar) .headline { font-family: var(--naskh); font-weight: 700; line-height: 1.2; max-width: 24ch; }
+
+.foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+.year { font-family: var(--serif); font-size: clamp(2rem,4vw,3.25rem); color: var(--wine); line-height: 1; font-variant-numeric: lining-nums; }
+.scroll { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gray-warm); }
+:lang(ar) .scroll { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.85rem; }
+
+.after { background: var(--wine-deep); color: var(--on-dark); padding: clamp(5rem,14vh,9rem) clamp(1.5rem,4vw,4rem); display: flex; justify-content: center; }
+.afterLine { font-family: var(--serif); font-size: clamp(1.5rem,3vw,2.4rem); line-height: 1.35; max-width: 30ch; text-align: center; color: var(--on-dark); }
+:lang(ar) .afterLine { font-family: var(--naskh); font-weight: 400; line-height: 1.7; }

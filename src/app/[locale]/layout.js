@@ -10,10 +10,13 @@ import '@fontsource-variable/archivo';
 import '@fontsource-variable/newsreader';
 import '@fontsource/amiri/400.css';
 import '@fontsource/amiri/700.css';
+import '@fontsource/cormorant/400.css';
+import '@fontsource/cormorant/500.css';
+import '@fontsource/cormorant/600.css';
 import '../globals.css';
+import RevealController from '@/components/RevealController.js';
 import { Chrome } from '@/components/Chrome.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
-import RevealController from '@/components/RevealController.js';
 
 /** @type {Record<'ar'|'en', 'rtl'|'ltr'>} */
 const DIR_BY_LOCALE = { ar: 'rtl', en: 'ltr' };

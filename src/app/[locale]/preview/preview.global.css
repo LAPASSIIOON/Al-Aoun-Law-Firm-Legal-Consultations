@@ -1,0 +1,5 @@
+/* يُحمّل في مسار المعاينة فقط: إخفاء عمود/فوتر/شريط الموقع لعرض الهيرو معزولًا */
+#main { padding-inline-start: 0 !important; }
+body > aside { display: none !important; }
+body > header { display: none !important; }
+body > footer { display: none !important; }

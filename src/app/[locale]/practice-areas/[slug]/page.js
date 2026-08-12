@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import styles from './page.module.css';
 
@@ -10,7 +10,9 @@ export function generateStaticParams() {
   return [{ slug: 'placeholder' }];
 }
 
-export default async function PracticeAreaPage() {
+export default async function PracticeAreaPage({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations('practiceAreaPage');
 
   return (

@@ -1,4 +1,4 @@
-import { getTranslations, getLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { AlAounMark } from '@/components/AlAounMark.js';
 import { ArchLines } from '@/components/ArchLines.js';
@@ -7,8 +7,9 @@ import styles from './page.module.css';
 const AR_NUM = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥', '٠٦'];
 const EN_NUM = ['01', '02', '03', '04', '05', '06'];
 
-export default async function HomePage() {
-  const locale = await getLocale();
+export default async function HomePage({ params }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const N = locale === 'ar' ? AR_NUM : EN_NUM;
   const tHero = await getTranslations('hero');
   const tTrust = await getTranslations('trust');

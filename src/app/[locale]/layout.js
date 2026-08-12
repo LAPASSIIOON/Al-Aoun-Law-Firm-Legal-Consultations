@@ -1,5 +1,5 @@
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing.js';
 import '@fontsource-variable/ibm-plex-sans';
@@ -60,6 +60,7 @@ export default async function LocaleLayout({ children, params }) {
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+  setRequestLocale(locale);
 
   return (
     <html lang={locale} dir={DIR_BY_LOCALE[locale]}>

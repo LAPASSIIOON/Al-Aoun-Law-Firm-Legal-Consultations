@@ -6,7 +6,7 @@
 
 .bars { position: relative; inline-size: 22px; block-size: 12px; }
 .bars span {
-  position: absolute; inset-inline: 0; block-size: 1.5px; background: var(--ink);
+  position: absolute; inset-inline: 0; block-size: 1.5px; background: var(--on-navy);
   transition: transform var(--dur-1) var(--ease), opacity var(--dur-1) var(--ease);
 }
 .bars span:first-child { inset-block-start: 0; }

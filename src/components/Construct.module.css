@@ -1,0 +1,12 @@
+.field { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.vline { position: absolute; inset-block: 0; inline-size: 1px; background: var(--line); }
+.field.dark .vline { background: var(--line-navy); }
+.tick { position: absolute; inline-size: 9px; block-size: 9px; }
+.tick::before, .tick::after { content: ''; position: absolute; background: var(--axis); }
+.tick::before { inset-inline-start: 4px; inset-block: 0; inline-size: 1px; }
+.tick::after { inset-block-start: 4px; inset-inline: 0; block-size: 1px; }
+.field.dark .tick::before, .field.dark .tick::after { background: var(--axis-navy); }
+.tl { inset-block-start: -4px; inset-inline-start: -4px; }
+.tr { inset-block-start: -4px; inset-inline-end: -4px; }
+.bl { inset-block-end: -4px; inset-inline-start: -4px; }
+.br { inset-block-end: -4px; inset-inline-end: -4px; }

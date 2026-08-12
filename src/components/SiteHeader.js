@@ -22,7 +22,7 @@ export async function SiteHeader() {
     <header className={styles.header}>
       <div className={`container ${styles.bar}`}>
         <Link href="/" className={styles.brand} aria-label={tBrand('fullName')}>
-          <AlAounLogo height={46} variant="color" priority />
+          <AlAounLogo height={44} variant="white" priority />
         </Link>
 
         <nav className={styles.nav} aria-label={t('home')}>

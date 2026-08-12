@@ -1,86 +1,90 @@
 /**
- * مجموعة العون — نظام «حِبر ووَرَق» (Ink & Paper)
- * اتجاه تحريري معماري: ورق دافئ، حبر شبه أسود، ولمسة زرقاء واحدة
- * مأخوذة من اللوجو الرسمي. لا ذهبي، لا زخرفة، فراغ سخي، طباعة كبيرة.
+ * مجموعة العون — نظام «المِحور» (Axis & Arc)
+ * لغة مشتقّة من اللوجو: دائرة الاحتواء + المحور الصليبي (الدقة) +
+ * القوس (العون) + جرافيت وسماوي بارد. معماري، دقيق، مؤسسي.
  */
-
 :root {
-  /* ── الورق (الخلفيات الفاتحة) ── */
-  --paper:   #F4F1EA;   /* الخلفية الأساسية — عاجي دافئ */
-  --paper-2: #ECE8DD;   /* سطح بديل / بطاقات */
-  --paper-3: #E2DCCE;   /* أعمق قليلًا / تعبئة خفيفة */
+  /* ── الحقل الفاتح (بارد، مش ورق دافئ) ── */
+  --field:   #F3F5F7;
+  --field-2: #E9EDF1;
+  --field-3: #DBE2E9;
 
-  /* ── الحبر (النص والأسطح الداكنة) ── */
-  --ink:     #15140F;   /* نص أساسي — شبه أسود دافئ */
-  --ink-2:   #4A473F;   /* نص ثانوي */
-  --ink-3:   #726E63;   /* نص خافت / بيانات وصفية */
-  --slate:   #4C4D4D;   /* رمادي المونوجرام الرسمي */
+  /* ── الكحلي العميق (الأسطح المؤسِّسة) ── */
+  --navy:   #0A2A44;   /* أساسي داكن */
+  --navy-2: #071E33;   /* أعمق */
+  --navy-3: #04121F;   /* الأعمق (فوتر/قاع) */
 
-  /* السطح الداكن السينمائي (قسم المبادئ + الفوتر) */
-  --ink-surface:   #0F141A;  /* فحمي-كحلي عميق مستوحى من اللوجو */
-  --ink-surface-2: #0A0E13;  /* أعمق */
-  --on-dark:       #F4F1EA;  /* نص على الداكن */
-  --on-dark-2:     #A7ABA6;  /* نص ثانوي على الداكن */
-  --on-dark-3:     #6E7378;  /* خافت على الداكن */
+  /* ── حبر جرافيت بارد (نص على الفاتح) ── */
+  --ink:   #1B2127;
+  --ink-2: #454C55;
+  --ink-3: #6B7480;
+  --slate: #4C4D4D;    /* رمادي المونوجرام الرسمي */
 
-  /* ── الأزرق (لمسة التمييز — من اللوجو) ── */
-  --blue-700: #07548D;  /* غامق — روابط/نص على الورق */
-  --blue-600: #086FAC;  /* أساسي — خطوط/علامات */
-  --blue-500: #0886C5;  /* فاتح — على الداكن */
-  --blue-400: #2C9BD6;  /* أفتح — هايلايت على الداكن */
+  /* ── الأزرق السماوي (من القوس/التدرّج) ── */
+  --azure:        #0A63A8;  /* أساسي */
+  --azure-deep:   #084E86;  /* روابط/نص على الفاتح (تباين AA) */
+  --azure-bright: #0E86C5;  /* تمييز على الداكن */
+  --azure-glow:   #2C9BD6;  /* هايلايت على الداكن */
 
-  /* ── خطوط رفيعة معمارية ── */
-  --line:        color-mix(in srgb, var(--ink) 14%, transparent);
-  --line-strong: color-mix(in srgb, var(--ink) 26%, transparent);
-  --line-dark:   color-mix(in srgb, var(--on-dark) 16%, transparent);
+  /* ── نص على الكحلي ── */
+  --on-navy:   #E9EEF3;
+  --on-navy-2: #93A2B4;
+  --on-navy-3: #5B6A7B;
+
+  /* ── خطوط إنشائية (المحاور والشبكة) ── */
+  --line:      color-mix(in srgb, var(--ink) 12%, transparent);
+  --line-2:    color-mix(in srgb, var(--ink) 22%, transparent);
+  --line-navy: color-mix(in srgb, var(--on-navy) 14%, transparent);
+  --axis:      color-mix(in srgb, var(--azure) 30%, transparent);      /* خط المحور على الفاتح */
+  --axis-navy: color-mix(in srgb, var(--azure-bright) 34%, transparent);/* خط المحور على الداكن */
 
   /* ── الدلالات ── */
-  --bg: var(--paper);
+  --bg: var(--field);
   --fg: var(--ink);
-  --accent: var(--blue-600);
-  --accent-text: var(--blue-700);
-  --link: var(--blue-700);
+  --accent: var(--azure);
+  --accent-text: var(--azure-deep);
 
-  /* ── الطباعة ── */
-  --font-serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-sans:  'IBM Plex Sans Variable', system-ui, -apple-system, sans-serif;
-  --font-ar:    'Readex Pro Variable', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  /* ── الطباعة (معمارية دقيقة) ── */
+  --font-latin: 'Archivo Variable', system-ui, -apple-system, sans-serif;
+  --font-ar:    'Reem Kufi Variable', 'IBM Plex Sans Arabic', system-ui, sans-serif; /* عناوين عربية هندسية */
+  --font-ar-body: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-mono-meta: 'Archivo Variable', ui-monospace, monospace; /* أرقام/سجلّ */
 
-  /* مقاييس تحريرية — تباين حاد بين الكبير والصغير */
-  --fs-display: clamp(3rem, 8.5vw, 7.5rem);
-  --fs-h1:      clamp(2.5rem, 6vw, 5rem);
-  --fs-h2:      clamp(2rem, 4.5vw, 3.5rem);
-  --fs-h3:      clamp(1.375rem, 2.4vw, 2rem);
-  --fs-lead:    clamp(1.125rem, 1.6vw, 1.5rem);
+  --fs-display: clamp(2.75rem, 7vw, 6.5rem);
+  --fs-h1:      clamp(2.25rem, 5vw, 4.25rem);
+  --fs-h2:      clamp(1.75rem, 3.6vw, 3rem);
+  --fs-h3:      clamp(1.25rem, 2.1vw, 1.75rem);
+  --fs-lead:    clamp(1.0625rem, 1.5vw, 1.375rem);
   --fs-body:    1.0625rem;
   --fs-sm:      0.875rem;
-  --fs-label:   0.75rem;
+  --fs-meta:    0.75rem;
 
-  --lh-tight: 1.04;
-  --lh-snug:  1.18;
-  --lh-body:  1.62;
-  --lh-ar-tight: 1.2;
+  --lh-tight: 1.02;
+  --lh-snug:  1.14;
+  --lh-body:  1.6;
+  --lh-ar-tight: 1.22;
   --lh-ar-body:  1.85;
+  --track-meta: 0.22em;   /* سجلّ/لصائق لاتينية */
+  --track-tight: -0.02em;
 
-  --tracking-label: 0.16em;
+  /* ── الإيقاع المكاني + الشبكة ── */
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --measure-max: 84rem;
+  --measure-text: 40rem;
+  --axis-inset: clamp(1.25rem, 4vw, 4.5rem); /* موضع خط المحور = الهامش */
 
-  /* ── الإيقاع المكاني ── */
-  --gutter: clamp(1.25rem, 4vw, 4rem);
-  --measure-max: 82rem;    /* عرض المحتوى الأقصى */
-  --measure-text: 40rem;   /* عرض قراءة مريح */
+  --space-1: .5rem;  --space-2: 1rem;  --space-3: 1.5rem;
+  --space-4: 2.5rem; --space-5: 4rem;  --space-6: 6rem;
+  --space-7: 9rem;   --space-8: 12rem;
 
-  --space-1: 0.5rem;  --space-2: 1rem;   --space-3: 1.5rem;
-  --space-4: 2.5rem;  --space-5: 4rem;   --space-6: 6rem;
-  --space-7: 9rem;    --space-8: 12rem;
+  /* ── الحركة (دقيقة، محسوبة) ── */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-precise: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 220ms; --dur-2: 460ms; --dur-3: 760ms; --dur-4: 1200ms;
 
-  /* ── الحركة ── */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-1: 200ms; --dur-2: 420ms; --dur-3: 720ms; --dur-4: 1100ms;
-
-  /* توافق مع أسماء قديمة (منعًا لكسر مراجع متبقية) */
-  --surface: var(--paper);
-  --ink-muted: var(--ink-2);
-  --border: var(--line);
-  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px;
+  /* توافق أسماء قديمة */
+  --paper: var(--field); --ink-surface: var(--navy); --on-dark: var(--on-navy);
+  --line-strong: var(--line-2); --line-dark: var(--line-navy);
+  --blue-400: var(--azure-glow); --blue-600: var(--azure); --blue-700: var(--azure-deep);
+  --tracking-label: var(--track-meta); --radius-sm: 2px; --radius-md: 3px;
 }

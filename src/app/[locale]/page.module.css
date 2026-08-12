@@ -1,191 +1,124 @@
-/* ═══════════════════════════════════════════════════════════
-   الرئيسية — «حِبر ووَرَق»: سرد بصري تحريري معماري
-   ═══════════════════════════════════════════════════════════ */
+/* ═══ مجموعة العون — نظام «المِحور» (Axis & Arc) ═══ */
 
-/* ── مشهد ١: البيان الافتتاحي ── */
-.hero { position: relative; padding-block: clamp(3.5rem, 9vh, 7rem) clamp(4rem, 10vh, 8rem); }
-.heroGrid {
-  display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: end;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 900px) { .heroGrid { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); } }
+.sectionConstruct, .heroConstruct { inset-inline: var(--gutter); }
+.sectionInner, .aboutInner, .heroInner, .consultInner { position: relative; z-index: 1; }
 
-.heroLabel { display: block; margin-block-end: clamp(1.5rem, 4vh, 2.75rem); color: var(--blue-700); }
-.heroTitleWrap { margin-block-end: clamp(1.5rem, 4vh, 2.5rem); }
-.heroTitle {
-  font-size: var(--fs-display); line-height: var(--lh-tight);
-  letter-spacing: -0.02em; max-width: 15ch; text-wrap: balance;
-}
-:lang(ar) .heroTitle { line-height: 1.14; letter-spacing: 0; max-width: 16ch; font-weight: 600; }
+.head { display: flex; align-items: baseline; gap: 0.9rem; margin-block-end: clamp(1.75rem, 4vh, 2.75rem); }
+.sectionTitle { font-size: var(--fs-h2); line-height: var(--lh-snug); max-width: 20ch; }
+:lang(ar) .sectionTitle { line-height: 1.28; }
+.lead { font-size: var(--fs-lead); color: var(--ink-2); line-height: 1.65; max-width: 46ch; }
+:lang(ar) .lead { line-height: 1.9; }
+.note { margin-block-start: 1.25rem; font-size: var(--fs-sm); color: var(--ink-3); border-inline-start: 2px solid var(--line-2); padding-inline-start: 0.8rem; max-width: 44ch; }
+.flag { display: inline-block; margin-block-start: 1rem; font-size: var(--fs-sm); color: var(--azure-deep); border-inline-start: 2px solid var(--azure); padding-inline-start: 0.75rem; line-height: 1.5; }
 
-.heroLead {
-  font-size: var(--fs-lead); color: var(--ink-2); line-height: 1.55;
-  max-width: 42ch; margin-block-end: clamp(2rem, 5vh, 3rem);
-}
-:lang(ar) .heroLead { line-height: 1.8; max-width: 46ch; }
+/* ── ١ · الهيرو (كحلي معماري) ── */
+.hero { position: relative; overflow: hidden; background: var(--navy); color: var(--on-navy); padding-block: clamp(7rem, 15vh, 11rem) clamp(3rem, 7vh, 5rem); min-block-size: 90vh; display: flex; align-items: center; }
+.heroConstruct { inset-block: clamp(2rem,5vh,4rem) 0; }
+.heroArc { position: absolute; inset-inline-start: 50%; inset-block-start: 46%; transform: translate(-50%, -50%); inline-size: min(112vh, 150vw); color: var(--azure-bright); opacity: 0.32; z-index: 0; }
+:lang(ar) .heroArc { transform: translate(-50%, -50%) scaleX(-1); }
+.heroInner { width: 100%; }
+.heroTopline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block-end: clamp(2rem, 6vh, 3.5rem); }
+.heroReg { color: var(--azure-bright); font-size: var(--fs-meta); letter-spacing: 0.14em; }
+.heroTitle { font-size: var(--fs-display); line-height: var(--lh-tight); color: var(--on-navy); max-width: 17ch; letter-spacing: var(--track-tight); }
+:lang(ar) .heroTitle { line-height: 1.16; max-width: 18ch; letter-spacing: 0; }
+.heroFoot { display: grid; gap: clamp(1.5rem,4vw,3rem); margin-block-start: clamp(2rem, 5vh, 3.25rem); grid-template-columns: 1fr; align-items: end; }
+@media (min-width: 820px) { .heroFoot { grid-template-columns: 1.4fr 1fr; } }
+.heroLead { font-size: var(--fs-lead); color: var(--on-navy-2); line-height: 1.6; max-width: 44ch; }
+:lang(ar) .heroLead { line-height: 1.85; }
+.heroActions { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+.btnSolid { font-size: 1rem; color: #fff; background: var(--azure); padding-inline: 1.75rem; padding-block: 0.9rem; border-radius: 2px; transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
+.btnSolid:hover { background: var(--azure-bright); transform: translateY(-1px); }
+.btnGhost { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1rem; color: var(--on-navy); border-block-end: 1px solid var(--line-navy); padding-block-end: 0.35rem; }
+.chev { color: var(--azure-bright); font-size: 1.2em; transition: transform var(--dur-1) var(--ease); }
+.btnGhost:hover .chev { transform: translateX(3px); }
+:lang(ar) .btnGhost:hover .chev { transform: translateX(-3px); }
+.heroValues { display: flex; flex-wrap: wrap; gap: 0.75rem 2.25rem; margin-block-start: clamp(2.5rem, 6vh, 4rem); padding-block-start: 1.5rem; border-block-start: 1px solid var(--line-navy); }
+.heroValue { display: inline-flex; align-items: baseline; gap: 0.55rem; font-size: 0.9375rem; color: var(--on-navy-2); }
+.heroValue .regnum { color: var(--azure-bright); font-size: var(--fs-meta); }
 
-.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; }
-.btnPrimary {
-  font-size: 1rem; color: var(--paper); background: var(--ink);
-  padding-inline: 1.75rem; padding-block: 0.95rem; border-radius: 2px;
-  transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
-}
-.btnPrimary:hover { background: var(--blue-700); transform: translateY(-1px); }
-.btnQuiet { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1rem; color: var(--ink); }
-.btnQuiet .arrow { transition: transform var(--dur-1) var(--ease); color: var(--blue-600); }
-:lang(ar) .btnQuiet .arrow { transform: scaleX(-1); }
-.btnQuiet:hover .arrow { transform: translateX(4px); }
-:lang(ar) .btnQuiet:hover .arrow { transform: scaleX(-1) translateX(4px); }
-
-.heroAside { position: relative; display: flex; flex-direction: column; gap: 2rem; }
-.heroMotif {
-  position: absolute; inset-block-start: -40%; inset-inline-end: -10%;
-  inline-size: min(34rem, 60vw); color: var(--blue-600); opacity: 0.16;
-  pointer-events: none; z-index: 0;
-}
-@media (max-width: 899px) { .heroMotif { inset-block-start: auto; inset-block-end: 0; opacity: 0.1; } }
-
-.heroValues { position: relative; z-index: 1; border-block-start: 1px solid var(--line); }
-.heroValue {
-  display: flex; align-items: baseline; gap: 0.9rem;
-  padding-block: 0.9rem; border-block-end: 1px solid var(--line);
-  font-size: 1.0625rem; color: var(--ink);
-}
-.heroValueNum { font-size: 0.75rem; color: var(--blue-600); }
-
-/* ── أقسام عامة ── */
-.sectionMeta { display: flex; align-items: baseline; gap: 1rem; margin-block-end: clamp(1.5rem, 4vh, 2.5rem); }
-.sectionNum { font-size: 1rem; color: var(--blue-700); }
-.sectionNumDark { font-size: 1rem; color: var(--blue-400); }
-.labelDark { color: var(--on-dark-2); }
-.sectionHead { margin-block-end: clamp(2.5rem, 6vh, 4.5rem); }
-.flag {
-  display: inline-block; margin-block-start: 1rem; font-size: var(--fs-sm);
-  color: var(--blue-700); border-inline-start: 2px solid var(--blue-600);
-  padding-inline-start: 0.75rem; line-height: 1.5;
-}
-
-/* ── مشهد ٢: عن المكتب ── */
-.about { padding-block: clamp(4rem, 10vh, 8rem); border-block-start: 1px solid var(--line); }
+/* ── ٢ · عن المكتب (فاتح) ── */
+.about { position: relative; background: var(--field); padding-block: clamp(4.5rem, 11vh, 8rem); }
 .aboutGrid { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); grid-template-columns: 1fr; }
-@media (min-width: 900px) { .aboutGrid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr) minmax(0, 0.7fr); align-items: start; } }
+@media (min-width: 900px) { .aboutGrid { grid-template-columns: minmax(0,1.1fr) minmax(0,1.6fr) minmax(0,0.6fr); align-items: start; } }
+.aboutTitle { font-size: var(--fs-h1); line-height: var(--lh-snug); max-width: 14ch; }
+:lang(ar) .aboutTitle { line-height: 1.24; }
 .aboutBody { max-width: 48ch; }
-.aboutHeading { font-size: var(--fs-h2); line-height: var(--lh-snug); margin-block-end: clamp(1.5rem, 3vh, 2rem); }
-:lang(ar) .aboutHeading { line-height: 1.32; }
-.aboutText { font-size: var(--fs-lead); color: var(--ink-2); line-height: 1.7; }
-:lang(ar) .aboutText { line-height: 1.9; }
-.note { margin-block-start: 1.5rem; font-size: var(--fs-sm); color: var(--ink-3); border-inline-start: 2px solid var(--line-strong); padding-inline-start: 0.75rem; }
-.aboutYear { display: none; }
-@media (min-width: 900px) {
-  .aboutYear { display: block; justify-self: end; }
-  .aboutYear span { font-size: clamp(3rem, 5vw, 5rem); color: var(--paper-3); line-height: 1; font-weight: 300; }
-}
+.bigYear { display: none; }
+@media (min-width: 900px) { .bigYear { display: block; justify-self: end; } .bigYear span { font-size: clamp(3rem,5vw,5.5rem); color: var(--field-3); font-variation-settings: 'wght' 700, 'wdth' 120; line-height: 1; } }
 
-/* ── مشهد ٣: فهرس مجالات الممارسة ── */
-.practice { padding-block: clamp(4rem, 10vh, 8rem); background: var(--paper-2); }
-.practiceHeading { font-size: var(--fs-h2); line-height: var(--lh-snug); }
-:lang(ar) .practiceHeading { line-height: 1.3; }
+/* ── ٣ · مجالات الممارسة (سجلّ) ── */
+.practice { position: relative; background: var(--field-2); padding-block: clamp(4.5rem, 11vh, 8rem); }
+.register { margin-block-start: clamp(2rem,5vh,3rem); border-block-start: 1px solid var(--line-2); }
+.regRow { border-block-end: 1px solid var(--line); }
+.regLink { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.3rem 1.5rem; padding-block: clamp(1.2rem, 3vh, 1.9rem); transition: padding-inline var(--dur-2) var(--ease); }
+.regRowNum { font-size: 0.85rem; color: var(--ink-3); transition: color var(--dur-1) var(--ease); }
+.regName { font-size: clamp(1.4rem, 3vw, 2.35rem); color: var(--ink); line-height: 1.1; }
+:lang(en) .regName { font-variation-settings: 'wght' 620, 'wdth' 115; }
+.regDesc { grid-column: 2; font-size: var(--fs-sm); color: var(--ink-3); max-width: 46ch; opacity: 0; max-height: 0; overflow: hidden; transition: opacity var(--dur-2) var(--ease), max-height var(--dur-2) var(--ease); }
+.regChev { color: var(--azure); font-size: 1.3rem; opacity: 0; transform: translateX(-6px); transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
+:lang(ar) .regChev { transform: translateX(6px); }
+.regLink:hover { padding-inline: 0.6rem; }
+.regLink:hover .regName { color: var(--azure-deep); }
+.regLink:hover .regRowNum { color: var(--azure); }
+.regLink:hover .regDesc { opacity: 1; max-height: 5rem; margin-block-start: 0.35rem; }
+.regLink:hover .regChev { opacity: 1; transform: none; }
+@media (hover: none) { .regDesc { opacity: 1; max-height: 5rem; margin-block-start: 0.3rem; } .regChev { opacity: 1; transform: none; } }
 
-.index { border-block-start: 1px solid var(--line-strong); }
-.indexRow { border-block-end: 1px solid var(--line); }
-.indexLink {
-  display: grid; align-items: center; gap: 0.4rem 1.5rem;
-  grid-template-columns: auto 1fr auto; padding-block: clamp(1.25rem, 3vh, 2rem);
-  transition: padding-inline var(--dur-2) var(--ease);
-}
-.indexNum { font-size: 0.9rem; color: var(--ink-3); transition: color var(--dur-1) var(--ease); }
-.indexName {
-  font-size: clamp(1.5rem, 3.2vw, 2.5rem); color: var(--ink); line-height: 1.1;
-}
-:lang(en) .indexName { font-family: var(--font-serif); font-weight: 380; }
-:lang(ar) .indexName { font-weight: 600; }
-.indexDesc {
-  grid-column: 2; font-size: var(--fs-sm); color: var(--ink-3);
-  max-width: 46ch; opacity: 0; max-height: 0; overflow: hidden;
-  transition: opacity var(--dur-2) var(--ease), max-height var(--dur-2) var(--ease);
-}
-.indexArrow { color: var(--blue-600); font-size: 1.25rem; opacity: 0; transform: translateX(-6px); transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
-:lang(ar) .indexArrow { transform: scaleX(-1) translateX(-6px); }
-.indexLink:hover .indexName { color: var(--blue-700); }
-.indexLink:hover .indexNum { color: var(--blue-600); }
-.indexLink:hover .indexDesc { opacity: 1; max-height: 6rem; margin-block-start: 0.4rem; }
-.indexLink:hover .indexArrow { opacity: 1; transform: none; }
-.indexLink:hover { padding-inline: 0.75rem; }
-@media (hover: none) {
-  .indexDesc { opacity: 1; max-height: 6rem; margin-block-start: 0.35rem; }
-  .indexArrow { opacity: 1; transform: none; }
-}
-
-/* ── مشهد ٤: المبادئ (داكن سينمائي) ── */
-.principles {
-  position: relative; overflow: hidden;
-  background: var(--ink-surface); color: var(--on-dark);
-  padding-block: clamp(5rem, 12vh, 9rem);
-}
-.principlesMotif {
-  position: absolute; inset-block-start: 50%; inset-inline-start: -8%;
-  transform: translateY(-50%); inline-size: min(40rem, 70vw);
-  color: var(--on-dark); opacity: 0.05; pointer-events: none;
-}
-.principlesHeading { font-size: var(--fs-h1); color: var(--on-dark); line-height: var(--lh-snug); margin-block-end: clamp(2.5rem, 6vh, 4.5rem); max-width: 18ch; }
-:lang(ar) .principlesHeading { line-height: 1.3; }
-.manifesto { position: relative; z-index: 1; display: grid; gap: 0; }
-.principle {
-  display: grid; gap: 0.5rem 1.5rem; align-items: baseline;
-  grid-template-columns: auto 1fr; padding-block: clamp(1.5rem, 4vh, 2.5rem);
-  border-block-start: 1px solid var(--line-dark);
-}
-@media (min-width: 760px) { .principle { grid-template-columns: auto minmax(0, 12rem) minmax(0, 1fr); } }
-.principleNum { font-size: 0.9rem; color: var(--blue-400); }
-.principleTitle { font-size: clamp(1.5rem, 3vw, 2.25rem); color: var(--on-dark); line-height: 1.1; }
-:lang(en) .principleTitle { font-family: var(--font-serif); font-weight: 380; }
-:lang(ar) .principleTitle { font-weight: 600; }
-.principleBody { font-size: 1.0625rem; color: var(--on-dark-2); line-height: 1.6; max-width: 44ch; }
+/* ── ٤ · المبادئ (كحلي) ── */
+.principles { position: relative; overflow: hidden; background: var(--navy-2); color: var(--on-navy); padding-block: clamp(5rem, 12vh, 9rem); }
+.principlesArc { position: absolute; inset-inline-end: -12%; inset-block-start: 50%; transform: translateY(-50%); inline-size: min(46rem, 60vw); color: var(--azure-bright); opacity: 0.08; z-index: 0; }
+:lang(ar) .principlesArc { inset-inline-end: auto; inset-inline-start: -12%; transform: translateY(-50%) scaleX(-1); }
+.principlesTitle { font-size: var(--fs-h1); color: var(--on-navy); line-height: var(--lh-snug); max-width: 16ch; margin-block-end: clamp(2.5rem,6vh,4rem); }
+:lang(ar) .principlesTitle { line-height: 1.24; }
+.principleGrid { display: grid; gap: 1px; background: var(--line-navy); border: 1px solid var(--line-navy); grid-template-columns: 1fr; }
+@media (min-width: 720px) { .principleGrid { grid-template-columns: 1fr 1fr; } }
+.principle { position: relative; z-index: 1; background: var(--navy-2); padding: clamp(1.75rem, 4vw, 2.75rem); }
+.principleNum { font-size: var(--fs-meta); color: var(--azure-bright); }
+.principleTitle { margin-block: 0.75rem 0.6rem; font-size: clamp(1.35rem, 2.4vw, 1.9rem); color: var(--on-navy); }
+.principleBody { font-size: 1rem; color: var(--on-navy-2); line-height: 1.6; max-width: 40ch; }
 :lang(ar) .principleBody { line-height: 1.85; }
 
-/* ── مشهد ٥: رؤى قانونية (مجلة) ── */
-.insights { padding-block: clamp(4rem, 10vh, 8rem); }
-.insightsHeading { font-size: var(--fs-h2); line-height: var(--lh-snug); }
-:lang(ar) .insightsHeading { line-height: 1.3; }
-.journal { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: 1fr; }
-@media (min-width: 860px) { .journal { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); } }
-.featured {
-  border: 1px solid var(--line-strong); border-radius: 3px;
-  padding: clamp(2rem, 5vw, 3.5rem); min-block-size: 20rem;
-  display: flex; flex-direction: column; justify-content: space-between; gap: 3rem;
-  background: var(--paper-2);
-}
-.featuredMeta { display: flex; align-items: center; gap: 0.75rem; }
-.dot { color: var(--ink-3); }
-.metaDim, .featuredEmpty { color: var(--ink-3); }
-.featuredEmpty { font-size: var(--fs-lead); }
-.journalList { align-self: stretch; }
-.journalRow {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 1rem;
-  padding-block: 1.25rem; border-block-start: 1px solid var(--line);
-}
-.journalRow:last-child { border-block-end: 1px solid var(--line); }
-.journalNum { font-size: 0.85rem; color: var(--ink-3); }
-.journalDim { color: var(--ink-3); }
-.journalMeta { color: var(--ink-3); font-size: var(--fs-sm); }
+/* ── ٥ · الفريق (فاتح — بنية جاهزة) ── */
+.people { position: relative; background: var(--field); padding-block: clamp(4.5rem, 11vh, 8rem); }
+.peopleGrid { display: grid; gap: clamp(2rem,5vw,4rem); grid-template-columns: 1fr; align-items: center; }
+@media (min-width: 900px) { .peopleGrid { grid-template-columns: minmax(0,1fr) minmax(0,1.15fr); } }
+.peopleLede { max-width: 42ch; }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(0.75rem, 2vw, 1.25rem); }
+.slot { position: relative; aspect-ratio: 3/4; border: 1px solid var(--line-2); background: var(--field-2); display: flex; align-items: flex-end; justify-content: flex-start; }
+.slotCross { position: absolute; inset-block-start: 50%; inset-inline-start: 50%; inline-size: 16px; block-size: 16px; transform: translate(-50%,-50%); }
+.slotCross::before, .slotCross::after { content: ''; position: absolute; background: var(--line-2); }
+.slotCross::before { inset-inline-start: 50%; inset-block: 0; inline-size: 1px; transform: translateX(-50%); }
+.slotCross::after { inset-block-start: 50%; inset-inline: 0; block-size: 1px; transform: translateY(-50%); }
+.slotNum { position: absolute; inset-block-end: 0.6rem; inset-inline-start: 0.7rem; font-size: var(--fs-meta); color: var(--ink-3); }
 
-/* ── مشهد ٦: الاستشارة (الخاتمة) ── */
-.consult {
-  padding-block: clamp(5rem, 12vh, 9rem);
-  border-block-start: 1px solid var(--line);
-  text-align: center;
-}
+/* ── ٦ · رؤى قانونية (فاتح) ── */
+.insights { position: relative; background: var(--field-2); padding-block: clamp(4.5rem, 11vh, 8rem); }
+.journal { display: grid; gap: clamp(1.5rem,4vw,3rem); grid-template-columns: 1fr; margin-block-start: clamp(2rem,5vh,3rem); }
+@media (min-width: 860px) { .journal { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); } }
+.feature { position: relative; border: 1px solid var(--line-2); background: var(--field); padding: clamp(2rem,5vw,3.5rem); min-block-size: 19rem; display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem; }
+.featureMeta { display: flex; align-items: center; gap: 0.75rem; }
+.featureEmpty { font-size: var(--fs-lead); color: var(--ink-3); }
+.featureCross { position: absolute; inset-block-start: 1rem; inset-inline-end: 1rem; inline-size: 12px; block-size: 12px; }
+.featureCross::before, .featureCross::after { content: ''; position: absolute; background: var(--axis); }
+.featureCross::before { inset-inline-start: 50%; inset-block: 0; inline-size: 1px; transform: translateX(-50%); }
+.featureCross::after { inset-block-start: 50%; inset-inline: 0; block-size: 1px; transform: translateY(-50%); }
+.dim { color: var(--ink-3); }
+.jList { align-self: stretch; }
+.jRow { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 1rem; padding-block: 1.15rem; border-block-start: 1px solid var(--line); }
+.jRow:last-child { border-block-end: 1px solid var(--line); }
+.jNum { font-size: 0.8rem; color: var(--ink-3); }
+.jMeta { color: var(--ink-3); font-size: var(--fs-sm); }
+
+/* ── ٧ · الاستشارة (كحلي — خاتمة) ── */
+.consult { position: relative; overflow: hidden; background: var(--navy); color: var(--on-navy); padding-block: clamp(5.5rem, 13vh, 9rem); text-align: center; }
+.consultArc { position: absolute; inset-inline-start: 50%; inset-block-start: 50%; transform: translate(-50%,-50%); inline-size: min(64vh, 90vw); color: var(--azure-bright); opacity: 0.14; z-index: 0; }
 .consultInner { display: flex; flex-direction: column; align-items: center; max-width: 44rem; }
-.consultMark { margin-block-end: 2rem; opacity: 0.9; }
-.consultHeading { font-size: var(--fs-h1); line-height: var(--lh-snug); max-width: 18ch; }
-:lang(ar) .consultHeading { line-height: 1.3; }
-.consultBody { margin-block-start: 1.25rem; font-size: var(--fs-lead); color: var(--ink-2); max-width: 40ch; }
-:lang(ar) .consultBody { line-height: 1.8; }
-.consultBtn {
-  margin-block-start: 2.25rem; font-size: 1.0625rem; color: var(--paper); background: var(--ink);
-  padding-inline: 2rem; padding-block: 1rem; border-radius: 2px;
-  transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
-}
-.consultBtn:hover { background: var(--blue-700); transform: translateY(-1px); }
-.consultNote { margin-block-start: 2rem; font-size: var(--fs-sm); color: var(--ink-3); max-width: 42ch; line-height: 1.6; }
+.consultMark { margin-block-end: 1.75rem; opacity: 0.95; }
+.consultTitle { font-size: var(--fs-h1); color: var(--on-navy); line-height: var(--lh-snug); max-width: 18ch; }
+:lang(ar) .consultTitle { line-height: 1.26; }
+.consultBody { margin-block-start: 1.25rem; font-size: var(--fs-lead); color: var(--on-navy-2); max-width: 40ch; }
+:lang(ar) .consultBody { line-height: 1.85; }
+.consultBtn { margin-block-start: 2.25rem; font-size: 1.0625rem; color: var(--navy); background: var(--on-navy); padding-inline: 2rem; padding-block: 1rem; border-radius: 2px; transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
+.consultBtn:hover { background: var(--azure-bright); color: #fff; transform: translateY(-1px); }
+.consultNote { margin-block-start: 2rem; font-size: var(--fs-sm); color: var(--on-navy-3); max-width: 42ch; line-height: 1.6; }
 :lang(ar) .consultNote { line-height: 1.8; }

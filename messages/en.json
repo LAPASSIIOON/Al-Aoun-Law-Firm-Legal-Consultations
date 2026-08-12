@@ -25,7 +25,12 @@
     "subhead": "We guide individuals, companies and investors in Kuwait and beyond with precise counsel and full confidentiality — making the path clear, and carrying its weight with you.",
     "ctaPrimary": "Request a Consultation",
     "ctaSecondary": "About the Firm",
-    "valuesStrip": ["Transparency", "Confidentiality & Security", "Credibility", "Professionalism"]
+    "valuesStrip": [
+      "Transparency",
+      "Confidentiality & Security",
+      "Credibility",
+      "Professionalism"
+    ]
   },
   "trust": {
     "eyebrow": "Who we are",
@@ -37,11 +42,29 @@
     "eyebrow": "Why Al Aoun",
     "heading": "What sets our work apart",
     "items": [
-      { "title": "Transparency", "body": "Clarity on the path, expectations and fees — no surprises." },
-      { "title": "Confidentiality & Security", "body": "Your information protected at every stage, over secured channels." },
-      { "title": "Credibility", "body": "We honour what we commit to, and advise honestly even when it's inconvenient." },
-      { "title": "Professionalism", "body": "Disciplined standards in every detail, from first contact to closing the matter." }
+      {
+        "title": "Transparency",
+        "body": "Clarity on the path, expectations and fees — no surprises."
+      },
+      {
+        "title": "Confidentiality & Security",
+        "body": "Your information protected at every stage, over secured channels."
+      },
+      {
+        "title": "Credibility",
+        "body": "We honour what we commit to, and advise honestly even when it's inconvenient."
+      },
+      {
+        "title": "Professionalism",
+        "body": "Disciplined standards in every detail, from first contact to closing the matter."
+      }
     ]
+  },
+  "people": {
+    "eyebrow": "The Team",
+    "heading": "Advocates & Counsel",
+    "body": "A firm’s lawyers are its core trust mechanism. Verified profiles, credentials and areas of focus for our advocates and counsel will be presented here.",
+    "flag": "[CONTENT REQUIRED — verified lawyer names & credentials]"
   },
   "intake": {
     "eyebrow": "How it starts",
@@ -98,5 +121,8 @@
     "disclaimer": "This site's content is for general informational purposes and does not constitute legal advice.",
     "rights": "All rights reserved"
   },
-  "langSwitch": { "label": "العربية", "code": "AR" }
+  "langSwitch": {
+    "label": "العربية",
+    "code": "AR"
+  }
 }

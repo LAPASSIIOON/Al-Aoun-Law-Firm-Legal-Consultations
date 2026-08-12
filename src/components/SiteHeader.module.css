@@ -1,41 +1,17 @@
-.header {
-  position: sticky; inset-block-start: 0; z-index: 60;
-  background: var(--paper);
-  border-block-end: 1px solid var(--line);
-}
+.header { position: sticky; inset-block-start: 0; z-index: 60; background: var(--navy); border-block-end: 1px solid var(--line-navy); }
 .bar { display: flex; align-items: center; justify-content: space-between; block-size: 4.5rem; gap: var(--space-3); }
-
 .brand { display: inline-flex; align-items: center; }
-.brand :global(img) { block-size: auto; max-block-size: 46px; inline-size: auto; }
-
+.brand :global(img) { block-size: auto; max-block-size: 44px; inline-size: auto; }
 .nav { display: none; align-items: center; gap: clamp(1rem, 2.4vw, 2.25rem); }
 @media (min-width: 900px) { .nav { display: flex; } }
-
-.navLink {
-  position: relative; font-size: 0.9375rem; color: var(--ink-2); padding-block: 0.4rem;
-  transition: color var(--dur-1) var(--ease);
-}
-.navLink::after {
-  content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 1px;
-  background: var(--blue-600); transform: scaleX(0); transform-origin: inline-end;
-  transition: transform var(--dur-2) var(--ease);
-}
-.navLink:hover { color: var(--ink); }
+.navLink { position: relative; font-size: 0.9375rem; color: var(--on-navy-2); padding-block: 0.4rem; transition: color var(--dur-1) var(--ease); }
+.navLink::after { content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 1px; background: var(--azure-bright); transform: scaleX(0); transform-origin: inline-end; transition: transform var(--dur-2) var(--ease); }
+.navLink:hover { color: var(--on-navy); }
 .navLink:hover::after { transform: scaleX(1); transform-origin: inline-start; }
-
 .actions { display: none; align-items: center; gap: 1rem; }
 @media (min-width: 900px) { .actions { display: flex; } }
-
-.lang {
-  font-size: 0.8125rem; letter-spacing: var(--tracking-label); color: var(--ink-3);
-  padding: 0.35rem 0.1rem; transition: color var(--dur-1) var(--ease);
-}
+.lang { font-size: 0.8125rem; letter-spacing: var(--track-meta); color: var(--on-navy-3); padding: 0.35rem 0.1rem; transition: color var(--dur-1) var(--ease); }
 :lang(ar) .lang { letter-spacing: 0; font-size: 0.9rem; }
-.lang:hover { color: var(--blue-700); }
-
-.cta {
-  font-size: 0.9375rem; color: var(--paper); background: var(--ink);
-  padding-inline: 1.25rem; padding-block: 0.6rem; border-radius: 2px;
-  transition: background var(--dur-1) var(--ease);
-}
-.cta:hover { background: var(--blue-700); }
+.lang:hover { color: var(--azure-bright); }
+.cta { font-size: 0.9375rem; color: #fff; background: var(--azure); padding-inline: 1.25rem; padding-block: 0.6rem; border-radius: 2px; transition: background var(--dur-1) var(--ease); }
+.cta:hover { background: var(--azure-bright); }

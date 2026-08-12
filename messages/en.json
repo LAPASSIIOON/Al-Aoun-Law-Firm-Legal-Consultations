@@ -36,7 +36,7 @@
     "eyebrow": "Who we are",
     "heading": "Established expertise since 2000",
     "body": "Al Aoun was founded in Kuwait in 2000 and provides a broad range of legal services to individuals, companies, business owners and investors — both locally and internationally. Our work rests on steady principles: transparency, confidentiality and security, credibility, professionalism, integrity, commitment and excellence.",
-    "note": "[CONTENT REQUIRED — Further detail on the firm's history, scope and approach, subject to firm approval.]"
+    "note": "Further detail on the firm’s history and scope will follow."
   },
   "differentiators": {
     "eyebrow": "Why Al Aoun",
@@ -64,7 +64,9 @@
     "eyebrow": "The Team",
     "heading": "Advocates & Counsel",
     "body": "A firm’s lawyers are its core trust mechanism. Verified profiles, credentials and areas of focus for our advocates and counsel will be presented here.",
-    "flag": "[CONTENT REQUIRED — verified lawyer names & credentials]"
+    "flag": "Advocate and counsel profiles will appear here once their details and credentials are verified.",
+    "note": "Advocate and counsel profiles will appear here once their details and credentials are verified.",
+    "forthcoming": "Profile forthcoming"
   },
   "intake": {
     "eyebrow": "How it starts",
@@ -80,40 +82,46 @@
     "eyebrow": "Practice Areas",
     "heading": "Our legal services",
     "subhead": "The approved practice-area list has not been delivered yet; the cards below show the display structure only.",
-    "flag": "[CONTENT REQUIRED — Approved practice-area list]",
+    "flag": "The practice index is being prepared and will be published upon approval.",
     "placeholderTitle": "Practice Area",
     "placeholderBody": "A brief description of the practice area and the services within it.",
-    "cta": "Explore area"
+    "cta": "Explore area",
+    "note": "The practice index is being prepared and will be published upon approval.",
+    "forthcoming": "Forthcoming",
+    "indexLabel": "Full index"
   },
   "insights": {
     "eyebrow": "Insights",
     "heading": "Articles & updates",
     "subhead": "A space for the firm's articles and legal updates — later managed through an editorial dashboard.",
-    "flag": "[CONTENT REQUIRED — No legal content is published before approval and legal sign-off]",
-    "empty": "No posts yet."
+    "flag": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
+    "empty": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
+    "note": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
+    "forthcoming": "First edition forthcoming"
   },
   "consultCta": {
     "heading": "Ready for a clear first step?",
     "body": "Request a consultation and we'll route you to the right path.",
     "cta": "Request a Consultation",
-    "disclaimer": "Submitting a request does not create an attorney-client relationship and does not itself constitute legal advice. [Final wording subject to the firm's legal representative — CLIENT APPROVAL REQUIRED]"
+    "disclaimer": "Submitting a request does not create an attorney–client relationship, nor does it in itself constitute legal advice.",
+    "eyebrow": "Consultation"
   },
   "practiceAreaPage": {
     "eyebrow": "Practice Area",
-    "title": "[Practice area name — CONTENT REQUIRED]",
-    "intro": "[Practice area overview — CONTENT REQUIRED. This page is a template for the practice-area structure, not final content.]",
+    "title": "Practice Area",
+    "intro": "This page shows the structure of a practice-area entry. Content will be completed once the firm’s index is approved.",
     "overviewHeading": "Overview",
     "servicesHeading": "Services in this area",
-    "servicesFlag": "[CONTENT REQUIRED — Services list]",
+    "servicesFlag": "The services within this area will be published upon approval.",
     "whoHeading": "Who it serves",
-    "whoFlag": "[CONTENT REQUIRED]",
+    "whoFlag": "Details of who this area serves will be added shortly.",
     "ctaHeading": "Need a consultation in this area?",
     "cta": "Request a Consultation"
   },
   "footer": {
     "tagline": "Legal support you can stand on — since 2000.",
     "contactHeading": "Contact",
-    "contactFlag": "[CONTENT REQUIRED — Phone, WhatsApp, email, address, working hours]",
+    "contactFlag": "Full contact details will be added shortly.",
     "linksHeading": "Links",
     "legalHeading": "Legal",
     "privacy": "Privacy Policy",

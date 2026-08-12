@@ -4,6 +4,15 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation.js';
 import styles from './Chrome.module.css';
 
+function Cross({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 18 18" width="12" height="12" aria-hidden="true" focusable="false">
+      <circle cx="9" cy="9" r="7" fill="none" stroke="currentColor" strokeWidth="1.1" />
+      <path d="M9 1V17M1 9H17" stroke="currentColor" strokeWidth="1.1" />
+    </svg>
+  );
+}
+
 const SECTIONS = ['identity', 'history', 'philosophy', 'expertise', 'people', 'knowledge', 'action'];
 const AR = ['٠١','٠٢','٠٣','٠٤','٠٥','٠٦','٠٧'];
 const EN = ['01','02','03','04','05','06','07'];
@@ -48,6 +57,7 @@ export function Chrome() {
         <nav className={styles.index} aria-label={t('sections.identity')}>
           {SECTIONS.map((id, i) => (
             <Link key={id} href={`/#${id}`} className={`${styles.idx} ${active === id ? styles.idxOn : ''}`}>
+              <Cross className={styles.idxCross} />
               <span className={`regnum ${styles.idxNum}`}>{N[i]}</span>
               <span className={styles.idxLabel}>{t(`sections.${id}`)}</span>
             </Link>

@@ -14,8 +14,9 @@
   .idx { position: relative; display: flex; align-items: center; justify-content: center; block-size: 1.9rem; }
   .idxNum { font-size: 0.7rem; color: var(--on-ink-3); transition: color var(--dur-1) var(--ease); }
   .idxOn .idxNum { color: var(--blue-bright); }
-  .idx::before { content: ''; position: absolute; inset-inline-start: 0; inset-block: 50% auto; inline-size: 0; block-size: 1px; background: var(--blue-bright); transition: inline-size var(--dur-2) var(--ease); }
-  .idxOn::before { inline-size: 10px; }
+  /* علامة العون (crosshair) تظهر مع القسم النشط */
+  .idxCross { position: absolute; inset-inline-start: 2px; color: var(--blue-bright); opacity: 0; transform: scale(0.6) rotate(-45deg); transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
+  .idxOn .idxCross { opacity: 1; transform: scale(1) rotate(0deg); }
   /* تسمية القسم تنزلق عند المرور */
   .idxLabel {
     position: absolute; inset-inline-start: calc(100% + 1px); white-space: nowrap;

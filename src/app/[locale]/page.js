@@ -5,6 +5,16 @@ import styles from './page.module.css';
 const AR_NUM = ['٠١','٠٢','٠٣','٠٤','٠٥','٠٦','٠٧'];
 const EN_NUM = ['01','02','03','04','05','06','07'];
 
+/** علامة العون: دائرة + محور متقاطع — مشتقة من هندسة اللوجو (لا نسخة منه) */
+function Cross({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 18 18" width="14" height="14" aria-hidden="true" focusable="false">
+      <circle cx="9" cy="9" r="7" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.85" />
+      <path d="M9 0.5V17.5M0.5 9H17.5" stroke="currentColor" strokeWidth="1" opacity="0.85" />
+    </svg>
+  );
+}
+
 export default async function HomePage({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -21,24 +31,28 @@ export default async function HomePage({ params }) {
   const tPeople = await getTranslations('people');
   const tInsights = await getTranslations('insights');
   const tConsult = await getTranslations('consultCta');
-
   const values = tPhil.raw('items');
 
   return (
     <>
-      {/* ═══ الافتتاح — النُصب ═══ */}
+      {/* ═══ الافتتاح — حجر الأساس ═══ */}
       <section id="opening" className={styles.opening}>
         <div className={styles.openLight} aria-hidden="true" />
         <div className={`container ${styles.openInner}`}>
-          <div className={styles.openReg} data-reveal>
+          {/* الترويسة */}
+          <div className={styles.masthead} data-reveal>
             <span className={styles.openWord}>{tBrand('fullName')}</span>
-            <span className="reg" style={{ color: 'var(--on-ink-2)' }}>{tInst('est')} · {tInst('kuwait')}</span>
+            <Cross className={styles.mastheadMark} />
+            <span className={`reg ${styles.mastheadMeta}`}>{tInst('est')} · {tInst('kuwait')}</span>
           </div>
+          <span className={styles.mastheadRule} data-wipe aria-hidden="true" />
 
+          {/* السطر المُعرِّف */}
           <h1 className={styles.openLine} data-rise><span>{tHero('headline')}</span></h1>
 
-          <div className={styles.monument}>
-            <span className={styles.rule} data-wipe aria-hidden="true" />
+          {/* حجر الأساس: 2000 على خط ممتد */}
+          <div className={styles.cornerstone}>
+            <span className={styles.baseRule} data-wipe aria-hidden="true" />
             <div className={styles.monRow}>
               <span className={`reg ${styles.monEst}`}>{tInst('est')}</span>
               <span className={`monnum ${styles.monYear}`} data-reveal style={{ '--reveal-delay': '150ms' }}>2000</span>
@@ -62,7 +76,7 @@ export default async function HomePage({ params }) {
         </div>
       </section>
 
-      {/* ═══ ٠٢ التأسيس — 2000 ═══ */}
+      {/* ═══ ٠٢ التأسيس ═══ */}
       <section id="history" className={styles.history}>
         <div className={styles.openLight} aria-hidden="true" />
         <div className={`container ${styles.block}`}>
@@ -81,7 +95,7 @@ export default async function HomePage({ params }) {
         </div>
       </section>
 
-      {/* ═══ ٠٣ المبادئ — بيان القيم السبع ═══ */}
+      {/* ═══ ٠٣ المبادئ — البيان ═══ */}
       <section id="philosophy" className={styles.philosophy}>
         <div className={`container ${styles.block}`}>
           <SectionHead n={N[2]} label={tPhil('eyebrow')} />
@@ -91,8 +105,8 @@ export default async function HomePage({ params }) {
           </div>
           <ol className={styles.manifesto}>
             {values.map((v, i) => (
-              <li key={v} className={styles.value} data-reveal style={{ '--reveal-delay': `${i * 60}ms` }}>
-                <span className={`regnum ${styles.valNum}`}>{ar ? AR_NUM[i] || `0${i+1}` : `0${i+1}`}</span>
+              <li key={v} className={styles.value} data-reveal style={{ '--reveal-delay': `${i * 55}ms` }}>
+                <span className={`regnum ${styles.valNum}`}>{`0${i + 1}`}</span>
                 <span className={styles.valName}>{v}</span>
               </li>
             ))}
@@ -100,21 +114,22 @@ export default async function HomePage({ params }) {
         </div>
       </section>
 
-      {/* ═══ ٠٤ مجالات الممارسة — فهرس ═══ */}
+      {/* ═══ ٠٤ مجالات الممارسة — دليل قيد الإعداد ═══ */}
       <section id="expertise" className={styles.expertise}>
         <div className={`container ${styles.block}`}>
           <SectionHead n={N[3]} label={tPractice('eyebrow')} />
-          <h2 className={styles.blockTitle} data-reveal>{tPractice('heading')}</h2>
-          <p className={styles.flag} data-reveal>{tPractice('flag')}</p>
-          <ul className={styles.register}>
-            {[0,1,2,3,4,5].map((i) => (
-              <li key={i} className={styles.regRow} data-reveal style={{ '--reveal-delay': `${i * 50}ms` }}>
-                <Link href="/practice-areas/placeholder" className={styles.regLink}>
-                  <span className={`regnum ${styles.regNum}`}>{N[i]}</span>
-                  <span className={styles.regName}>{tPractice('placeholderTitle')}</span>
-                  <span className={styles.regDesc}>{tPractice('placeholderBody')}</span>
-                  <span className={styles.regArrow} aria-hidden="true">{ar ? '‹' : '›'}</span>
-                </Link>
+          <div className={styles.expGrid}>
+            <h2 className={styles.blockTitle} data-reveal>{tPractice('heading')}</h2>
+            <div className={styles.expBody}>
+              <p className={styles.lead} data-reveal style={{ '--reveal-delay': '100ms' }}>{tPractice('note')}</p>
+            </div>
+          </div>
+          <ul className={styles.indexList} aria-hidden="true">
+            {[0,1,2,3].map((i) => (
+              <li key={i} className={styles.indexLine} data-reveal style={{ '--reveal-delay': `${i * 60}ms` }}>
+                <span className={`regnum ${styles.indexNum}`}>{N[i]}</span>
+                <span className={styles.indexTrack} />
+                <span className={`reg ${styles.indexTag}`}>{tPractice('forthcoming')}</span>
               </li>
             ))}
           </ul>
@@ -129,12 +144,13 @@ export default async function HomePage({ params }) {
             <div className={styles.peopleLede}>
               <h2 className={styles.peopleTitle} data-reveal>{tPeople('heading')}</h2>
               <p className={styles.peopleBody} data-reveal style={{ '--reveal-delay': '120ms' }}>{tPeople('body')}</p>
-              <p className={styles.flagDark} data-reveal style={{ '--reveal-delay': '200ms' }}>{tPeople('flag')}</p>
+              <p className={styles.peopleNote} data-reveal style={{ '--reveal-delay': '200ms' }}>{tPeople('note')}</p>
             </div>
             <ul className={styles.portraits} data-reveal style={{ '--reveal-delay': '150ms' }}>
               {[0,1,2].map((i) => (
                 <li key={i} className={styles.portrait}>
-                  <span className={`regnum ${styles.portraitNum}`}>{N[i]}</span>
+                  <span className={styles.portraitFrame} aria-hidden="true"><Cross className={styles.portraitMark} /></span>
+                  <span className={`reg ${styles.portraitCap}`}>{tPeople('forthcoming')}</span>
                 </li>
               ))}
             </ul>
@@ -142,29 +158,29 @@ export default async function HomePage({ params }) {
         </div>
       </section>
 
-      {/* ═══ ٠٦ رؤى قانونية ═══ */}
+      {/* ═══ ٠٦ رؤى قانونية — منشور قادم ═══ */}
       <section id="knowledge" className={styles.knowledge}>
         <div className={`container ${styles.block}`}>
           <SectionHead n={N[5]} label={tInsights('eyebrow')} />
-          <h2 className={styles.blockTitle} data-reveal>{tInsights('heading')}</h2>
-          <p className={styles.flag} data-reveal>{tInsights('flag')}</p>
-          <div className={styles.knowGrid}>
-            {[0,1,2].map((i) => (
-              <article key={i} className={styles.entry} data-reveal style={{ '--reveal-delay': `${i * 70}ms` }}>
-                <span className={`regnum ${styles.entryNum}`}>{N[i]}</span>
-                <p className={styles.entryEmpty}>{tInsights('empty')}</p>
-                <span className={`reg ${styles.entryMeta}`}>{tInsights('eyebrow')}</span>
-              </article>
-            ))}
+          <div className={styles.expGrid}>
+            <h2 className={styles.blockTitle} data-reveal>{tInsights('heading')}</h2>
+            <div className={styles.expBody}>
+              <p className={styles.lead} data-reveal style={{ '--reveal-delay': '100ms' }}>{tInsights('note')}</p>
+            </div>
+          </div>
+          <div className={styles.journal} data-reveal style={{ '--reveal-delay': '140ms' }}>
+            <span className={`reg ${styles.journalVol}`}>{ar ? 'المجلد ٠١' : 'VOL. 01'}</span>
+            <span className={styles.journalRule} />
+            <span className={`reg ${styles.journalTag}`}>{tInsights('forthcoming')}</span>
           </div>
         </div>
       </section>
 
-      {/* ═══ ٠٧ استشارة — الفعل ═══ */}
+      {/* ═══ ٠٧ استشارة ═══ */}
       <section id="action" className={styles.action}>
         <div className={styles.openLight} aria-hidden="true" />
         <div className={`container ${styles.actionInner}`}>
-          <span className={`reg ${styles.actionReg}`}>{N[6]} · {tConsult('eyebrow') || tInst('wordmark')}</span>
+          <span className={`reg ${styles.actionReg}`}>{N[6]} · {tConsult('eyebrow')}</span>
           <h2 className={styles.actionTitle} data-rise><span>{tConsult('heading')}</span></h2>
           <p className={styles.actionBody} data-reveal style={{ '--reveal-delay': '140ms' }}>{tConsult('body')}</p>
           <Link href="/#contact" className={styles.actionBtn} data-reveal style={{ '--reveal-delay': '220ms' }}>{tConsult('cta')}</Link>
@@ -173,14 +189,14 @@ export default async function HomePage({ params }) {
       </section>
     </>
   );
-}
 
-function SectionHead({ n, label, dark }) {
-  return (
-    <div className={`${styles.head} ${dark ? styles.headDark : ''}`} data-reveal>
-      <span className={`regnum ${styles.headNum}`}>{n}</span>
-      <span className={styles.headRule} data-wipe />
-      <span className="reg">{label}</span>
-    </div>
-  );
+  function SectionHead({ n, label, dark }) {
+    return (
+      <div className={`${styles.head} ${dark ? styles.headDark : ''}`} data-reveal>
+        <span className={`regnum ${styles.headNum}`}>{n}</span>
+        <span className={styles.headRule} data-wipe />
+        <span className="reg">{label}</span>
+      </div>
+    );
+  }
 }

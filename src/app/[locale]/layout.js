@@ -6,9 +6,12 @@ import '@fontsource-variable/ibm-plex-sans';
 import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
 import '@fontsource/ibm-plex-sans-arabic/700.css';
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/readex-pro';
 import '../globals.css';
 import { SiteHeader } from '@/components/SiteHeader.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
+import RevealController from '@/components/RevealController.js';
 
 /** @type {Record<'ar'|'en', 'rtl'|'ltr'>} */
 const DIR_BY_LOCALE = { ar: 'rtl', en: 'ltr' };
@@ -65,6 +68,7 @@ export default async function LocaleLayout({ children, params }) {
           <SiteHeader />
           <main id="main">{children}</main>
           <SiteFooter />
+          <RevealController />
         </NextIntlClientProvider>
       </body>
     </html>

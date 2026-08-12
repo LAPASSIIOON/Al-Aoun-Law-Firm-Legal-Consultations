@@ -10,33 +10,39 @@ export async function SiteFooter() {
 
   return (
     <footer className={styles.footer}>
-      <div className={`container ${styles.top}`}>
-        <div className={styles.brandCol}>
-          <span className={styles.brandRow}>
-            <AlAounLogo height={56} variant="white" />
-          </span>
-          <p className={styles.tagline}>{t('tagline')}</p>
+      <div className="container">
+        <div className={styles.top}>
+          <div className={styles.brandCol}>
+            <AlAounLogo height={52} variant="white" />
+            <p className={styles.tagline}>{t('tagline')}</p>
+          </div>
+
+          <nav className={styles.col} aria-label={t('linksHeading')}>
+            <p className={styles.colHeading}>{t('linksHeading')}</p>
+            <Link href="/#about" className={styles.link}>{tNav('about')}</Link>
+            <Link href="/practice-areas/placeholder" className={styles.link}>{tNav('practiceAreas')}</Link>
+            <Link href="/#insights" className={styles.link}>{tNav('insights')}</Link>
+            <Link href="/#consult" className={styles.link}>{tNav('consult')}</Link>
+          </nav>
+
+          <div className={styles.col}>
+            <p className={styles.colHeading}>{t('contactHeading')}</p>
+            <p className={styles.flag}>{t('contactFlag')}</p>
+          </div>
+
+          <div className={styles.col}>
+            <p className={styles.colHeading}>{t('legalHeading')}</p>
+            <Link href="/#" className={styles.link}>{t('privacy')}</Link>
+            <Link href="/#" className={styles.link}>{t('terms')}</Link>
+          </div>
         </div>
 
-        <div>
-          <p className={styles.colHeading}>{t('linksHeading')}</p>
-          <ul className={styles.linkList}>
-            <li><Link href="/#about" className={styles.footLink}>{tNav('about')}</Link></li>
-            <li><Link href="/practice-areas/placeholder" className={styles.footLink}>{tNav('practiceAreas')}</Link></li>
-            <li><Link href="/#insights" className={styles.footLink}>{tNav('insights')}</Link></li>
-            <li><Link href="/#consult" className={styles.footLink}>{tNav('consult')}</Link></li>
-          </ul>
+        <div className={styles.bottom}>
+          <p className={styles.disclaimer}>{t('disclaimer')}</p>
+          <p className={styles.rights}>
+            {"\u00A9"} {new Date().getFullYear()} {tBrand('fullName')} {"\u2014"} {t('rights')}
+          </p>
         </div>
-
-        <div>
-          <p className={styles.colHeading}>{t('contactHeading')}</p>
-          <p className={styles.flag}>{t('contactFlag')}</p>
-        </div>
-      </div>
-
-      <div className={`container ${styles.bottom}`}>
-        <span className={styles.disclaimer}>{t('disclaimer')}</span>
-        <span>{"\u00A9"} {new Date().getFullYear()} {tBrand('fullName')} {"\u2014"} {t('rights')}</span>
       </div>
     </footer>
   );

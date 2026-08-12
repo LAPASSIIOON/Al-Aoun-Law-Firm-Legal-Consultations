@@ -1,172 +1,170 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { AlAounMark } from '@/components/AlAounMark.js';
-import { Arc } from '@/components/Arc.js';
+import { ArchLines } from '@/components/ArchLines.js';
 import styles from './page.module.css';
 
-const ARABIC_NUM = ['١', '٢', '٣'];
+const AR_NUM = ['٠١', '٠٢', '٠٣', '٠٤', '٠٥', '٠٦'];
+const EN_NUM = ['01', '02', '03', '04', '05', '06'];
 
 export default async function HomePage() {
+  const locale = await getLocale();
+  const N = locale === 'ar' ? AR_NUM : EN_NUM;
   const tHero = await getTranslations('hero');
   const tTrust = await getTranslations('trust');
   const tDiff = await getTranslations('differentiators');
-  const tIntake = await getTranslations('intake');
   const tPractice = await getTranslations('practiceAreas');
+  const tInsights = await getTranslations('insights');
   const tConsult = await getTranslations('consultCta');
 
   const values = tHero.raw('valuesStrip');
   const diffItems = tDiff.raw('items');
+  const practiceRows = [0, 1, 2, 3, 4, 5];
 
   return (
     <>
-      {/* ══ HERO — الطباعة هي البطل، والقوس عنصر بنيوي يحمل العنوان ══ */}
+      {/* ═══ مشهد ١ — البيان الافتتاحي ═══ */}
       <section className={styles.hero}>
-        <div className="container">
-          <div className={`${styles.heroInner} ${styles.reveal}`}>
-            <span className={styles.eyebrow}>
-              <span className={styles.eyebrowDot} aria-hidden="true" />
-              {tHero('eyebrow')}
-            </span>
-            <h1 className={styles.headline}>{tHero('headline')}</h1>
-            <div className={styles.heroArcWrap} aria-hidden="true">
-              <Arc tone="accent" className={styles.heroArc} />
-              <AlAounMark size={72} title="" className={styles.heroArcMark} />
+        <div className={`container ${styles.heroGrid}`}>
+          <div className={styles.heroMain}>
+            <span className={`label ${styles.heroLabel}`} data-reveal>{tHero('eyebrow')}</span>
+            <div className={styles.heroTitleWrap} data-line-reveal>
+              <h1 className={styles.heroTitle}>{tHero('headline')}</h1>
             </div>
-            <p className={styles.subhead}>{tHero('subhead')}</p>
-            <div className={styles.ctaRow}>
-              <Link href="/#consult" className={styles.ctaPrimary}>
-                {tHero('ctaPrimary')}
-              </Link>
-              <Link href="/#about" className={styles.ctaSecondary}>
+            <p className={styles.heroLead} data-reveal style={{ '--reveal-delay': '160ms' }}>
+              {tHero('subhead')}
+            </p>
+            <div className={styles.heroActions} data-reveal style={{ '--reveal-delay': '260ms' }}>
+              <Link href="/#consult" className={styles.btnPrimary}>{tHero('ctaPrimary')}</Link>
+              <Link href="/#about" className={styles.btnQuiet}>
                 {tHero('ctaSecondary')}
+                <span className={styles.arrow} aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
-          <ul className={styles.values} aria-label="القيم">
-            {values.map((v) => (
-              <li key={v} className={styles.valueItem}>
-                <Arc tone="accent" className={styles.valueMark} />
-                {v}
+
+          <aside className={styles.heroAside} aria-hidden="true">
+            <ArchLines className={styles.heroMotif} />
+            <ul className={styles.heroValues}>
+              {values.map((v, i) => (
+                <li key={v} className={styles.heroValue} data-reveal style={{ '--reveal-delay': `${320 + i * 70}ms` }}>
+                  <span className={`index-num ${styles.heroValueNum}`}>{N[i]}</span>
+                  <span>{v}</span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      {/* ═══ مشهد ٢ — السلطة / عن المكتب ═══ */}
+      <section id="about" className={styles.about}>
+        <div className={`container ${styles.aboutGrid}`}>
+          <div className={styles.sectionMeta} data-reveal>
+            <span className={`index-num ${styles.sectionNum}`}>{N[0]}</span>
+            <span className="label">{tTrust('eyebrow')}</span>
+          </div>
+          <div className={styles.aboutBody}>
+            <h2 className={styles.aboutHeading} data-reveal>{tTrust('heading')}</h2>
+            <p className={styles.aboutText} data-reveal style={{ '--reveal-delay': '120ms' }}>{tTrust('body')}</p>
+            <p className={styles.note} data-reveal style={{ '--reveal-delay': '200ms' }}>{tTrust('note')}</p>
+          </div>
+          <div className={styles.aboutYear} aria-hidden="true"><span className="index-num">2000</span></div>
+        </div>
+      </section>
+
+      {/* ═══ مشهد ٣ — فهرس مجالات الممارسة ═══ */}
+      <section id="practice" className={styles.practice}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <div className={styles.sectionMeta} data-reveal>
+              <span className={`index-num ${styles.sectionNum}`}>{N[1]}</span>
+              <span className="label">{tPractice('eyebrow')}</span>
+            </div>
+            <h2 className={styles.practiceHeading} data-reveal>{tPractice('heading')}</h2>
+            <p className={styles.flag} data-reveal>{tPractice('flag')}</p>
+          </div>
+
+          <ul className={styles.index}>
+            {practiceRows.map((i) => (
+              <li key={i} className={styles.indexRow} data-reveal style={{ '--reveal-delay': `${i * 60}ms` }}>
+                <Link href="/practice-areas/placeholder" className={styles.indexLink}>
+                  <span className={`index-num ${styles.indexNum}`}>{N[i]}</span>
+                  <span className={styles.indexName}>{tPractice('placeholderTitle')}</span>
+                  <span className={styles.indexDesc}>{tPractice('placeholderBody')}</span>
+                  <span className={styles.indexArrow} aria-hidden="true">→</span>
+                </Link>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* ══ ABOUT / TRUST ══ */}
-      <section id="about" className={styles.section}>
+      {/* ═══ مشهد ٤ — المبادئ (لحظة داكنة سينمائية) ═══ */}
+      <section className={styles.principles}>
+        <ArchLines className={styles.principlesMotif} />
         <div className="container">
-          <div className={styles.sectionHead}>
-            <span className={styles.sEyebrow}>{tTrust('eyebrow')}</span>
-            <h2 className={styles.sHeading}>{tTrust('heading')}</h2>
-            <p className={styles.sBody}>{tTrust('body')}</p>
-            <span className={styles.flag}>{tTrust('note')}</span>
+          <div className={styles.sectionMeta} data-reveal>
+            <span className={`index-num ${styles.sectionNumDark}`}>{N[2]}</span>
+            <span className={`label ${styles.labelDark}`}>{tDiff('eyebrow')}</span>
           </div>
+          <h2 className={styles.principlesHeading} data-reveal>{tDiff('heading')}</h2>
+          <ul className={styles.manifesto}>
+            {diffItems.map((it, i) => (
+              <li key={it.title} className={styles.principle} data-reveal style={{ '--reveal-delay': `${i * 90}ms` }}>
+                <span className={`index-num ${styles.principleNum}`}>{N[i]}</span>
+                <h3 className={styles.principleTitle}>{it.title}</h3>
+                <p className={styles.principleBody}>{it.body}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ══ DIFFERENTIATORS ══ */}
-      <section className={`${styles.section} ${styles.sectionAlt}`}>
+      {/* ═══ مشهد ٥ — رؤى قانونية (تحرير كمجلة) ═══ */}
+      <section id="insights" className={styles.insights}>
         <div className="container">
           <div className={styles.sectionHead}>
-            <span className={styles.sEyebrow}>{tDiff('eyebrow')}</span>
-            <h2 className={styles.sHeading}>{tDiff('heading')}</h2>
+            <div className={styles.sectionMeta} data-reveal>
+              <span className={`index-num ${styles.sectionNum}`}>{N[3]}</span>
+              <span className="label">{tInsights('eyebrow')}</span>
+            </div>
+            <h2 className={styles.insightsHeading} data-reveal>{tInsights('heading')}</h2>
+            <p className={styles.flag} data-reveal>{tInsights('flag')}</p>
           </div>
-          <div className={styles.diffGrid}>
-            {diffItems.map((item, i) => (
-              <div key={item.title} className={styles.diffCard}>
-                <span className={styles.diffNum}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 className={styles.diffTitle}>{item.title}</h3>
-                <p className={styles.diffBody}>{item.body}</p>
+
+          <div className={styles.journal}>
+            <article className={styles.featured} data-reveal>
+              <div className={styles.featuredMeta}>
+                <span className="label">{tInsights('eyebrow')}</span>
+                <span className={styles.dot}>·</span>
+                <span className={styles.metaDim}>—</span>
               </div>
-            ))}
+              <p className={styles.featuredEmpty}>{tInsights('empty')}</p>
+            </article>
+            <ul className={styles.journalList}>
+              {[0, 1, 2].map((i) => (
+                <li key={i} className={styles.journalRow} data-reveal style={{ '--reveal-delay': `${i * 70}ms` }}>
+                  <span className={`index-num ${styles.journalNum}`}>{N[i]}</span>
+                  <span className={styles.journalDim}>{tInsights('empty')}</span>
+                  <span className={styles.journalMeta}>—</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* ══ INTAKE ══ */}
-      <section id="consult-flow" className={styles.section}>
-        <div className="container">
-          <div className={styles.sectionHead}>
-            <span className={styles.sEyebrow}>{tIntake('eyebrow')}</span>
-            <h2 className={styles.sHeading}>{tIntake('heading')}</h2>
-          </div>
-          <div className={styles.steps}>
-            {[1, 2, 3].map((n) => (
-              <div key={n} className={styles.step}>
-                <span className={styles.stepNum}>{ARABIC_NUM[n - 1]}</span>
-                <p className={styles.stepTitle}>{tIntake(`step${n}Title`)}</p>
-                <p className={styles.stepBody}>{tIntake(`step${n}Body`)}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ PRACTICE AREAS ══ */}
-      <section id="practice" className={`${styles.section} ${styles.sectionAlt}`}>
-        <div className="container">
-          <div className={styles.sectionHead}>
-            <span className={styles.sEyebrow}>{tPractice('eyebrow')}</span>
-            <h2 className={styles.sHeading}>{tPractice('heading')}</h2>
-            <p className={styles.sBody}>{tPractice('subhead')}</p>
-            <span className={styles.flag}>{tPractice('flag')}</span>
-          </div>
-          <div className={styles.practiceGrid}>
-            {[0, 1, 2].map((i) => (
-              <Link
-                key={i}
-                href="/practice-areas/placeholder"
-                className={styles.practiceCard}
-              >
-                <AlAounMark size={44} title="" className={styles.practiceIcon} />
-                <span className={styles.practiceTitle}>
-                  {tPractice('placeholderTitle')}
-                </span>
-                <span className={styles.practiceBody}>
-                  {tPractice('placeholderBody')}
-                </span>
-                <span className={styles.practiceCta}>
-                  {tPractice('cta')} →
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ INSIGHTS ══ */}
-      <section id="insights" className={styles.section}>
-        <div className="container">
-          <div className={styles.sectionHead}>
-            <span className={styles.sEyebrow}>
-              {(await getTranslations('insights'))('eyebrow')}
-            </span>
-            <h2 className={styles.sHeading}>
-              {(await getTranslations('insights'))('heading')}
-            </h2>
-            <p className={styles.sBody}>
-              {(await getTranslations('insights'))('subhead')}
-            </p>
-            <span className={styles.flag}>
-              {(await getTranslations('insights'))('flag')}
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* ══ CONSULT CTA ══ */}
+      {/* ═══ مشهد ٦ — الاستشارة (الخاتمة) ═══ */}
       <section id="consult" className={styles.consult}>
-        <Arc tone="accent" className={styles.consultArc} />
         <div className={`container ${styles.consultInner}`}>
-          <h2 className={styles.consultHeading}>{tConsult('heading')}</h2>
-          <p className={styles.consultBody}>{tConsult('body')}</p>
-          <Link href="/#contact" className={styles.consultBtn}>
+          <AlAounMark size={44} variant="navy" title="" className={styles.consultMark} />
+          <h2 className={styles.consultHeading} data-reveal>{tConsult('heading')}</h2>
+          <p className={styles.consultBody} data-reveal style={{ '--reveal-delay': '120ms' }}>{tConsult('body')}</p>
+          <Link href="/#contact" className={styles.consultBtn} data-reveal style={{ '--reveal-delay': '200ms' }}>
             {tConsult('cta')}
           </Link>
-          <p className={styles.consultDisclaimer}>{tConsult('disclaimer')}</p>
+          <p className={styles.consultNote} data-reveal style={{ '--reveal-delay': '280ms' }}>{tConsult('disclaimer')}</p>
         </div>
       </section>
     </>

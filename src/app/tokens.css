@@ -1,121 +1,86 @@
 /**
- * توكِنز هوية مجموعة العون — اتجاه «الزمرّد الفخم» (Luxe Emerald)
- * خلفية داكنة درامية (زمرّد/تيل غامق) + تمييز نحاسي دافي + نيوترال دافي.
- * فخم · مودرن · بريميوم · متفرّد — بعيد عن الكحلي التقليدي.
- *
- * اللوجو يُستخدم بنسخته البيضاء على الأسطح الداكنة.
+ * مجموعة العون — نظام «حِبر ووَرَق» (Ink & Paper)
+ * اتجاه تحريري معماري: ورق دافئ، حبر شبه أسود، ولمسة زرقاء واحدة
+ * مأخوذة من اللوجو الرسمي. لا ذهبي، لا زخرفة، فراغ سخي، طباعة كبيرة.
  */
 
 :root {
-  /* ── الزمرّد/التيل — اللون الأساسي (خلفيات داكنة) ── */
-  --emerald-950: #061A16;  /* أعمق خلفية */
-  --emerald-900: #08201C;  /* الخلفية الرئيسية */
-  --emerald-800: #0C2C26;  /* أسطح مرفوعة */
-  --emerald-700: #103A32;  /* بطاقات / حدود داكنة */
-  --emerald-600: #16493F;
-  --emerald-500: #1E5E51;  /* حدود واضحة */
-  --emerald-400: #2E7D6C;
-  --emerald-300: #5AA695;  /* نص ثانوي على الداكن */
-  --emerald-200: #9AC7BC;  /* نص خافت على الداكن */
-  --emerald-100: #C8E2DB;
+  /* ── الورق (الخلفيات الفاتحة) ── */
+  --paper:   #F4F1EA;   /* الخلفية الأساسية — عاجي دافئ */
+  --paper-2: #ECE8DD;   /* سطح بديل / بطاقات */
+  --paper-3: #E2DCCE;   /* أعمق قليلًا / تعبئة خفيفة */
 
-  /* ── النحاسي/الكوبر — لون التمييز (CTA, خطوط, تفاصيل) ── */
-  --copper-700: #9A5A28;
-  --copper-600: #B87333;   /* التمييز الأساسي */
-  --copper-500: #CD8A4A;
-  --copper-400: #D89860;   /* أفتح — نص تمييز على الداكن */
-  --copper-300: #E4B183;   /* هايلايت */
-  --copper-gradient: linear-gradient(100deg, #B87333 0%, #E4B183 50%, #A0632C 100%);
+  /* ── الحبر (النص والأسطح الداكنة) ── */
+  --ink:     #15140F;   /* نص أساسي — شبه أسود دافئ */
+  --ink-2:   #4A473F;   /* نص ثانوي */
+  --ink-3:   #726E63;   /* نص خافت / بيانات وصفية */
+  --slate:   #4C4D4D;   /* رمادي المونوجرام الرسمي */
 
-  /* ── النيوترال الدافي (نص وخلفيات فاتحة نادرة) ── */
-  --sand-50: #F6F3EC;      /* أبيض دافي — للأقسام الفاتحة النادرة */
-  --sand-100: #EDE8DC;
-  --sand-200: #D8D0C0;
-  --parchment: #F4F0E8;    /* نص العناوين على الداكن */
-  --ink-warm: #1A1712;     /* نص داكن على الأسطح الفاتحة */
+  /* السطح الداكن السينمائي (قسم المبادئ + الفوتر) */
+  --ink-surface:   #0F141A;  /* فحمي-كحلي عميق مستوحى من اللوجو */
+  --ink-surface-2: #0A0E13;  /* أعمق */
+  --on-dark:       #F4F1EA;  /* نص على الداكن */
+  --on-dark-2:     #A7ABA6;  /* نص ثانوي على الداكن */
+  --on-dark-3:     #6E7378;  /* خافت على الداكن */
 
-  /* ── دلالات الاستخدام ── */
-  --surface: var(--emerald-900);        /* الخلفية الافتراضية داكنة */
-  --surface-raised: var(--emerald-800);
-  --surface-card: var(--emerald-800);
-  --surface-light: var(--sand-50);      /* قسم فاتح نادر للتباين */
+  /* ── الأزرق (لمسة التمييز — من اللوجو) ── */
+  --blue-700: #07548D;  /* غامق — روابط/نص على الورق */
+  --blue-600: #086FAC;  /* أساسي — خطوط/علامات */
+  --blue-500: #0886C5;  /* فاتح — على الداكن */
+  --blue-400: #2C9BD6;  /* أفتح — هايلايت على الداكن */
 
-  --ink: var(--parchment);              /* النص الأساسي فاتح */
-  --ink-strong: #FFFFFF;
-  --ink-muted: var(--emerald-200);      /* نص ثانوي */
-  --ink-faint: var(--emerald-300);
-  --ink-on-light: var(--ink-warm);      /* نص على الأسطح الفاتحة */
-  --ink-muted-on-light: #5A5347;
+  /* ── خطوط رفيعة معمارية ── */
+  --line:        color-mix(in srgb, var(--ink) 14%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 26%, transparent);
+  --line-dark:   color-mix(in srgb, var(--on-dark) 16%, transparent);
 
-  --border: var(--emerald-700);
-  --border-strong: var(--emerald-500);
-  --border-on-light: var(--sand-200);
-
-  --accent: var(--copper-600);
-  --accent-text: var(--copper-400);     /* تمييز نصّي على الداكن */
-  --accent-text-on-light: var(--copper-700);
-  --link: var(--copper-400);
+  /* ── الدلالات ── */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --accent: var(--blue-600);
+  --accent-text: var(--blue-700);
+  --link: var(--blue-700);
 
   /* ── الطباعة ── */
-  --font-latin: 'IBM Plex Sans Variable', system-ui, sans-serif;
-  --font-arabic: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  --font-serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans:  'IBM Plex Sans Variable', system-ui, -apple-system, sans-serif;
+  --font-ar:    'Readex Pro Variable', 'IBM Plex Sans Arabic', system-ui, sans-serif;
 
-  --step-body: 1rem;
-  --step-body-ar: 1.0625rem;
-  --step-lg: 1.25rem;
-  --step-lg-ar: 1.3375rem;
-  --step-xl: 1.75rem;
-  --step-xl-ar: 1.875rem;
-  --step-2xl: 2.75rem;
-  --step-2xl-ar: 2.9375rem;
-  --step-3xl: 3.75rem;
-  --step-3xl-ar: 4rem;
+  /* مقاييس تحريرية — تباين حاد بين الكبير والصغير */
+  --fs-display: clamp(3rem, 8.5vw, 7.5rem);
+  --fs-h1:      clamp(2.5rem, 6vw, 5rem);
+  --fs-h2:      clamp(2rem, 4.5vw, 3.5rem);
+  --fs-h3:      clamp(1.375rem, 2.4vw, 2rem);
+  --fs-lead:    clamp(1.125rem, 1.6vw, 1.5rem);
+  --fs-body:    1.0625rem;
+  --fs-sm:      0.875rem;
+  --fs-label:   0.75rem;
 
-  --radius-sm: 4px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --lh-tight: 1.04;
+  --lh-snug:  1.18;
+  --lh-body:  1.62;
+  --lh-ar-tight: 1.2;
+  --lh-ar-body:  1.85;
 
-  --space-1: 0.5rem;
-  --space-2: 1rem;
-  --space-3: 1.5rem;
-  --space-4: 2.5rem;
-  --space-5: 4rem;
-  --space-6: 6.5rem;
+  --tracking-label: 0.16em;
 
-  --container-max: 76rem;
-  --container-wide: 82rem;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
+  /* ── الإيقاع المكاني ── */
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --measure-max: 82rem;    /* عرض المحتوى الأقصى */
+  --measure-text: 40rem;   /* عرض قراءة مريح */
 
-  /* ظلال دافئة عميقة تناسب الأسطح الداكنة */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
-  --shadow-glow: 0 0 40px rgba(184, 115, 51, 0.12);
+  --space-1: 0.5rem;  --space-2: 1rem;   --space-3: 1.5rem;
+  --space-4: 2.5rem;  --space-5: 4rem;   --space-6: 6rem;
+  --space-7: 9rem;    --space-8: 12rem;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 160ms;
-  --dur-med: 320ms;
-  --dur-slow: 680ms;
+  /* ── الحركة ── */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 200ms; --dur-2: 420ms; --dur-3: 720ms; --dur-4: 1100ms;
 
-  /* أسماء متوافقة مع الكود القديم (لتفادي كسر المراجع) */
-  --color-primary-900: var(--emerald-900);
-  --color-primary-950: var(--emerald-950);
-  --color-primary-800: var(--emerald-800);
-  --color-primary-700: var(--emerald-700);
-  --color-primary-200: var(--emerald-200);
-  --color-primary-100: var(--emerald-100);
-  --color-primary-300: var(--emerald-300);
-  --color-primary-50: var(--emerald-800);
-  --color-accent-600: var(--copper-600);
-  --color-accent-700: var(--copper-700);
-  --color-accent-500: var(--copper-500);
-  --color-neutral-200: var(--emerald-700);
-  --color-neutral-600: var(--emerald-200);
-  --color-neutral-500: var(--emerald-500);
-  --ink-surface: var(--emerald-900);
-  --ink-surface-2: var(--emerald-950);
-  --surface: var(--emerald-900);
-  --brand-gradient: var(--copper-gradient);
-  --link-accent: var(--copper-400);
-  --border-input: var(--emerald-500);
+  /* توافق مع أسماء قديمة (منعًا لكسر مراجع متبقية) */
+  --surface: var(--paper);
+  --ink-muted: var(--ink-2);
+  --border: var(--line);
+  --radius-sm: 2px; --radius-md: 4px; --radius-lg: 8px;
 }

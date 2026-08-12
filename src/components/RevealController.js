@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 export default function RevealController() {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const nodes = document.querySelectorAll('[data-reveal], [data-line-reveal]');
+    const nodes = document.querySelectorAll('[data-reveal], [data-rise], [data-wipe], [data-draw], [data-line]');
     if (reduce) { nodes.forEach((n) => n.classList.add('in')); return; }
 
     const io = new IntersectionObserver(

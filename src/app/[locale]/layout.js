@@ -7,9 +7,11 @@ import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
 import '@fontsource/ibm-plex-sans-arabic/700.css';
 import '@fontsource-variable/archivo';
-import '@fontsource-variable/reem-kufi';
+import '@fontsource-variable/newsreader';
+import '@fontsource/amiri/400.css';
+import '@fontsource/amiri/700.css';
 import '../globals.css';
-import { SiteHeader } from '@/components/SiteHeader.js';
+import { Chrome } from '@/components/Chrome.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import RevealController from '@/components/RevealController.js';
 
@@ -66,8 +68,8 @@ export default async function LocaleLayout({ children, params }) {
     <html lang={locale} dir={DIR_BY_LOCALE[locale]}>
       <body>
         <NextIntlClientProvider locale={locale}>
-          <SiteHeader />
-          <main id="main">{children}</main>
+          <Chrome />
+          <main id="main" className="main">{children}</main>
           <SiteFooter />
           <RevealController />
         </NextIntlClientProvider>

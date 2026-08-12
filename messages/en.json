@@ -124,5 +124,39 @@
   "langSwitch": {
     "label": "العربية",
     "code": "AR"
+  },
+  "philosophy": {
+    "eyebrow": "Philosophy",
+    "heading": "How we practise",
+    "lead": "Seven commitments that govern every engagement — not slogans, but standards of work.",
+    "items": [
+      "Transparency",
+      "Confidentiality & Security",
+      "Credibility",
+      "Professionalism",
+      "Integrity",
+      "Commitment",
+      "Excellence"
+    ]
+  },
+  "history": {
+    "eyebrow": "Est. 2000",
+    "heading": "A quarter-century of practice",
+    "body": "Founded in Kuwait in 2000, Al Aoun has practised law ever since — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
+  },
+  "institution": {
+    "est": "Est. 2000",
+    "kuwait": "Kuwait",
+    "wordmark": "Al Aoun"
+  },
+  "sections": {
+    "opening": "Opening",
+    "identity": "Identity",
+    "history": "Est. 2000",
+    "philosophy": "Philosophy",
+    "expertise": "Practice",
+    "people": "People",
+    "knowledge": "Insights",
+    "action": "Consult"
   }
 }

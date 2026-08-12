@@ -1,90 +1,79 @@
 /**
- * مجموعة العون — نظام «المِحور» (Axis & Arc)
- * لغة مشتقّة من اللوجو: دائرة الاحتواء + المحور الصليبي (الدقة) +
- * القوس (العون) + جرافيت وسماوي بارد. معماري، دقيق، مؤسسي.
+ * مجموعة العون — نظام «السِّجل · EST. 2000»
+ * مؤسسة قانونية: حبر جرافيتي عميق + حجر بارد + أزرق العون.
+ * الهوية = العمود المؤسسي الدائم + نُصب «2000» + بيان القيم + الطباعة ثنائية اللغة القيادية.
  */
 :root {
-  /* ── الحقل الفاتح (بارد، مش ورق دافئ) ── */
-  --field:   #F3F5F7;
-  --field-2: #E9EDF1;
-  --field-3: #DBE2E9;
+  /* ── الحبر (جرافيت عميق — من رمادي المونوجرام) ── */
+  --ink-0: #101214;   /* الأعمق */
+  --ink:   #17191C;   /* أساسي داكن */
+  --ink-2: #1F2226;
+  --ink-3: #5C6066;   /* نص ثانوي على الحجر */
 
-  /* ── الكحلي العميق (الأسطح المؤسِّسة) ── */
-  --navy:   #0A2A44;   /* أساسي داكن */
-  --navy-2: #071E33;   /* أعمق */
-  --navy-3: #04121F;   /* الأعمق (فوتر/قاع) */
+  /* ── الحجر (أبيض معماري بارد — ليس ورقًا دافئًا) ── */
+  --bone:   #E9EAE9;
+  --bone-2: #E0E1E0;
+  --bone-3: #D4D6D5;
+  --bone-hi: #F1F2F1;
 
-  /* ── حبر جرافيت بارد (نص على الفاتح) ── */
-  --ink:   #1B2127;
-  --ink-2: #454C55;
-  --ink-3: #6B7480;
-  --slate: #4C4D4D;    /* رمادي المونوجرام الرسمي */
+  /* ── نص على الحبر ── */
+  --on-ink:   #E7E7E3;
+  --on-ink-2: #9A9D9A;
+  --on-ink-3: #63666A;
 
-  /* ── الأزرق السماوي (من القوس/التدرّج) ── */
-  --azure:        #0A63A8;  /* أساسي */
-  --azure-deep:   #084E86;  /* روابط/نص على الفاتح (تباين AA) */
-  --azure-bright: #0E86C5;  /* تمييز على الداكن */
-  --azure-glow:   #2C9BD6;  /* هايلايت على الداكن */
+  /* ── أزرق العون (اللوجو) — لكنة بنيوية دقيقة ── */
+  --blue:        #0060A8;
+  --blue-deep:   #004C86;  /* روابط على الحجر (AA) */
+  --blue-bright: #1683CE;  /* على الحبر */
+  --slate: #4C4D4D;
 
-  /* ── نص على الكحلي ── */
-  --on-navy:   #E9EEF3;
-  --on-navy-2: #93A2B4;
-  --on-navy-3: #5B6A7B;
-
-  /* ── خطوط إنشائية (المحاور والشبكة) ── */
-  --line:      color-mix(in srgb, var(--ink) 12%, transparent);
-  --line-2:    color-mix(in srgb, var(--ink) 22%, transparent);
-  --line-navy: color-mix(in srgb, var(--on-navy) 14%, transparent);
-  --axis:      color-mix(in srgb, var(--azure) 30%, transparent);      /* خط المحور على الفاتح */
-  --axis-navy: color-mix(in srgb, var(--azure-bright) 34%, transparent);/* خط المحور على الداكن */
+  /* ── خطوط ── */
+  --line:      color-mix(in srgb, var(--ink) 15%, transparent);
+  --line-2:    color-mix(in srgb, var(--ink) 26%, transparent);
+  --line-ink:  color-mix(in srgb, var(--on-ink) 15%, transparent);
+  --line-ink-2:color-mix(in srgb, var(--on-ink) 26%, transparent);
 
   /* ── الدلالات ── */
-  --bg: var(--field);
-  --fg: var(--ink);
-  --accent: var(--azure);
-  --accent-text: var(--azure-deep);
+  --bg: var(--bone); --fg: var(--ink); --accent: var(--blue); --accent-text: var(--blue-deep);
 
-  /* ── الطباعة (معمارية دقيقة) ── */
-  --font-latin: 'Archivo Variable', system-ui, -apple-system, sans-serif;
-  --font-ar:    'Reem Kufi Variable', 'IBM Plex Sans Arabic', system-ui, sans-serif; /* عناوين عربية هندسية */
-  --font-ar-body: 'IBM Plex Sans Arabic', system-ui, sans-serif;
-  --font-mono-meta: 'Archivo Variable', ui-monospace, monospace; /* أرقام/سجلّ */
+  /* ── الطباعة (قيادية ثنائية اللغة) ── */
+  --font-serif: 'Newsreader Variable', 'Times New Roman', serif;   /* عرض إنجليزي تحريري */
+  --font-sans:  'Archivo Variable', system-ui, sans-serif;         /* واجهة/نص إنجليزي */
+  --font-naskh: 'Amiri', 'Times New Roman', serif;                 /* عرض عربي أصيل */
+  --font-ar:    'IBM Plex Sans Arabic', system-ui, sans-serif;     /* نص عربي */
 
-  --fs-display: clamp(2.75rem, 7vw, 6.5rem);
-  --fs-h1:      clamp(2.25rem, 5vw, 4.25rem);
-  --fs-h2:      clamp(1.75rem, 3.6vw, 3rem);
-  --fs-h3:      clamp(1.25rem, 2.1vw, 1.75rem);
-  --fs-lead:    clamp(1.0625rem, 1.5vw, 1.375rem);
-  --fs-body:    1.0625rem;
-  --fs-sm:      0.875rem;
-  --fs-meta:    0.75rem;
+  --fs-monument: clamp(5rem, 17vw, 16rem);   /* نُصب «2000» */
+  --fs-display:  clamp(2.5rem, 6.4vw, 5.75rem);
+  --fs-h1:       clamp(2rem, 4.4vw, 3.75rem);
+  --fs-h2:       clamp(1.6rem, 3.1vw, 2.6rem);
+  --fs-h3:       clamp(1.2rem, 1.9vw, 1.6rem);
+  --fs-lead:     clamp(1.0625rem, 1.5vw, 1.375rem);
+  --fs-body:     1.0625rem; --fs-sm: 0.875rem; --fs-meta: 0.72rem;
 
-  --lh-tight: 1.02;
-  --lh-snug:  1.14;
-  --lh-body:  1.6;
-  --lh-ar-tight: 1.22;
-  --lh-ar-body:  1.85;
-  --track-meta: 0.22em;   /* سجلّ/لصائق لاتينية */
-  --track-tight: -0.02em;
+  --lh-tight: 0.98; --lh-snug: 1.1; --lh-body: 1.62;
+  --lh-ar-tight: 1.18; --lh-ar-body: 1.9;
+  --track-meta: 0.24em; --track-tight: -0.02em;
 
-  /* ── الإيقاع المكاني + الشبكة ── */
-  --gutter: clamp(1.25rem, 4vw, 4.5rem);
-  --measure-max: 84rem;
-  --measure-text: 40rem;
-  --axis-inset: clamp(1.25rem, 4vw, 4.5rem); /* موضع خط المحور = الهامش */
+  /* ── الشبكة + العمود المؤسسي ── */
+  --rail: 0px;                 /* عرض العمود الجانبي (يُفعّل على الديسكتوب) */
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --measure: 78rem; --measure-text: 40rem;
 
-  --space-1: .5rem;  --space-2: 1rem;  --space-3: 1.5rem;
-  --space-4: 2.5rem; --space-5: 4rem;  --space-6: 6rem;
-  --space-7: 9rem;   --space-8: 12rem;
+  --space-1:.5rem; --space-2:1rem; --space-3:1.5rem; --space-4:2.5rem;
+  --space-5:4rem; --space-6:6rem; --space-7:9rem; --space-8:13rem;
 
-  /* ── الحركة (دقيقة، محسوبة) ── */
+  /* ── الحركة: بطيئة، مضبوطة، ذكية ── */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-precise: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-1: 220ms; --dur-2: 460ms; --dur-3: 760ms; --dur-4: 1200ms;
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 260ms; --dur-2: 560ms; --dur-3: 920ms; --dur-4: 1400ms;
 
-  /* توافق أسماء قديمة */
-  --paper: var(--field); --ink-surface: var(--navy); --on-dark: var(--on-navy);
-  --line-strong: var(--line-2); --line-dark: var(--line-navy);
-  --blue-400: var(--azure-glow); --blue-600: var(--azure); --blue-700: var(--azure-deep);
-  --tracking-label: var(--track-meta); --radius-sm: 2px; --radius-md: 3px;
+  /* توافق أسماء سابقة */
+  --navy: var(--ink); --navy-2: var(--ink-2); --navy-3: var(--ink-0);
+  --field: var(--bone); --field-2: var(--bone-2); --field-3: var(--bone-3);
+  --on-navy: var(--on-ink); --on-navy-2: var(--on-ink-2); --on-navy-3: var(--on-ink-3);
+  --azure: var(--blue); --azure-deep: var(--blue-deep); --azure-bright: var(--blue-bright);
+  --line-navy: var(--line-ink); --paper: var(--bone); --ink-surface: var(--ink); --on-dark: var(--on-ink);
+  --font-latin: var(--font-sans); --font-ar-body: var(--font-ar);
+  --tracking-label: var(--track-meta); --radius-sm: 1px; --radius-md: 2px;
+  --blue-400: var(--blue-bright); --blue-600: var(--blue); --blue-700: var(--blue-deep);
 }

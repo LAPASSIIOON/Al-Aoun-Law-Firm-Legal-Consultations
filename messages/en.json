@@ -130,7 +130,9 @@
     "privacy": "Privacy Policy",
     "terms": "Terms & Disclaimer",
     "disclaimer": "This site's content is for general informational purposes and does not constitute legal advice.",
-    "rights": "All rights reserved"
+    "rights": "All rights reserved",
+    "hoursHeading": "Working hours",
+    "hoursValue": "Sun – Thu · 9 AM – 5 PM"
   },
   "langSwitch": {
     "label": "العربية",
@@ -205,7 +207,9 @@
     "success": "We've received your request. We'll follow up through your chosen method.",
     "errorGeneric": "Couldn't send, please try again.",
     "errorName": "Please enter your name.",
-    "errorContact": "Enter a phone or email to reach you."
+    "errorContact": "Enter a phone or email to reach you.",
+    "hoursLabel": "Working hours",
+    "hoursValue": "Sunday – Thursday, 9:00 AM – 5:00 PM"
   },
   "careers": {
     "eyebrow": "Careers",

@@ -13,3 +13,5 @@
 .bottom { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; padding-block: 1.5rem; border-block-start: 1px solid var(--hair-light); }
 .legalLinks { display: flex; gap: 1.5rem; }
 .disclaimer { font-size: 0.8rem; color: var(--platinum-dim); margin-block-start: 1.25rem; max-width: 70ch; line-height: 1.7; }
+
+.hours { font-size: 0.85rem; color: var(--ink); }

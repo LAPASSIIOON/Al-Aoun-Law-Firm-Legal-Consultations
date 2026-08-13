@@ -25,6 +25,7 @@ export async function SiteFooter() {
           <span className={styles.colHead}>{t('contactHeading')}</span>
           <a href="tel:+96599010470" className={styles.fLink} dir="ltr">+965 99010470</a>
           <a href="mailto:Aloun.Law@gmail.com" className={styles.fLink}>Aloun.Law@gmail.com</a>
+          <span className={styles.hours}>{t('hoursHeading')}: {t('hoursValue')}</span>
           <span className={styles.muted}>{t('contactFlag')}</span>
         </div>
       </div>

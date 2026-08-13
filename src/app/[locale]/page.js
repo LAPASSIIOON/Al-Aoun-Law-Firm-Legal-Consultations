@@ -1,5 +1,6 @@
 import { getTranslations, getLocale, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
+import { createAnonClient } from '@/lib/supabase-server.js';
 import styles from './home.module.css';
 
 const FOUNDER = {
@@ -9,6 +10,7 @@ const FOUNDER = {
     bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Oun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
 };
 
+export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 
 export default async function Home({ params }) {
@@ -24,6 +26,14 @@ export default async function Home({ params }) {
   const tc = await getTranslations('consultCta');
   const tpe = await getTranslations('people');
   const f = FOUNDER[locale] || FOUNDER.ar;
+  let areas = [];
+  try {
+    const supabase = createAnonClient();
+    const { data } = await supabase.from('practice_area_translations')
+      .select('slug, title, practice_areas(sort_order)').eq('locale', locale)
+      .eq('status', 'published').eq('legal_approved', true);
+    areas = (data || []).sort((a, b) => (a.practice_areas?.sort_order || 0) - (b.practice_areas?.sort_order || 0)).slice(0, 6);
+  } catch (e) { areas = []; }
   const items = td.raw('items');
   const values = tph.raw('items');
 
@@ -67,16 +77,29 @@ export default async function Home({ params }) {
             <Link href="/services" className="btn-line">{tp('indexLabel')}<span className="arrow">→</span></Link>
           </div>
           <p className="body" data-reveal style={{ marginBlockEnd: '2.5rem' }}>{tp('subhead')}</p>
-          <ul className={styles.areaList}>
-            {[0,1,2,3].map((i) => (
-              <li key={i} className={styles.areaRow} data-reveal>
-                <span className="idx">{String(i+1).padStart(2,'0')}</span>
-                <span className={styles.areaName}>{tp('placeholderTitle')}</span>
-                <span className="tag">{tp('forthcoming')}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="muted" data-reveal style={{ marginBlockStart: '1.75rem', fontSize: '0.9rem' }}>{tp('flag')}</p>
+          {areas.length > 0 ? (
+            <ul className={styles.areaList}>
+              {areas.map((a, i) => (
+                <li key={a.slug} className={styles.areaRow} data-reveal>
+                  <span className="idx">{String(i+1).padStart(2,'0')}</span>
+                  <Link href={`/services/${a.slug}`} className={styles.areaName}>{a.title}</Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <>
+              <ul className={styles.areaList}>
+                {[0,1,2,3].map((i) => (
+                  <li key={i} className={styles.areaRow} data-reveal>
+                    <span className="idx">{String(i+1).padStart(2,'0')}</span>
+                    <span className={styles.areaName}>{tp('placeholderTitle')}</span>
+                    <span className="tag">{tp('forthcoming')}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="muted" data-reveal style={{ marginBlockStart: '1.75rem', fontSize: '0.9rem' }}>{tp('flag')}</p>
+            </>
+          )}
         </div>
       </section>
 

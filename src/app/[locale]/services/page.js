@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import h from '../home.module.css';
 
+export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'practiceAreas' }); return { title: t('heading'), description: t('subhead') }; }
 
@@ -15,8 +16,8 @@ export default async function Services({ params }) {
   try {
     const supabase = createAnonClient();
     const { data } = await supabase.from('practice_area_translations')
-      .select('slug, title, summary').eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
-    rows = data || [];
+      .select('slug, title, summary, practice_areas(sort_order)').eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
+    rows = (data || []).sort((a, b) => (a.practice_areas?.sort_order || 0) - (b.practice_areas?.sort_order || 0));
   } catch (e) { rows = []; }
   return (
     <>

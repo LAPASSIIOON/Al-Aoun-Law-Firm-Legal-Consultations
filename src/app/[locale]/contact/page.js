@@ -25,6 +25,7 @@ export default async function Contact({ params }) {
             <div style={{ marginBlockStart: '1.5rem' }}>
               <div className={s.infoRow}><span className={s.infoLabel}>{t('phoneLabelInfo')}</span><a className={s.infoVal} href="tel:+96599010470" dir="ltr" style={{ color: 'var(--ink)' }}>+965 99010470</a></div>
               <div className={s.infoRow}><span className={s.infoLabel}>{t('emailLabelInfo')}</span><a className={s.infoVal} href="mailto:Aloun.Law@gmail.com" style={{ color: 'var(--ink)' }}>Aloun.Law@gmail.com</a></div>
+              <div className={s.infoRow}><span className={s.infoLabel}>{t('hoursLabel')}</span><span className={s.infoVal}>{t('hoursValue')}</span></div>
             </div>
             <p className="muted" style={{ marginBlockStart: '2rem', fontSize: '0.85rem', maxWidth: '40ch' }}>{tc('disclaimer')}</p>
           </div>

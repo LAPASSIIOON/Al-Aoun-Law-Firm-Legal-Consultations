@@ -10,33 +10,33 @@
 .kicker { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--wine-bright); }
 :lang(ar) .kicker { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.95rem; }
 
-/* ── الهيرو ── */
-.hero { position: relative; min-block-size: 100svh; overflow: hidden; background: var(--wine-deep); }
-.heroMedia { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-.heroImg { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; filter: saturate(0.82) contrast(1.04) brightness(0.9); transform: scale(1.06); animation: kb 26s ease-in-out infinite alternate; }
-@keyframes kb { from { transform: scale(1.06) translateY(0); } to { transform: scale(1.14) translateY(-1.5%); } }
-@media (prefers-reduced-motion: reduce) { .heroImg { animation: none; } }
-.heroScrim { position: absolute; inset: 0;
-  background:
-    linear-gradient(180deg, rgba(34,26,24,0.55) 0%, transparent 22%, transparent 55%, rgba(58,29,32,0.72) 100%),
-    linear-gradient(90deg, rgba(58,29,32,0.35), transparent 45%); }
-
+/* ── الرواق الأول (3D) ── */
+.hero { position: relative; min-block-size: 100svh; overflow: hidden; background: linear-gradient(180deg, #E7D9BC 0%, #D8C7A5 55%, #CDBb98 100%); }
+.stage { position: absolute; inset: 0; z-index: 0; }
+.stage[data-fallback="true"] { background:
+  radial-gradient(70% 60% at 32% 30%, rgba(255,240,206,0.9), transparent 60%),
+  radial-gradient(90% 80% at 80% 100%, rgba(94,42,46,0.16), transparent 55%),
+  linear-gradient(180deg, #E7D9BC, #C9B790); }
+.heroTop { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(40,30,22,0.42) 0%, transparent 20%, transparent 60%, rgba(40,28,24,0.5) 100%); }
 .overlay { position: relative; z-index: 2; min-block-size: 100svh; display: flex; flex-direction: column;
-  padding: clamp(1.75rem,4vw,3rem) clamp(1.5rem,4vw,4.5rem) clamp(1.75rem,4vw,3rem); }
-.onImage .word { color: var(--on-dark); opacity: 0.95; }
-.onImage .headline { color: var(--on-dark); text-shadow: 0 2px 40px rgba(20,12,12,0.5); }
-.onImage .meta { color: #E8B7AC; }
-.masthead { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+  padding: clamp(1.5rem,3.5vw,2.75rem) clamp(1.5rem,4vw,4.5rem) clamp(1.75rem,4vw,3rem); }
+.onImage .word { color: var(--on-dark); }
+.onImage .headline { color: var(--on-dark); text-shadow: 0 2px 50px rgba(30,18,14,0.55); }
+.onImage .meta { color: #EBC3B8; }
+.masthead { display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.brand { display: inline-flex; align-items: center; gap: 0.7rem; }
+.mark { height: 34px; width: auto; display: block; opacity: 0.96; }
 .word { font-family: var(--sans); font-size: 0.9rem; letter-spacing: 0.04em; }
 :lang(ar) .word { font-family: var(--ar); letter-spacing: 0; }
 .meta { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.26em; text-transform: uppercase; }
 :lang(ar) .meta { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.8rem; }
-.rule { display: block; block-size: 1px; margin-block-start: 1.1rem; background: linear-gradient(90deg, var(--wine-bright), transparent 55%); }
+.rule { display: block; block-size: 1px; margin-block-start: 1rem; background: linear-gradient(90deg, var(--wine-bright), transparent 50%); }
 .center { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; padding-block-end: clamp(1rem,4vh,2.5rem); }
 .headline { font-family: var(--serif); font-weight: 600; font-size: clamp(2.5rem,6vw,5.75rem); line-height: 1.02; max-width: 16ch; letter-spacing: -0.005em; }
 :lang(ar) .headline { font-family: var(--naskh); font-weight: 700; line-height: 1.16; max-width: 22ch; }
 .heroFoot { display: flex; justify-content: flex-start; }
-.scroll { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--on-dark-2); }
+.scroll { font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--on-dark-2); }
 :lang(ar) .scroll { font-family: var(--ar); letter-spacing: 0; text-transform: none; font-size: 0.85rem; }
 
 /* ── قسم صورة كامل (قصر العدل / المجمّع القضائي) ── */
@@ -69,3 +69,9 @@
 .cred { display: flex; align-items: baseline; gap: 0.75rem; font-family: var(--sans); font-size: 0.92rem; color: var(--gray-warm); }
 :lang(ar) .cred { font-family: var(--ar); }
 .credMark { flex: 0 0 auto; inline-size: 6px; block-size: 6px; margin-block-start: 0.4rem; background: var(--wine); border-radius: 50%; }
+
+/* ── الختام ── */
+.after { background: var(--wine-deep); color: var(--on-dark); padding: clamp(5rem,14vh,9rem) clamp(1.5rem,4vw,4rem); display: flex; flex-direction: column; align-items: center; text-align: center; }
+.afterMark { height: 40px; width: auto; margin-block-end: clamp(1.5rem,4vh,2.5rem); opacity: 0.9; }
+.afterLine { font-family: var(--serif); font-size: clamp(1.5rem,3vw,2.4rem); line-height: 1.35; max-width: 30ch; color: var(--on-dark); }
+:lang(ar) .afterLine { font-family: var(--naskh); font-weight: 400; line-height: 1.7; }

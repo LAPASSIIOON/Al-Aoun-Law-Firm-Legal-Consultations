@@ -1,15 +1,15 @@
-.footer { background: var(--graphite); color: var(--ink-dark); padding-block: clamp(3.5rem, 7vh, 6rem) 2.5rem; border-block-start: 1px solid var(--hair-dark); }
+.footer { background: var(--ivory); color: var(--ink); padding-block: clamp(3.5rem, 7vh, 6rem) 2.5rem; border-block-start: 1px solid var(--hair-light); }
 .top { display: grid; gap: clamp(2rem, 4vw, 3.5rem); grid-template-columns: 1fr; padding-block-end: 3rem; }
 @media (min-width: 760px) { .top { grid-template-columns: 1.5fr 1fr 1.2fr; } }
-.logo { height: 40px; width: auto; margin-block-end: 1.25rem; }
-.tagline { font-family: var(--f-display); font-size: 1.1rem; color: var(--muted-dark); max-width: 34ch; line-height: 1.6; }
+.logo { height: 52px; width: auto; margin-block-end: 1.25rem; }
+.tagline { font-family: var(--f-display); font-size: 1.1rem; color: var(--muted); max-width: 34ch; line-height: 1.6; }
 :lang(ar) .tagline { line-height: 1.9; }
-.colHead { display: block; font-family: var(--f-ui); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--platinum-dim); margin-block-end: 1.1rem; }
+.colHead { display: block; font-family: var(--f-ui); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-block-end: 1.1rem; }
 :lang(ar) .colHead { letter-spacing: 0; text-transform: none; font-size: 0.85rem; }
 .linksCol, .contactCol { display: flex; flex-direction: column; gap: 0.7rem; }
-.fLink { font-size: 0.92rem; color: var(--muted-dark); transition: color 0.4s; width: fit-content; }
-.fLink:hover { color: var(--blue); }
+.fLink { font-size: 0.92rem; color: var(--muted); transition: color 0.4s; width: fit-content; }
+.fLink:hover { color: var(--blue-strong); }
 .muted { font-size: 0.85rem; color: var(--platinum-dim); }
-.bottom { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; padding-block: 1.5rem; border-block-start: 1px solid var(--hair-dark); }
+.bottom { display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; padding-block: 1.5rem; border-block-start: 1px solid var(--hair-light); }
 .legalLinks { display: flex; gap: 1.5rem; }
 .disclaimer { font-size: 0.8rem; color: var(--platinum-dim); margin-block-start: 1.25rem; max-width: 70ch; line-height: 1.7; }

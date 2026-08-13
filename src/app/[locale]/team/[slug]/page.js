@@ -7,8 +7,8 @@ import h from '../../home.module.css';
 const FOUNDER = {
   ar: { name: 'الدكتور هيثم أحمد العون', role: 'المؤسِّس ورئيس مجلس الإدارة', title: 'محامٍ بالتمييز والدستورية',
     creds: ['دكتوراه في القانون الدستوري — جامعة القاهرة (امتياز)','مقيّد للمرافعة أمام محكمتَي التمييز والدستورية','رئيس المجلس العلمي الاستشاري — جمعية المحامين الكويتية','مؤسِّس مجموعة العون للمحاماة والاستشارات القانونية'] },
-  en: { name: 'Dr. Haitham Ahmed Al Aoun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
-    creds: ['PhD in Constitutional Law — Cairo University (Excellent)','Admitted before the Cassation and Constitutional courts','Chair, Scientific Advisory Council — Kuwait Lawyers Association','Founder of Al Aoun Law Firm & Legal Consultations'] },
+  en: { name: 'Dr. Haitham Ahmed Al Oun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
+    creds: ['PhD in Constitutional Law — Cairo University (Excellent)','Admitted before the Cassation and Constitutional courts','Chair, Scientific Advisory Council — Kuwait Lawyers Association','Founder of Al Oun Law Firm & Legal Consultations'] },
 };
 export async function generateMetadata({ params }) { const { slug, locale } = await params; if (slug!=='haitham-al-aoun') return {}; return { title: (FOUNDER[locale]||FOUNDER.ar).name }; }
 

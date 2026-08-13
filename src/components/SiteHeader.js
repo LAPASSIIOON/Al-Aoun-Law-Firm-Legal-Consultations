@@ -33,7 +33,7 @@ export default function SiteHeader() {
     <header className={`${styles.header} ${solid ? styles.solid : ''}`}>
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={t('home')}>
-          <img src={`/brand/logo-full-${locale}-white.png`} alt="مجموعة العون" className={styles.logo} />
+          <img src={`/brand/logo-full-${locale}-color.png`} alt={locale==='en'?'OUN GROUP':'مجموعة العون'} className={styles.logo} />
         </Link>
 
         <nav className={styles.nav} aria-label="primary">
@@ -56,7 +56,7 @@ export default function SiteHeader() {
       {open && (
         <div className={styles.overlay} role="dialog" aria-modal="true">
           <div className={styles.overlayTop}>
-            <img src={`/brand/logo-full-${locale}-white.png`} alt="" className={styles.logo} />
+            <img src={`/brand/logo-full-${locale}-color.png`} alt="" className={styles.logo} />
             <button className={styles.close} onClick={() => setOpen(false)} aria-label="close">×</button>
           </div>
           <nav className={styles.overlayNav}>

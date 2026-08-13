@@ -6,8 +6,8 @@ import h from '../home.module.css';
 const FOUNDER = {
   ar: { name: 'الدكتور هيثم أحمد العون', role: 'المؤسِّس ورئيس مجلس الإدارة', title: 'محامٍ بالتمييز والدستورية',
     bio: 'حاصل على دكتوراه القانون الدستوري من جامعة القاهرة بتقدير امتياز، ومقيّد للمرافعة أمام محكمتَي التمييز والدستورية. أسّس مجموعة العون، ويرأس المجلس العلمي الاستشاري بجمعية المحامين الكويتية.' },
-  en: { name: 'Dr. Haitham Ahmed Al Aoun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
-    bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Aoun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
+  en: { name: 'Dr. Haitham Ahmed Al Oun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
+    bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Oun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
 };
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading') }; }

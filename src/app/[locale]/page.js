@@ -5,8 +5,8 @@ import styles from './home.module.css';
 const FOUNDER = {
   ar: { name: 'الدكتور هيثم أحمد العون', role: 'المؤسِّس ورئيس مجلس الإدارة', title: 'محامٍ بالتمييز والدستورية',
     bio: 'حاصل على دكتوراه القانون الدستوري من جامعة القاهرة بتقدير امتياز، ومقيّد للمرافعة أمام محكمتَي التمييز والدستورية. أسّس مجموعة العون، ويرأس المجلس العلمي الاستشاري بجمعية المحامين الكويتية.' },
-  en: { name: 'Dr. Haitham Ahmed Al Aoun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
-    bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Aoun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
+  en: { name: 'Dr. Haitham Ahmed Al Oun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
+    bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Oun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
 };
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -43,7 +43,7 @@ export default async function Home({ params }) {
         <div className={`wrap ${styles.heroFoot}`}>
           <span className="idx">EST. 2000 · KUWAIT</span>
           <span className={styles.heroRule} aria-hidden="true" />
-          <span className="idx">مجموعة العون · AL AOUN</span>
+          <span className="idx">مجموعة العون · OUN GROUP</span>
         </div>
       </section>
 

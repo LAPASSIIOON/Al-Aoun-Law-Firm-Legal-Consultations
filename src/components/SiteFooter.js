@@ -14,7 +14,7 @@ export async function SiteFooter() {
     <footer className={styles.footer}>
       <div className={`wrap ${styles.top}`}>
         <div className={styles.brandCol}>
-          <img src={`/brand/logo-full-${locale}-white.png`} alt="مجموعة العون" className={styles.logo} />
+          <img src={`/brand/logo-full-${locale}-color.png`} alt={locale==='en'?'OUN GROUP':'مجموعة العون'} className={styles.logo} />
           <p className={styles.tagline}>{t('tagline')}</p>
         </div>
         <nav className={styles.linksCol} aria-label="footer">

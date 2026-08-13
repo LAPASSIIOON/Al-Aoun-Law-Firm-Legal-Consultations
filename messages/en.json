@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "Al Aoun Law Firm & Legal Consultations",
-    "titleTemplate": "%s — Al Aoun",
-    "description": "Al Aoun Law Firm & Legal Consultations — a Kuwaiti firm established in 2000, serving individuals, companies, business owners and investors locally and internationally with transparency, confidentiality and professionalism.",
-    "keywords": "law firm, legal consultations, Kuwait, Al Aoun, lawyer, attorney"
+    "title": "Al Oun Law Firm & Legal Consultations",
+    "titleTemplate": "%s — Al Oun",
+    "description": "Al Oun Law Firm & Legal Consultations — a Kuwaiti firm established in 2000, serving individuals, companies, business owners and investors locally and internationally with transparency, confidentiality and professionalism.",
+    "keywords": "law firm, legal consultations, Kuwait, Al Oun, lawyer, attorney"
   },
   "brand": {
-    "name": "Al Aoun",
-    "fullName": "Al Aoun Law Firm & Legal Consultations",
+    "name": "Al Oun",
+    "fullName": "Al Oun Law Firm & Legal Consultations",
     "since": "Since 2000"
   },
   "nav": {
@@ -38,11 +38,11 @@
   "trust": {
     "eyebrow": "Who we are",
     "heading": "Established expertise since 2000",
-    "body": "Al Aoun was founded in Kuwait in 2000 and provides a broad range of legal services to individuals, companies, business owners and investors — both locally and internationally. Our work rests on steady principles: transparency, confidentiality and security, credibility, professionalism, integrity, commitment and excellence.",
+    "body": "Al Oun was founded in Kuwait in 2000 and provides a broad range of legal services to individuals, companies, business owners and investors — both locally and internationally. Our work rests on steady principles: transparency, confidentiality and security, credibility, professionalism, integrity, commitment and excellence.",
     "note": "Further detail on the firm’s history and scope will follow."
   },
   "differentiators": {
-    "eyebrow": "Why Al Aoun",
+    "eyebrow": "Why Al Oun",
     "heading": "What sets our work apart",
     "items": [
       {
@@ -153,12 +153,12 @@
   "history": {
     "eyebrow": "Est. 2000",
     "heading": "A quarter-century of practice",
-    "body": "Founded in Kuwait in 2000, Al Aoun has practised law ever since — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
+    "body": "Founded in Kuwait in 2000, Al Oun has practised law ever since — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
   },
   "institution": {
     "est": "Est. 2000",
     "kuwait": "Kuwait",
-    "wordmark": "Al Aoun"
+    "wordmark": "Al Oun"
   },
   "sections": {
     "opening": "Opening",
@@ -171,7 +171,7 @@
     "action": "Consult"
   },
   "about": {
-    "eyebrow": "About Al Aoun",
+    "eyebrow": "About Al Oun",
     "heading": "A Kuwaiti legal institution, since 2000",
     "lead": "We build trust on clarity and discipline — not on promises.",
     "storyHeading": "The practice",
@@ -209,7 +209,7 @@
   },
   "careers": {
     "eyebrow": "Careers",
-    "heading": "Working at Al Aoun",
+    "heading": "Working at Al Oun",
     "lead": "We look for precise legal minds who value discipline, confidentiality and excellence.",
     "cultureHeading": "Our environment",
     "cultureBody": "We work to disciplined standards and high confidentiality, giving lawyers room to grow professionally across quality matters for individuals, companies and investors.",
@@ -226,7 +226,7 @@
     "eyebrow": "Legal",
     "heading": "Privacy Policy",
     "updated": "Preliminary version — under review",
-    "intro": "This document explains how Al Aoun handles data submitted through this website. The final approved text will be published after review by the firm's legal counsel.",
+    "intro": "This document explains how Al Oun handles data submitted through this website. The final approved text will be published after review by the firm's legal counsel.",
     "pending": "Final legal content is being prepared and approved by the firm.",
     "sections": [
       {
@@ -255,7 +255,7 @@
     "eyebrow": "Legal",
     "heading": "Terms & Disclaimer",
     "updated": "Preliminary version — under review",
-    "intro": "These terms govern use of the Al Aoun website. The final approved text will be published after review by the firm's legal counsel.",
+    "intro": "These terms govern use of the Al Oun website. The final approved text will be published after review by the firm's legal counsel.",
     "pending": "Final legal content is being prepared and approved by the firm.",
     "sections": [
       {
@@ -268,7 +268,7 @@
       },
       {
         "h": "Intellectual property",
-        "b": "The name, logo and content are owned by Al Aoun and may not be used without permission."
+        "b": "The name, logo and content are owned by Al Oun and may not be used without permission."
       },
       {
         "h": "Limitation of liability",
@@ -286,12 +286,12 @@
     "detailForthcoming": "Details for this practice area are being prepared and will be published once approved."
   },
   "teamPage": {
-    "lead": "Leadership and the legal team at Al Aoun.",
+    "lead": "Leadership and the legal team at Al Oun.",
     "founderHeading": "Leadership",
     "memberForthcoming": "Profiles of other lawyers and consultants are published once their details are approved."
   },
   "insightsPage": {
-    "lead": "Legal articles and updates from Al Aoun.",
+    "lead": "Legal articles and updates from Al Oun.",
     "readMore": "Read more",
     "detailForthcoming": "This piece is being prepared."
   }

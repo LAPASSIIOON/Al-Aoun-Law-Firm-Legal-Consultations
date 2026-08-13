@@ -85,7 +85,7 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
 
 /* كشف عند التمرير (RevealController) */
 [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
-[data-reveal].is-visible { opacity: 1; transform: none; }
+[data-reveal].in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { [data-reveal] { opacity: 1 !important; transform: none !important; transition: none; } }
 
 /* شبكات */

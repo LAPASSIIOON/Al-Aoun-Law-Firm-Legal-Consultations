@@ -1,44 +1,47 @@
-/* Hero */
-.hero { min-block-size: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 8rem 2.5rem; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; inset-block: 0; inset-inline-start: 50%; inline-size: 1px; background: linear-gradient(var(--espresso), var(--hair-dark-strong), var(--espresso)); opacity: 0.5; }
-.heroInner { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
-.heroTitle { margin-block: 1.6rem 1.8rem; max-inline-size: 20ch; }
-.heroLead { max-inline-size: 54ch; }
-.heroCta { display: flex; flex-wrap: wrap; gap: 1rem; margin-block-start: 2.75rem; }
-.heroFoot { display: flex; align-items: center; gap: 1.5rem; padding-block-start: 2.5rem; position: relative; z-index: 1; }
-.heroRule { flex: 1 1 auto; block-size: 1px; background: var(--hair-dark); }
+/* ── Hero (navy + motion) ── */
+.hero{position:relative;background:var(--navy);color:#fff;overflow:hidden;min-block-size:clamp(600px,92vh,860px);display:flex;align-items:center}
+.heroVeil{position:absolute;inset:0;background:linear-gradient(var(--veilDir),rgba(15,26,46,.92) 0%,rgba(15,26,46,.72) 45%,rgba(15,26,46,.35) 100%);z-index:1}
+.heroInner{position:relative;z-index:2;width:100%;padding-block:8rem 3rem}
+.heroContent{max-inline-size:44rem}
+.heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.5rem,5.6vw,4.7rem);line-height:1.12;letter-spacing:-.015em;color:#fff;margin-block:1.4rem 0}
+:lang(ar) .heroHead{line-height:1.28;letter-spacing:0}
+.heroSub{color:var(--muted-dark);font-size:clamp(1.1rem,1.5vw,1.35rem);line-height:1.7;max-inline-size:40rem;margin-block:1.6rem 2.2rem}
+:lang(ar) .heroSub{line-height:2}
+.heroCtas{display:flex;flex-wrap:wrap;gap:1rem}
+.counters{display:flex;flex-wrap:wrap;gap:clamp(1.75rem,4vw,3.5rem);margin-block-start:clamp(2.5rem,5vh,4rem);padding-block-start:clamp(1.75rem,3vh,2.25rem);border-block-start:1px solid var(--hair-dark)}
 
-/* رؤوس الأقسام */
-.head { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; justify-content: space-between; margin-block-end: 1.5rem; }
+/* ── Authority strip ── */
+.authority{display:flex;flex-wrap:wrap;gap:1rem 2.25rem;align-items:center;justify-content:center}
+.authItem{display:inline-flex;align-items:center;gap:.75rem;color:var(--ink-2);font-size:1rem;font-weight:500}
+.authItem::before{content:'';inline-size:6px;block-size:6px;border-radius:50%;background:var(--blue);flex:0 0 auto}
 
-/* فهرس المجالات */
-.areaList { list-style: none; padding: 0; border-block-start: 1px solid var(--hair-dark); }
-.areaRow { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); padding-block: clamp(1.1rem, 2.4vw, 1.75rem); border-block-end: 1px solid var(--hair-dark); transition: padding-inline-start 0.5s var(--ease), color 0.4s; }
-.areaRow:hover { padding-inline-start: 0.6rem; }
-.areaName { flex: 1 1 auto; font-family: var(--f-display); font-size: clamp(1.2rem, 2.4vw, 1.9rem); font-weight: 600; color: var(--muted-dark); }
-:lang(ar) .areaName { font-weight: 700; }
-.areaRow:hover .areaName { color: var(--ink-dark); }
+/* ── Section heading ── */
+.head{max-inline-size:44rem;margin-block-end:clamp(2rem,4vh,3rem)}
+.head .display{margin-block-start:1rem}
+.headRow{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:flex-end;justify-content:space-between;margin-block-end:clamp(2rem,4vh,3rem)}
 
-/* القيم */
-.valueBlock { display: flex; flex-direction: column; gap: 0.8rem; padding-block-start: 1.4rem; border-block-start: 1px solid var(--hair-dark); }
-.valueStrip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-block-start: 3rem; }
-.chip { font-family: var(--f-ui); font-size: 0.85rem; color: var(--muted-dark); padding: 0.5rem 1rem; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--hair-dark); }
+/* ── Practice grid extras ── */
+.areaCard{justify-content:space-between}
+.areaCard .idx{margin-block-end:.25rem}
+.moreLink{margin-block-start:auto}
 
-/* الإرث */
-.legacy { display: grid; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; grid-template-columns: 1fr; }
-@media (min-width: 820px) { .legacy { grid-template-columns: auto 1fr; } }
-.legacyYear { font-family: var(--f-en-display); font-size: clamp(5rem, 16vw, 12rem); font-weight: 600; line-height: 0.9; color: transparent; -webkit-text-stroke: 1px var(--hair-dark-strong); letter-spacing: -0.02em; }
+/* ── Founder feature ── */
+.founder{display:grid;grid-template-columns:1fr;gap:clamp(2rem,4vw,3.5rem);align-items:center}
+@media(min-width:860px){.founder{grid-template-columns:.85fr 1.15fr}}
+.founderMedia{position:relative;border-radius:var(--r-card);overflow:hidden;background:var(--paper-2);aspect-ratio:4/5}
+.founderMedia img{inline-size:100%;block-size:100%;object-fit:cover;object-position:top center}
+.founderName{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,2.6vw,2.2rem);color:var(--ink);margin-block:1rem .35rem}
+.founderRole{color:var(--blue);font-weight:500;font-size:1.02rem;margin-block-end:1.25rem}
 
-/* القيادة */
-.founder { display: grid; gap: clamp(1.75rem, 4vw, 3.5rem); grid-template-columns: 1fr; align-items: center; margin-block-start: 2rem; }
-@media (min-width: 760px) { .founder { grid-template-columns: 0.8fr 1.2fr; } }
-.founderPhoto { position: relative; aspect-ratio: 4/5; overflow: hidden; border-radius: var(--r-lg); background: var(--ivory-sink); box-shadow: inset 0 0 0 1px var(--hair-light); }
-.founderPhoto img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: top center; filter: grayscale(0.12) contrast(1.02); }
-.founderRole { font-family: var(--f-ui); font-size: 0.95rem; color: var(--blue-strong); margin-block-start: 0.6rem; letter-spacing: 0.02em; }
-:lang(ar) .founderRole { letter-spacing: 0; }
+/* ── Values ── */
+.value{display:flex;flex-direction:column;gap:.7rem}
+.valueNum{font-family:var(--f-en);font-size:.85rem;color:var(--blue-glow);letter-spacing:.08em}
+.valueT{font-family:var(--f-display);font-weight:600;font-size:1.25rem;color:#fff}
+.valueD{color:var(--muted-dark);font-size:1rem;line-height:1.7}
 
-/* رؤى فارغة */
-.insightsEmpty { display: flex; flex-direction: column; gap: 0.8rem; padding: clamp(2rem, 5vw, 3.5rem); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--hair-dark); background: var(--espresso-surface); align-items: flex-start; }
-
-/* تواصل */
-.ctaBlock { text-align: start; }
+/* ── CTA band ── */
+.band{display:flex;flex-wrap:wrap;gap:1.5rem 2.5rem;align-items:center;justify-content:space-between}
+.bandText{max-inline-size:34rem}
+.bandActions{display:flex;flex-direction:column;gap:.75rem;align-items:flex-start}
+.bandPhone{color:var(--muted-dark);font-size:.95rem}
+.bandPhone a{color:#fff;font-weight:500}

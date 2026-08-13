@@ -1,47 +1,35 @@
-/* ═══ مجموعة العون — Design Tokens · Espresso-dominant (Direction 03 modified) ═══ */
+/* ═══ مجموعة العون — Design Tokens v2 · White-dominant · Navy + Brand Blue ═══ */
 :root {
-  /* الألوان المعتمدة */
-  --espresso: #2F2A25;          /* المسيطر ~50% */
-  --espresso-surface: #39332B;  /* سطح مرتفع على الإسبريسو */
-  --espresso-deep: #26221B;     /* إسبريسو أعمق */
-  --graphite: #1A1917;          /* أعمق خلفية ~25% */
-  --graphite-surface: #221F1C;
-  --ivory: #F2EFE9;             /* عاجي ~15% (لا يسيطر) */
-  --ivory-sink: #E7E1D5;
-  --blue: #5F7C99;              /* أزرق-إشارة ~6% */
-  --blue-strong: #4C6884;       /* للنص السماوي على الفاتح (تباين) */
-  --platinum: #C7C9C9;          /* ~4% */
-  --platinum-dim: #8C9091;
+  /* الأساس */
+  --white:#FFFFFF; --paper:#F6F8FB; --paper-2:#EEF2F7;
+  --navy:#0F1A2E; --navy-2:#16233B; --navy-3:#1E2E4A;
+  --blue:#1E6FB0; --blue-600:#1A5F98; --blue-050:#EAF2FA; --blue-glow:#2C8FD6;
 
-  /* النص */
-  --ink-dark: #EFE9E1;          /* نص على الإسبريسو/الجرافيت */
-  --muted-dark: #B2A796;        /* مكتوم على الداكن */
-  --ink: #211E19;               /* نص على العاجي */
-  --muted: #6A6157;             /* مكتوم على الفاتح */
+  /* نص على الفاتح */
+  --ink:#14213A; --ink-2:#25324C; --muted:#5B6678; --muted-2:#8792A6;
+  /* نص على الداكن */
+  --ink-dark:#FFFFFF; --muted-dark:#AEBACD;
 
-  /* حدود/خيوط */
-  --hair-dark: rgba(199,201,201,0.16);
-  --hair-dark-strong: rgba(199,201,201,0.28);
-  --hair-light: rgba(33,30,25,0.14);
-  --hair-light-strong: rgba(33,30,25,0.26);
+  /* توافق خلفي (أسماء قديمة تُعاد تعيينها للنظام الجديد) */
+  --espresso:var(--navy); --graphite:var(--navy-2); --ivory:var(--white);
+  --ivory-sink:var(--paper-2); --blue-strong:var(--blue-600); --platinum-dim:var(--muted-2);
 
-  /* خطوط */
-  --f-ar-display: 'Amiri', 'Newsreader', Georgia, serif;
-  --f-ar-ui: 'IBM Plex Sans Arabic', system-ui, sans-serif;
-  --f-en-display: 'Newsreader', Georgia, serif;
-  --f-en-ui: 'Archivo Variable', system-ui, sans-serif;
+  /* خطوط/حدود */
+  --hair-light:rgba(20,33,58,0.10); --hair-light-strong:rgba(20,33,58,0.18);
+  --hair-dark:rgba(255,255,255,0.12); --hair-dark-strong:rgba(255,255,255,0.22);
+
+  /* خطوط الكتابة — سانس حديث */
+  --f-ar:'Readex Pro Variable','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --f-en:'Archivo Variable',system-ui,sans-serif;
 
   /* مقاسات */
-  --wrap: 1200px;
-  --wrap-narrow: 840px;
-  --gutter: clamp(1.25rem, 4vw, 4.5rem);
-  --section: clamp(4.5rem, 10vh, 9rem);
-  --r: 2px;
-  --r-lg: 4px;
+  --wrap:1200px; --wrap-narrow:820px;
+  --gutter:clamp(1.25rem,4vw,4rem);
+  --section:clamp(4.5rem,9vh,8rem);
+  --r:8px; --r-lg:14px; --r-card:16px;
 
   /* حركة */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur: 0.6s;
+  --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
-html[lang="ar"] { --f-display: var(--f-ar-display); --f-ui: var(--f-ar-ui); }
-html[lang="en"] { --f-display: var(--f-en-display); --f-ui: var(--f-en-ui); }
+html[lang="ar"]{ --f-display:var(--f-ar); --f-ui:var(--f-ar); }
+html[lang="en"]{ --f-display:var(--f-en); --f-ui:var(--f-en); }

@@ -2,20 +2,15 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing.js';
-import '@fontsource-variable/ibm-plex-sans';
+import '@fontsource-variable/readex-pro';
+import '@fontsource-variable/archivo';
 import '@fontsource/ibm-plex-sans-arabic/400.css';
 import '@fontsource/ibm-plex-sans-arabic/600.css';
-import '@fontsource/ibm-plex-sans-arabic/700.css';
-import '@fontsource-variable/archivo';
-import '@fontsource-variable/newsreader';
-import '@fontsource/amiri/400.css';
-import '@fontsource/amiri/700.css';
-import '@fontsource/cormorant/400.css';
-import '@fontsource/cormorant/500.css';
 import '../globals.css';
 import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
+import { createAnonClient } from '@/lib/supabase-server.js';
 
 /** @type {Record<'ar'|'en', 'rtl'|'ltr'>} */
 const DIR_BY_LOCALE = { ar: 'rtl', en: 'ltr' };
@@ -30,10 +25,7 @@ export async function generateMetadata({ params }) {
   const t = await getTranslations({ locale, namespace: 'meta' });
   const otherLocale = locale === 'ar' ? 'en' : 'ar';
   return {
-    title: {
-      default: t('title'),
-      template: t('titleTemplate'),
-    },
+    title: { default: t('title'), template: t('titleTemplate') },
     description: t('description'),
     keywords: t('keywords'),
     icons: {
@@ -43,37 +35,43 @@ export async function generateMetadata({ params }) {
       ],
       apple: '/icons/apple-touch-icon.png',
     },
-    alternates: {
-      languages: { ar: '/ar', en: '/en' },
-    },
+    alternates: { languages: { ar: '/ar', en: '/en' } },
     openGraph: {
       type: 'website',
       locale: locale === 'ar' ? 'ar_KW' : 'en_US',
       alternateLocale: otherLocale === 'ar' ? 'ar_KW' : 'en_US',
-      title: t('title'),
-      description: t('description'),
-      siteName: t('title'),
+      title: t('title'), description: t('description'), siteName: t('title'),
     },
     robots: { index: true, follow: true },
   };
 }
 
+async function fetchAreas(locale) {
+  try {
+    const supabase = createAnonClient();
+    const { data } = await supabase
+      .from('practice_area_translations')
+      .select('slug, title, practice_areas(sort_order)')
+      .eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
+    return (data || []).sort((a, b) => (a.practice_areas?.sort_order || 0) - (b.practice_areas?.sort_order || 0));
+  } catch (e) { return []; }
+}
+
 /** @param {{ children: import('react').ReactNode, params: Promise<{ locale: string }> }} props */
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const areas = await fetchAreas(locale);
 
   return (
     <html lang={locale} dir={DIR_BY_LOCALE[locale]}>
       <body>
         <NextIntlClientProvider locale={locale}>
-          <a href="#main" className="skip">تخطَّ إلى المحتوى</a>
-          <SiteHeader />
+          <a href="#main" className="skip">{locale === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}</a>
+          <SiteHeader locale={locale} areas={areas} />
           <main id="main" className="main">{children}</main>
-          <SiteFooter />
+          <SiteFooter locale={locale} areas={areas} />
           <RevealController />
         </NextIntlClientProvider>
       </body>

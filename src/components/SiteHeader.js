@@ -34,7 +34,7 @@ export default function SiteHeader({ locale, areas = [] }) {
     <header className={`${styles.header} ${scrolled ? styles.solid : ''}`}>
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'}>
-          <img src={`/brand/logo-full-${locale}-color.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+          <img src={`/brand/logo-full-${locale}-white.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
@@ -75,7 +75,7 @@ export default function SiteHeader({ locale, areas = [] }) {
       {mobile && (
         <div className={styles.overlay}>
           <div className={styles.overlayTop}>
-            <img src={`/brand/logo-full-${locale}-color.png`} alt="" className={styles.logo} />
+            <img src={`/brand/logo-full-${locale}-white.png`} alt="" className={styles.logo} />
             <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={() => setMobile(false)}>×</button>
           </div>
           <nav className={styles.overlayNav}>

@@ -1,6 +1,6 @@
 /* ── Hero (navy + motion) ── */
 .hero{position:relative;background:var(--navy);color:#fff;overflow:hidden;min-block-size:clamp(600px,92vh,860px);display:flex;align-items:center}
-.heroVeil{position:absolute;inset:0;background:linear-gradient(var(--veilDir),rgba(15,26,46,.92) 0%,rgba(15,26,46,.72) 45%,rgba(15,26,46,.35) 100%);z-index:1}
+.heroVeil{position:absolute;inset:0;background:linear-gradient(var(--veilDir),rgba(12,17,25,.92) 0%,rgba(12,17,25,.70) 45%,rgba(12,17,25,.30) 100%);z-index:1}
 .heroInner{position:relative;z-index:2;width:100%;padding-block:8rem 3rem}
 .heroContent{max-inline-size:44rem}
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.5rem,5.6vw,4.7rem);line-height:1.12;letter-spacing:-.015em;color:#fff;margin-block:1.4rem 0}

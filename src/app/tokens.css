@@ -1,35 +1,42 @@
-/* ═══ مجموعة العون — Design Tokens v2 · White-dominant · Navy + Brand Blue ═══ */
+/* ═══ مجموعة العون — Sovereign Ink (الحبر السيادي) · Dark-dominant · Midnight navy + Platinum + Clay ═══ */
 :root {
-  /* الأساس */
-  --white:#FFFFFF; --paper:#F6F8FB; --paper-2:#EEF2F7;
-  --navy:#0F1A2E; --navy-2:#16233B; --navy-3:#1E2E4A;
-  --blue:#1E6FB0; --blue-600:#1A5F98; --blue-050:#EAF2FA; --blue-glow:#2C8FD6;
+  /* اللوحة الأساسية */
+  --ground:#0C1119;      /* الأرضية — ميدنايت نيفي (66%) */
+  --surface:#1A2430;     /* السطح (16%) */
+  --surface-2:#223041;   /* سطح مرتفع — بطاقات */
+  --surface-3:#2A3A4D;   /* تحويم/متداخل */
+  --platinum:#ECEBE6;    /* نص أساسي (10%) */
+  --platinum-2:#C9CDD2;  /* نص ثانوي/خافت (3%) */
+  --platinum-3:#97A1AC;  /* نص باهت */
+  --clay:#B0623F;        /* الأكسنت الطيني (5%) */
+  --clay-bright:#D18A63; /* طيني فاتح — نص أكسنت مقروء على الداكن */
+  --clay-600:#96512F;    /* طيني مضغوط */
+  --clay-050:rgba(176,98,63,0.12);
+  --blue-note:#2C8FD6;   /* أزرق اللوجو — لمسة تناغم في الموشن فقط */
 
-  /* نص على الفاتح */
-  --ink:#14213A; --ink-2:#25324C; --muted:#5B6678; --muted-2:#8792A6;
-  /* نص على الداكن */
-  --ink-dark:#FFFFFF; --muted-dark:#AEBACD;
+  /* نصوص */
+  --ink:var(--platinum); --ink-2:#DCE0E4; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
+  --ink-dark:var(--platinum); --muted-dark:var(--platinum-2);
 
-  /* توافق خلفي (أسماء قديمة تُعاد تعيينها للنظام الجديد) */
-  --espresso:var(--navy); --graphite:var(--navy-2); --ivory:var(--white);
-  --ivory-sink:var(--paper-2); --blue-strong:var(--blue-600); --platinum-dim:var(--muted-2);
+  /* أسماء مستعارة — تقلب نظام (أبيض/كحلي/أزرق) القديم إلى الحبر السيادي */
+  --white:#FFFFFF;
+  --navy:var(--ground); --navy-2:var(--surface-2); --navy-3:var(--surface-3);
+  --paper:var(--surface); --paper-2:var(--surface-2);
+  --espresso:var(--clay); --graphite:var(--surface-2); --ivory:var(--surface); --ivory-sink:var(--surface-3);
+  --blue:var(--clay); --blue-600:var(--clay-600); --blue-050:var(--clay-050);
+  --blue-glow:var(--clay-bright); --blue-strong:var(--clay-bright); --platinum-dim:var(--platinum-3);
 
-  /* خطوط/حدود */
-  --hair-light:rgba(20,33,58,0.10); --hair-light-strong:rgba(20,33,58,0.18);
-  --hair-dark:rgba(255,255,255,0.12); --hair-dark-strong:rgba(255,255,255,0.22);
+  /* خطوط شعرية — فاتح على داكن */
+  --hair-light:rgba(236,235,230,0.10); --hair-light-strong:rgba(236,235,230,0.18);
+  --hair-dark:rgba(236,235,230,0.12); --hair-dark-strong:rgba(236,235,230,0.22);
 
-  /* خطوط الكتابة — سانس حديث */
+  /* خطوط الكتابة (بلا تغيير) */
   --f-ar:'Readex Pro Variable','IBM Plex Sans Arabic',system-ui,sans-serif;
   --f-en:'Archivo Variable',system-ui,sans-serif;
 
-  /* مقاسات */
-  --wrap:1200px; --wrap-narrow:820px;
-  --gutter:clamp(1.25rem,4vw,4rem);
-  --section:clamp(4.5rem,9vh,8rem);
-  --r:8px; --r-lg:14px; --r-card:16px;
-
-  /* حركة */
-  --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
+  /* مقاسات/حركة (بلا تغيير) */
+  --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(4.5rem,9vh,8rem);
+  --r:8px; --r-lg:14px; --r-card:16px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
 html[lang="ar"]{ --f-display:var(--f-ar); --f-ui:var(--f-ar); }
 html[lang="en"]{ --f-display:var(--f-en); --f-ui:var(--f-en); }

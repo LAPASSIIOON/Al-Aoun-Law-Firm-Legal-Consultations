@@ -12,8 +12,10 @@ export default function HeroMotion() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0, w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2), t = 0;
     const rtl = getComputedStyle(document.documentElement).direction === 'rtl';
-    const BLUE = '30,111,176';       // --blue
-    const GLOW = '44,143,214';       // --blue-glow
+    const CLAY = '176,98,63';         // --clay
+    const PLAT = '201,205,210';       // --platinum-2
+    const GLOW = '209,138,99';        // --clay-bright
+    const NOTE = '44,143,214';        // --blue-note (لمسة أزرق اللوجو)
     let particles = [];
 
     function size() {
@@ -37,8 +39,9 @@ export default function HeroMotion() {
 
       // soft radial glow
       const g = ctx.createRadialGradient(ax, ay, 0, ax, ay, Math.max(w, h) * 0.6);
-      g.addColorStop(0, `rgba(${GLOW},0.16)`);
-      g.addColorStop(0.5, `rgba(${GLOW},0.05)`);
+      g.addColorStop(0, `rgba(${GLOW},0.14)`);
+      g.addColorStop(0.35, `rgba(${NOTE},0.05)`);
+      g.addColorStop(0.7, `rgba(${GLOW},0.03)`);
       g.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
 
@@ -52,7 +55,8 @@ export default function HeroMotion() {
         const sweep = Math.PI * (0.85 + 0.18 * Math.sin(t * 0.0004 + i));
         ctx.beginPath();
         ctx.arc(ax, ay, rad, start, start + sweep);
-        ctx.strokeStyle = `rgba(${BLUE},${0.16 - i * 0.018})`;
+        const col = i % 2 === 0 ? PLAT : CLAY;
+        ctx.strokeStyle = `rgba(${col},${0.14 - i * 0.016})`;
         ctx.lineWidth = i === 1 ? 2 : 1;
         ctx.stroke();
       });
@@ -61,7 +65,7 @@ export default function HeroMotion() {
       const st = t * 0.0003 + 0.6;
       ctx.beginPath();
       ctx.arc(ax, ay, rad, st, st + Math.PI * 0.42);
-      ctx.strokeStyle = `rgba(${GLOW},0.5)`; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+      ctx.strokeStyle = `rgba(${GLOW},0.55)`; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
       ctx.stroke(); ctx.lineCap = 'butt';
 
       // drifting particles
@@ -69,7 +73,7 @@ export default function HeroMotion() {
         p.y -= p.s; p.x += p.drift;
         if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${GLOW},${p.a})`; ctx.fill();
+        ctx.fillStyle = `rgba(${PLAT},${p.a * 0.8})`; ctx.fill();
       });
     }
 

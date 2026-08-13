@@ -102,10 +102,10 @@ export default async function Home({ params }) {
         <div className={styles.heroVeil} />
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroContent}>
-            <span className="eyebrow" data-reveal>{c.eyebrow}</span>
-            <h1 className={styles.heroHead} data-reveal>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
-            <p className={styles.heroSub} data-reveal>{c.sub}</p>
-            <div className={styles.heroCtas} data-reveal>
+            <span className="eyebrow">{c.eyebrow}</span>
+            <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
+            <p className={styles.heroSub}>{c.sub}</p>
+            <div className={styles.heroCtas}>
               <Link href="/contact" className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
               <Link href="/about" className="btn btn-ghost">{c.ctaAbout}</Link>
             </div>

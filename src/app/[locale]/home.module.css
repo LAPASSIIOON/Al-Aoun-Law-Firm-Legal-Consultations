@@ -1,0 +1,44 @@
+/* Hero */
+.hero { min-block-size: 100svh; display: flex; flex-direction: column; justify-content: center; padding-block: 8rem 2.5rem; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset-block: 0; inset-inline-start: 50%; inline-size: 1px; background: linear-gradient(var(--espresso), var(--hair-dark-strong), var(--espresso)); opacity: 0.5; }
+.heroInner { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
+.heroTitle { margin-block: 1.6rem 1.8rem; max-inline-size: 20ch; }
+.heroLead { max-inline-size: 54ch; }
+.heroCta { display: flex; flex-wrap: wrap; gap: 1rem; margin-block-start: 2.75rem; }
+.heroFoot { display: flex; align-items: center; gap: 1.5rem; padding-block-start: 2.5rem; position: relative; z-index: 1; }
+.heroRule { flex: 1 1 auto; block-size: 1px; background: var(--hair-dark); }
+
+/* رؤوس الأقسام */
+.head { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; justify-content: space-between; margin-block-end: 1.5rem; }
+
+/* فهرس المجالات */
+.areaList { list-style: none; padding: 0; border-block-start: 1px solid var(--hair-dark); }
+.areaRow { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.5rem); padding-block: clamp(1.1rem, 2.4vw, 1.75rem); border-block-end: 1px solid var(--hair-dark); transition: padding-inline-start 0.5s var(--ease), color 0.4s; }
+.areaRow:hover { padding-inline-start: 0.6rem; }
+.areaName { flex: 1 1 auto; font-family: var(--f-display); font-size: clamp(1.2rem, 2.4vw, 1.9rem); font-weight: 600; color: var(--muted-dark); }
+:lang(ar) .areaName { font-weight: 700; }
+.areaRow:hover .areaName { color: var(--ink-dark); }
+
+/* القيم */
+.valueBlock { display: flex; flex-direction: column; gap: 0.8rem; padding-block-start: 1.4rem; border-block-start: 1px solid var(--hair-dark); }
+.valueStrip { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-block-start: 3rem; }
+.chip { font-family: var(--f-ui); font-size: 0.85rem; color: var(--muted-dark); padding: 0.5rem 1rem; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--hair-dark); }
+
+/* الإرث */
+.legacy { display: grid; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; grid-template-columns: 1fr; }
+@media (min-width: 820px) { .legacy { grid-template-columns: auto 1fr; } }
+.legacyYear { font-family: var(--f-en-display); font-size: clamp(5rem, 16vw, 12rem); font-weight: 600; line-height: 0.9; color: transparent; -webkit-text-stroke: 1px var(--hair-dark-strong); letter-spacing: -0.02em; }
+
+/* القيادة */
+.founder { display: grid; gap: clamp(1.75rem, 4vw, 3.5rem); grid-template-columns: 1fr; align-items: center; margin-block-start: 2rem; }
+@media (min-width: 760px) { .founder { grid-template-columns: 0.8fr 1.2fr; } }
+.founderPhoto { position: relative; aspect-ratio: 4/5; overflow: hidden; border-radius: var(--r-lg); background: var(--ivory-sink); box-shadow: inset 0 0 0 1px var(--hair-light); }
+.founderPhoto img { inline-size: 100%; block-size: 100%; object-fit: cover; object-position: top center; filter: grayscale(0.12) contrast(1.02); }
+.founderRole { font-family: var(--f-ui); font-size: 0.95rem; color: var(--blue-strong); margin-block-start: 0.6rem; letter-spacing: 0.02em; }
+:lang(ar) .founderRole { letter-spacing: 0; }
+
+/* رؤى فارغة */
+.insightsEmpty { display: flex; flex-direction: column; gap: 0.8rem; padding: clamp(2rem, 5vw, 3.5rem); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--hair-dark); background: var(--espresso-surface); align-items: flex-start; }
+
+/* تواصل */
+.ctaBlock { text-align: start; }

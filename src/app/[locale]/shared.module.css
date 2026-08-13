@@ -1,0 +1,19 @@
+.pageHead { padding-block-start: clamp(7.5rem, 14vh, 11rem); }
+.pageHeadInner { }
+.prose p { margin-block-start: 1.25rem; }
+.legalList { list-style: none; padding: 0; margin-block-start: 2.5rem; }
+.legalItem { padding-block: clamp(1.5rem, 3vw, 2.25rem); border-block-start: 1px solid var(--hair-light); display: grid; gap: 0.6rem 2rem; grid-template-columns: 1fr; }
+@media (min-width: 720px) { .legalItem { grid-template-columns: 0.4fr 1fr; } }
+.legalH { font-family: var(--f-display); font-size: 1.2rem; font-weight: 600; }
+.updated { font-family: var(--f-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--blue-strong); }
+.pending { margin-block-start: 2.5rem; padding: 1.1rem 1.4rem; border-radius: var(--r-lg); background: var(--ivory-sink); font-size: 0.9rem; color: var(--muted); box-shadow: inset 0 0 0 1px var(--hair-light); }
+.infoRow { display: flex; flex-direction: column; gap: 0.35rem; padding-block: 1.1rem; border-block-start: 1px solid var(--hair-dark); }
+.infoLabel { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--platinum-dim); }
+:lang(ar) .infoLabel { letter-spacing: 0; text-transform: none; }
+.infoVal { font-size: 1.05rem; color: var(--ink-dark); }
+.split { display: grid; gap: clamp(2rem, 5vw, 4.5rem); grid-template-columns: 1fr; }
+@media (min-width: 860px) { .split { grid-template-columns: 0.9fr 1.1fr; } }
+.pointList { list-style: none; padding: 0; margin-block-start: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.point { display: flex; gap: 1rem; align-items: baseline; }
+.point::before { content: ''; inline-size: 0.5rem; block-size: 0.5rem; background: var(--blue); flex: 0 0 auto; transform: translateY(-0.15em); }
+.emptyBox { margin-block-start: 2.5rem; padding: clamp(2rem, 5vw, 3.5rem); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--hair-dark); display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }

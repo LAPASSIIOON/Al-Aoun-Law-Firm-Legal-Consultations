@@ -12,10 +12,9 @@ import '@fontsource/amiri/400.css';
 import '@fontsource/amiri/700.css';
 import '@fontsource/cormorant/400.css';
 import '@fontsource/cormorant/500.css';
-import '@fontsource/cormorant/600.css';
 import '../globals.css';
 import RevealController from '@/components/RevealController.js';
-import { Chrome } from '@/components/Chrome.js';
+import SiteHeader from '@/components/SiteHeader.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 
 /** @type {Record<'ar'|'en', 'rtl'|'ltr'>} */
@@ -71,7 +70,8 @@ export default async function LocaleLayout({ children, params }) {
     <html lang={locale} dir={DIR_BY_LOCALE[locale]}>
       <body>
         <NextIntlClientProvider locale={locale}>
-          <Chrome />
+          <a href="#main" className="skip">تخطَّ إلى المحتوى</a>
+          <SiteHeader />
           <main id="main" className="main">{children}</main>
           <SiteFooter />
           <RevealController />

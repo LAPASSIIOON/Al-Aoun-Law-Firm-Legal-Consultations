@@ -17,7 +17,10 @@
     "lawyers": "Lawyers",
     "insights": "Insights",
     "contact": "Contact",
-    "consult": "Request a Consultation"
+    "consult": "Request a Consultation",
+    "services": "Practice Areas",
+    "team": "Team",
+    "careers": "Careers"
   },
   "hero": {
     "eyebrow": "Kuwaiti Law Firm · Since 2000",
@@ -153,7 +156,7 @@
     "body": "Founded in Kuwait in 2000, Al Aoun has practised law ever since — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
   },
   "institution": {
-    "est": "Est. 2002",
+    "est": "Est. 2000",
     "kuwait": "Kuwait",
     "wordmark": "Al Aoun"
   },
@@ -166,5 +169,130 @@
     "people": "People",
     "knowledge": "Insights",
     "action": "Consult"
+  },
+  "about": {
+    "eyebrow": "About Al Aoun",
+    "heading": "A Kuwaiti legal institution, since 2000",
+    "lead": "We build trust on clarity and discipline — not on promises.",
+    "storyHeading": "The practice",
+    "kuwaitHeading": "Present in Kuwait and the region",
+    "kuwaitBody": "From Kuwait we serve individuals, companies, business owners and investors — locally and internationally — with a precise understanding of the Gulf legal context and complete confidentiality on every engagement.",
+    "valuesHeading": "The values we work by",
+    "cta": "Request a consultation"
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "heading": "Let's begin the conversation",
+    "lead": "Request a consultation or reach us directly — we'll route you to the right path.",
+    "infoHeading": "Contact details",
+    "phoneLabelInfo": "Phone",
+    "emailLabelInfo": "Email",
+    "formHeading": "Request a consultation",
+    "nameLabel": "Full name",
+    "clientTypeLabel": "You are",
+    "clientIndividual": "Individual",
+    "clientCompany": "Company",
+    "clientInvestor": "Investor",
+    "contactLabel": "Preferred contact method",
+    "contactPhone": "Phone",
+    "contactEmail": "Email",
+    "phoneLabel": "Phone number",
+    "emailLabel": "Email address",
+    "noteLabel": "Brief note (optional)",
+    "notePlaceholder": "A line or two about your matter — no sensitive details.",
+    "submit": "Send request",
+    "sending": "Sending…",
+    "success": "We've received your request. We'll follow up through your chosen method.",
+    "errorGeneric": "Couldn't send, please try again.",
+    "errorName": "Please enter your name.",
+    "errorContact": "Enter a phone or email to reach you."
+  },
+  "careers": {
+    "eyebrow": "Careers",
+    "heading": "Working at Al Aoun",
+    "lead": "We look for precise legal minds who value discipline, confidentiality and excellence.",
+    "cultureHeading": "Our environment",
+    "cultureBody": "We work to disciplined standards and high confidentiality, giving lawyers room to grow professionally across quality matters for individuals, companies and investors.",
+    "points": [
+      "Professional discipline and high standards",
+      "Continuous development and quality experience",
+      "Complete confidentiality and institutional respect"
+    ],
+    "noOpeningsHeading": "No open positions at this time",
+    "noOpeningsBody": "We welcome outstanding CVs for consideration as opportunities arise.",
+    "applyCta": "Send your CV"
+  },
+  "privacy": {
+    "eyebrow": "Legal",
+    "heading": "Privacy Policy",
+    "updated": "Preliminary version — under review",
+    "intro": "This document explains how Al Aoun handles data submitted through this website. The final approved text will be published after review by the firm's legal counsel.",
+    "pending": "Final legal content is being prepared and approved by the firm.",
+    "sections": [
+      {
+        "h": "Data we collect",
+        "b": "We collect data you voluntarily provide through the consultation request form (name, contact method, and an optional note). We do not request sensitive case details through the website."
+      },
+      {
+        "h": "How we use data",
+        "b": "Your data is used only to respond to your request and route you appropriately. It is not shared with third parties for marketing."
+      },
+      {
+        "h": "Data protection",
+        "b": "We follow technical and organizational measures to limit unauthorized access to submitted data."
+      },
+      {
+        "h": "Your rights",
+        "b": "You may request access to, correction of, or deletion of your data through the firm's official channels."
+      },
+      {
+        "h": "Contact",
+        "b": "For any privacy inquiry, contact the firm through the published contact details."
+      }
+    ]
+  },
+  "terms": {
+    "eyebrow": "Legal",
+    "heading": "Terms & Disclaimer",
+    "updated": "Preliminary version — under review",
+    "intro": "These terms govern use of the Al Aoun website. The final approved text will be published after review by the firm's legal counsel.",
+    "pending": "Final legal content is being prepared and approved by the firm.",
+    "sections": [
+      {
+        "h": "Use of the site",
+        "b": "This site's content is provided for general informational purposes about the firm and its services."
+      },
+      {
+        "h": "Disclaimer",
+        "b": "Site content is not legal advice, and using the site or submitting a request does not create an attorney–client relationship."
+      },
+      {
+        "h": "Intellectual property",
+        "b": "The name, logo and content are owned by Al Aoun and may not be used without permission."
+      },
+      {
+        "h": "Limitation of liability",
+        "b": "The site is provided as is; the firm is not liable for decisions taken on its general content without formal consultation."
+      }
+    ]
+  },
+  "notFound": {
+    "heading": "Page not found",
+    "body": "The link you requested is unavailable or has moved.",
+    "back": "Back to home"
+  },
+  "servicesPage": {
+    "lead": "An editorial view of our legal practice areas. The approved directory is published progressively.",
+    "detailForthcoming": "Details for this practice area are being prepared and will be published once approved."
+  },
+  "teamPage": {
+    "lead": "Leadership and the legal team at Al Aoun.",
+    "founderHeading": "Leadership",
+    "memberForthcoming": "Profiles of other lawyers and consultants are published once their details are approved."
+  },
+  "insightsPage": {
+    "lead": "Legal articles and updates from Al Aoun.",
+    "readMore": "Read more",
+    "detailForthcoming": "This piece is being prepared."
   }
 }

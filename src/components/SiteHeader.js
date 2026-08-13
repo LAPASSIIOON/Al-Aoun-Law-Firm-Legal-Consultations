@@ -1,53 +1,75 @@
-import { getTranslations, getLocale } from 'next-intl/server';
-import { Link } from '@/i18n/navigation.js';
-import { AlAounLogo } from './AlAounLogo.js';
-import MobileMenu from './MobileMenu.js';
+'use client';
+import { useEffect, useState } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
+import { Link, usePathname } from '@/i18n/navigation.js';
 import styles from './SiteHeader.module.css';
 
-export async function SiteHeader() {
-  const t = await getTranslations('nav');
-  const tBrand = await getTranslations('brand');
-  const tLang = await getTranslations('langSwitch');
-  const locale = await getLocale();
-  const otherLocale = locale === 'ar' ? 'en' : 'ar';
+const LINKS = [
+  { key: 'about', href: '/about' },
+  { key: 'services', href: '/services' },
+  { key: 'team', href: '/team' },
+  { key: 'insights', href: '/insights' },
+  { key: 'careers', href: '/careers' },
+];
 
-  const links = [
-    { href: '/#about', label: t('about') },
-    { href: '/practice-areas/placeholder', label: t('practiceAreas') },
-    { href: '/#insights', label: t('insights') },
-    { href: '/#contact', label: t('contact') },
-  ];
+export default function SiteHeader() {
+  const t = useTranslations('nav');
+  const locale = useLocale();
+  const pathname = usePathname();
+  const other = locale === 'ar' ? 'en' : 'ar';
+  const [solid, setSolid] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setSolid(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  useEffect(() => { setOpen(false); }, [pathname]);
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : ''; }, [open]);
 
   return (
-    <header className={styles.header}>
-      <div className={`container ${styles.bar}`}>
-        <Link href="/" className={styles.brand} aria-label={tBrand('fullName')}>
-          <AlAounLogo height={44} variant="white" priority />
+    <header className={`${styles.header} ${solid ? styles.solid : ''}`}>
+      <div className={styles.bar}>
+        <Link href="/" className={styles.brand} aria-label={t('home')}>
+          <img src={`/brand/logo-full-${locale}-white.png`} alt="مجموعة العون" className={styles.logo} />
         </Link>
 
-        <nav className={styles.nav} aria-label={t('home')}>
-          {links.map((l) => (
-            <Link key={l.href} href={l.href} className={styles.navLink}>{l.label}</Link>
+        <nav className={styles.nav} aria-label="primary">
+          {LINKS.map((l) => (
+            <Link key={l.key} href={l.href} className={styles.link}>{t(l.key)}</Link>
           ))}
         </nav>
 
         <div className={styles.actions}>
-          <Link href="/" locale={otherLocale} className={styles.lang} aria-label={tLang('label')}>
-            {tLang('code')}
+          <Link href={pathname} locale={other} className={styles.lang} aria-label={other === 'en' ? 'English' : 'العربية'}>
+            {other === 'en' ? 'EN' : 'ع'}
           </Link>
-          <Link href="/#consult" className={styles.cta}>{t('consult')}</Link>
+          <Link href="/contact" className={styles.cta}>{t('consult')}</Link>
+          <button className={styles.burger} onClick={() => setOpen(true)} aria-label={t('contact')} aria-expanded={open}>
+            <span /><span />
+          </button>
         </div>
-
-        <MobileMenu
-          links={links}
-          cta={{ href: '/#consult', label: t('consult') }}
-          langCode={tLang('code')}
-          langLabel={tLang('label')}
-          openLabel={t('home')}
-          closeLabel={t('home')}
-          otherLocale={otherLocale}
-        />
       </div>
+
+      {open && (
+        <div className={styles.overlay} role="dialog" aria-modal="true">
+          <div className={styles.overlayTop}>
+            <img src={`/brand/logo-full-${locale}-white.png`} alt="" className={styles.logo} />
+            <button className={styles.close} onClick={() => setOpen(false)} aria-label="close">×</button>
+          </div>
+          <nav className={styles.overlayNav}>
+            <Link href="/" className={styles.overlayLink}>{t('home')}</Link>
+            {LINKS.map((l) => (<Link key={l.key} href={l.href} className={styles.overlayLink}>{t(l.key)}</Link>))}
+            <Link href="/contact" className={styles.overlayLink}>{t('contact')}</Link>
+          </nav>
+          <div className={styles.overlayFoot}>
+            <Link href={pathname} locale={other} className={styles.lang}>{other === 'en' ? 'English' : 'العربية'}</Link>
+            <Link href="/contact" className={styles.cta}>{t('consult')}</Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

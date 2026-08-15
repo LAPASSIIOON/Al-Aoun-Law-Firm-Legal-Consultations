@@ -20,8 +20,7 @@ export default async function Careers({ params }) {
       <section className="on-ivory section">
         <div className={`wrap ${s.split}`}>
           <div data-reveal>
-            <span className="eyebrow">{t('cultureHeading')}</span>
-            <h2 className="display d-2" style={{ marginBlockStart: '1rem' }}>{t('cultureHeading')}</h2>
+            <h2 className="display d-2">{t('cultureHeading')}</h2>
           </div>
           <div data-reveal>
             <p className="body" style={{ fontSize: '1.1rem' }}>{t('cultureBody')}</p>

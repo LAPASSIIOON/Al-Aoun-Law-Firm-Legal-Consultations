@@ -89,7 +89,7 @@ async function fetchData(locale) {
       .eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
     areas = (a || []).sort((x, y) => (x.practice_areas?.sort_order || 0) - (y.practice_areas?.sort_order || 0));
     const { data: ar } = await supabase.from('article_translations')
-      .select('slug, title, summary, created_at')
+      .select('slug, title, excerpt, created_at')
       .eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
       .order('created_at', { ascending: false }).limit(3);
     articles = ar || [];
@@ -252,7 +252,7 @@ export default async function Home({ params }) {
                 <Link key={a.slug} href={`/insights/${a.slug}`} className="card" data-reveal>
                   <span className="tag">{c.inEye}</span>
                   <h3 className="card-title">{a.title}</h3>
-                  {a.summary && <p className="body" style={{ fontSize: '0.98rem' }}>{a.summary}</p>}
+                  {a.excerpt && <p className="body" style={{ fontSize: '0.98rem' }}>{a.excerpt}</p>}
                   <span className="btn-line">{locale === 'ar' ? 'اقرأ' : 'Read'} <span className="arrow">→</span></span>
                 </Link>
               ))}

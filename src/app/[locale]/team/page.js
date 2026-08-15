@@ -30,7 +30,7 @@ export default async function Team({ params }) {
         <div className="wrap">
           <span className="eyebrow" data-reveal>{tt('founderHeading')}</span>
           <div className={h.founder} data-reveal>
-            <div className={h.founderPhoto}><img src="/media/founder-haitham.jpg" alt={f.name} /></div>
+            <div className={h.founderMedia}><img src="/media/founder-haitham.jpg" alt={f.name} /></div>
             <div>
               <h2 className="display d-2">{f.name}</h2>
               <p className={h.founderRole}>{f.role} · {f.title}</p>

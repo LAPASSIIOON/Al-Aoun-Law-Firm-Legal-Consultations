@@ -14,6 +14,13 @@ export function SiteFooter({ locale, areas = [] }) {
   ];
   return (
     <footer className={`${styles.footer} on-navy`}>
+      <div className={`wrap ${styles.statement}`}>
+        <p className={styles.statementText}>
+          {locale === 'ar'
+            ? <>مجموعة العون — استشارات ومحاماة كويتية، بمعايير عالمية.<br/>تأسّست عام ٢٠٠٠، ومقرّها الكويت.</>
+            : <>AL OUN — Kuwaiti legal counsel, to an international standard.<br/>Established 2000. Based in Kuwait.</>}
+        </p>
+      </div>
       <div className={`wrap ${styles.top}`}>
         <div className={styles.brandCol}>
           <img src={`/brand/logo-full-${locale}-white.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />

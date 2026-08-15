@@ -19,3 +19,8 @@
 .legalLink:hover{color:#fff}
 .discWrap{padding-block-start:.25rem}
 .disc{color:var(--muted-2);font-size:.82rem;line-height:1.7;max-width:80ch}
+
+/* بيان الختام المؤسسي (§6) */
+.statement{padding-block:clamp(3rem,7vh,5rem) clamp(2.5rem,5vh,3.5rem);border-block-end:1px solid var(--hair-dark)}
+.statementText{font-family:var(--f-display);font-weight:600;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.35;color:#fff;letter-spacing:-.01em;max-inline-size:38ch}
+:global(html[lang=ar]) .statementText{line-height:1.6;letter-spacing:0}

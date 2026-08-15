@@ -2,6 +2,9 @@
 .hero{position:relative;background:var(--navy);color:#fff;overflow:hidden;min-block-size:clamp(600px,92vh,860px);display:flex;align-items:center}
 .heroVeil{position:absolute;inset:0;background:linear-gradient(var(--veilDir),rgba(12,17,25,.92) 0%,rgba(12,17,25,.70) 45%,rgba(12,17,25,.30) 100%);z-index:1}
 .heroInner{position:relative;z-index:2;width:100%;padding-block:8rem 3rem}
+.heroGrid{position:absolute;inset:0;width:100%;height:100%;z-index:1;stroke:var(--hair-light-strong);stroke-width:1;fill:var(--clay-bright);opacity:.55}
+.heroRule{position:absolute;inset-block:0;inset-inline-start:0;inline-size:1px;background:linear-gradient(to bottom,transparent,var(--hair-dark-strong) 18%,var(--hair-dark-strong) 82%,transparent);display:none}
+@media(min-width:860px){.heroRule{display:block}}
 .heroContent{max-inline-size:44rem}
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.5rem,5.6vw,4.7rem);line-height:1.12;letter-spacing:-.015em;color:#fff;margin-block:1.4rem 0}
 :lang(ar) .heroHead{line-height:1.28;letter-spacing:0}
@@ -52,9 +55,16 @@
 
 /* ── مجالات الممارسة — صفوف تحريرية مرقّمة (§11: لا بطاقات SaaS) ── */
 .paList{display:flex;flex-direction:column;border-block-start:1px solid var(--hair-light)}
-.paRow{display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
+.paRow{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
 .paRow:hover{background:var(--surface);padding-inline:1.1rem}
-.paIdx{font-family:var(--f-en);font-size:.85rem;color:var(--platinum-3);font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-block-start:.45em}
+.paRow::after{content:'';position:absolute;inset-inline:0;inset-block-end:-1px;block-size:1px;background:var(--clay-bright);transform:scaleX(0);transition:transform .6s var(--ease)}
+:global(html[lang=en]) .paRow::after{transform-origin:left}
+:global(html[lang=ar]) .paRow::after{transform-origin:right}
+.paRow:hover::after{transform:scaleX(1)}
+.paIdx{position:relative;font-family:var(--f-en);font-size:.85rem;color:var(--platinum-3);font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-block-start:.45em;padding-inline-start:1rem;transition:color .4s var(--ease)}
+.paIdx::before{content:'';position:absolute;inset-inline-start:0;inset-block-start:.65em;inline-size:5px;block-size:5px;border-radius:50%;background:var(--clay-bright);transform:scale(0);transition:transform .4s var(--ease)}
+.paRow:hover .paIdx{color:var(--clay-bright)}
+.paRow:hover .paIdx::before{transform:scale(1)}
 .paTitle{display:block;font-family:var(--f-display);font-weight:600;font-size:clamp(1.35rem,2.5vw,2.05rem);line-height:1.25;color:var(--platinum);transition:color .35s var(--ease)}
 :global(html[lang=ar]) .paTitle{line-height:1.45}
 .paRow:hover .paTitle{color:var(--clay-bright)}

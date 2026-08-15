@@ -38,7 +38,7 @@
 
   /* مقاسات/حركة — مساحات أوسع للوقار */
   --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(5.5rem,11vh,9.5rem);
-  --r:8px; --r-lg:14px; --r-card:16px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
+  --r:5px; --r-lg:8px; --r-card:8px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
 html[lang="ar"]{ --f-display:var(--f-ar); --f-ui:var(--f-ar); }
 html[lang="en"]{ --f-display:var(--f-en); --f-ui:var(--f-en); }

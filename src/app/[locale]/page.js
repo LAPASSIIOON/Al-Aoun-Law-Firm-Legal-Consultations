@@ -99,8 +99,19 @@ export default async function Home({ params }) {
       {/* HERO */}
       <section className={styles.hero} style={{ '--veilDir': veilDir }}>
         <HeroMotion />
+        <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
+          <line x1="0" y1="120" x2="1200" y2="120" />
+          <line x1="0" y1="680" x2="1200" y2="680" />
+          <line x1="90" y1="0" x2="90" y2="800" />
+          <line x1="1110" y1="0" x2="1110" y2="800" />
+          <circle cx="90" cy="120" r="2.5" />
+          <circle cx="1110" cy="120" r="2.5" />
+          <circle cx="90" cy="680" r="2.5" />
+          <circle cx="1110" cy="680" r="2.5" />
+        </svg>
         <div className={styles.heroVeil} />
         <div className={`wrap ${styles.heroInner}`}>
+          <div className={styles.heroRule} aria-hidden="true" />
           <div className={styles.heroContent}>
             <span className="eyebrow">{c.eyebrow}</span>
             <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>

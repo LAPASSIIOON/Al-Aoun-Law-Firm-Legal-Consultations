@@ -20,7 +20,7 @@
 @media(min-width:960px){.nav{display:flex}.cta{display:inline-flex!important}.burger{display:none}}
 
 /* mega */
-.mega{position:absolute;inset-block-start:calc(100% + 14px);inset-inline-start:50%;transform:translateX(-50%) translateY(8px);inline-size:min(720px,86vw);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+.mega{position:absolute;inset-block-start:100%;padding-block-start:14px;inset-inline-start:50%;transform:translateX(-50%) translateY(8px);inline-size:min(720px,86vw);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
 [dir=rtl] .mega{transform:translateX(50%) translateY(8px)}
 .megaOpen{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
 [dir=rtl] .megaOpen{transform:translateX(50%) translateY(0)}
@@ -47,7 +47,8 @@
 .megaIdx{font-family:var(--f-en);font-size:.72rem;color:var(--platinum-3);inline-size:1.4rem;flex:0 0 auto;font-variant-numeric:tabular-nums}
 
 /* dropdown بسيط للمكتب */
-.drop{position:absolute;inset-block-start:calc(100% + 14px);inset-inline-start:50%;transform:translateX(-50%) translateY(8px);inline-size:220px;background:var(--surface);border-radius:var(--r-lg);box-shadow:0 24px 56px rgba(0,0,0,.5),inset 0 0 0 1px var(--hair-light);padding:.6rem;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+.drop{position:absolute;inset-block-start:100%;padding-block-start:14px;inset-inline-start:50%;transform:translateX(-50%) translateY(8px);inline-size:220px;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+.dropInner{background:var(--surface);border-radius:var(--r-lg);box-shadow:0 24px 56px rgba(0,0,0,.5),inset 0 0 0 1px var(--hair-light);padding:.6rem}
 [dir=rtl] .drop{transform:translateX(50%) translateY(8px)}
 .dropOpen{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
 [dir=rtl] .dropOpen{transform:translateX(50%) translateY(0)}

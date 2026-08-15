@@ -68,7 +68,9 @@ export default function SiteHeader({ locale, areas = [] }) {
               {locale === 'ar' ? 'المكتب' : 'The Firm'} <span className={`${styles.chev} ${openMenu === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
             </button>
             <div className={`${styles.drop} ${openMenu === 'firm' ? styles.dropOpen : ''}`} role="menu">
-              {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{t(n.key)}</Link>))}
+              <div className={styles.dropInner}>
+                {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{t(n.key)}</Link>))}
+              </div>
             </div>
           </div>
 

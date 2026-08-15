@@ -1,24 +1,26 @@
-/* ═══ مجموعة العون — Sovereign Ink (الحبر السيادي) · Dark-dominant · Midnight navy + Platinum + Clay ═══ */
+/* ═══ مجموعة العون — Deep Navy Authority · كحلي عميق غالب + أزرق بارد تقني (وقار Mallesons × دقّة PitchBook) ═══ */
 :root {
-  /* اللوحة الأساسية */
-  --ground:#0C1119;      /* الأرضية — ميدنايت نيفي (66%) */
-  --surface:#1A2430;     /* السطح (16%) */
-  --surface-2:#223041;   /* سطح مرتفع — بطاقات */
-  --surface-3:#2A3A4D;   /* تحويم/متداخل */
-  --platinum:#ECEBE6;    /* نص أساسي (10%) */
-  --platinum-2:#C9CDD2;  /* نص ثانوي/خافت (3%) */
-  --platinum-3:#97A1AC;  /* نص باهت */
-  --clay:#B0623F;        /* الأكسنت الطيني (5%) */
-  --clay-bright:#D18A63; /* طيني فاتح — نص أكسنت مقروء على الداكن */
-  --clay-600:#96512F;    /* طيني مضغوط */
-  --clay-050:rgba(176,98,63,0.12);
-  --blue-note:#2C8FD6;   /* أزرق اللوجو — لمسة تناغم في الموشن فقط */
+  /* اللوحة — كحلي/أسود عميق + بلاتيني بارد + أزرق تقني */
+  --ground:#0A0F1A;      /* الأرضية — كحلي أسود عميق (غالب) */
+  --surface:#111A2B;     /* السطح */
+  --surface-2:#18233A;   /* سطح مرتفع — بطاقات */
+  --surface-3:#21304C;   /* تحويم/متداخل */
+  --platinum:#E9EDF4;    /* نص أساسي — أبيض بارد */
+  --platinum-2:#AEB9CC;  /* نص ثانوي */
+  --platinum-3:#7C89A0;  /* نص باهت */
+
+  /* الأكسنت البارد (أزرق اللوجو) — الأسماء clay محتفَظ بها، القيم أزرق */
+  --clay:#2E7FC2;        /* الأكسنت الأزرق البارد (fills/CTA) */
+  --clay-bright:#5AA9E6; /* أزرق فاتح — نص أكسنت مقروء على الداكن */
+  --clay-600:#256AA6;    /* أزرق مضغوط */
+  --clay-050:rgba(46,127,194,0.12);
+  --blue-note:#2C8FD6;   /* لمسة أزرق اللوجو في الموشن */
 
   /* نصوص */
-  --ink:var(--platinum); --ink-2:#DCE0E4; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
+  --ink:var(--platinum); --ink-2:#D6DDE8; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
   --ink-dark:var(--platinum); --muted-dark:var(--platinum-2);
 
-  /* أسماء مستعارة — تقلب نظام (أبيض/كحلي/أزرق) القديم إلى الحبر السيادي */
+  /* أسماء مستعارة */
   --white:#FFFFFF;
   --navy:var(--ground); --navy-2:var(--surface-2); --navy-3:var(--surface-3);
   --paper:var(--surface); --paper-2:var(--surface-2);
@@ -27,15 +29,15 @@
   --blue-glow:var(--clay-bright); --blue-strong:var(--clay-bright); --platinum-dim:var(--platinum-3);
 
   /* خطوط شعرية — فاتح على داكن */
-  --hair-light:rgba(236,235,230,0.10); --hair-light-strong:rgba(236,235,230,0.18);
-  --hair-dark:rgba(236,235,230,0.12); --hair-dark-strong:rgba(236,235,230,0.22);
+  --hair-light:rgba(233,237,244,0.10); --hair-light-strong:rgba(233,237,244,0.17);
+  --hair-dark:rgba(233,237,244,0.12); --hair-dark-strong:rgba(233,237,244,0.22);
 
-  /* خطوط الكتابة (بلا تغيير) */
+  /* خطوط الكتابة */
   --f-ar:'Readex Pro Variable','IBM Plex Sans Arabic',system-ui,sans-serif;
   --f-en:'Archivo Variable',system-ui,sans-serif;
 
-  /* مقاسات/حركة (بلا تغيير) */
-  --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(4.5rem,9vh,8rem);
+  /* مقاسات/حركة — مساحات أوسع للوقار */
+  --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(5.5rem,11vh,9.5rem);
   --r:8px; --r-lg:14px; --r-card:16px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
 html[lang="ar"]{ --f-display:var(--f-ar); --f-ui:var(--f-ar); }

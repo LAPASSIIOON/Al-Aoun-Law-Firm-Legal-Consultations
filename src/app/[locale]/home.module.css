@@ -48,3 +48,18 @@
 .bandActions{display:flex;flex-direction:column;gap:.75rem;align-items:flex-start}
 .bandPhone{color:var(--muted-dark);font-size:.95rem}
 .bandPhone a{color:#fff;font-weight:500}
+
+
+/* ── مجالات الممارسة — صفوف تحريرية مرقّمة (§11: لا بطاقات SaaS) ── */
+.paList{display:flex;flex-direction:column;border-block-start:1px solid var(--hair-light)}
+.paRow{display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
+.paRow:hover{background:var(--surface);padding-inline:1.1rem}
+.paIdx{font-family:var(--f-en);font-size:.85rem;color:var(--platinum-3);font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-block-start:.45em}
+.paTitle{display:block;font-family:var(--f-display);font-weight:600;font-size:clamp(1.35rem,2.5vw,2.05rem);line-height:1.25;color:var(--platinum);transition:color .35s var(--ease)}
+:global(html[lang=ar]) .paTitle{line-height:1.45}
+.paRow:hover .paTitle{color:var(--clay-bright)}
+.paSum{display:block;color:var(--platinum-2);font-size:.98rem;line-height:1.75;margin-block-start:.4rem;max-inline-size:62ch}
+.paArrow{color:var(--platinum-3);font-size:1.25rem;padding-block-start:.35em;transition:transform .45s var(--ease),color .35s var(--ease)}
+.paRow:hover .paArrow{color:var(--clay-bright)}
+:global(html[lang=en]) .paRow:hover .paArrow{transform:translateX(4px)}
+:global(html[lang=ar]) .paRow:hover .paArrow{transform:translateX(-4px)}

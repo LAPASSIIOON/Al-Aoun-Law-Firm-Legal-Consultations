@@ -147,13 +147,15 @@ export default async function Home({ params }) {
             </div>
             <Link href="/services" className="btn-line" data-reveal>{c.paAll} <span className="arrow">→</span></Link>
           </div>
-          <div className="grid cols-3">
+          <div className={styles.paList}>
             {(areas.length ? areas : Array.from({ length: 6 })).map((a, i) => (
-              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={`card ${styles.areaCard}`} data-reveal>
-                <span className="idx">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="card-title">{a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}</h3>
-                {a?.summary && <p className="body" style={{ fontSize: '0.98rem' }}>{a.summary}</p>}
-                <span className={`btn-line ${styles.moreLink}`}>{c.paMore} <span className="arrow">→</span></span>
+              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal>
+                <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
+                <span className={styles.paBody}>
+                  <span className={styles.paTitle}>{a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}</span>
+                  {a?.summary && <span className={styles.paSum}>{a.summary}</span>}
+                </span>
+                <span className={styles.paArrow} aria-hidden="true">→</span>
               </Link>
             ))}
           </div>

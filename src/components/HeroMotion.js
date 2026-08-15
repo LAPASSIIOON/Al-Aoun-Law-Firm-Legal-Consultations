@@ -12,9 +12,9 @@ export default function HeroMotion() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0, w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2), t = 0;
     const rtl = getComputedStyle(document.documentElement).direction === 'rtl';
-    const CLAY = '46,127,194';        // --blue (cold)
+    const CLAY = '48,161,217';        // #30A1D9 measured logo blue
     const PLAT = '174,185,204';       // --platinum-2 (cool)
-    const GLOW = '90,169,230';        // --blue-bright
+    const GLOW = '100,184,227';       // #64B8E3 measured 400
     const NOTE = '44,143,214';        // --blue-note (لمسة أزرق اللوجو)
     let particles = [];
 

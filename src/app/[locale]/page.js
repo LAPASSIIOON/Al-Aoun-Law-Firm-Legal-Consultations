@@ -19,7 +19,13 @@ const T = {
       { v: 2000, l: 'سنة التأسيس' }, { v: 25, s: '+', l: 'سنة خبرة' },
       { v: 12, l: 'مجال ممارسة' }, { v: 4, l: 'مراكز تحكيم معتمدة' },
     ],
-    authority: ['محاماة بالتمييز والدستورية', 'محكّم معتمد لدى ٤ مراكز', 'رئاسة المجلس العلمي بجمعية المحامين', 'سرّية تامة'],
+    legacyEye: 'الإرث المؤسسي', legacyHead: 'عمقٌ مؤسسي، بُني على سنوات من الممارسة الدقيقة.',
+    legacyItems: [
+      { n: '01', t: 'محاماة بالتمييز والدستورية', d: 'خبرةٌ أكاديمية وعملية في القانون الدستوري، بقيادة دكتوراه من جامعة القاهرة بتقدير امتياز.' },
+      { n: '02', t: 'محكّم معتمد لدى ٤ مراكز', d: 'تسجيلٌ معتمَد لدى مراكز التحكيم الرائدة في الكويت والخليج.' },
+      { n: '03', t: 'رئاسة المجلس العلمي بجمعية المحامين', d: 'قيادة أكاديمية داخل الهيئة المهنية للمحامين في الكويت.' },
+      { n: '04', t: '+٢٥ عامًا من الممارسة', d: 'خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.' },
+    ],
     posEye: 'من نحن', posHead: 'خبرةٌ قانونية عميقة، في خدمة قرارٍ واضح.',
     posBody: 'مجموعة العون مكتب محاماةٍ واستشاراتٍ وتحكيمٍ كويتي تأسّس عام ٢٠٠٠، يقوده الدكتور هيثم العون بخلفيةٍ أكاديمية وعملية في القانون الدستوري والتمييز والتحكيم التجاري الدولي. نجمع بين العمق النظري والممارسة الدقيقة لنقدّم مشورةً يُعتمد عليها.',
     posLink: 'المزيد عن المكتب',
@@ -47,7 +53,13 @@ const T = {
       { v: 2000, l: 'Established' }, { v: 25, s: '+', l: 'Years of experience' },
       { v: 12, l: 'Practice areas' }, { v: 4, l: 'Arbitration centres' },
     ],
-    authority: ['Cassation & constitutional advocacy', 'Registered arbitrator · 4 centres', 'Chair, Scientific Advisory Council', 'Full confidentiality'],
+    legacyEye: 'Institutional Legacy', legacyHead: 'Institutional depth, built on years of precise practice.',
+    legacyItems: [
+      { n: '01', t: 'Cassation & constitutional advocacy', d: 'Academic and practical grounding in constitutional law, led by a PhD from Cairo University (Excellent).' },
+      { n: '02', t: 'Registered arbitrator — 4 centres', d: 'Registered as arbitrator across four certified arbitration centres in Kuwait and the Gulf.' },
+      { n: '03', t: 'Chair, Scientific Advisory Council', d: "Academic leadership within Kuwait's professional lawyers' association." },
+      { n: '04', t: '25+ years in practice', d: 'Over two decades across constitutional matters, cassation appeals and international commercial arbitration.' },
+    ],
     posEye: 'Who we are', posHead: 'Deep legal expertise, in service of a clear decision.',
     posBody: 'Al Oun is a Kuwaiti law, consultancy and arbitration firm established in 2000, led by Dr. Haitham Al Oun with academic and practical grounding in constitutional law, cassation and international commercial arbitration. We pair theoretical depth with precise practice to deliver counsel you can rely on.',
     posLink: 'More about the firm',
@@ -110,6 +122,7 @@ export default async function Home({ params }) {
           <circle cx="1110" cy="680" r="2.5" />
         </svg>
         <div className={styles.heroVeil} />
+        <span className={styles.heroTag} aria-hidden="true">01</span>
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroRule} aria-hidden="true" />
           <div className={styles.heroContent}>
@@ -123,15 +136,6 @@ export default async function Home({ params }) {
             <div className={styles.counters}>
               {c.counters.map((s, i) => (<CounterStat key={i} value={s.v} suffix={s.s || ''} label={s.l} locale={locale} />))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AUTHORITY STRIP */}
-      <section className="on-white section-tight">
-        <div className="wrap">
-          <div className={styles.authority} data-reveal>
-            {c.authority.map((a, i) => (<span key={i} className={styles.authItem}>{a}</span>))}
           </div>
         </div>
       </section>
@@ -168,6 +172,28 @@ export default async function Home({ params }) {
                 </span>
                 <span className={styles.paArrow} aria-hidden="true">→</span>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* INSTITUTIONAL DEPTH / LEGACY — distinct composition (editorial index) so it reads as
+          new narrative content, not a repeat of the values/positioning sections around it */}
+      <section className="on-white section">
+        <div className="wrap">
+          <div className={styles.head}>
+            <span className="eyebrow" data-reveal>{c.legacyEye}</span>
+            <h2 className="display d-1" data-reveal>{c.legacyHead}</h2>
+          </div>
+          <div className={styles.legacyList}>
+            {c.legacyItems.map((it) => (
+              <div key={it.n} className={styles.legacyRow} data-reveal>
+                <span className={styles.legacyIdx}>{it.n}</span>
+                <span className={styles.legacyBody}>
+                  <span className={styles.legacyTitle}>{it.t}</span>
+                  <span className={styles.legacyDesc}>{it.d}</span>
+                </span>
+              </div>
             ))}
           </div>
         </div>

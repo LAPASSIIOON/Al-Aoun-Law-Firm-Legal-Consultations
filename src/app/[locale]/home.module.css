@@ -5,8 +5,10 @@
 .heroGrid{position:absolute;inset:0;width:100%;height:100%;z-index:1;stroke:var(--hair-light-strong);stroke-width:1;fill:var(--clay-bright);opacity:.55}
 .heroRule{position:absolute;inset-block:0;inset-inline-start:0;inline-size:1px;background:linear-gradient(to bottom,transparent,var(--hair-dark-strong) 18%,var(--hair-dark-strong) 82%,transparent);display:none}
 @media(min-width:860px){.heroRule{display:block}}
+.heroTag{position:absolute;inset-block-start:clamp(5.5rem,10vh,7.2rem);inset-inline-start:calc(var(--gutter) + 90px * (100vw / 1200));z-index:2;font-family:var(--f-en);font-size:.75rem;color:var(--platinum-3);letter-spacing:.08em;font-variant-numeric:tabular-nums;display:none}
+@media(min-width:860px){.heroTag{display:block}}
 .heroContent{max-inline-size:44rem}
-.heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.5rem,5.6vw,4.7rem);line-height:1.12;letter-spacing:-.015em;color:#fff;margin-block:1.4rem 0}
+.heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.6rem,6vw,5.2rem);line-height:1.1;letter-spacing:-.02em;color:#fff;margin-block:1.4rem 0}
 :lang(ar) .heroHead{line-height:1.28;letter-spacing:0}
 .heroSub{color:var(--muted-dark);font-size:clamp(1.1rem,1.5vw,1.35rem);line-height:1.7;max-inline-size:40rem;margin-block:1.6rem 2.2rem}
 :lang(ar) .heroSub{line-height:2}
@@ -73,3 +75,22 @@
 .paRow:hover .paArrow{color:var(--clay-bright)}
 :global(html[lang=en]) .paRow:hover .paArrow{transform:translateX(4px)}
 :global(html[lang=ar]) .paRow:hover .paArrow{transform:translateX(-4px)}
+
+
+/* ── العمق المؤسسي / الإرث — فهرس تحريري مميّز (§8: يملأ الفجوة السردية، لا يكرر أقسام أخرى) ── */
+.legacyList{display:grid;grid-template-columns:1fr;gap:0;border-block-start:1px solid var(--hair-light)}
+@media(min-width:760px){.legacyList{grid-template-columns:1fr 1fr}}
+.legacyRow{display:flex;align-items:flex-start;gap:1.1rem;padding-block:clamp(1.4rem,2.6vh,1.9rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light)}
+@media(min-width:760px){.legacyRow:nth-child(odd){padding-inline-end:1.5rem}.legacyRow:nth-child(even){padding-inline-start:1.5rem}}
+.legacyIdx{font-family:var(--f-en);font-size:.8rem;color:var(--clay-bright);font-variant-numeric:tabular-nums;padding-block-start:.3em;flex:0 0 auto}
+.legacyBody{display:flex;flex-direction:column;gap:.4rem}
+.legacyTitle{font-family:var(--f-display);font-weight:600;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--ink);line-height:1.35}
+.legacyDesc{color:var(--muted);font-size:.95rem;line-height:1.7;max-inline-size:46ch}
+
+
+/* دفع تفاعل صفوف الخدمات درجة أعمق (§ services): الملخص ينكشف بالتحويم على أجهزة الفأرة فقط —
+   يبقى ظاهرًا دائمًا على اللمس (لا يعتمد على hover غير موجود) */
+@media (hover:hover) and (pointer:fine){
+  .paSum{max-block-size:0;opacity:0;overflow:hidden;transition:max-block-size .55s var(--ease),opacity .4s var(--ease),margin-block-start .55s var(--ease);margin-block-start:0}
+  .paRow:hover .paSum,.paRow:focus-visible .paSum{max-block-size:6rem;opacity:1;margin-block-start:.4rem}
+}

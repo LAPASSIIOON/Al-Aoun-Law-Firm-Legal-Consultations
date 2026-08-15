@@ -75,6 +75,28 @@ export default async function Contact({ params }) {
           </div>
         </div>
       </section>
+
+      <section className="on-white section">
+        <div className="wrap">
+          <div className={s.officeGrid}>
+            <div className={s.officeMedia}>
+              <video
+                className={s.officeVideo}
+                poster="/media/office-interior-poster.jpg"
+                autoPlay muted loop playsInline preload="metadata"
+                aria-label={t('officeHead')}
+              >
+                <source src="/media/office-interior.webm" type="video/webm" />
+                <source src="/media/office-interior.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div className={s.officeText} data-reveal>
+              <span className="eyebrow">{t('officeEye')}</span>
+              <h2 className="display d-2" style={{ marginBlock: '1.2rem 1rem' }}>{t('officeHead')}</h2>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

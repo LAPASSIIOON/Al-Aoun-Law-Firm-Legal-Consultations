@@ -216,7 +216,9 @@
     "directionsBtn": "Open in Google Maps",
     "qrCaption": "Scan to get directions",
     "routeHeading": "Watch the route",
-    "routeCaption": "An aerial view of the route to our office."
+    "routeCaption": "An aerial view of the route to our office.",
+    "officeEye": "Inside the Firm",
+    "officeHead": "A setting that reflects your trust."
   },
   "careers": {
     "eyebrow": "Careers",

@@ -36,3 +36,10 @@
 .routeCaption{display:flex;flex-direction:column;gap:.25rem}
 .routeHeading{font-family:var(--f-display);font-weight:600;font-size:1.05rem;color:var(--platinum,#E9EDF4)}
 .routeCaption span:last-child{font-size:.9rem;color:var(--platinum-2,#AEB9CC)}
+
+/* ── داخل المكتب — عرض حقيقي لمقرّ المكتب ── */
+.officeGrid{display:grid;grid-template-columns:1fr;gap:clamp(1.75rem,4vw,3rem);align-items:center}
+@media(min-width:860px){.officeGrid{grid-template-columns:1.3fr 1fr}}
+.officeMedia{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 10px 34px rgba(0,0,0,.4),0 0 0 1px var(--hair-light);aspect-ratio:4/3;background:var(--surface-2)}
+.officeVideo{width:100%;height:100%;object-fit:cover;display:block}
+.officeText{max-inline-size:34ch}

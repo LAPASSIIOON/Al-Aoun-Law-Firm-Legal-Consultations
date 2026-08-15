@@ -216,7 +216,9 @@
     "directionsBtn": "فتح في خرائط جوجل",
     "qrCaption": "امسح للوصول إلى الموقع",
     "routeHeading": "شاهد الطريق",
-    "routeCaption": "لقطة جوّية للطريق إلى مقرّنا."
+    "routeCaption": "لقطة جوّية للطريق إلى مقرّنا.",
+    "officeEye": "داخل المكتب",
+    "officeHead": "أجواءٌ تليق بثقتكم."
   },
   "careers": {
     "eyebrow": "الوظائف",

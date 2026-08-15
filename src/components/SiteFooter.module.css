@@ -3,7 +3,7 @@
 @media(min-width:820px){.top{grid-template-columns:1.6fr 1fr 1fr 1.3fr}}
 .brandCol{max-width:34ch}
 .logo{height:42px;width:auto;display:block}
-.logoPlinth{display:inline-flex;align-items:center;background:var(--white,#fff);border-radius:var(--r-lg);padding:.7rem 1.3rem;box-shadow:0 4px 16px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);margin-block-end:1.5rem}
+.logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--white,#fff);border-radius:var(--r-lg);padding:.7rem 1.3rem;box-shadow:0 4px 16px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);margin-block-end:1.5rem}
 .tagline{color:var(--muted-dark);font-size:1.05rem;line-height:1.8}
 .col{display:flex;flex-direction:column;gap:.7rem}
 .head{font-family:var(--f-ui);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-glow);margin-block-end:.5rem}

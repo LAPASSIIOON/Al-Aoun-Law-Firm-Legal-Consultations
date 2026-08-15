@@ -16,6 +16,9 @@
   --clay-050:rgba(48,161,217,0.10);
   --blue-note:#64B8E3;   /* درجة 400 المقاسة — توهّج الموشن */
 
+  /* لمسة دافية من ألوان مكتب العون الحقيقي — للأزرار فقط، بلا مساس بنظام الأزرق */
+  --gold:#F4B044; --gold-600:#E0680E; --gold-text:var(--ground);
+
   /* نصوص */
   --ink:var(--platinum); --ink-2:#D6DDE8; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
   --ink-dark:var(--platinum); --muted-dark:var(--platinum-2);

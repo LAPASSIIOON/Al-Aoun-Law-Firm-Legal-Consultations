@@ -45,8 +45,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 
 /* أزرار */
 .btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--f-ui);font-weight:500;font-size:.95rem;padding:.9rem 1.6rem;border-radius:var(--r);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur) var(--ease)}
-.btn-solid{background:var(--clay);color:#fff}
-.btn-solid:hover{background:var(--clay-600)}
+.btn-solid{background:var(--gold);color:var(--gold-text)}
+.btn-solid:hover{background:var(--gold-600)}
 .btn-ghost{color:var(--platinum);box-shadow:inset 0 0 0 1px var(--hair-light-strong)}
 .btn-ghost:hover{box-shadow:inset 0 0 0 1px var(--clay);color:var(--clay-bright)}
 .btn-line{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-ui);font-weight:500;font-size:.95rem;color:var(--clay-bright);padding-block:.3rem}

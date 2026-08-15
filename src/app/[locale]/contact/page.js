@@ -59,6 +59,19 @@ export default async function Contact({ params }) {
                 <span className={s.qrCaption}>{t('qrCaption')}</span>
               </div>
             </div>
+            <div className={s.routeCard}>
+              <video
+                className={s.routeVideo}
+                src="/media/al-oun-office-route.mp4"
+                poster="/media/al-oun-office-route-poster.jpg"
+                autoPlay muted loop playsInline preload="metadata"
+                aria-label={t('routeHeading')}
+              />
+              <div className={s.routeCaption}>
+                <span className={s.routeHeading}>{t('routeHeading')}</span>
+                <span>{t('routeCaption')}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

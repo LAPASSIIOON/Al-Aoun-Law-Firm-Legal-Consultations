@@ -214,7 +214,9 @@
     "addressValue": "Al-Andalus Complex, Kuwait",
     "mapHeading": "Location",
     "directionsBtn": "Open in Google Maps",
-    "qrCaption": "Scan to get directions"
+    "qrCaption": "Scan to get directions",
+    "routeHeading": "Watch the route",
+    "routeCaption": "An aerial view of the route to our office."
   },
   "careers": {
     "eyebrow": "Careers",

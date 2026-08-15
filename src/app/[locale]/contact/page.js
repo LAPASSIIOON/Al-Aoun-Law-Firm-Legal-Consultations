@@ -18,6 +18,21 @@ export default async function Contact({ params }) {
           <p className="lead" data-reveal style={{ maxWidth: '48ch' }}>{t('lead')}</p>
         </div>
       </section>
+
+      <section className="on-navy section-tight">
+        <div className="wrap">
+          <h2 className="display d-2" data-reveal style={{ color: '#fff', marginBlockEnd: '2.25rem' }}>{t('processHeading')}</h2>
+          <div className="grid cols-3">
+            {[1, 2, 3].map((n) => (
+              <div key={n} data-reveal>
+                <span className="idx">{String(n).padStart(2, '0')}</span>
+                <h3 className="display d-3" style={{ marginBlock: '.6rem .4rem', color: '#fff' }}>{t(`processStep${n}T`)}</h3>
+                <p className="body" style={{ fontSize: '.95rem' }}>{t(`processStep${n}D`)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="on-ivory section">
         <div className={`wrap ${s.split}`}>
           <div data-reveal>

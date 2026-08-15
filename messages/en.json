@@ -218,7 +218,18 @@
     "routeHeading": "Watch the route",
     "routeCaption": "An aerial view of the route to our office.",
     "officeEye": "Inside the Firm",
-    "officeHead": "A setting that reflects your trust."
+    "officeHead": "A setting that reflects your trust.",
+    "stepOf": "Step {n} of 2",
+    "nextStep": "Next",
+    "back": "Back",
+    "startEasy": "Start with one easy step — just your name and number.",
+    "processHeading": "How a consultation works",
+    "processStep1T": "Submit your request",
+    "processStep1D": "Share basic contact details — no sensitive case specifics.",
+    "processStep2T": "Conflict-of-interest check",
+    "processStep2D": "We confirm your matter doesn't conflict with our existing files.",
+    "processStep3T": "Secure follow-up",
+    "processStep3D": "We reach you via your chosen channel, in full confidence."
   },
   "careers": {
     "eyebrow": "Careers",

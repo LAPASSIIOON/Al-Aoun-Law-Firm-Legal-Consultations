@@ -14,3 +14,15 @@
 .segOn { background: var(--clay); color: #fff; box-shadow: inset 0 0 0 1px var(--clay); }
 .err { color: #9B4A3A; font-size: 0.9rem; }
 .success { padding: clamp(2rem, 5vw, 3rem); border-radius: var(--r-lg); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--clay); }
+
+/* ── مؤشر الخطوتين + انتقال سلس (تأثير التدرّج نحو الهدف) ── */
+.stepBar{display:flex;align-items:center;gap:.6rem;margin-block-end:1.5rem}
+.stepDot{inline-size:20px;block-size:3px;border-radius:2px;background:var(--hair-light-strong);transition:background .4s var(--ease)}
+.stepDot[data-active="true"]{background:var(--clay,var(--blue))}
+.stepDotActive{background:var(--clay,var(--blue))}
+.stepLabel{font-size:.82rem;color:var(--platinum-3,var(--muted));margin-inline-start:.4rem}
+.hint{font-size:.95rem;color:var(--platinum-2,var(--muted));margin-block-end:1.4rem}
+.stepActions{display:flex;align-items:center;gap:1.25rem}
+.stepIn{animation:stepFade .45s var(--ease) both}
+@keyframes stepFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.stepIn{animation:none}}

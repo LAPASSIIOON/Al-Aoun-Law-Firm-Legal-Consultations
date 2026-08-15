@@ -42,7 +42,7 @@ const T = {
     fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة. خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.',
     fLink: 'الملف الكامل',
     inEye: 'رؤى قانونية', inHead: 'رؤى ومقالات', inAll: 'كل الرؤى', inEmpty: 'نُثري هذا القسم بتحليلاتٍ قانونية تباعًا.',
-    bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'اطلب استشارة، وسنوجّهك للمسار المناسب — بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
+    bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'ابدأ بخطوةٍ سهلة — اسمك ورقمك بس، والباقي نتولّاه بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
   },
   en: {
     eyebrow: 'Kuwaiti Law Firm · Since 2000',
@@ -76,7 +76,7 @@ const T = {
     fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres. Over two decades across constitutional matters, cassation appeals and international commercial arbitration.',
     fLink: 'Full profile',
     inEye: 'Insights', inHead: 'Insights & articles', inAll: 'All insights', inEmpty: 'We’re adding legal analysis to this section shortly.',
-    bandHead: 'Ready for a clear first step?', bandBody: 'Request a consultation and we’ll guide you to the right path — in full confidence.', bandPhone: 'Or call us',
+    bandHead: 'Ready for a clear first step?', bandBody: 'Start with one easy step — just your name and number. We’ll handle the rest, in full confidence.', bandPhone: 'Or call us',
   },
 };
 

@@ -23,7 +23,11 @@ export function SiteFooter({ locale, areas = [] }) {
       </div>
       <div className={`wrap ${styles.top}`}>
         <div className={styles.brandCol}>
-          <img src={`/brand/logo-full-${locale}-white.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+          <span className={styles.logoPlinth}>
+            <span className={styles.logoPlinth}>
+              <img src={`/brand/logo-full-${locale}-color.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+            </span>
+          </span>
           <p className={styles.tagline}>{t('tagline')}</p>
         </div>
         <div className={styles.col}>

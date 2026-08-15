@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation.js';
 import styles from './SiteHeader.module.css';
 
-const Chevron = () => (<svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+const Chevron = () => (<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
 
 /** @param {{ locale: string, areas: {slug:string,title:string}[] }} props */
 export default function SiteHeader({ locale, areas = [] }) {
@@ -13,8 +13,8 @@ export default function SiteHeader({ locale, areas = [] }) {
   const other = locale === 'ar' ? 'en' : 'ar';
   const [scrolled, setScrolled] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const [mega, setMega] = useState(false);
-  const [mAreas, setMAreas] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null); // 'services' | 'firm' | null
+  const [mOpen, setMOpen] = useState(null); // mobile accordion group
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -23,44 +23,57 @@ export default function SiteHeader({ locale, areas = [] }) {
   }, []);
   useEffect(() => { document.body.style.overflow = mobile ? 'hidden' : ''; }, [mobile]);
 
-  const nav = [
+  const firmLinks = [
     { key: 'about', href: '/about' },
     { key: 'team', href: '/team' },
-    { key: 'insights', href: '/insights' },
     { key: 'careers', href: '/careers' },
   ];
 
+  const closeAll = () => { setMobile(false); setOpenMenu(null); };
+
   return (
+    <>
     <header className={`${styles.header} ${scrolled ? styles.solid : ''}`}>
       <div className={styles.bar}>
-        <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'}>
+        <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} onClick={closeAll}>
           <img src={`/brand/logo-full-${locale}-white.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
-          <div className={styles.navItem} onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)}>
-            <button className={styles.navLink} aria-expanded={mega} onClick={() => setMega((v) => !v)}>
-              {t('services')} <span className={`${styles.chev} ${mega ? styles.chevUp : ''}`}><Chevron /></span>
+          {/* PRACTICE AREAS — mega */}
+          <div className={styles.navItem} onMouseEnter={() => setOpenMenu('services')} onMouseLeave={() => setOpenMenu((m) => (m === 'services' ? null : m))}>
+            <button className={styles.navLink} aria-expanded={openMenu === 'services'} onClick={() => setOpenMenu((m) => (m === 'services' ? null : 'services'))}>
+              {t('services')} <span className={`${styles.chev} ${openMenu === 'services' ? styles.chevUp : ''}`}><Chevron /></span>
             </button>
-            <div className={`${styles.mega} ${mega ? styles.megaOpen : ''}`} role="menu">
+            <div className={`${styles.mega} ${openMenu === 'services' ? styles.megaOpen : ''}`} role="menu">
               <div className={styles.megaInner}>
                 <div className={styles.megaHead}>
                   <span className="eyebrow">{t('services')}</span>
-                  <Link href="/services" className="btn-line" onClick={() => setMega(false)}>{locale === 'ar' ? 'استعراض الكل' : 'View all'} <span className="arrow">→</span></Link>
+                  <Link href="/services" className="btn-line" onClick={closeAll}>{locale === 'ar' ? 'استعراض الكل' : 'View all'} <span className="arrow">→</span></Link>
                 </div>
                 <div className={styles.megaGrid}>
-                  {(areas.length ? areas : []).map((a) => (
-                    <Link key={a.slug} href={`/services/${a.slug}`} className={styles.megaLink} onClick={() => setMega(false)} role="menuitem">
-                      <span className={styles.megaDot} />{a.title}
+                  {areas.map((a, i) => (
+                    <Link key={a.slug} href={`/services/${a.slug}`} className={styles.megaLink} onClick={closeAll} role="menuitem">
+                      <span className={styles.megaIdx}>{String(i + 1).padStart(2, '0')}</span>{a.title}
                     </Link>
                   ))}
                 </div>
               </div>
             </div>
           </div>
-          {nav.map((n) => (
-            <Link key={n.key} href={n.href} className={styles.navLink}>{t(n.key)}</Link>
-          ))}
+
+          {/* THE FIRM — grouped dropdown */}
+          <div className={styles.navItem} onMouseEnter={() => setOpenMenu('firm')} onMouseLeave={() => setOpenMenu((m) => (m === 'firm' ? null : m))}>
+            <button className={styles.navLink} aria-expanded={openMenu === 'firm'} onClick={() => setOpenMenu((m) => (m === 'firm' ? null : 'firm'))}>
+              {locale === 'ar' ? 'المكتب' : 'The Firm'} <span className={`${styles.chev} ${openMenu === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
+            </button>
+            <div className={`${styles.drop} ${openMenu === 'firm' ? styles.dropOpen : ''}`} role="menu">
+              {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{t(n.key)}</Link>))}
+            </div>
+          </div>
+
+          <Link href="/insights" className={styles.navLink}>{t('insights')}</Link>
+          <Link href="/contact" className={styles.navLink}>{t('contact')}</Link>
         </nav>
 
         <div className={styles.actions}>
@@ -72,34 +85,44 @@ export default function SiteHeader({ locale, areas = [] }) {
         </div>
       </div>
 
-      {mobile && (
-        <div className={styles.overlay}>
-          <div className={styles.overlayTop}>
-            <img src={`/brand/logo-full-${locale}-white.png`} alt="" className={styles.logo} />
-            <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={() => setMobile(false)}>×</button>
-          </div>
-          <nav className={styles.overlayNav}>
-            <button className={styles.overlayLink} onClick={() => setMAreas((v) => !v)}>
-              {t('services')} <span className={`${styles.chev} ${mAreas ? styles.chevUp : ''}`}><Chevron /></span>
-            </button>
-            {mAreas && (
-              <div className={styles.overlaySub}>
-                {areas.map((a) => (
-                  <Link key={a.slug} href={`/services/${a.slug}`} className={styles.overlaySubLink} onClick={() => setMobile(false)}>{a.title}</Link>
-                ))}
-                <Link href="/services" className={styles.overlaySubLink} onClick={() => setMobile(false)}>{locale === 'ar' ? 'استعراض الكل ←' : 'View all →'}</Link>
-              </div>
-            )}
-            {nav.map((n) => (
-              <Link key={n.key} href={n.href} className={styles.overlayLink} onClick={() => setMobile(false)}>{t(n.key)}</Link>
-            ))}
-          </nav>
-          <div className={styles.overlayFoot}>
-            <Link href={pathname} locale={other} className={styles.lang} onClick={() => setMobile(false)}>{other === 'en' ? 'English' : 'العربية'}</Link>
-            <Link href="/contact" className="btn btn-solid" onClick={() => setMobile(false)}>{t('consult')}</Link>
-          </div>
-        </div>
-      )}
     </header>
+    {mobile && (
+      <div className={styles.overlay}>
+        <div className={styles.overlayTop}>
+          <img src={`/brand/logo-full-${locale}-white.png`} alt="" className={styles.logo} />
+          <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={closeAll}>×</button>
+        </div>
+        <nav className={styles.overlayNav}>
+          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'services' ? null : 'services'))} style={{ animationDelay: '.02s' }}>
+            <span><span className={styles.oIdx}>01</span>{t('services')}</span>
+            <span className={`${styles.chev} ${mOpen === 'services' ? styles.chevUp : ''}`}><Chevron /></span>
+          </button>
+          {mOpen === 'services' && (
+            <div className={styles.oSub}>
+              {areas.map((a) => (<Link key={a.slug} href={`/services/${a.slug}`} className={styles.oSubLink} onClick={closeAll}>{a.title}</Link>))}
+              <Link href="/services" className={styles.oSubLink} onClick={closeAll}>{locale === 'ar' ? 'استعراض الكل ←' : 'View all →'}</Link>
+            </div>
+          )}
+
+          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'firm' ? null : 'firm'))} style={{ animationDelay: '.08s' }}>
+            <span><span className={styles.oIdx}>02</span>{locale === 'ar' ? 'المكتب' : 'The Firm'}</span>
+            <span className={`${styles.chev} ${mOpen === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
+          </button>
+          {mOpen === 'firm' && (
+            <div className={styles.oSub}>
+              {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.oSubLink} onClick={closeAll}>{t(n.key)}</Link>))}
+            </div>
+          )}
+
+          <Link href="/insights" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.14s' }}><span className={styles.oIdx}>03</span>{t('insights')}</Link>
+          <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>04</span>{t('contact')}</Link>
+        </nav>
+        <div className={styles.overlayFoot}>
+          <Link href={pathname} locale={other} className={styles.lang} onClick={closeAll}>{other === 'en' ? 'English' : 'العربية'}</Link>
+          <Link href="/contact" className="btn btn-solid" onClick={closeAll}>{t('consult')}</Link>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

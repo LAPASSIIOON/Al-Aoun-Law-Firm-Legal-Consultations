@@ -40,3 +40,26 @@
 .overlaySubLink{font-size:1.05rem;color:var(--platinum-2);padding:.5rem .2rem}
 .overlaySubLink:hover{color:var(--clay-bright)}
 .overlayFoot{display:flex;align-items:center;gap:1.25rem;padding-block:1.75rem;border-block-start:1px solid var(--hair-light);flex:0 0 auto}
+
+/* ── المرحلة ٢: تجميع مؤسسي (§12) ── */
+.megaIdx{font-family:var(--f-en);font-size:.72rem;color:var(--platinum-3);inline-size:1.4rem;flex:0 0 auto;font-variant-numeric:tabular-nums}
+
+/* dropdown بسيط للمكتب */
+.drop{position:absolute;inset-block-start:calc(100% + 14px);inset-inline-start:50%;transform:translateX(-50%) translateY(8px);inline-size:220px;background:var(--surface);border-radius:var(--r-lg);box-shadow:0 24px 56px rgba(0,0,0,.5),inset 0 0 0 1px var(--hair-light);padding:.6rem;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+[dir=rtl] .drop{transform:translateX(50%) translateY(8px)}
+.dropOpen{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
+[dir=rtl] .dropOpen{transform:translateX(50%) translateY(0)}
+.dropLink{display:block;font-size:.95rem;color:var(--platinum-2);padding:.65rem .8rem;border-radius:var(--r);transition:background .25s,color .25s}
+.dropLink:hover{background:var(--clay-050);color:var(--clay-bright)}
+
+/* موبايل — مجموعات مرقّمة بتفاعل متدرّج */
+.overlayLink,.oGroupHead{animation:oIn .5s var(--ease) both}
+@keyframes oIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.overlayLink,.oGroupHead{animation:none}}
+.oGroupHead{display:flex;align-items:center;justify-content:space-between;width:100%;font-family:var(--f-display);font-size:1.6rem;font-weight:600;color:var(--platinum);padding-block:.7rem;border-block-end:1px solid var(--hair-light)}
+.oGroupHead:hover{color:var(--clay-bright)}
+.oIdx{font-family:var(--f-en);font-size:.72rem;color:var(--platinum-3);margin-inline-end:.9rem;font-variant-numeric:tabular-nums;vertical-align:middle}
+.oSub{display:flex;flex-direction:column;gap:.1rem;padding:.5rem 0 1.1rem 2.3rem;margin-block-start:-.3rem}
+[dir=rtl] .oSub{padding:.5rem 2.3rem 1.1rem 0}
+.oSubLink{font-size:1.05rem;color:var(--platinum-2);padding:.5rem .2rem}
+.oSubLink:hover{color:var(--clay-bright)}

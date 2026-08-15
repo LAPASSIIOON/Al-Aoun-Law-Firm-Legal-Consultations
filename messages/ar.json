@@ -209,7 +209,12 @@
     "errorName": "يرجى إدخال الاسم.",
     "errorContact": "أدخل هاتفًا أو بريدًا للتواصل.",
     "hoursLabel": "ساعات العمل",
-    "hoursValue": "الأحد – الخميس، ٩:٠٠ ص – ٥:٠٠ م"
+    "hoursValue": "الأحد – الخميس، ٩:٠٠ ص – ٥:٠٠ م",
+    "addressLabel": "العنوان",
+    "addressValue": "مجمع الأندلس، الكويت",
+    "mapHeading": "الموقع",
+    "directionsBtn": "فتح في خرائط جوجل",
+    "qrCaption": "امسح للوصول إلى الموقع"
   },
   "careers": {
     "eyebrow": "الوظائف",

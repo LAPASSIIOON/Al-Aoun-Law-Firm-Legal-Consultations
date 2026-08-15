@@ -209,7 +209,12 @@
     "errorName": "Please enter your name.",
     "errorContact": "Enter a phone or email to reach you.",
     "hoursLabel": "Working hours",
-    "hoursValue": "Sunday – Thursday, 9:00 AM – 5:00 PM"
+    "hoursValue": "Sunday – Thursday, 9:00 AM – 5:00 PM",
+    "addressLabel": "Address",
+    "addressValue": "Al-Andalus Complex, Kuwait",
+    "mapHeading": "Location",
+    "directionsBtn": "Open in Google Maps",
+    "qrCaption": "Scan to get directions"
   },
   "careers": {
     "eyebrow": "Careers",

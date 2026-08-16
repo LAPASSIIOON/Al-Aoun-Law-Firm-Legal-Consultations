@@ -7,6 +7,8 @@ const STATIC_PATHS = [
   { path: '', priority: 1.0, freq: 'weekly' },
   { path: '/international', priority: 0.9, freq: 'monthly' },
   { path: '/international/for-law-firms', priority: 0.85, freq: 'monthly' },
+  { path: '/international/refer-a-matter', priority: 0.7, freq: 'monthly' },
+  { path: '/international/partner-with-us', priority: 0.7, freq: 'monthly' },
   { path: '/about', priority: 0.8, freq: 'monthly' },
   { path: '/services', priority: 0.9, freq: 'weekly' },
   { path: '/team', priority: 0.7, freq: 'monthly' },

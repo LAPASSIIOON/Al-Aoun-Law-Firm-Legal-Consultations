@@ -3,6 +3,7 @@
 import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { createServerClient } from '@/lib/supabase-server.js';
+import { verifyTurnstile } from '@/lib/turnstile.js';
 
 /**
  * تجزئة IP بملح ثابت — لحد المعدل دون تخزين IP خام (خصوصية §٥/CITRA).
@@ -11,29 +12,6 @@ import { createServerClient } from '@/lib/supabase-server.js';
 function hashIp(ip) {
   const salt = process.env.IP_HASH_SALT || 'al-aoun-default-salt';
   return createHash('sha256').update(salt + ip).digest('hex').slice(0, 32);
-}
-
-/**
- * التحقّق من رمز Turnstile عبر واجهة Cloudflare siteverify.
- * السرّ يُقرأ من متغيّر بيئة على الخادم فقط — لا يُكتب في الكود إطلاقًا.
- * @param {string|undefined} token
- * @param {string} remoteIp
- */
-async function verifyTurnstile(token, remoteIp) {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return false; // لو السرّ غير مُهيَّأ في البيئة، نرفض بأمان بدل تجاوز التحقّق
-  if (!token) return false;
-  try {
-    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ secret, response: token, remoteip: remoteIp }),
-    });
-    const data = await res.json();
-    return !!data.success;
-  } catch (e) {
-    return false;
-  }
 }
 
 /**

@@ -98,7 +98,10 @@ export default async function ForLawFirms({ params }) {
         <div className="wrap">
           <h2 className="display d-2" data-reveal style={{ color: '#fff', marginBlockEnd: '1rem', maxWidth: '20ch' }}>{t('ctaHead')}</h2>
           <p className="body" data-reveal style={{ maxWidth: '52ch', marginBlockEnd: '1.75rem' }}>{t('ctaBody')}</p>
-          <Link href="/contact" className="btn btn-solid">{t('ctaBtn')} <span className="arrow">→</span></Link>
+          <p style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Link href="/international/refer-a-matter" className="btn btn-solid">{t('ctaBtn')} <span className="arrow">→</span></Link>
+            <Link href="/international/partner-with-us" className="btn-line">{t('partnerCta')}</Link>
+          </p>
         </div>
       </section>
     </>

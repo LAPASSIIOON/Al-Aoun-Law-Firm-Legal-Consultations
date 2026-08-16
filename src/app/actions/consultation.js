@@ -46,7 +46,7 @@ async function notifyNewConsultation(d) {
       headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({
         from: 'AL OUN — تنبيهات الموقع <onboarding@resend.dev>',
-        to: ['Aloun.Law@gmail.com', 'karimssaleh52@gmail.com'],
+        to: ['karimssaleh52@gmail.com'], // ⚠️ Resend وضع اختباري — يسمح بإيميل صاحب الحساب فقط، انظر §تعليمات النطاق
         reply_to: d.email || undefined,
         subject: `طلب استشارة جديد — ${d.reference}`,
         html,

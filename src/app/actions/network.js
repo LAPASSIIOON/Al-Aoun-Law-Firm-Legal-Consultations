@@ -19,7 +19,7 @@ async function notify(subject, html) {
       headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({
         from: 'AL OUN — تنبيهات الموقع <onboarding@resend.dev>',
-        to: ['Aloun.Law@gmail.com', 'karimssaleh52@gmail.com'],
+        to: ['karimssaleh52@gmail.com'], // ⚠️ Resend وضع اختباري — يسمح بإيميل صاحب الحساب فقط
         subject,
         html,
       }),

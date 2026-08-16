@@ -28,7 +28,11 @@ export async function signUp(input) {
 /** @param {{ email: string, password: string }} input */
 export async function signIn(input) {
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.signInWithPassword({ email: input.email, password: input.password });
+  const { error } = await supabase.auth.signInWithPassword({
+    email: input.email,
+    password: input.password,
+    options: { captchaToken: input.turnstileToken || undefined },
+  });
   if (error) return { ok: false, error: 'invalid_credentials' };
   return { ok: true };
 }

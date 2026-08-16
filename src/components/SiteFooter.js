@@ -40,6 +40,7 @@ export function SiteFooter({ locale, areas = [] }) {
         <div className={styles.col}>
           <span className={styles.head}>{t('linksHeading')}</span>
           {firmLinks.map((l) => (<Link key={l.key} href={l.href} className={styles.link}>{n(l.key)}</Link>))}
+          <Link href="/account/sign-in" className={styles.link}>{t('portal')}</Link>
         </div>
         <div className={styles.col}>
           <span className={styles.head}>{t('contactHeading')}</span>

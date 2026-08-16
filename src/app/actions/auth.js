@@ -16,6 +16,7 @@ export async function signUp(input) {
     return { ok: false, error: 'consent_required' };
   }
   const supabase = await createSupabaseServerClient();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://al-aoun-law-firm-legal-consultation.vercel.app';
   const { data, error } = await supabase.auth.signUp({
     email: input.email,
     password: input.password,
@@ -27,6 +28,7 @@ export async function signUp(input) {
         consent_version: input.consentVersion || '',
       },
       captchaToken: input.turnstileToken || undefined,
+      emailRedirectTo: `${siteUrl}/${input.locale || 'ar'}/account/sign-in`,
     },
   });
   if (error) return { ok: false, error: error.message === 'User already registered' ? 'already_registered' : 'server_error' };

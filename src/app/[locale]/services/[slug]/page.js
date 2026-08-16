@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
@@ -27,7 +28,7 @@ async function getOthers(slug, locale) {
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params; const a = await getArea(slug, locale);
-  return a ? { title: a.title, description: a.summary } : {};
+  return a ? { title: a.title, description: a.summary, alternates: altLangs(`/services/${slug}`) } : {};
 }
 
 /** @param {{ params: Promise<{ slug: string, locale: string }> }} props */

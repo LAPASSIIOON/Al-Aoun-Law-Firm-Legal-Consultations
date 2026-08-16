@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import h from '../home.module.css';
@@ -10,7 +11,7 @@ const FOUNDER = {
     bio: 'Holds a PhD in Constitutional Law from Cairo University (Excellent), admitted before the Cassation and Constitutional courts. Founder of Al Oun, and Chair of the Scientific Advisory Council at the Kuwait Lawyers Association.' },
 };
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading'), alternates: altLangs('/team') }; }
 
 export default async function Team({ params }) {
   const { locale } = await params; setRequestLocale(locale);

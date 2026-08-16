@@ -1,8 +1,9 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { altLangs } from '@/lib/i18n-meta.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'privacy' }); return { title: t('heading'), description: t('intro') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'privacy' }); return { title: t('heading'), description: t('intro'), alternates: altLangs('/privacy') }; }
 
 export default async function Page({ params }) {
   const { locale } = await params; setRequestLocale(locale);

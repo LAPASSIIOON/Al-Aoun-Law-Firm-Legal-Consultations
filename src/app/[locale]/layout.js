@@ -35,7 +35,7 @@ export async function generateMetadata({ params }) {
       ],
       apple: '/icons/apple-touch-icon.png',
     },
-    alternates: { languages: { ar: '/ar', en: '/en' } },
+    alternates: { languages: { ar: '/ar', en: '/en' } }, // ⚠️ صحيح للرئيسية فقط — كل صفحة أخرى تُلزَم بتحديد alternates خاص بها (انظر src/lib/i18n-meta.js)
     openGraph: {
       type: 'website',
       locale: locale === 'ar' ? 'ar_KW' : 'en_US',

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
@@ -15,7 +16,7 @@ async function getArticle(slug, locale) {
 }
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params; const a = await getArticle(slug, locale);
-  return a ? { title: a.meta_title || a.title, description: a.meta_description || a.excerpt } : {};
+  return a ? { title: a.meta_title || a.title, description: a.meta_description || a.excerpt, alternates: altLangs(`/insights/${slug}`) } : {};
 }
 export default async function Article({ params }) {
   const { slug, locale } = await params; setRequestLocale(locale);

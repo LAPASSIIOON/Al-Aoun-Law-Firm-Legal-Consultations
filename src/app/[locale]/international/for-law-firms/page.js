@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { altLangs } from '@/lib/i18n-meta.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../../shared.module.css';
@@ -8,7 +9,7 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'forLawFirms' });
-  return { title: t('heading'), description: t('lead') };
+  return { title: t('heading'), description: t('lead'), alternates: altLangs('/international/for-law-firms') };
 }
 
 async function fetchAreas(locale) {

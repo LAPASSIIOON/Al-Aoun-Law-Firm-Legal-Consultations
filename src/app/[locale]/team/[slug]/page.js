@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import s from '../../shared.module.css';
@@ -10,7 +11,7 @@ const FOUNDER = {
   en: { name: 'Dr. Haitham Ahmed Al Oun', role: 'Founder & Chairman', title: 'Cassation & Constitutional Lawyer',
     creds: ['PhD in Constitutional Law — Cairo University (Excellent)','Admitted before the Cassation and Constitutional courts','Chair, Scientific Advisory Council — Kuwait Lawyers Association','Founder of Al Oun Law Firm & Legal Consultations'] },
 };
-export async function generateMetadata({ params }) { const { slug, locale } = await params; if (slug!=='haitham-al-aoun') return {}; return { title: (FOUNDER[locale]||FOUNDER.ar).name }; }
+export async function generateMetadata({ params }) { const { slug, locale } = await params; if (slug!=='haitham-al-aoun') return {}; return { title: (FOUNDER[locale]||FOUNDER.ar).name, alternates: altLangs('/team/haitham-al-aoun') }; }
 
 export default async function TeamMember({ params }) {
   const { slug, locale } = await params; setRequestLocale(locale);

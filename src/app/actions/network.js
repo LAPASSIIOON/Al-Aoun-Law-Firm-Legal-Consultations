@@ -14,7 +14,7 @@ async function notify(subject, html) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return;
   try {
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -24,7 +24,10 @@ async function notify(subject, html) {
         html,
       }),
     });
-  } catch (e) { /* صامت عمدًا — السجل في القاعدة هو المصدر الموثوق */ }
+    const body = await res.text();
+    if (!res.ok) { console.error('RESEND_SEND_FAILED', res.status, body); }
+    else { console.log('RESEND_SEND_OK', body); }
+  } catch (e) { console.error('RESEND_SEND_EXCEPTION', String(e)); }
 }
 
 async function getClientMeta() {

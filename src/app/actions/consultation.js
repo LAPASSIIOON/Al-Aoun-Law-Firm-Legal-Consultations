@@ -41,7 +41,7 @@ async function notifyNewConsultation(d) {
       </table>
     </div>`;
   try {
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -52,8 +52,14 @@ async function notifyNewConsultation(d) {
         html,
       }),
     });
+    const body = await res.text();
+    if (!res.ok) {
+      console.error('RESEND_SEND_FAILED', res.status, body);
+    } else {
+      console.log('RESEND_SEND_OK', body);
+    }
   } catch (e) {
-    // صامت عمدًا — الإشعار ثانوي، السجل في القاعدة هو المصدر الموثوق
+    console.error('RESEND_SEND_EXCEPTION', String(e));
   }
 }
 

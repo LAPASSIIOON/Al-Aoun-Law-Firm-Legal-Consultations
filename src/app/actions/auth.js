@@ -18,6 +18,7 @@ export async function signUp(input) {
     password: input.password,
     options: {
       data: { full_name: input.fullName || input.email, member_type: input.memberType || 'individual' },
+      captchaToken: input.turnstileToken || undefined,
     },
   });
   if (error) return { ok: false, error: error.message === 'User already registered' ? 'already_registered' : 'server_error' };

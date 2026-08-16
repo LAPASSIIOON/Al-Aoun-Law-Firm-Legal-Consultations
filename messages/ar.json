@@ -444,5 +444,39 @@
     "errorContact": "أدخل هاتفًا أو بريدًا للتواصل.",
     "errorCaptcha": "تعذّر التحقّق الأمني، أعد المحاولة.",
     "practiceAreaLabel": "المجال القانوني"
+  },
+  "account": {
+    "signUpHeading": "إنشاء حساب",
+    "signUpLead": "للأفراد والمحامين والجهات المتعاونة الراغبين في متابعة طلباتهم أو التواصل مع مجموعة العون.",
+    "memberTypeLabel": "صفتك",
+    "typeIndividual": "فرد",
+    "typeLawyer": "محامٍ",
+    "typeOrganization": "جهة/مكتب",
+    "fullNameLabel": "الاسم الكامل",
+    "emailLabel": "البريد الإلكتروني",
+    "passwordLabel": "كلمة المرور",
+    "signUpCta": "إنشاء الحساب",
+    "signInCta": "تسجيل الدخول",
+    "signInHeading": "تسجيل الدخول",
+    "sending": "جارٍ المعالجة…",
+    "checkEmail": "تحقّق من بريدك الإلكتروني لتأكيد الحساب قبل تسجيل الدخول.",
+    "errorGeneric": "تعذّر إتمام العملية، يرجى المحاولة مرة أخرى.",
+    "errorAlreadyRegistered": "هذا البريد مسجَّل بالفعل — سجّل الدخول بدلًا من ذلك.",
+    "errorInvalidCredentials": "البريد أو كلمة المرور غير صحيحة.",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "noAccount": "ليس لديك حساب؟"
+  },
+  "admin": {
+    "title": "لوحة العون",
+    "navOverview": "نظرة عامة",
+    "navConsultations": "الاستشارات",
+    "navReferrals": "الإحالات",
+    "navPartnerships": "طلبات التعاون",
+    "navMembers": "الأعضاء",
+    "signOut": "تسجيل الخروج",
+    "pendingHeading": "الحساب قيد المراجعة",
+    "pendingBody": "تم إنشاء حسابك بنجاح، لكن لا يزال بانتظار تفعيل صلاحيات المشرف من إدارة مجموعة العون.",
+    "emptyList": "لا توجد سجلّات بعد.",
+    "membersHint": "رقّي أي عضو إلى \"admin\" لمنحه صلاحية الوصول لهذه اللوحة، أو ألغِ التفعيل لسحب الوصول."
   }
 }

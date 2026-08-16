@@ -444,5 +444,39 @@
     "errorContact": "Enter a phone or email to reach you.",
     "errorCaptcha": "Security check failed, please try again.",
     "practiceAreaLabel": "Practice area"
+  },
+  "account": {
+    "signUpHeading": "Create an Account",
+    "signUpLead": "For individuals, lawyers, and cooperating organisations who want to track their requests or reach Al Oun directly.",
+    "memberTypeLabel": "You are a",
+    "typeIndividual": "Individual",
+    "typeLawyer": "Lawyer",
+    "typeOrganization": "Organisation/Firm",
+    "fullNameLabel": "Full name",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "signUpCta": "Create Account",
+    "signInCta": "Sign In",
+    "signInHeading": "Sign In",
+    "sending": "Processing…",
+    "checkEmail": "Check your email to confirm your account before signing in.",
+    "errorGeneric": "Couldn't complete this, please try again.",
+    "errorAlreadyRegistered": "This email is already registered — sign in instead.",
+    "errorInvalidCredentials": "Incorrect email or password.",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?"
+  },
+  "admin": {
+    "title": "Al Oun Desk",
+    "navOverview": "Overview",
+    "navConsultations": "Consultations",
+    "navReferrals": "Referrals",
+    "navPartnerships": "Partnership Requests",
+    "navMembers": "Members",
+    "signOut": "Sign Out",
+    "pendingHeading": "Account Under Review",
+    "pendingBody": "Your account was created successfully, but admin access hasn't been granted yet by Al Oun's team.",
+    "emptyList": "No records yet.",
+    "membersHint": "Promote a member to \"admin\" to grant them access to this dashboard, or deactivate to revoke access."
   }
 }

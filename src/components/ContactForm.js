@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
+import Script from 'next/script';
 import { useTranslations, useLocale } from 'next-intl';
 import { submitConsultation } from '@/app/actions/consultation.js';
 import styles from './ContactForm.module.css';
+
+const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 
 export default function ContactForm() {
   const t = useTranslations('contactPage');
@@ -27,10 +30,13 @@ export default function ContactForm() {
     const fd = new FormData(e.currentTarget);
     const email = (fd.get('email') || '').toString().trim();
     const note = (fd.get('note') || '').toString().trim();
+    const turnstileToken = (fd.get('cf-turnstile-response') || '').toString();
+    if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     try {
-      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note });
+      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken });
       if (res && res.ok) { setStatus('success'); }
+      else if (res && res.error === 'captcha_failed') { setStatus('error'); setErr(t('errorCaptcha')); }
       else { setStatus('error'); setErr(t('errorGeneric')); }
     } catch (_) { setStatus('error'); setErr(t('errorGeneric')); }
   }
@@ -92,6 +98,8 @@ export default function ContactForm() {
             <textarea name="note" className={styles.input} rows={3} placeholder={t('notePlaceholder')} />
           </label>
           {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
+          <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="dark" data-size="flexible" data-language={locale} style={{ marginBlockEnd: '1.1rem' }} />
+          <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" async defer />
           <div className={styles.stepActions}>
             <button type="button" className="btn-line" onClick={() => setStep(1)}>{t('back')}</button>
             <button type="submit" className="btn btn-solid" disabled={status === 'sending'}>

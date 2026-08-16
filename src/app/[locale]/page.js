@@ -102,6 +102,7 @@ export default async function Home({ params }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const n = await getTranslations({ locale, namespace: 'nav' });
+  const ti = await getTranslations({ locale, namespace: 'international' });
   const c = T[locale] || T.ar;
   const { areas, articles } = await fetchData(locale);
   const veilDir = locale === 'ar' ? 'to left' : 'to right';
@@ -136,6 +137,24 @@ export default async function Home({ params }) {
             <div className={styles.counters}>
               {c.counters.map((s, i) => (<CounterStat key={i} value={s.v} suffix={s.s || ''} label={s.l} locale={locale} />))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DUAL TRACK — عميل / مكتب دولي، مباشرة بعد الهيرو */}
+      <section className="on-white section-tight">
+        <div className="wrap">
+          <div className={styles.dualBar}>
+            <Link href="/contact" className={styles.dualItem}>
+              <span className={styles.dualEye}>{ti('forkClientEye')}</span>
+              <span className={styles.dualT}>{ti('forkClientHead')}</span>
+              <span className="arrow">→</span>
+            </Link>
+            <Link href="/international/for-law-firms" className={styles.dualItem}>
+              <span className={styles.dualEye}>{ti('forkFirmEye')}</span>
+              <span className={styles.dualT}>{ti('forkFirmHead')}</span>
+              <span className="arrow">→</span>
+            </Link>
           </div>
         </div>
       </section>

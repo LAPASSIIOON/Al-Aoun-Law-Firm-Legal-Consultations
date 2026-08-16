@@ -75,6 +75,7 @@ export default function SiteHeader({ locale, areas = [] }) {
           </div>
 
           <Link href="/insights" className={styles.navLink}>{t('insights')}</Link>
+          <Link href="/international" className={styles.navLink}>{t('international')}</Link>
           <Link href="/contact" className={styles.navLink}>{t('contact')}</Link>
         </nav>
 
@@ -117,7 +118,8 @@ export default function SiteHeader({ locale, areas = [] }) {
           )}
 
           <Link href="/insights" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.14s' }}><span className={styles.oIdx}>03</span>{t('insights')}</Link>
-          <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>04</span>{t('contact')}</Link>
+          <Link href="/international" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.16s' }}><span className={styles.oIdx}>04</span>{t('international')}</Link>
+          <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>05</span>{t('contact')}</Link>
         </nav>
         <div className={styles.overlayFoot}>
           <Link href={pathname} locale={other} className={styles.lang} onClick={closeAll}>{other === 'en' ? 'English' : 'العربية'}</Link>

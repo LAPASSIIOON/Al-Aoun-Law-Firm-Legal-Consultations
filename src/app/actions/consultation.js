@@ -14,6 +14,29 @@ function hashIp(ip) {
 }
 
 /**
+ * التحقّق من رمز Turnstile عبر واجهة Cloudflare siteverify.
+ * السرّ يُقرأ من متغيّر بيئة على الخادم فقط — لا يُكتب في الكود إطلاقًا.
+ * @param {string|undefined} token
+ * @param {string} remoteIp
+ */
+async function verifyTurnstile(token, remoteIp) {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) return false; // لو السرّ غير مُهيَّأ في البيئة، نرفض بأمان بدل تجاوز التحقّق
+  if (!token) return false;
+  try {
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret, response: token, remoteip: remoteIp }),
+    });
+    const data = await res.json();
+    return !!data.success;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
  * تقديم طلب استشارة عبر المسار الآمن (RPC مع حد معدل + تدقيق).
  * لا يجمع وقائع القضية (§٥). التحقق يتم على الخادم لا الواجهة فقط.
  *
@@ -40,9 +63,8 @@ export async function submitConsultation(input) {
     return { ok: false, error: 'no_contact' };
   }
 
-  // TODO[ASSET REQUIRED]: تحقّق Turnstile قبل الإدراج
-  // const ok = await verifyTurnstile(input.turnstileToken, ip);
-  // if (!ok) return { ok: false, error: 'captcha_failed' };
+  const captchaOk = await verifyTurnstile(input.turnstileToken, ip);
+  if (!captchaOk) return { ok: false, error: 'captcha_failed' };
 
   const supabase = createServerClient();
   const { data, error } = await supabase.rpc('submit_consultation', {

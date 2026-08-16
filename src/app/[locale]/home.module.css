@@ -92,3 +92,12 @@
   .paSum{max-block-size:0;opacity:0;overflow:hidden;transition:max-block-size .55s var(--ease),opacity .4s var(--ease),margin-block-start .55s var(--ease);margin-block-start:0}
   .paRow:hover .paSum,.paRow:focus-visible .paSum{max-block-size:6rem;opacity:1;margin-block-start:.4rem}
 }
+
+/* ── شريط الازدواج (عميل / مكتب دولي) — تحت الهيرو مباشرة ── */
+.dualBar{display:grid;grid-template-columns:1fr;border-block-start:1px solid var(--hair-light);border-block-end:1px solid var(--hair-light)}
+@media(min-width:760px){.dualBar{grid-template-columns:1fr 1fr}}
+.dualItem{display:flex;align-items:center;gap:.9rem;padding:1.4rem 1.5rem;text-decoration:none;transition:background .3s var(--ease)}
+.dualItem:hover{background:var(--surface-2)}
+@media(min-width:760px){.dualItem:first-child{border-inline-end:1px solid var(--hair-light)}}
+.dualEye{font-family:var(--f-en);font-size:.72rem;letter-spacing:.08em;color:var(--clay-bright);flex:0 0 auto}
+.dualT{font-family:var(--f-display);font-weight:600;font-size:1rem;color:var(--ink,#14213A);flex:1 1 auto}

@@ -44,3 +44,8 @@
 .officeMedia{position:relative;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 10px 34px rgba(0,0,0,.4),0 0 0 1px var(--hair-light);aspect-ratio:9/16;max-inline-size:360px;margin-inline:auto;background:#000}
 .officeVideo{width:100%;height:100%;object-fit:contain;display:block}
 .officeText{max-inline-size:34ch}
+
+/* ── الازدواج (عميل / مكتب) — صفحة الدولي ── */
+.forkGrid{display:grid;grid-template-columns:1fr;gap:1.75rem}
+@media(min-width:760px){.forkGrid{grid-template-columns:1fr 1fr}}
+.forkCard{padding:clamp(1.75rem,3.5vw,2.5rem);border-radius:var(--r-lg);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--hair-light)}

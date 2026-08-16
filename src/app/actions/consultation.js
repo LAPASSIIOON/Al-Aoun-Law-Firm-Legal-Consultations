@@ -37,6 +37,49 @@ async function verifyTurnstile(token, remoteIp) {
 }
 
 /**
+ * إرسال إشعار بريدي فوري للمكتب عند وصول طلب استشارة جديد.
+ * عبر REST مباشرة (fetch) بلا حزمة npm جديدة — يحافظ على ميزانية الاعتماديات.
+ * فشل الإرسال لا يوقف نجاح الطلب نفسه (تدهور رشيق — السجل في القاعدة هو المرجع).
+ * المُرسِل الافتراضي لـResend (onboarding@resend.dev) لأنه إشعار داخلي، لا بريد موجّه لعميل.
+ * @param {{ reference: string, fullName: string, clientType: string, preferredContact: string,
+ *   phone?: string, email?: string, routingNote?: string, preferredLocale?: string }} d
+ */
+async function notifyNewConsultation(d) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return; // غير مُهيَّأ بعد — لا نكسر تدفّق الطلب لهذا السبب
+  const typeLabel = { individual: 'فرد', company: 'شركة', investor: 'مستثمر' }[d.clientType] || d.clientType;
+  const contactLabel = { phone: 'هاتف', email: 'بريد إلكتروني' }[d.preferredContact] || d.preferredContact;
+  const html = `
+    <div style="font-family:Arial,sans-serif;line-height:1.8;color:#14213A">
+      <h2 style="margin:0 0 4px">طلب استشارة جديد — ${d.reference}</h2>
+      <p style="color:#666;margin:0 0 20px">استلمناه الآن. فحص التعارض مطلوب قبل أي تواصل موضوعي.</p>
+      <table style="border-collapse:collapse;width:100%;max-width:480px">
+        <tr><td style="padding:6px 0;color:#666">الاسم</td><td style="padding:6px 0;font-weight:bold">${d.fullName}</td></tr>
+        <tr><td style="padding:6px 0;color:#666">الصفة</td><td style="padding:6px 0">${typeLabel}</td></tr>
+        <tr><td style="padding:6px 0;color:#666">طريقة التواصل المفضّلة</td><td style="padding:6px 0">${contactLabel}</td></tr>
+        ${d.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${d.phone}</td></tr>` : ''}
+        ${d.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${d.email}</td></tr>` : ''}
+        ${d.routingNote ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">ملاحظة</td><td style="padding:6px 0">${d.routingNote}</td></tr>` : ''}
+      </table>
+    </div>`;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        from: 'AL OUN — تنبيهات الموقع <onboarding@resend.dev>',
+        to: ['Aloun.Law@gmail.com'],
+        reply_to: d.email || undefined,
+        subject: `طلب استشارة جديد — ${d.reference}`,
+        html,
+      }),
+    });
+  } catch (e) {
+    // صامت عمدًا — الإشعار ثانوي، السجل في القاعدة هو المصدر الموثوق
+  }
+}
+
+/**
  * تقديم طلب استشارة عبر المسار الآمن (RPC مع حد معدل + تدقيق).
  * لا يجمع وقائع القضية (§٥). التحقق يتم على الخادم لا الواجهة فقط.
  *
@@ -83,5 +126,19 @@ export async function submitConsultation(input) {
   if (error) {
     return { ok: false, error: 'server_error' };
   }
+
+  if (data?.ok && data?.reference) {
+    await notifyNewConsultation({
+      reference: data.reference,
+      fullName: input.fullName,
+      clientType: input.clientType,
+      preferredContact: input.preferredContact,
+      phone: input.phone,
+      email: input.email,
+      routingNote: input.routingNote,
+      preferredLocale: input.preferredLocale,
+    });
+  }
+
   return data;
 }

@@ -273,6 +273,10 @@
         "b": "You may request access to, correction of, or deletion of your data through the firm's official channels."
       },
       {
+        "h": "Account & Portal Data",
+        "b": "When you create a portal account, we collect your full name, email address, and category (lawyer, consultant, law firm, company, institution, or client) — we never see your password as plain text; it is fully encrypted. This data is used exclusively to let you track the status of requests (consultations, referrals, partnership applications) you have submitted under the same email, and to manage access to Al Oun's internal dashboard where applicable. Data is hosted with infrastructure providers (Supabase and Vercel) outside Kuwait — no Kuwait-based hosting region is currently available from these providers. We retain your data for as long as your account remains active, and you may request its complete deletion by contacting us at any time."
+      },
+      {
         "h": "Contact",
         "b": "For any privacy inquiry, contact the firm through the published contact details."
       }
@@ -465,7 +469,19 @@
     "errorAlreadyRegistered": "This email is already registered — sign in instead.",
     "errorInvalidCredentials": "Incorrect email or password.",
     "haveAccount": "Already have an account?",
-    "noAccount": "Don't have an account?"
+    "noAccount": "Don't have an account?",
+    "type_lawyer": "Lawyer",
+    "type_consultant": "Legal Consultant",
+    "type_law_firm": "Law Firm",
+    "type_company": "Company",
+    "type_institution": "Institution",
+    "type_client": "Client",
+    "dataNotice": "We collect your name, email, and category solely so you can track requests (consultations, referrals, partnerships) submitted under the same email — we can't proceed without your explicit consent below.",
+    "consentPrefix": "I agree to the",
+    "consentPrivacyLink": "Privacy Policy",
+    "consentAnd": "and",
+    "consentTermsLink": "Terms of Use",
+    "errorConsent": "You must agree to the Privacy Policy and Terms of Use first."
   },
   "admin": {
     "title": "Al Oun Desk",

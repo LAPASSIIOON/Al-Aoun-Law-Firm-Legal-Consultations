@@ -6,14 +6,16 @@ import { useRouter } from '@/i18n/navigation.js';
 import { signUp } from '@/app/actions/auth.js';
 import styles from './NetworkForm.module.css';
 
-const TYPES = ['individual', 'lawyer', 'organization'];
+const TYPES = ['lawyer', 'consultant', 'law_firm', 'company', 'institution', 'client'];
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
+const CONSENT_VERSION = '2026-08-16';
 
 export default function SignUpForm() {
   const t = useTranslations('account');
   const locale = useLocale();
   const router = useRouter();
-  const [memberType, setMemberType] = useState('individual');
+  const [memberType, setMemberType] = useState('client');
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('idle');
   const [err, setErr] = useState('');
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
@@ -35,19 +37,21 @@ export default function SignUpForm() {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    if (!consent) { setStatus('error'); setErr(t('errorConsent')); return; }
     setStatus('sending'); setErr('');
     const res = await signUp({
       email: (fd.get('email') || '').toString().trim(),
       password: (fd.get('password') || '').toString(),
       fullName: (fd.get('fullName') || '').toString().trim(),
       memberType, locale, turnstileToken,
+      consent: true, consentVersion: CONSENT_VERSION,
     });
     if (res?.ok) {
       if (res.needsConfirmation) { setNeedsConfirmation(true); setStatus('idle'); }
       else { router.push('/admin'); }
     } else {
       setStatus('error');
-      setErr(res?.error === 'already_registered' ? t('errorAlreadyRegistered') : t('errorGeneric'));
+      setErr(res?.error === 'already_registered' ? t('errorAlreadyRegistered') : res?.error === 'consent_required' ? t('errorConsent') : t('errorGeneric'));
       if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
       setTurnstileToken('');
     }
@@ -65,7 +69,7 @@ export default function SignUpForm() {
         <div className={styles.segs}>
           {TYPES.map((v) => (
             <button type="button" key={v} className={`${styles.seg} ${memberType === v ? styles.segOn : ''}`} onClick={() => setMemberType(v)}>
-              {t(v === 'individual' ? 'typeIndividual' : v === 'lawyer' ? 'typeLawyer' : 'typeOrganization')}
+              {t(`type_${v}`)}
             </button>
           ))}
         </div>
@@ -73,9 +77,20 @@ export default function SignUpForm() {
       <label className={styles.field}><span className={styles.label}>{t('fullNameLabel')}</span><input name="fullName" className={styles.input} required /></label>
       <label className={styles.field}><span className={styles.label}>{t('emailLabel')}</span><input name="email" type="email" dir="ltr" className={styles.input} required /></label>
       <label className={styles.field}><span className={styles.label}>{t('passwordLabel')}</span><input name="password" type="password" dir="ltr" minLength={8} className={styles.input} required /></label>
+
+      <div style={{ background: 'var(--surface-2)', border: '1px solid var(--hair-light-strong)', borderRadius: 'var(--r-lg)', padding: '1rem 1.1rem' }}>
+        <p className="body" style={{ fontSize: '.85rem', color: 'var(--muted)', marginBlockEnd: '.75rem' }}>{t('dataNotice')}</p>
+        <label style={{ display: 'flex', alignItems: 'flex-start', gap: '.6rem', cursor: 'pointer' }}>
+          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ marginBlockStart: '.25rem' }} required />
+          <span className="body" style={{ fontSize: '.85rem' }}>
+            {t('consentPrefix')} <a href={`/${locale}/privacy`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--clay)' }}>{t('consentPrivacyLink')}</a> {t('consentAnd')} <a href={`/${locale}/terms`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--clay)' }}>{t('consentTermsLink')}</a>
+          </span>
+        </label>
+      </div>
+
       {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
       <div ref={widgetRef} />
-      <button type="submit" className="btn btn-solid" disabled={status === 'sending'} style={{ width: 'fit-content' }}>
+      <button type="submit" className="btn btn-solid" disabled={status === 'sending' || !consent} style={{ width: 'fit-content' }}>
         {status === 'sending' ? t('sending') : t('signUpCta')}<span className="arrow">→</span>
       </button>
     </form>

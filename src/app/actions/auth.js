@@ -12,12 +12,20 @@ export async function signUp(input) {
   if (!input.email || !input.password || input.password.length < 8) {
     return { ok: false, error: 'invalid_input' };
   }
+  if (!input.consent) {
+    return { ok: false, error: 'consent_required' };
+  }
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.signUp({
     email: input.email,
     password: input.password,
     options: {
-      data: { full_name: input.fullName || input.email, member_type: input.memberType || 'individual' },
+      data: {
+        full_name: input.fullName || input.email,
+        member_type: input.memberType || 'client',
+        consent: true,
+        consent_version: input.consentVersion || '',
+      },
       captchaToken: input.turnstileToken || undefined,
     },
   });

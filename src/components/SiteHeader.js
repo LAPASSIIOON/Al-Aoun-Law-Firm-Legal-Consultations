@@ -80,6 +80,7 @@ export default function SiteHeader({ locale, areas = [] }) {
         </nav>
 
         <div className={styles.actions}>
+          <Link href="/account/sign-in" className={styles.lang}>{locale === 'ar' ? 'تسجيل الدخول' : 'Sign In'}</Link>
           <Link href={pathname} locale={other} className={styles.lang}>{other === 'en' ? 'EN' : 'ع'}</Link>
           <Link href="/contact" className={`btn btn-solid ${styles.cta}`}>{t('consult')}</Link>
           <button className={styles.burger} aria-label={locale === 'ar' ? 'القائمة' : 'Menu'} aria-expanded={mobile} onClick={() => setMobile(true)}>
@@ -122,6 +123,7 @@ export default function SiteHeader({ locale, areas = [] }) {
           <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>05</span>{t('contact')}</Link>
         </nav>
         <div className={styles.overlayFoot}>
+          <Link href="/account/sign-in" className={styles.lang} onClick={closeAll}>{locale === 'ar' ? 'تسجيل الدخول' : 'Sign In'}</Link>
           <Link href={pathname} locale={other} className={styles.lang} onClick={closeAll}>{other === 'en' ? 'English' : 'العربية'}</Link>
           <Link href="/contact" className="btn btn-solid" onClick={closeAll}>{t('consult')}</Link>
         </div>

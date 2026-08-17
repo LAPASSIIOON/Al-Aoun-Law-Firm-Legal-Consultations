@@ -51,7 +51,12 @@ export default function SignUpForm() {
       else { router.push('/admin'); }
     } else {
       setStatus('error');
-      setErr(res?.error === 'already_registered' ? t('errorAlreadyRegistered') : res?.error === 'consent_required' ? t('errorConsent') : t('errorGeneric'));
+      const msg = res?.error === 'already_registered' ? t('errorAlreadyRegistered')
+        : res?.error === 'consent_required' ? t('errorConsent')
+        : res?.error === 'weak_password' ? t('errorWeakPassword')
+        : res?.error === 'rate_limited' ? t('errorRateLimited')
+        : t('errorGeneric');
+      setErr(msg);
       if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
       setTurnstileToken('');
     }
@@ -76,7 +81,11 @@ export default function SignUpForm() {
       </fieldset>
       <label className={styles.field}><span className={styles.label}>{t('fullNameLabel')}</span><input name="fullName" className={styles.input} required /></label>
       <label className={styles.field}><span className={styles.label}>{t('emailLabel')}</span><input name="email" type="email" dir="ltr" className={styles.input} required /></label>
-      <label className={styles.field}><span className={styles.label}>{t('passwordLabel')}</span><input name="password" type="password" dir="ltr" minLength={8} className={styles.input} required /></label>
+      <label className={styles.field}>
+        <span className={styles.label}>{t('passwordLabel')}</span>
+        <input name="password" type="password" dir="ltr" minLength={8} className={styles.input} required />
+        <span className="body" style={{ fontSize: '.78rem', color: 'var(--muted)', marginBlockStart: '.35rem', display: 'block' }}>{t('passwordHint')}</span>
+      </label>
 
       <div style={{ background: 'var(--surface-2)', border: '1px solid var(--hair-light-strong)', borderRadius: 'var(--r-lg)', padding: '1rem 1.1rem' }}>
         <p className="body" style={{ fontSize: '.85rem', color: 'var(--muted)', marginBlockEnd: '.75rem' }}>{t('dataNotice')}</p>

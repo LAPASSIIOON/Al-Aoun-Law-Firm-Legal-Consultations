@@ -31,7 +31,13 @@ export async function signUp(input) {
       emailRedirectTo: `${siteUrl}/${input.locale || 'ar'}/account/sign-in`,
     },
   });
-  if (error) return { ok: false, error: error.message === 'User already registered' ? 'already_registered' : 'server_error' };
+  if (error) {
+    let code = 'server_error';
+    if (error.message === 'User already registered' || error.code === 'user_already_exists') code = 'already_registered';
+    else if (error.code === 'weak_password' || /password should contain/i.test(error.message || '')) code = 'weak_password';
+    else if (error.code === 'over_email_send_rate_limit' || error.status === 429) code = 'rate_limited';
+    return { ok: false, error: code };
+  }
   return { ok: true, needsConfirmation: !data.session };
 }
 

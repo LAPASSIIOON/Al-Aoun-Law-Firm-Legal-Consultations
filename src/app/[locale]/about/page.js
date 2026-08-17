@@ -32,6 +32,13 @@ export default async function About({ params }) {
           </div>
         </div>
       </section>
+      <section className="on-ivory" style={{ paddingBlock: '0 3rem' }}>
+        <div className="wrap">
+          <img src="/about/boardroom.webp" alt={t('boardroomCaption')} data-reveal
+            style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover', borderRadius: 'var(--r-lg)', display: 'block' }} />
+          <p className="body" data-reveal style={{ marginBlockStart: '.9rem', color: 'var(--muted)', fontSize: '.9rem' }}>{t('boardroomCaption')}</p>
+        </div>
+      </section>
       <section className="on-espresso section">
         <div className="wrap">
           <span className="eyebrow" data-reveal>{tph('eyebrow')}</span>

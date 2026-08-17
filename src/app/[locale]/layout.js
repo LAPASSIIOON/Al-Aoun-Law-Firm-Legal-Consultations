@@ -9,6 +9,7 @@ import '@fontsource/ibm-plex-sans-arabic/600.css';
 import '../globals.css';
 import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
+import WhatsAppButton from '@/components/WhatsAppButton.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 
@@ -98,6 +99,7 @@ export default async function LocaleLayout({ children, params }) {
           <SiteHeader locale={locale} areas={areas} />
           <main id="main" className="main">{children}</main>
           <SiteFooter locale={locale} areas={areas} />
+          <WhatsAppButton locale={locale} />
           <RevealController />
         </NextIntlClientProvider>
       </body>

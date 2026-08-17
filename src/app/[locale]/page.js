@@ -1,308 +1,172 @@
-import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
-import { createAnonClient } from '@/lib/supabase-server.js';
-import HeroMotion from '@/components/HeroMotion.js';
-import HeroWatermark from '@/components/HeroWatermark.js';
-import SignatureUnderline from '@/components/SignatureUnderline.js';
-import CounterStat from '@/components/CounterStat.js';
-import styles from './home.module.css';
+import { AlAounMark } from '@/components/AlAounMark.js';
+import { Arc } from '@/components/Arc.js';
+import styles from './page.module.css';
 
-export const revalidate = 60;
-export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
+const ARABIC_NUM = ['١', '٢', '٣'];
 
-const T = {
-  ar: {
-    eyebrow: 'مكتب محاماة كويتي · منذ ٢٠٠٠',
-    head: 'قوّةٌ قانونية كويتية،\nبمعايير عالمية.',
-    sub: 'نرافق الأفراد والشركات والمستثمرين في الكويت وخارجها بمشورة دقيقة وسرّية تامة — من أول سؤالٍ إلى القرار.',
-    ctaAbout: 'تعرّف على المكتب',
-    counters: [
-      { v: 2000, l: 'سنة التأسيس' }, { v: 25, s: '+', l: 'سنة خبرة' },
-      { v: 12, l: 'مجال ممارسة' }, { v: 4, l: 'مراكز تحكيم معتمدة' },
-    ],
-    legacyEye: 'الإرث المؤسسي', legacyHead: 'عمقٌ مؤسسي، بُني على سنوات من الممارسة الدقيقة.',
-    legacyItems: [
-      { n: '01', t: 'محاماة بالتمييز والدستورية', d: 'خبرةٌ أكاديمية وعملية في القانون الدستوري، بقيادة دكتوراه من جامعة القاهرة بتقدير امتياز.' },
-      { n: '02', t: 'محكّم معتمد لدى ٤ مراكز', d: 'تسجيلٌ معتمَد لدى مراكز التحكيم الرائدة في الكويت والخليج.' },
-      { n: '03', t: 'رئاسة المجلس العلمي بجمعية المحامين', d: 'قيادة أكاديمية داخل الهيئة المهنية للمحامين في الكويت.' },
-      { n: '04', t: '+٢٥ عامًا من الممارسة', d: 'خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.' },
-    ],
-    posEye: 'من نحن', posHead: 'خبرةٌ قانونية عميقة، في خدمة قرارٍ واضح.',
-    posBody: 'مجموعة العون مكتب محاماةٍ واستشاراتٍ وتحكيمٍ كويتي تأسّس عام ٢٠٠٠، يقوده الدكتور هيثم العون بخلفيةٍ أكاديمية وعملية في القانون الدستوري والتمييز والتحكيم التجاري الدولي. نجمع بين العمق النظري والممارسة الدقيقة لنقدّم مشورةً يُعتمد عليها.',
-    posLink: 'المزيد عن المكتب',
-    paEye: 'مجالات الممارسة', paHead: 'خبرةٌ تُغطّي ما يهمّك', paAll: 'استعراض كل المجالات', paMore: 'استعراض',
-    whyEye: 'لماذا العون', whyHead: 'لماذا يختارنا موكّلونا',
-    values: [
-      { t: 'عمقٌ أكاديمي', d: 'دكتوراه في القانون الدستوري وأبحاث منشورة تسند كل رأيٍ قانوني.' },
-      { t: 'خبرة تحكيم معتمدة', d: 'محكّم مقيّد لدى مراكز الخليج والكويت وهيئة أسواق المال ووزارة العدل.' },
-      { t: 'سرّية تامة', d: 'نموذج عملٍ يحمي خصوصيتك من أول تواصل، ببروتوكولٍ واضح.' },
-      { t: 'وضوحٌ من البداية', d: 'نوضّح المسار والخيارات بلغةٍ مفهومة، بلا مفاجآت.' },
-    ],
-    fEye: 'المؤسِّس', fName: 'الدكتور هيثم أحمد العون',
-    fRole: 'المؤسِّس ورئيس مجلس الإدارة · محامٍ بالتمييز والدستورية',
-    fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة. خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.',
-    fLink: 'الملف الكامل',
-    inEye: 'رؤى قانونية', inHead: 'رؤى ومقالات', inAll: 'كل الرؤى', inEmpty: 'نُثري هذا القسم بتحليلاتٍ قانونية تباعًا.',
-    bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'ابدأ بخطوةٍ سهلة — اسمك ورقمك فقط، والباقي نتولّاه بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
-  },
-  en: {
-    eyebrow: 'Kuwaiti Law Firm · Since 2000',
-    head: 'Kuwaiti legal strength,\nto a global standard.',
-    sub: 'We stand with individuals, companies and investors in Kuwait and beyond — precise, fully confidential counsel from the first question to the decision.',
-    ctaAbout: 'About the firm',
-    counters: [
-      { v: 2000, l: 'Established' }, { v: 25, s: '+', l: 'Years of experience' },
-      { v: 12, l: 'Practice areas' }, { v: 4, l: 'Arbitration centres' },
-    ],
-    legacyEye: 'Institutional Legacy', legacyHead: 'Institutional depth, built on years of precise practice.',
-    legacyItems: [
-      { n: '01', t: 'Cassation & constitutional advocacy', d: 'Academic and practical grounding in constitutional law, led by a PhD from Cairo University (Excellent).' },
-      { n: '02', t: 'Registered arbitrator — 4 centres', d: 'Registered as arbitrator across four certified arbitration centres in Kuwait and the Gulf.' },
-      { n: '03', t: 'Chair, Scientific Advisory Council', d: "Academic leadership within Kuwait's professional lawyers' association." },
-      { n: '04', t: '25+ years in practice', d: 'Over two decades across constitutional matters, cassation appeals and international commercial arbitration.' },
-    ],
-    posEye: 'Who we are', posHead: 'Deep legal expertise, in service of a clear decision.',
-    posBody: 'Al Oun is a Kuwaiti law, consultancy and arbitration firm established in 2000, led by Dr. Haitham Al Oun with academic and practical grounding in constitutional law, cassation and international commercial arbitration. We pair theoretical depth with precise practice to deliver counsel you can rely on.',
-    posLink: 'More about the firm',
-    paEye: 'Practice Areas', paHead: 'Expertise across what matters to you', paAll: 'View all practice areas', paMore: 'Explore',
-    whyEye: 'Why Al Oun', whyHead: 'Why clients choose us',
-    values: [
-      { t: 'Academic depth', d: 'A doctorate in constitutional law and published research behind every legal opinion.' },
-      { t: 'Certified arbitration', d: 'Registered arbitrator across the GCC, Kuwait, the Capital Markets Authority and the Ministry of Justice.' },
-      { t: 'Full confidentiality', d: 'A model that protects your privacy from first contact, by clear protocol.' },
-      { t: 'Clarity from the start', d: 'We make the path and options clear, in plain language, with no surprises.' },
-    ],
-    fEye: 'The Founder', fName: 'Dr. Haitham Ahmed Al Oun',
-    fRole: 'Founder & Chairman · Cassation & Constitutional Lawyer',
-    fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres. Over two decades across constitutional matters, cassation appeals and international commercial arbitration.',
-    fLink: 'Full profile',
-    inEye: 'Insights', inHead: 'Insights & articles', inAll: 'All insights', inEmpty: 'We’re adding legal analysis to this section shortly.',
-    bandHead: 'Ready for a clear first step?', bandBody: 'Start with one easy step — just your name and number. We’ll handle the rest, in full confidence.', bandPhone: 'Or call us',
-  },
-};
+export default async function HomePage() {
+  const tHero = await getTranslations('hero');
+  const tTrust = await getTranslations('trust');
+  const tDiff = await getTranslations('differentiators');
+  const tIntake = await getTranslations('intake');
+  const tPractice = await getTranslations('practiceAreas');
+  const tConsult = await getTranslations('consultCta');
 
-async function fetchData(locale) {
-  let areas = [], articles = [];
-  try {
-    const supabase = createAnonClient();
-    const { data: a } = await supabase.from('practice_area_translations')
-      .select('slug, title, summary, practice_areas(sort_order)')
-      .eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
-    areas = (a || []).sort((x, y) => (x.practice_areas?.sort_order || 0) - (y.practice_areas?.sort_order || 0));
-    const { data: ar } = await supabase.from('article_translations')
-      .select('slug, title, excerpt, created_at')
-      .eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
-      .order('created_at', { ascending: false }).limit(3);
-    articles = ar || [];
-  } catch (e) { /* graceful */ }
-  return { areas, articles };
-}
-
-/** @param {{ params: Promise<{ locale: string }> }} props */
-export default async function Home({ params }) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-  const n = await getTranslations({ locale, namespace: 'nav' });
-  const ti = await getTranslations({ locale, namespace: 'international' });
-  const c = T[locale] || T.ar;
-  const { areas, articles } = await fetchData(locale);
-  const veilDir = locale === 'ar' ? 'to left' : 'to right';
+  const values = tHero.raw('valuesStrip');
+  const diffItems = tDiff.raw('items');
 
   return (
     <>
-      {/* HERO */}
-      <section className={styles.hero} style={{ '--veilDir': veilDir }}>
-        <HeroMotion />
-        <HeroWatermark />
-        <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
-          <line x1="0" y1="120" x2="1200" y2="120" />
-          <line x1="0" y1="680" x2="1200" y2="680" />
-          <line x1="90" y1="0" x2="90" y2="800" />
-          <line x1="1110" y1="0" x2="1110" y2="800" />
-          <circle cx="90" cy="120" r="2.5" />
-          <circle cx="1110" cy="120" r="2.5" />
-          <circle cx="90" cy="680" r="2.5" />
-          <circle cx="1110" cy="680" r="2.5" />
-        </svg>
-        <div className={styles.heroVeil} />
-        <span className={styles.heroTag} aria-hidden="true">01</span>
-        <div className={`wrap ${styles.heroInner}`}>
-          <div className={styles.heroRule} aria-hidden="true" />
-          <div className={styles.heroContent}>
-            <span className="eyebrow">{c.eyebrow}</span>
-            <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
-            <p className={styles.heroSub}>{c.sub}</p>
-            <div className={styles.heroCtas}>
-              <Link href="/contact" className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
-              <Link href="/about" className="btn btn-ghost">{c.ctaAbout}</Link>
+      {/* ══ HERO — الطباعة هي البطل، والقوس عنصر بنيوي يحمل العنوان ══ */}
+      <section className={styles.hero}>
+        <div className="container">
+          <div className={`${styles.heroInner} ${styles.reveal}`}>
+            <span className={styles.eyebrow}>
+              <span className={styles.eyebrowDot} aria-hidden="true" />
+              {tHero('eyebrow')}
+            </span>
+            <h1 className={styles.headline}>{tHero('headline')}</h1>
+            <div className={styles.heroArcWrap} aria-hidden="true">
+              <Arc tone="accent" className={styles.heroArc} />
+              <AlAounMark size={72} title="" className={styles.heroArcMark} />
             </div>
-            <div className={styles.counters}>
-              {c.counters.map((s, i) => (
-                <CounterStat key={i} value={s.l.includes('مجال') || s.l.toLowerCase().includes('practice area') ? (areas.length || s.v) : s.v} suffix={s.s || ''} label={s.l} locale={locale} />
-              ))}
+            <p className={styles.subhead}>{tHero('subhead')}</p>
+            <div className={styles.ctaRow}>
+              <Link href="/#consult" className={styles.ctaPrimary}>
+                {tHero('ctaPrimary')}
+              </Link>
+              <Link href="/#about" className={styles.ctaSecondary}>
+                {tHero('ctaSecondary')}
+              </Link>
             </div>
+          </div>
+          <ul className={styles.values} aria-label="القيم">
+            {values.map((v) => (
+              <li key={v} className={styles.valueItem}>
+                <Arc tone="accent" className={styles.valueMark} />
+                {v}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ══ ABOUT / TRUST ══ */}
+      <section id="about" className={styles.section}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <span className={styles.sEyebrow}>{tTrust('eyebrow')}</span>
+            <h2 className={styles.sHeading}>{tTrust('heading')}</h2>
+            <p className={styles.sBody}>{tTrust('body')}</p>
+            <span className={styles.flag}>{tTrust('note')}</span>
           </div>
         </div>
       </section>
 
-      {/* DUAL TRACK — عميل / مكتب دولي، مباشرة بعد الهيرو */}
-      <section className="on-white section-tight">
-        <div className="wrap">
-          <div className={styles.dualBar}>
-            <Link href="/contact" className={styles.dualItem}>
-              <span className={styles.dualEye}>{ti('forkClientEye')}</span>
-              <span className={styles.dualT}>{ti('forkClientHead')}</span>
-              <span className="arrow">→</span>
-            </Link>
-            <Link href="/international/for-law-firms" className={styles.dualItem}>
-              <span className={styles.dualEye}>{ti('forkFirmEye')}</span>
-              <span className={styles.dualT}>{ti('forkFirmHead')}</span>
-              <span className="arrow">→</span>
-            </Link>
+      {/* ══ DIFFERENTIATORS ══ */}
+      <section className={`${styles.section} ${styles.sectionAlt}`}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <span className={styles.sEyebrow}>{tDiff('eyebrow')}</span>
+            <h2 className={styles.sHeading}>{tDiff('heading')}</h2>
           </div>
-        </div>
-      </section>
-
-      {/* POSITIONING */}
-      <section className="on-white section">
-        <div className="wrap">
-          <div className={styles.head}>
-            <span className="eyebrow" data-reveal>{c.posEye}</span>
-            <div data-reveal>
-              <h2 className="display d-1">{c.posHead}</h2>
-              <SignatureUnderline width={96} />
-            </div>
-          </div>
-          <p className="lead" data-reveal style={{ maxWidth: '52rem' }}>{c.posBody}</p>
-          <p data-reveal style={{ marginBlockStart: '1.75rem' }}><Link href="/about" className="btn-line">{c.posLink} <span className="arrow">→</span></Link></p>
-        </div>
-      </section>
-
-      {/* PRACTICE AREAS */}
-      <section className="on-paper section">
-        <div className="wrap">
-          <div className={styles.headRow}>
-            <div>
-              <span className="eyebrow" data-reveal>{c.paEye}</span>
-              <h2 className="display d-1" data-reveal style={{ marginBlockStart: '1rem' }}>{c.paHead}</h2>
-            </div>
-            <Link href="/services" className="btn-line" data-reveal>{c.paAll} <span className="arrow">→</span></Link>
-          </div>
-          <div className={styles.paList}>
-            {(areas.length ? areas.slice(0, 8) : Array.from({ length: 6 })).map((a, i) => (
-              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal="file">
-                <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.paBody}>
-                  <span className={styles.paTitle}>{a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}</span>
-                  {a?.summary && <span className={styles.paSum}>{a.summary}</span>}
+          <div className={styles.diffGrid}>
+            {diffItems.map((item, i) => (
+              <div key={item.title} className={styles.diffCard}>
+                <span className={styles.diffNum}>
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className={styles.paArrow} aria-hidden="true">→</span>
+                <h3 className={styles.diffTitle}>{item.title}</h3>
+                <p className={styles.diffBody}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ INTAKE ══ */}
+      <section id="consult-flow" className={styles.section}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <span className={styles.sEyebrow}>{tIntake('eyebrow')}</span>
+            <h2 className={styles.sHeading}>{tIntake('heading')}</h2>
+          </div>
+          <div className={styles.steps}>
+            {[1, 2, 3].map((n) => (
+              <div key={n} className={styles.step}>
+                <span className={styles.stepNum}>{ARABIC_NUM[n - 1]}</span>
+                <p className={styles.stepTitle}>{tIntake(`step${n}Title`)}</p>
+                <p className={styles.stepBody}>{tIntake(`step${n}Body`)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ PRACTICE AREAS ══ */}
+      <section id="practice" className={`${styles.section} ${styles.sectionAlt}`}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <span className={styles.sEyebrow}>{tPractice('eyebrow')}</span>
+            <h2 className={styles.sHeading}>{tPractice('heading')}</h2>
+            <p className={styles.sBody}>{tPractice('subhead')}</p>
+            <span className={styles.flag}>{tPractice('flag')}</span>
+          </div>
+          <div className={styles.practiceGrid}>
+            {[0, 1, 2].map((i) => (
+              <Link
+                key={i}
+                href="/practice-areas/placeholder"
+                className={styles.practiceCard}
+              >
+                <AlAounMark size={44} title="" className={styles.practiceIcon} />
+                <span className={styles.practiceTitle}>
+                  {tPractice('placeholderTitle')}
+                </span>
+                <span className={styles.practiceBody}>
+                  {tPractice('placeholderBody')}
+                </span>
+                <span className={styles.practiceCta}>
+                  {tPractice('cta')} →
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* INSTITUTIONAL DEPTH / LEGACY — distinct composition (editorial index) so it reads as
-          new narrative content, not a repeat of the values/positioning sections around it */}
-      <section className="on-white section">
-        <div className="wrap">
-          <div className={styles.head}>
-            <span className="eyebrow" data-reveal>{c.legacyEye}</span>
-            <h2 className="display d-1" data-reveal>{c.legacyHead}</h2>
-          </div>
-          <div className={styles.legacyList}>
-            {c.legacyItems.map((it) => (
-              <div key={it.n} className={styles.legacyRow} data-reveal="file">
-                <span className={styles.legacyIdx}>{it.n}</span>
-                <span className={styles.legacyBody}>
-                  <span className={styles.legacyTitle}>{it.t}</span>
-                  <span className={styles.legacyDesc}>{it.d}</span>
-                </span>
-              </div>
-            ))}
+      {/* ══ INSIGHTS ══ */}
+      <section id="insights" className={styles.section}>
+        <div className="container">
+          <div className={styles.sectionHead}>
+            <span className={styles.sEyebrow}>
+              {(await getTranslations('insights'))('eyebrow')}
+            </span>
+            <h2 className={styles.sHeading}>
+              {(await getTranslations('insights'))('heading')}
+            </h2>
+            <p className={styles.sBody}>
+              {(await getTranslations('insights'))('subhead')}
+            </p>
+            <span className={styles.flag}>
+              {(await getTranslations('insights'))('flag')}
+            </span>
           </div>
         </div>
       </section>
 
-      {/* WHY / VALUES */}
-      <section className="on-navy section">
-        <div className="wrap">
-          <div className={styles.head}>
-            <span className="eyebrow" data-reveal>{c.whyEye}</span>
-            <h2 className="display d-1" data-reveal style={{ color: '#fff' }}>{c.whyHead}</h2>
-          </div>
-          <div className="grid cols-2" style={{ rowGap: 'clamp(2rem,4vh,3rem)' }}>
-            {c.values.map((v, i) => (
-              <div key={i} className={styles.value} data-reveal="file">
-                <span className={styles.valueNum}>{String(i + 1).padStart(2, '0')}</span>
-                <h3 className={styles.valueT}>{v.t}</h3>
-                <p className={styles.valueD}>{v.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FOUNDER */}
-      <section className="on-white section">
-        <div className="wrap">
-          <div className={styles.founder}>
-            <div className={`${styles.founderMedia} img-zoom-frame`} data-reveal="slow">
-              <img src="/media/founder-haitham.jpg" alt={c.fName} />
-            </div>
-            <div data-reveal="slow">
-              <span className="eyebrow">{c.fEye}</span>
-              <h2 className={styles.founderName}>{c.fName}</h2>
-              <p className={styles.founderRole}>{c.fRole}</p>
-              <p className="body" style={{ fontSize: '1.08rem', maxWidth: '46rem' }}>{c.fBio}</p>
-              <p style={{ marginBlockStart: '1.75rem' }}><Link href="/team" className="btn-line">{c.fLink} <span className="arrow">→</span></Link></p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* INSIGHTS */}
-      <section className="on-paper section">
-        <div className="wrap">
-          <div className={styles.headRow}>
-            <div>
-              <span className="eyebrow" data-reveal>{c.inEye}</span>
-              <h2 className="display d-1" data-reveal style={{ marginBlockStart: '1rem' }}>{c.inHead}</h2>
-            </div>
-            {articles.length > 0 && <Link href="/insights" className="btn-line" data-reveal>{c.inAll} <span className="arrow">→</span></Link>}
-          </div>
-          {articles.length > 0 ? (
-            <div className="grid cols-3">
-              {articles.map((a) => (
-                <Link key={a.slug} href={`/insights/${a.slug}`} className="card" data-reveal>
-                  <span className="tag">{c.inEye}</span>
-                  <h3 className="card-title">{a.title}</h3>
-                  {a.excerpt && <p className="body" style={{ fontSize: '0.98rem' }}>{a.excerpt}</p>}
-                  <span className="btn-line">{locale === 'ar' ? 'اقرأ' : 'Read'} <span className="arrow">→</span></span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="lead" data-reveal>{c.inEmpty}</p>
-          )}
-        </div>
-      </section>
-
-      {/* CTA BAND */}
-      <section className="on-navy section-tight">
-        <div className="wrap">
-          <div className={styles.band}>
-            <div className={styles.bandText} data-reveal>
-              <h2 className="display d-2" style={{ color: '#fff' }}>{c.bandHead}</h2>
-              <p className="lead" style={{ marginBlockStart: '.75rem' }}>{c.bandBody}</p>
-            </div>
-            <div className={styles.bandActions} data-reveal>
-              <Link href="/contact" className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
-              <span className={styles.bandPhone}>{c.bandPhone} <a href="tel:+96599010470" dir="ltr">+965 99010470</a></span>
-            </div>
-          </div>
+      {/* ══ CONSULT CTA ══ */}
+      <section id="consult" className={styles.consult}>
+        <Arc tone="accent" className={styles.consultArc} />
+        <div className={`container ${styles.consultInner}`}>
+          <h2 className={styles.consultHeading}>{tConsult('heading')}</h2>
+          <p className={styles.consultBody}>{tConsult('body')}</p>
+          <Link href="/#contact" className={styles.consultBtn}>
+            {tConsult('cta')}
+          </Link>
+          <p className={styles.consultDisclaimer}>{tConsult('disclaimer')}</p>
         </div>
       </section>
     </>

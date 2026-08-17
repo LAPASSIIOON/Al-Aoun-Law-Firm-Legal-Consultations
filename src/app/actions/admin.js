@@ -19,6 +19,16 @@ export async function setMemberRole(input) {
   return data;
 }
 
+/** @param {{ memberId: string, memberType: string }} input */
+export async function setMemberType(input) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_update_member_type', {
+    p_member_id: input.memberId, p_member_type: input.memberType,
+  });
+  if (error) return { ok: false, error: 'server_error' };
+  return data;
+}
+
 export async function listConsultations() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_consultations');

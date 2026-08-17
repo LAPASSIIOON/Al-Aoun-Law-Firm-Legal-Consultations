@@ -1,6 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
-import { setMemberRole } from '@/app/actions/admin.js';
+import { setMemberRole, setMemberType } from '@/app/actions/admin.js';
 import { MEMBER_TYPE_LABELS as TYPE_LABELS } from '@/lib/member-types.js';
 import styles from './AdminTable.module.css';
 
@@ -9,6 +9,8 @@ export default function MembersTable({ rows, emptyLabel }) {
   const [data, setData] = useState(rows);
   const [confirmId, setConfirmId] = useState(null);
   const [confirmAction, setConfirmAction] = useState(null);
+  const [editingTypeId, setEditingTypeId] = useState(null);
+  const [typeDraft, setTypeDraft] = useState('');
   const [pending, startTransition] = useTransition();
 
   const activeAdminCount = data.filter((m) => m.role === 'admin' && m.is_active).length;
@@ -25,6 +27,15 @@ export default function MembersTable({ rows, emptyLabel }) {
 
   function ask(id, action) { setConfirmId(id); setConfirmAction(action); }
   function cancel() { setConfirmId(null); setConfirmAction(null); }
+
+  function startEditType(m) { setEditingTypeId(m.id); setTypeDraft(m.member_type); }
+  function cancelEditType() { setEditingTypeId(null); setTypeDraft(''); }
+  function saveType(id) {
+    const memberType = typeDraft;
+    setData((cur) => cur.map((m) => (m.id === id ? { ...m, member_type: memberType } : m)));
+    startTransition(async () => { await setMemberType({ memberId: id, memberType }); });
+    setEditingTypeId(null); setTypeDraft('');
+  }
 
   if (!data.length) return <p className="body" style={{ color: 'var(--muted)' }}>{emptyLabel}</p>;
 
@@ -48,7 +59,22 @@ export default function MembersTable({ rows, emptyLabel }) {
                 {!m.is_active && <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#A7201B', background: '#FBEAE9', padding: '.15rem .55rem', borderRadius: '999px' }}>معطَّل</span>}
               </div>
               <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.email}</div>
-              <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }}>{TYPE_LABELS[m.member_type] || m.member_type}</div>
+              {editingTypeId === m.id ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem', marginBlockStart: '.2rem', flexWrap: 'wrap' }}>
+                  <select className={styles.select} value={typeDraft} onChange={(e) => setTypeDraft(e.target.value)}>
+                    {Object.entries(TYPE_LABELS).map(([val, label]) => (
+                      <option key={val} value={val}>{label}</option>
+                    ))}
+                  </select>
+                  <button className="btn btn-solid" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} disabled={pending} onClick={() => saveType(m.id)}>حفظ</button>
+                  <button className="btn-line" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} onClick={cancelEditType}>إلغاء</button>
+                </div>
+              ) : (
+                <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '.4rem' }}>
+                  {TYPE_LABELS[m.member_type] || m.member_type}
+                  <button onClick={() => startEditType(m)} style={{ font: 'inherit', fontSize: '.78rem', background: 'none', border: 'none', color: 'var(--clay)', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>تعديل</button>
+                </div>
+              )}
               {m.phone && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.phone}</div>}
               {m.organization_name && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }}>{m.organization_name}</div>}
               {m.license_number && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.license_number}</div>}

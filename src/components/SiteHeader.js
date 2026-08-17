@@ -52,7 +52,7 @@ export default function SiteHeader({ locale, areas = [] }) {
                   <Link href="/services" className="btn-line" onClick={closeAll}>{locale === 'ar' ? 'استعراض الكل' : 'View all'} <span className="arrow">→</span></Link>
                 </div>
                 <div className={styles.megaGrid}>
-                  {areas.map((a, i) => (
+                  {areas.slice(0, 8).map((a, i) => (
                     <Link key={a.slug} href={`/services/${a.slug}`} className={styles.megaLink} onClick={closeAll} role="menuitem">
                       <span className={styles.megaIdx}>{String(i + 1).padStart(2, '0')}</span>{a.title}
                     </Link>
@@ -103,7 +103,7 @@ export default function SiteHeader({ locale, areas = [] }) {
           </button>
           {mOpen === 'services' && (
             <div className={styles.oSub}>
-              {areas.map((a) => (<Link key={a.slug} href={`/services/${a.slug}`} className={styles.oSubLink} onClick={closeAll}>{a.title}</Link>))}
+              {areas.slice(0, 8).map((a) => (<Link key={a.slug} href={`/services/${a.slug}`} className={styles.oSubLink} onClick={closeAll}>{a.title}</Link>))}
               <Link href="/services" className={styles.oSubLink} onClick={closeAll}>{locale === 'ar' ? 'استعراض الكل ←' : 'View all →'}</Link>
             </div>
           )}

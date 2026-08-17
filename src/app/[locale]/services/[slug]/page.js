@@ -5,6 +5,13 @@ import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import Breadcrumbs from '@/components/Breadcrumbs.js';
 import s from '../../shared.module.css';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const IMG_DIR = path.join(process.cwd(), 'public', 'practice-areas');
+function hasImage(slug) {
+  try { return fs.existsSync(path.join(IMG_DIR, `${slug}.webp`)); } catch { return false; }
+}
 
 async function getArea(slug, locale) {
   try {
@@ -30,11 +37,6 @@ export async function generateMetadata({ params }) {
   const { slug, locale } = await params; const a = await getArea(slug, locale);
   return a ? { title: a.title, description: a.summary, alternates: altLangs(`/services/${slug}`) } : {};
 }
-
-const IMAGE_SLUGS = new Set([
-  'commercial-arbitration', 'dispute-resolution', 'intellectual-property', 'capital-markets',
-  'corporate-commercial', 'contracts-civil', 'litigation', 'labour-employment', 'real-estate',
-]);
 
 /** @param {{ params: Promise<{ slug: string, locale: string }> }} props */
 export default async function ServiceDetail({ params }) {
@@ -63,7 +65,7 @@ export default async function ServiceDetail({ params }) {
         </div>
       </section>
 
-      {IMAGE_SLUGS.has(slug) && (
+      {hasImage(slug) && (
         <section className="on-white" style={{ paddingBlock: '2.5rem 0' }}>
           <div className="wrap">
             <img src={`/practice-areas/${slug}.webp`} alt="" data-reveal

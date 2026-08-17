@@ -4,6 +4,8 @@ import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import styles from '../home.module.css';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -23,10 +25,10 @@ async function fetchAreas(locale) {
   } catch (e) { return []; }
 }
 
-const ICON_SLUGS = new Set([
-  'commercial-arbitration', 'capital-markets', 'corporate-commercial',
-  'contracts-civil', 'labour-employment', 'real-estate',
-]);
+const ICONS_DIR = path.join(process.cwd(), 'public', 'practice-areas', 'icons');
+function hasIcon(slug) {
+  try { return fs.existsSync(path.join(ICONS_DIR, `${slug}.png`)); } catch { return false; }
+}
 
 /** @param {{ params: Promise<{ locale: string }> }} props */
 export default async function Services({ params }) {
@@ -56,7 +58,7 @@ export default async function Services({ params }) {
                   <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={styles.paBody}>
                     <span className={styles.paTitle} style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
-                      {ICON_SLUGS.has(r.slug) && (
+                      {hasIcon(r.slug) && (
                         <img src={`/practice-areas/icons/${r.slug}.png`} alt="" width={30} height={30} style={{ flex: '0 0 auto', opacity: .92 }} />
                       )}
                       {r.title}

@@ -15,6 +15,14 @@ export async function signUp(input) {
   if (!input.consent) {
     return { ok: false, error: 'consent_required' };
   }
+  if (!input.phone) {
+    return { ok: false, error: 'missing_required_field' };
+  }
+  const needsOrg = ['law_firm', 'company', 'institution'].includes(input.memberType);
+  const needsLicense = ['lawyer', 'consultant'].includes(input.memberType);
+  if (needsOrg && !input.organizationName) return { ok: false, error: 'missing_required_field' };
+  if (needsLicense && !input.licenseNumber) return { ok: false, error: 'missing_required_field' };
+
   const supabase = await createSupabaseServerClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://al-aoun-law-firm-legal-consultation.vercel.app';
   const { data, error } = await supabase.auth.signUp({
@@ -24,6 +32,9 @@ export async function signUp(input) {
       data: {
         full_name: input.fullName || input.email,
         member_type: input.memberType || 'client',
+        phone: input.phone,
+        organization_name: input.organizationName || '',
+        license_number: input.licenseNumber || '',
         consent: true,
         consent_version: input.consentVersion || '',
       },

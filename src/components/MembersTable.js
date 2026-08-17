@@ -54,6 +54,9 @@ export default function MembersTable({ rows, emptyLabel }) {
               </div>
               <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.email}</div>
               <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }}>{TYPE_LABELS[m.member_type] || m.member_type}</div>
+              {m.phone && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.phone}</div>}
+              {m.organization_name && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }}>{m.organization_name}</div>}
+              {m.license_number && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.license_number}</div>}
             </div>
 
             {isConfirming ? (

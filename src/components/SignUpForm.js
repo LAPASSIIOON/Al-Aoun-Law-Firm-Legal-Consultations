@@ -43,6 +43,9 @@ export default function SignUpForm() {
       email: (fd.get('email') || '').toString().trim(),
       password: (fd.get('password') || '').toString(),
       fullName: (fd.get('fullName') || '').toString().trim(),
+      phone: (fd.get('phone') || '').toString().trim(),
+      organizationName: (fd.get('organizationName') || '').toString().trim(),
+      licenseNumber: (fd.get('licenseNumber') || '').toString().trim(),
       memberType, locale, turnstileToken,
       consent: true, consentVersion: CONSENT_VERSION,
     });
@@ -55,6 +58,7 @@ export default function SignUpForm() {
         : res?.error === 'consent_required' ? t('errorConsent')
         : res?.error === 'weak_password' ? t('errorWeakPassword')
         : res?.error === 'rate_limited' ? t('errorRateLimited')
+        : res?.error === 'missing_required_field' ? t('errorMissingField')
         : t('errorGeneric');
       setErr(msg);
       if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
@@ -80,6 +84,13 @@ export default function SignUpForm() {
         </div>
       </fieldset>
       <label className={styles.field}><span className={styles.label}>{t('fullNameLabel')}</span><input name="fullName" className={styles.input} required /></label>
+      <label className={styles.field}><span className={styles.label}>{t('phoneLabel')}</span><input name="phone" type="tel" dir="ltr" placeholder="+965 XXXXXXXX" className={styles.input} required /></label>
+      {['law_firm', 'company', 'institution'].includes(memberType) && (
+        <label className={styles.field}><span className={styles.label}>{t('organizationNameLabel')}</span><input name="organizationName" className={styles.input} required /></label>
+      )}
+      {['lawyer', 'consultant'].includes(memberType) && (
+        <label className={styles.field}><span className={styles.label}>{t('licenseNumberLabel')}</span><input name="licenseNumber" dir="ltr" className={styles.input} required /></label>
+      )}
       <label className={styles.field}><span className={styles.label}>{t('emailLabel')}</span><input name="email" type="email" dir="ltr" className={styles.input} required /></label>
       <label className={styles.field}>
         <span className={styles.label}>{t('passwordLabel')}</span>

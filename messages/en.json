@@ -276,7 +276,7 @@
       },
       {
         "h": "Account & Portal Data",
-        "b": "When you create a portal account, we collect your full name, email address, and category (lawyer, consultant, law firm, company, institution, or client) — we never see your password as plain text; it is fully encrypted. This data is used exclusively to let you track the status of requests (consultations, referrals, partnership applications) you have submitted under the same email, and to manage access to Al Oun's internal dashboard where applicable. Data is hosted with infrastructure providers (Supabase and Vercel) outside Kuwait — no Kuwait-based hosting region is currently available from these providers. We retain your data for as long as your account remains active, and you may request its complete deletion by contacting us at any time."
+        "b": "When you create a portal account, we collect your full name, email address, phone number, and category (lawyer, consultant, law firm, company, institution, or client), along with your firm or company name (for non-individual categories) or your bar or professional license number (for lawyers and consultants), depending on the category you select — we never see your password as plain text; it is fully encrypted. This data is used exclusively to let you track the status of requests (consultations, referrals, partnership applications) you have submitted under the same email, to contact you regarding those requests, and to manage access to Al Oun's internal dashboard where applicable. Data is hosted with infrastructure providers (Supabase and Vercel) outside Kuwait — no Kuwait-based hosting region is currently available from these providers. We retain your data for as long as your account remains active, and you may request its complete deletion by contacting us at any time."
       },
       {
         "h": "Contact",
@@ -478,7 +478,7 @@
     "type_company": "Company",
     "type_institution": "Institution",
     "type_client": "Client",
-    "dataNotice": "We collect your name, email, and category solely so you can track requests (consultations, referrals, partnerships) submitted under the same email — we can't proceed without your explicit consent below.",
+    "dataNotice": "We will collect your name, email, phone number, and category (plus additional details depending on your category) exclusively to let you track your requests (consultations, referrals, partnership applications) submitted under the same email, and to contact you regarding them — we won't complete registration without your explicit consent below.",
     "consentPrefix": "I agree to the",
     "consentPrivacyLink": "Privacy Policy",
     "consentAnd": "and",
@@ -486,7 +486,11 @@
     "errorConsent": "You must agree to the Privacy Policy and Terms of Use first.",
     "errorWeakPassword": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character (e.g. Ab12@xyz).",
     "errorRateLimited": "Too many attempts in a short time — please wait a few minutes and try again.",
-    "passwordHint": "At least 8 characters, including an uppercase letter, lowercase letter, number, and special character."
+    "passwordHint": "At least 8 characters, including an uppercase letter, lowercase letter, number, and special character.",
+    "phoneLabel": "Phone Number",
+    "organizationNameLabel": "Firm / Company / Institution Name",
+    "licenseNumberLabel": "Bar / Professional License Number",
+    "errorMissingField": "Please complete all fields required for the selected membership type."
   },
   "admin": {
     "title": "Al Oun Desk",

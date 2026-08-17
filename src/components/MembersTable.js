@@ -1,13 +1,8 @@
 'use client';
 import { useState, useTransition } from 'react';
 import { setMemberRole } from '@/app/actions/admin.js';
+import { MEMBER_TYPE_LABELS as TYPE_LABELS } from '@/lib/member-types.js';
 import styles from './AdminTable.module.css';
-
-const TYPE_LABELS = {
-  lawyer: 'محامٍ', consultant: 'مستشار قانوني', law_firm: 'مكتب/هيئة محاماة',
-  company: 'شركة', institution: 'جهة مؤسسية', client: 'عميل',
-  individual: 'فرد', organization: 'جهة/مكتب',
-};
 
 /** @param {{ rows: any[], emptyLabel: string }} props */
 export default function MembersTable({ rows, emptyLabel }) {

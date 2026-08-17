@@ -52,6 +52,7 @@ export default async function About({ params }) {
           <span className="eyebrow" data-reveal>{tt('eyebrow')}</span>
           <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.4rem' }}>{t('kuwaitHeading')}</h2>
           <p className="body" data-reveal style={{ maxWidth: '60ch' }}>{t('kuwaitBody')}</p>
+          <p className="body" data-reveal style={{ maxWidth: '60ch', marginBlockStart: '.9rem', color: 'var(--muted)' }}>{t('groupAffiliation')}</p>
           <Link href="/contact" className="btn btn-solid" data-reveal style={{ marginBlockStart: '2.25rem' }}>{t('cta')}<span className="arrow">→</span></Link>
         </div>
       </section>

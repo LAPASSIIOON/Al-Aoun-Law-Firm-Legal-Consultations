@@ -6,6 +6,7 @@ import styles from './SiteFooter.module.css';
 export function SiteFooter({ locale, areas = [] }) {
   const t = useTranslations('footer');
   const n = useTranslations('nav');
+  const ta = useTranslations('about');
   const year = new Intl.NumberFormat(locale === 'ar' ? 'ar-EG' : 'en-US', { useGrouping: false }).format(2026);
   const firmLinks = [
     { key: 'about', href: '/about' }, { key: 'team', href: '/team' },
@@ -55,7 +56,10 @@ export function SiteFooter({ locale, areas = [] }) {
           <Link href="/terms" className={styles.legalLink}>{t('terms')}</Link>
         </div>
       </div>
-      <div className={`wrap ${styles.discWrap}`}><p className={styles.disc}>{t('disclaimer')}</p></div>
+      <div className={`wrap ${styles.discWrap}`}>
+        <p className={styles.disc}>{t('disclaimer')}</p>
+        <p className={styles.disc}>{ta('groupAffiliation')}</p>
+      </div>
     </footer>
   );
 }

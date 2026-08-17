@@ -182,7 +182,7 @@ export default async function Home({ params }) {
             <Link href="/services" className="btn-line" data-reveal>{c.paAll} <span className="arrow">→</span></Link>
           </div>
           <div className={styles.paList}>
-            {(areas.length ? areas : Array.from({ length: 6 })).map((a, i) => (
+            {(areas.length ? areas.slice(0, 8) : Array.from({ length: 6 })).map((a, i) => (
               <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal>
                 <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                 <span className={styles.paBody}>

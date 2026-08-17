@@ -10,8 +10,8 @@ export function SiteFooter({ locale, areas = [] }) {
   const year = new Intl.NumberFormat(locale === 'ar' ? 'ar-EG' : 'en-US', { useGrouping: false }).format(2026);
   const firmLinks = [
     { key: 'about', href: '/about' }, { key: 'team', href: '/team' },
-    { key: 'insights', href: '/insights' }, { key: 'careers', href: '/careers' },
-    { key: 'contact', href: '/contact' },
+    { key: 'international', href: '/international' }, { key: 'insights', href: '/insights' },
+    { key: 'careers', href: '/careers' }, { key: 'contact', href: '/contact' },
   ];
   return (
     <footer className={`${styles.footer} on-navy`}>

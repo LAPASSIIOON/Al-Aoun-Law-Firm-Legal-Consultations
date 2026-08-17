@@ -40,6 +40,18 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
+          {/* THE FIRM — grouped dropdown, leads with identity/credibility */}
+          <div className={styles.navItem} onMouseEnter={() => setOpenMenu('firm')} onMouseLeave={() => setOpenMenu((m) => (m === 'firm' ? null : m))}>
+            <button className={styles.navLink} aria-expanded={openMenu === 'firm'} onClick={() => setOpenMenu((m) => (m === 'firm' ? null : 'firm'))}>
+              {locale === 'ar' ? 'المكتب' : 'The Firm'} <span className={`${styles.chev} ${openMenu === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
+            </button>
+            <div className={`${styles.drop} ${openMenu === 'firm' ? styles.dropOpen : ''}`} role="menu">
+              <div className={styles.dropInner}>
+                {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{t(n.key)}</Link>))}
+              </div>
+            </div>
+          </div>
+
           {/* PRACTICE AREAS — mega */}
           <div className={styles.navItem} onMouseEnter={() => setOpenMenu('services')} onMouseLeave={() => setOpenMenu((m) => (m === 'services' ? null : m))}>
             <button className={styles.navLink} aria-expanded={openMenu === 'services'} onClick={() => setOpenMenu((m) => (m === 'services' ? null : 'services'))}>
@@ -62,20 +74,8 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
             </div>
           </div>
 
-          {/* THE FIRM — grouped dropdown */}
-          <div className={styles.navItem} onMouseEnter={() => setOpenMenu('firm')} onMouseLeave={() => setOpenMenu((m) => (m === 'firm' ? null : m))}>
-            <button className={styles.navLink} aria-expanded={openMenu === 'firm'} onClick={() => setOpenMenu((m) => (m === 'firm' ? null : 'firm'))}>
-              {locale === 'ar' ? 'المكتب' : 'The Firm'} <span className={`${styles.chev} ${openMenu === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
-            </button>
-            <div className={`${styles.drop} ${openMenu === 'firm' ? styles.dropOpen : ''}`} role="menu">
-              <div className={styles.dropInner}>
-                {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{t(n.key)}</Link>))}
-              </div>
-            </div>
-          </div>
-
-          <Link href="/insights" className={styles.navLink}>{t('insights')}</Link>
           <Link href="/international" className={styles.navLink}>{t('international')}</Link>
+          <Link href="/insights" className={styles.navLink}>{t('insights')}</Link>
           <Link href="/contact" className={styles.navLink}>{t('contact')}</Link>
         </nav>
 
@@ -99,8 +99,18 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
           <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={closeAll}>×</button>
         </div>
         <nav className={styles.overlayNav}>
-          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'services' ? null : 'services'))} style={{ animationDelay: '.02s' }}>
-            <span><span className={styles.oIdx}>01</span>{t('services')}</span>
+          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'firm' ? null : 'firm'))} style={{ animationDelay: '.02s' }}>
+            <span><span className={styles.oIdx}>01</span>{locale === 'ar' ? 'المكتب' : 'The Firm'}</span>
+            <span className={`${styles.chev} ${mOpen === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
+          </button>
+          {mOpen === 'firm' && (
+            <div className={styles.oSub}>
+              {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.oSubLink} onClick={closeAll}>{t(n.key)}</Link>))}
+            </div>
+          )}
+
+          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'services' ? null : 'services'))} style={{ animationDelay: '.08s' }}>
+            <span><span className={styles.oIdx}>02</span>{t('services')}</span>
             <span className={`${styles.chev} ${mOpen === 'services' ? styles.chevUp : ''}`}><Chevron /></span>
           </button>
           {mOpen === 'services' && (
@@ -110,18 +120,8 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
             </div>
           )}
 
-          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'firm' ? null : 'firm'))} style={{ animationDelay: '.08s' }}>
-            <span><span className={styles.oIdx}>02</span>{locale === 'ar' ? 'المكتب' : 'The Firm'}</span>
-            <span className={`${styles.chev} ${mOpen === 'firm' ? styles.chevUp : ''}`}><Chevron /></span>
-          </button>
-          {mOpen === 'firm' && (
-            <div className={styles.oSub}>
-              {firmLinks.map((n) => (<Link key={n.key} href={n.href} className={styles.oSubLink} onClick={closeAll}>{t(n.key)}</Link>))}
-            </div>
-          )}
-
-          <Link href="/insights" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.14s' }}><span className={styles.oIdx}>03</span>{t('insights')}</Link>
-          <Link href="/international" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.16s' }}><span className={styles.oIdx}>04</span>{t('international')}</Link>
+          <Link href="/international" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.14s' }}><span className={styles.oIdx}>03</span>{t('international')}</Link>
+          <Link href="/insights" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.16s' }}><span className={styles.oIdx}>04</span>{t('insights')}</Link>
           <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>05</span>{t('contact')}</Link>
         </nav>
         <div className={styles.overlayFoot}>

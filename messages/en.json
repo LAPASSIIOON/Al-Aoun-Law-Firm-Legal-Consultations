@@ -504,5 +504,16 @@
     "pendingBody": "Your account was created successfully, but admin access hasn't been granted yet by Al Oun's team.",
     "emptyList": "No records yet.",
     "membersHint": "Promote a member to \"admin\" to grant them access to this dashboard, or deactivate to revoke access."
+  },
+  "myRequests": {
+    "heading": "My Requests",
+    "lead": "All consultations, referrals, and partnership applications you have submitted under the same email, and their current status.",
+    "empty": "You haven't submitted any requests yet. You can request a consultation or browse our practice areas.",
+    "consultationsHeading": "Consultation Requests",
+    "consultationLabel": "Consultation Request",
+    "referralsHeading": "Referrals",
+    "referralLabel": "Matter Referral",
+    "partnershipsHeading": "Partnership Applications",
+    "partnershipLabel": "Partnership Application"
   }
 }

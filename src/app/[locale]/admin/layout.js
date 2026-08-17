@@ -14,17 +14,7 @@ export default async function AdminLayout({ children, params }) {
   const member = await getCurrentMember();
 
   if (!member) redirect(`/${locale}/account/sign-in`);
-
-  if (member.role !== 'admin' || !member.is_active) {
-    return (
-      <section className="on-white section" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center' }}>
-        <div className="wrap" style={{ maxWidth: '40rem' }}>
-          <h1 className="display d-2" style={{ marginBlockEnd: '1rem' }}>{t('pendingHeading')}</h1>
-          <p className="body">{t('pendingBody')}</p>
-        </div>
-      </section>
-    );
-  }
+  if (member.role !== 'admin' || !member.is_active) redirect(`/${locale}/account/my-requests`);
 
   const links = [
     { href: '/admin', label: t('navOverview') },

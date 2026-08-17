@@ -135,7 +135,9 @@ export default async function Home({ params }) {
               <Link href="/about" className="btn btn-ghost">{c.ctaAbout}</Link>
             </div>
             <div className={styles.counters}>
-              {c.counters.map((s, i) => (<CounterStat key={i} value={s.v} suffix={s.s || ''} label={s.l} locale={locale} />))}
+              {c.counters.map((s, i) => (
+                <CounterStat key={i} value={s.l.includes('مجال') || s.l.toLowerCase().includes('practice area') ? (areas.length || s.v) : s.v} suffix={s.s || ''} label={s.l} locale={locale} />
+              ))}
             </div>
           </div>
         </div>

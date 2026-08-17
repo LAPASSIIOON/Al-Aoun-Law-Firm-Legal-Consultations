@@ -11,8 +11,8 @@ export default function WhatsAppButton({ locale }) {
       rel="noopener noreferrer"
       aria-label={locale === 'ar' ? 'تواصل عبر واتساب' : 'Chat on WhatsApp'}
       style={{
-        position: 'fixed', insetBlockEnd: '1.5rem', insetInlineEnd: '1.5rem', zIndex: 60,
-        width: '56px', height: '56px', borderRadius: '50%', background: '#25D366',
+        position: 'fixed', insetBlockEnd: '5.5rem', insetInlineEnd: '1.25rem', zIndex: 60,
+        width: '50px', height: '50px', borderRadius: '50%', background: '#25D366',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         boxShadow: '0 6px 18px rgba(0,0,0,.35)', transition: 'transform .25s ease',
       }}

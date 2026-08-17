@@ -10,6 +10,7 @@ import '../globals.css';
 import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
 import WhatsAppButton from '@/components/WhatsAppButton.js';
+import { getCurrentMember } from '@/lib/supabase-auth-server.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 
@@ -64,6 +65,7 @@ export default async function LocaleLayout({ children, params }) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const areas = await fetchAreas(locale);
+  const member = await getCurrentMember().catch(() => null);
 
   return (
     <html lang={locale} dir={DIR_BY_LOCALE[locale]}>
@@ -96,7 +98,7 @@ export default async function LocaleLayout({ children, params }) {
         />
         <NextIntlClientProvider locale={locale}>
           <a href="#main" className="skip">{locale === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}</a>
-          <SiteHeader locale={locale} areas={areas} />
+          <SiteHeader locale={locale} areas={areas} member={member} />
           <main id="main" className="main">{children}</main>
           <SiteFooter locale={locale} areas={areas} />
           <WhatsAppButton locale={locale} />

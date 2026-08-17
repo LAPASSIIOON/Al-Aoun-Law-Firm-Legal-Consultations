@@ -7,7 +7,7 @@ import styles from './SiteHeader.module.css';
 const Chevron = () => (<svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>);
 
 /** @param {{ locale: string, areas: {slug:string,title:string}[] }} props */
-export default function SiteHeader({ locale, areas = [] }) {
+export default function SiteHeader({ locale, areas = [], member = null }) {
   const t = useTranslations('nav');
   const pathname = usePathname();
   const other = locale === 'ar' ? 'en' : 'ar';
@@ -80,7 +80,9 @@ export default function SiteHeader({ locale, areas = [] }) {
         </nav>
 
         <div className={styles.actions}>
-          <Link href="/account/sign-in" className={styles.lang}>{locale === 'ar' ? 'تسجيل الدخول' : 'Sign In'}</Link>
+          <Link href={member ? '/admin' : '/account/sign-in'} className={styles.lang}>
+            {member ? (locale === 'ar' ? 'لوحة التحكم' : 'Dashboard') : (locale === 'ar' ? 'تسجيل الدخول' : 'Sign In')}
+          </Link>
           <Link href={pathname} locale={other} className={styles.lang}>{other === 'en' ? 'EN' : 'ع'}</Link>
           <Link href="/contact" className={`btn btn-solid ${styles.cta}`}>{t('consult')}</Link>
           <button className={styles.burger} aria-label={locale === 'ar' ? 'القائمة' : 'Menu'} aria-expanded={mobile} onClick={() => setMobile(true)}>
@@ -123,7 +125,9 @@ export default function SiteHeader({ locale, areas = [] }) {
           <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>05</span>{t('contact')}</Link>
         </nav>
         <div className={styles.overlayFoot}>
-          <Link href="/account/sign-in" className={styles.lang} onClick={closeAll}>{locale === 'ar' ? 'تسجيل الدخول' : 'Sign In'}</Link>
+          <Link href={member ? '/admin' : '/account/sign-in'} className={styles.lang} onClick={closeAll}>
+            {member ? (locale === 'ar' ? 'لوحة التحكم' : 'Dashboard') : (locale === 'ar' ? 'تسجيل الدخول' : 'Sign In')}
+          </Link>
           <Link href={pathname} locale={other} className={styles.lang} onClick={closeAll}>{other === 'en' ? 'English' : 'العربية'}</Link>
           <Link href="/contact" className="btn btn-solid" onClick={closeAll}>{t('consult')}</Link>
         </div>

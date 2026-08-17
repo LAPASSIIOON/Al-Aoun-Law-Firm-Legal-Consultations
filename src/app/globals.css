@@ -59,7 +59,32 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 /* كشف — يظهر افتراضيًا؛ JS يضيف .reveal-init ثم .in (آمن تمامًا لو تأخّر/فشل JS) */
 [data-reveal].reveal-init{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 [data-reveal].reveal-init.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){[data-reveal].reveal-init{opacity:1!important;transform:none!important;transition:none}}
+
+/* بطيء — للمحتوى المؤسسي (الإحصائيات، الإرث، سيرة المؤسس): وقارٌ أبطأ من التفاعلات العادية */
+[data-reveal="slow"].reveal-init{opacity:0;transform:translateY(28px);transition:opacity 1.15s var(--ease),transform 1.15s var(--ease)}
+[data-reveal="slow"].reveal-init.in{opacity:1;transform:none}
+
+/* ختم — للأيقونات والاعتمادات: استقرارٌ حاسم أقرب لأثر الختم الرسمي */
+[data-reveal="stamp"].reveal-init{opacity:0;transform:scale(1.18);transition:opacity .4s cubic-bezier(.34,1.5,.64,1),transform .4s cubic-bezier(.34,1.5,.64,1)}
+[data-reveal="stamp"].reveal-init.in{opacity:1;transform:scale(1)}
+
+/* ملف — لصفوف القوائم المرقّمة: دخولٌ من اتجاه القراءة، كأنه يُسحب من ملف */
+[data-reveal="file"].reveal-init{opacity:0;transform:translateX(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
+[data-reveal="file"].reveal-init.in{opacity:1;transform:none}
+
+/* قوس التوقيع — خطٌّ يرسم نفسه أسفل العناوين المحورية عند ظهورها لأول مرة */
+.sig-underline{display:block;overflow:visible}
+.sig-underline path{stroke-dasharray:240;stroke-dashoffset:240;transition:stroke-dashoffset 1s var(--ease) .15s}
+[data-reveal].reveal-init.in .sig-underline path{stroke-dashoffset:0}
+
+@media (prefers-reduced-motion:reduce){
+  [data-reveal].reveal-init,[data-reveal="slow"].reveal-init,[data-reveal="stamp"].reveal-init,[data-reveal="file"].reveal-init{opacity:1!important;transform:none!important;transition:none}
+  .sig-underline path{stroke-dashoffset:0!important;transition:none}
+}
+
+/* العلامة المائية — فراغ حقيقي فقط، تختفي على الشاشات الضيقة كي لا تُثقل الجوال */
+@media (min-width:960px){.hero-watermark{display:block!important}}
 
 /* شبكات وبطاقات */
 .grid{display:grid;gap:clamp(1.25rem,2.4vw,1.75rem)}

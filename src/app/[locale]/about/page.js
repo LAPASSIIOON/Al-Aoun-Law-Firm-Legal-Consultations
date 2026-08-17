@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
+import SignatureUnderline from '@/components/SignatureUnderline.js';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs('/about') }; }
@@ -25,8 +26,11 @@ export default async function About({ params }) {
       <section className="on-ivory section">
         <div className="wrap-narrow wrap">
           <span className="eyebrow" data-reveal>{th('eyebrow')}</span>
-          <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.5rem' }}>{t('storyHeading')}</h2>
-          <div className="prose" data-reveal>
+          <div data-reveal="slow">
+            <h2 className="display d-2" style={{ marginBlock: '1rem 1.5rem' }}>{t('storyHeading')}</h2>
+            <SignatureUnderline width={96} />
+          </div>
+          <div className="prose" data-reveal="slow" style={{ marginBlockStart: '1.5rem' }}>
             <p className="body" style={{ fontSize: '1.1rem', maxWidth: '68ch' }}>{th('body')}</p>
             <p className="body" style={{ marginBlockStart: '1.25rem', maxWidth: '68ch' }}>{tt('body')}</p>
           </div>
@@ -46,7 +50,7 @@ export default async function About({ params }) {
           <p className="lead" data-reveal style={{ marginBlockEnd: '3rem', maxWidth: '52ch' }}>{tph('lead')}</p>
           <div className="grid cols-3">
             {values.map((v, i) => (
-              <div key={i} data-reveal style={{ paddingBlockStart: '1.2rem', borderBlockStart: '1px solid var(--hair-dark)' }}>
+              <div key={i} data-reveal="file" style={{ paddingBlockStart: '1.2rem', borderBlockStart: '1px solid var(--hair-dark)' }}>
                 <span className="idx">{String(i+1).padStart(2,'0')}</span>
                 <h3 className="d-3 display" style={{ marginBlockStart: '0.6rem' }}>{v}</h3>
               </div>
@@ -54,11 +58,32 @@ export default async function About({ params }) {
           </div>
         </div>
       </section>
+      <section className="on-white section">
+        <div className="wrap">
+          <div className={s.officeGrid}>
+            <div className={s.officeMedia}>
+              <video
+                className={s.officeVideo}
+                poster="/media/office-interior-poster.jpg"
+                autoPlay muted loop playsInline preload="metadata"
+                aria-label={t('officeVideoHead')}
+              >
+                <source src="/media/office-interior.webm" type="video/webm" />
+                <source src="/media/office-interior.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div className={s.officeText} data-reveal>
+              <span className="eyebrow">{t('officeVideoEye')}</span>
+              <h2 className="display d-2" style={{ marginBlock: '1.2rem 1rem' }}>{t('officeVideoHead')}</h2>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="on-graphite section">
         <div className="wrap-narrow wrap">
           <span className="eyebrow" data-reveal>{tt('eyebrow')}</span>
-          <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.4rem' }}>{t('kuwaitHeading')}</h2>
-          <p className="body" data-reveal style={{ maxWidth: '60ch' }}>{t('kuwaitBody')}</p>
+          <h2 className="display d-2" data-reveal="slow" style={{ marginBlock: '1rem 1.4rem' }}>{t('kuwaitHeading')}</h2>
+          <p className="body" data-reveal="slow" style={{ maxWidth: '60ch' }}>{t('kuwaitBody')}</p>
           <p className="body" data-reveal style={{ maxWidth: '60ch', marginBlockStart: '.9rem', color: 'var(--muted)' }}>{t('groupAffiliation')}</p>
           <Link href="/contact" className="btn btn-solid" data-reveal style={{ marginBlockStart: '2.25rem' }}>{t('cta')}<span className="arrow">→</span></Link>
         </div>

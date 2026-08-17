@@ -33,7 +33,7 @@ export default async function TeamMember({ params }) {
             <p className={h.founderRole} style={{ fontSize: '1.05rem' }}>{f.role} · {f.title}</p>
             {f.bio && <p className="body" style={{ marginBlockStart: '1.25rem', maxWidth: '60ch' }}>{f.bio}</p>}
             <ul className={s.pointList} style={{ marginBlockStart: '1.5rem' }}>
-              {f.creds.map((c, i) => (<li key={i} className={s.point}><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
+              {f.creds.map((c, i) => (<li key={i} className={s.point} data-reveal="stamp"><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
             </ul>
 
             {f.education && (

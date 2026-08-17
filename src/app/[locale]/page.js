@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroMotion from '@/components/HeroMotion.js';
+import HeroWatermark from '@/components/HeroWatermark.js';
+import SignatureUnderline from '@/components/SignatureUnderline.js';
 import CounterStat from '@/components/CounterStat.js';
 import styles from './home.module.css';
 
@@ -112,6 +114,7 @@ export default async function Home({ params }) {
       {/* HERO */}
       <section className={styles.hero} style={{ '--veilDir': veilDir }}>
         <HeroMotion />
+        <HeroWatermark />
         <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
           <line x1="0" y1="120" x2="1200" y2="120" />
           <line x1="0" y1="680" x2="1200" y2="680" />
@@ -166,7 +169,10 @@ export default async function Home({ params }) {
         <div className="wrap">
           <div className={styles.head}>
             <span className="eyebrow" data-reveal>{c.posEye}</span>
-            <h2 className="display d-1" data-reveal>{c.posHead}</h2>
+            <div data-reveal>
+              <h2 className="display d-1">{c.posHead}</h2>
+              <SignatureUnderline width={96} />
+            </div>
           </div>
           <p className="lead" data-reveal style={{ maxWidth: '52rem' }}>{c.posBody}</p>
           <p data-reveal style={{ marginBlockStart: '1.75rem' }}><Link href="/about" className="btn-line">{c.posLink} <span className="arrow">→</span></Link></p>
@@ -185,7 +191,7 @@ export default async function Home({ params }) {
           </div>
           <div className={styles.paList}>
             {(areas.length ? areas.slice(0, 8) : Array.from({ length: 6 })).map((a, i) => (
-              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal>
+              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal="file">
                 <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                 <span className={styles.paBody}>
                   <span className={styles.paTitle}>{a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}</span>
@@ -208,7 +214,7 @@ export default async function Home({ params }) {
           </div>
           <div className={styles.legacyList}>
             {c.legacyItems.map((it) => (
-              <div key={it.n} className={styles.legacyRow} data-reveal>
+              <div key={it.n} className={styles.legacyRow} data-reveal="file">
                 <span className={styles.legacyIdx}>{it.n}</span>
                 <span className={styles.legacyBody}>
                   <span className={styles.legacyTitle}>{it.t}</span>
@@ -229,7 +235,7 @@ export default async function Home({ params }) {
           </div>
           <div className="grid cols-2" style={{ rowGap: 'clamp(2rem,4vh,3rem)' }}>
             {c.values.map((v, i) => (
-              <div key={i} className={styles.value} data-reveal>
+              <div key={i} className={styles.value} data-reveal="file">
                 <span className={styles.valueNum}>{String(i + 1).padStart(2, '0')}</span>
                 <h3 className={styles.valueT}>{v.t}</h3>
                 <p className={styles.valueD}>{v.d}</p>
@@ -243,10 +249,10 @@ export default async function Home({ params }) {
       <section className="on-white section">
         <div className="wrap">
           <div className={styles.founder}>
-            <div className={styles.founderMedia} data-reveal>
+            <div className={styles.founderMedia} data-reveal="slow">
               <img src="/media/founder-haitham.jpg" alt={c.fName} />
             </div>
-            <div data-reveal>
+            <div data-reveal="slow">
               <span className="eyebrow">{c.fEye}</span>
               <h2 className={styles.founderName}>{c.fName}</h2>
               <p className={styles.founderRole}>{c.fRole}</p>

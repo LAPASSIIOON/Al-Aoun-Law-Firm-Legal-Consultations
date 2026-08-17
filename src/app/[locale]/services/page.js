@@ -54,7 +54,7 @@ export default async function Services({ params }) {
           <div className={styles.paList}>
             {(items || Array.from({ length: 6 })).map((r, i) => (
               items ? (
-                <Link key={r.slug} href={`/services/${r.slug}`} className={styles.paRow} data-reveal>
+                <Link key={r.slug} href={`/services/${r.slug}`} className={styles.paRow} data-reveal="file">
                   <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={styles.paBody}>
                     <span className={styles.paTitle} style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
@@ -68,7 +68,7 @@ export default async function Services({ params }) {
                   <span className={styles.paArrow} aria-hidden="true">→</span>
                 </Link>
               ) : (
-                <div key={i} className={styles.paRow} data-reveal>
+                <div key={i} className={styles.paRow} data-reveal="file">
                   <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={styles.paBody}>
                     <span className={styles.paTitle}>{t('placeholderTitle')}</span>

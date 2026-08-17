@@ -23,6 +23,11 @@ async function fetchAreas(locale) {
   } catch (e) { return []; }
 }
 
+const ICON_SLUGS = new Set([
+  'commercial-arbitration', 'capital-markets', 'corporate-commercial',
+  'contracts-civil', 'labour-employment', 'real-estate',
+]);
+
 /** @param {{ params: Promise<{ locale: string }> }} props */
 export default async function Services({ params }) {
   const { locale } = await params; setRequestLocale(locale);
@@ -50,7 +55,12 @@ export default async function Services({ params }) {
                 <Link key={r.slug} href={`/services/${r.slug}`} className={styles.paRow} data-reveal>
                   <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={styles.paBody}>
-                    <span className={styles.paTitle}>{r.title}</span>
+                    <span className={styles.paTitle} style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+                      {ICON_SLUGS.has(r.slug) && (
+                        <img src={`/practice-areas/icons/${r.slug}.png`} alt="" width={30} height={30} style={{ flex: '0 0 auto', opacity: .92 }} />
+                      )}
+                      {r.title}
+                    </span>
                     {r.summary && <span className={styles.paSum}>{r.summary}</span>}
                   </span>
                   <span className={styles.paArrow} aria-hidden="true">→</span>

@@ -31,6 +31,11 @@ export async function generateMetadata({ params }) {
   return a ? { title: a.title, description: a.summary, alternates: altLangs(`/services/${slug}`) } : {};
 }
 
+const IMAGE_SLUGS = new Set([
+  'commercial-arbitration', 'dispute-resolution', 'intellectual-property', 'capital-markets',
+  'corporate-commercial', 'contracts-civil', 'litigation', 'labour-employment', 'real-estate',
+]);
+
 /** @param {{ params: Promise<{ slug: string, locale: string }> }} props */
 export default async function ServiceDetail({ params }) {
   const { slug, locale } = await params; setRequestLocale(locale);
@@ -57,6 +62,15 @@ export default async function ServiceDetail({ params }) {
           {a.summary && <p className="lead" data-reveal style={{ maxWidth: '52ch' }}>{a.summary}</p>}
         </div>
       </section>
+
+      {IMAGE_SLUGS.has(slug) && (
+        <section className="on-white" style={{ paddingBlock: '2.5rem 0' }}>
+          <div className="wrap">
+            <img src={`/practice-areas/${slug}.webp`} alt="" data-reveal
+              style={{ width: '100%', height: 'clamp(200px,32vw,380px)', objectFit: 'cover', borderRadius: 'var(--r-lg)', display: 'block' }} />
+          </div>
+        </section>
+      )}
 
       <section className="on-white section">
         <div className="wrap-narrow wrap">

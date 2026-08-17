@@ -68,8 +68,10 @@ export default async function ServiceDetail({ params }) {
       {hasImage(slug) && (
         <section className="on-white" style={{ paddingBlock: '2.5rem 0' }}>
           <div className="wrap">
-            <img src={`/practice-areas/${slug}.webp`} alt="" data-reveal
-              style={{ width: '100%', height: 'clamp(200px,32vw,380px)', objectFit: 'cover', borderRadius: 'var(--r-lg)', display: 'block' }} />
+            <div className="img-zoom-frame" data-reveal style={{ borderRadius: 'var(--r-lg)' }}>
+              <img src={`/practice-areas/${slug}.webp`} alt=""
+                style={{ width: '100%', height: 'clamp(200px,32vw,380px)', objectFit: 'cover', display: 'block' }} />
+            </div>
           </div>
         </section>
       )}

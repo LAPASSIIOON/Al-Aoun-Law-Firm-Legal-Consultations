@@ -249,7 +249,7 @@ export default async function Home({ params }) {
       <section className="on-white section">
         <div className="wrap">
           <div className={styles.founder}>
-            <div className={styles.founderMedia} data-reveal="slow">
+            <div className={`${styles.founderMedia} img-zoom-frame`} data-reveal="slow">
               <img src="/media/founder-haitham.jpg" alt={c.fName} />
             </div>
             <div data-reveal="slow">

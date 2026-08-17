@@ -6,13 +6,13 @@ export default function HeroWatermark() {
     <div
       aria-hidden="true"
       style={{
-        position: 'absolute', insetInlineEnd: '2%', insetBlockEnd: '4%',
-        width: 'min(30vw, 380px)', height: 'min(30vw, 380px)',
+        position: 'absolute', insetInlineEnd: '2%', insetBlockEnd: '3%',
+        width: 'min(34vw, 460px)', height: 'min(34vw, 460px)',
         pointerEvents: 'none', display: 'none',
       }}
       className="hero-watermark"
     >
-      <img src="/brand/al-aoun-mark-duotone.png" alt="" style={{ position: 'absolute', inset: '10%', width: '80%', height: '80%', objectFit: 'contain', opacity: 0.3 }} />
+      <img src="/brand/al-aoun-logo-white.png" alt="" style={{ position: 'absolute', inset: '8%', width: '84%', height: '84%', objectFit: 'contain', opacity: 0.55 }} />
     </div>
   );
 }

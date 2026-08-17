@@ -30,7 +30,7 @@ export default async function Team({ params }) {
           <div className="wrap">
             <span className="eyebrow" data-reveal>{tt('founderHeading')}</span>
             <div className={h.founder} data-reveal>
-              <div className={h.founderMedia}><img src={founder.photoThumb} alt={ff.name} /></div>
+              <div className={`${h.founderMedia} img-zoom-frame`}><img src={founder.photoThumb} alt={ff.name} /></div>
               <div>
                 <h2 className="display d-2">{ff.name}</h2>
                 <p className={h.founderRole}>{ff.role} · {ff.title}</p>
@@ -50,7 +50,7 @@ export default async function Team({ params }) {
                 const mm = m[locale] || m.ar;
                 return (
                   <Link key={m.slug} href={`/team/${m.slug}`} data-reveal style={{ display: 'block', color: 'inherit' }}>
-                    <div style={{ borderRadius: 'var(--r-lg)', overflow: 'hidden', aspectRatio: '1000/1042', marginBlockEnd: '1rem' }}>
+                    <div className="img-zoom-frame" style={{ borderRadius: 'var(--r-lg)', overflow: 'hidden', aspectRatio: '1000/1042', marginBlockEnd: '1rem' }}>
                       <img src={m.photoThumb} alt={mm.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                     <h3 className="display d-3" style={{ fontSize: '1.25rem', marginBlockEnd: '.25rem' }}>{mm.name}</h3>

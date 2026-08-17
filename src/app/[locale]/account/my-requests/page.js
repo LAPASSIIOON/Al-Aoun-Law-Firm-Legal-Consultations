@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCurrentMember, createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
+import { signOutAction } from '@/app/actions/auth.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,7 +43,12 @@ export default async function MyRequests({ params }) {
   return (
     <section className="on-white section">
       <div className="wrap-narrow wrap">
-        <h1 className="display d-2" style={{ marginBlockEnd: '.5rem' }}>{t('heading')}</h1>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-start', justifyContent: 'space-between', marginBlockEnd: '.5rem' }}>
+          <h1 className="display d-2" style={{ margin: 0 }}>{t('heading')}</h1>
+          <form action={async () => { 'use server'; await signOutAction(locale); }}>
+            <button type="submit" className="btn-line" style={{ fontSize: '.85rem' }}>{locale === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}</button>
+          </form>
+        </div>
         <p className="lead" style={{ marginBlockEnd: '2.5rem', maxWidth: '52ch' }}>{t('lead')}</p>
 
         {total === 0 ? (

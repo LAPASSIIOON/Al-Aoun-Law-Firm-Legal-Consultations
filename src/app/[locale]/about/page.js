@@ -38,8 +38,10 @@ export default async function About({ params }) {
       </section>
       <section className="on-ivory" style={{ paddingBlock: '0 3rem' }}>
         <div className="wrap">
-          <img src="/about/boardroom.webp" alt={t('boardroomCaption')} data-reveal
-            style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover', borderRadius: 'var(--r-lg)', display: 'block' }} />
+          <div className="img-zoom-frame" data-reveal style={{ borderRadius: 'var(--r-lg)' }}>
+            <img src="/about/boardroom.webp" alt={t('boardroomCaption')}
+              style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover', display: 'block' }} />
+          </div>
           <p className="body" data-reveal style={{ marginBlockStart: '.9rem', color: 'var(--muted)', fontSize: '.9rem' }}>{t('boardroomCaption')}</p>
         </div>
       </section>

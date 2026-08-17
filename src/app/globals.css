@@ -57,8 +57,14 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 :lang(ar) .btn:hover .arrow,:lang(ar) .btn-line:hover .arrow{transform:translateX(-3px)}
 
 /* كشف — يظهر افتراضيًا؛ JS يضيف .reveal-init ثم .in (آمن تمامًا لو تأخّر/فشل JS) */
-[data-reveal].reveal-init{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+[data-reveal].reveal-init{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 [data-reveal].reveal-init.in{opacity:1;transform:none}
+
+/* إطار تكبير الصور — أي صورة حقيقية (فريق، مكتب، مجالات ممارسة) تكبّر بلطف عند المرور بالمؤشر */
+.img-zoom-frame{overflow:hidden;display:block}
+.img-zoom-frame img{transition:transform .7s var(--ease);will-change:transform}
+.img-zoom-frame:hover img{transform:scale(1.06)}
+@media (prefers-reduced-motion:reduce){.img-zoom-frame:hover img{transform:none}}
 
 /* بطيء — للمحتوى المؤسسي (الإحصائيات، الإرث، سيرة المؤسس): وقارٌ أبطأ من التفاعلات العادية */
 [data-reveal="slow"].reveal-init{opacity:0;transform:translateY(28px);transition:opacity 1.15s var(--ease),transform 1.15s var(--ease)}

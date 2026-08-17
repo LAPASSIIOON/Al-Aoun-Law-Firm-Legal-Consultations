@@ -27,7 +27,7 @@ export default async function TeamMember({ params }) {
       <div className="wrap">
         <Link href="/team" className="btn-line" style={{ marginBlockEnd: '2.5rem' }}>{t('heading')}</Link>
         <div className={h.founder}>
-          <div className={h.founderMedia}><img src={m.photoFull} alt={f.name} /></div>
+          <div className={`${h.founderMedia} img-zoom-frame`}><img src={m.photoFull} alt={f.name} /></div>
           <div>
             <h1 className="display d-1">{f.name}</h1>
             <p className={h.founderRole} style={{ fontSize: '1.05rem' }}>{f.role} · {f.title}</p>

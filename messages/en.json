@@ -321,7 +321,10 @@
   "teamPage": {
     "lead": "Leadership and the legal team at Al Oun.",
     "founderHeading": "Leadership",
-    "memberForthcoming": "Profiles of other lawyers and consultants are published once their details are approved."
+    "memberForthcoming": "Profiles of other lawyers and consultants are published once their details are approved.",
+    "teamHeading": "Team Members",
+    "educationHeading": "Education",
+    "experienceHeading": "Professional Experience"
   },
   "insightsPage": {
     "lead": "Legal articles and updates from Al Oun.",

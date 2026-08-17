@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getCurrentMember } from '@/lib/supabase-auth-server.js';
 import { signOutAction } from '@/app/actions/auth.js';
+import { listConsultations, listReferrals, listPartnerships } from '@/app/actions/admin.js';
 import AdminNav from '@/components/AdminNav.js';
 
 // إجباري: كل صفحات لوحة الإدارة تتحقّق من الجلسة في كل طلب — أبدًا لا تُخزَّن ثابتة (SSG).
@@ -16,12 +17,18 @@ export default async function AdminLayout({ children, params }) {
   if (!member) redirect(`/${locale}/account/sign-in`);
   if (member.role !== 'admin' || !member.is_active) redirect(`/${locale}/account/my-requests`);
 
+  const [consultations, referrals, partnerships] = await Promise.all([
+    listConsultations(), listReferrals(), listPartnerships(),
+  ]);
+  const newCount = (rows) => rows.filter((r) => r.stage === 'new').length;
+
   const links = [
     { href: '/admin', label: t('navOverview') },
-    { href: '/admin/consultations', label: t('navConsultations') },
-    { href: '/admin/referrals', label: t('navReferrals') },
-    { href: '/admin/partnerships', label: t('navPartnerships') },
+    { href: '/admin/consultations', label: t('navConsultations'), badge: newCount(consultations) },
+    { href: '/admin/referrals', label: t('navReferrals'), badge: newCount(referrals) },
+    { href: '/admin/partnerships', label: t('navPartnerships'), badge: newCount(partnerships) },
     { href: '/admin/members', label: t('navMembers') },
+    { href: '/admin/audit', label: t('navAudit') },
   ];
 
   return (

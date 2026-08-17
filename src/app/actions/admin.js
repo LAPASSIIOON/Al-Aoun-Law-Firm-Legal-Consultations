@@ -49,3 +49,20 @@ export async function updateStage(input) {
   if (error) return { ok: false, error: 'server_error' };
   return data;
 }
+
+/** @param {{ table: 'consultation'|'referral'|'partnership', id: string, notes: string }} input */
+export async function updateNotes(input) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_update_notes', {
+    p_table: input.table, p_id: input.id, p_notes: input.notes,
+  });
+  if (error) return { ok: false, error: 'server_error' };
+  return data;
+}
+
+export async function listAuditLog() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_list_audit_log', { p_limit: 150 });
+  if (error) return [];
+  return data || [];
+}

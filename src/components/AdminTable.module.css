@@ -5,3 +5,12 @@
 .table td { border-block-end: 1px solid var(--hair-light-strong); color: var(--ink); }
 .table tr:last-child td { border-block-end: none; }
 .select { font: inherit; background: var(--surface-2); color: var(--ink); border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: 0.35rem 0.6rem; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-block-end: 1rem; }
+.search { font: inherit; font-size: .9rem; background: var(--surface-2); color: var(--ink); border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: 0.45rem 0.8rem; min-inline-size: 14rem; }
+.count { font-size: .82rem; color: var(--muted); white-space: nowrap; }
+.notesBtn { font: inherit; font-size: .82rem; background: none; border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: .3rem .7rem; color: var(--clay); cursor: pointer; white-space: nowrap; }
+.notesBtn:hover { background: var(--surface-2); }
+.notesRow { background: var(--surface); white-space: normal !important; padding: 1rem !important; }
+.notesArea { width: 100%; font: inherit; font-size: .88rem; background: var(--surface-2); color: var(--ink); border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: .6rem .75rem; resize: vertical; }
+.savedFlash { font-size: .82rem; color: #1C7D5A; }

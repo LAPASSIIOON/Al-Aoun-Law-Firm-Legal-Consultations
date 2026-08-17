@@ -508,7 +508,8 @@
     "pendingHeading": "Account Under Review",
     "pendingBody": "Your account was created successfully, but admin access hasn't been granted yet by Al Oun's team.",
     "emptyList": "No records yet.",
-    "membersHint": "Promote a member to \"admin\" to grant them access to this dashboard, or deactivate to revoke access."
+    "membersHint": "Promote a member to \"admin\" to grant them access to this dashboard, or deactivate to revoke access.",
+    "navAudit": "Audit Log"
   },
   "myRequests": {
     "heading": "My Requests",

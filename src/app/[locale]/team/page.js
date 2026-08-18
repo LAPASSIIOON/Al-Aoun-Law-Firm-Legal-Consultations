@@ -12,8 +12,9 @@ export default async function Team({ params }) {
   const { locale } = await params; setRequestLocale(locale);
   const t = await getTranslations('people');
   const tt = await getTranslations('teamPage');
-  const founder = TEAM.find((m) => m.isFounder);
-  const others = TEAM.filter((m) => !m.isFounder);
+  const founder = TEAM.find((m) => m.isFounder || m.tier === 'founder');
+  const partners = TEAM.filter((m) => m.tier === 'partner');
+  const members = TEAM.filter((m) => !m.isFounder && m.tier !== 'founder' && m.tier !== 'partner');
   const ff = (founder?.[locale] || founder?.ar);
 
   return (
@@ -25,6 +26,7 @@ export default async function Team({ params }) {
           <p className="lead" data-reveal style={{ maxWidth: '52ch' }}>{tt('lead')}</p>
         </div>
       </section>
+
       {founder && (
         <section className="on-ivory section">
           <div className="wrap">
@@ -41,12 +43,37 @@ export default async function Team({ params }) {
           </div>
         </section>
       )}
-      {others.length > 0 ? (
+
+      {partners.length > 0 && (
         <section className="on-graphite section">
+          <div className="wrap">
+            <span className="eyebrow" data-reveal>{tt('partnersHeading')}</span>
+            <div style={{ display: 'grid', gap: '2.75rem', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', marginBlockStart: '1.75rem' }}>
+              {partners.map((m) => {
+                const mm = m[locale] || m.ar;
+                return (
+                  <Link key={m.slug} href={`/team/${m.slug}`} data-reveal style={{ display: 'block', color: 'inherit' }}>
+                    <div className="img-zoom-frame" style={{ borderRadius: 'var(--r-lg)', overflow: 'hidden', aspectRatio: '1000/1042', marginBlockEnd: '1.15rem' }}>
+                      <img src={m.photoThumb} alt={mm.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                    <h3 className="display d-3" style={{ fontSize: '1.4rem', marginBlockEnd: '.3rem' }}>{mm.name}</h3>
+                    <p className="body" style={{ fontSize: '.98rem', color: 'var(--clay-bright)', marginBlockEnd: '.15rem' }}>{mm.role}</p>
+                    <p className="body" style={{ fontSize: '.88rem', color: 'var(--platinum-2)', marginBlockEnd: '.9rem' }}>{mm.title}</p>
+                    <span className="btn-line" style={{ fontSize: '.88rem' }}>{locale === 'ar' ? 'الملف الكامل' : 'Full profile'}<span className="arrow">→</span></span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {members.length > 0 ? (
+        <section className={`${partners.length > 0 ? 'on-ivory' : 'on-graphite'} section`}>
           <div className="wrap">
             <span className="eyebrow" data-reveal>{tt('teamHeading')}</span>
             <div style={{ display: 'grid', gap: '2.5rem', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', marginBlockStart: '1.5rem' }}>
-              {others.map((m) => {
+              {members.map((m) => {
                 const mm = m[locale] || m.ar;
                 return (
                   <Link key={m.slug} href={`/team/${m.slug}`} data-reveal style={{ display: 'block', color: 'inherit' }}>
@@ -61,7 +88,7 @@ export default async function Team({ params }) {
             </div>
           </div>
         </section>
-      ) : (
+      ) : (partners.length === 0 && (
         <section className="on-graphite section-tight section">
           <div className="wrap-narrow wrap">
             <div className={s.emptyBox} data-reveal>
@@ -70,7 +97,7 @@ export default async function Team({ params }) {
             </div>
           </div>
         </section>
-      )}
+      ))}
     </>
   );
 }

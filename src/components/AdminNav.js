@@ -6,7 +6,7 @@ import { Link } from '@/i18n/navigation.js';
 export default function AdminNav({ links }) {
   const pathname = usePathname();
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.3rem', flex: '1 1 auto' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.3rem', flex: '0 1 auto', minWidth: 0 }}>
       {links.map((l) => {
         const active = pathname === l.href;
         return (

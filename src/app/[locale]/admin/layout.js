@@ -34,13 +34,15 @@ export default async function AdminLayout({ children, params }) {
   return (
     <div style={{ minHeight: '80vh', background: 'var(--surface)' }}>
       <nav style={{ borderBlockEnd: '1px solid var(--hair-light-strong)', background: 'var(--ground)' }}>
-        <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '.5rem', paddingBlock: '1.1rem' }}>
-          <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', marginInlineEnd: '1.5rem', whiteSpace: 'nowrap' }}>{t('title')}</strong>
+        <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
+          <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', whiteSpace: 'nowrap', flexShrink: 0 }}>{t('title')}</strong>
           <AdminNav links={links} />
-          <span className="body" style={{ fontSize: '.82rem', color: 'var(--platinum-3)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
-          <form action={async () => { 'use server'; await signOutAction(locale); }}>
-            <button type="submit" className="btn-line" style={{ fontSize: '.85rem', color: 'var(--clay-bright)' }}>{t('signOut')}</button>
-          </form>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '.9rem', marginInlineStart: 'auto', flexShrink: 0 }}>
+            <span className="body" style={{ fontSize: '.82rem', color: 'var(--platinum-3)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
+            <form action={async () => { 'use server'; await signOutAction(locale); }}>
+              <button type="submit" className="btn-line" style={{ fontSize: '.85rem', color: 'var(--clay-bright)', whiteSpace: 'nowrap' }}>{t('signOut')}</button>
+            </form>
+          </div>
         </div>
       </nav>
       <div className="wrap" style={{ paddingBlock: '2.5rem' }}>

@@ -6,6 +6,7 @@ export const TEAM = [
   {
     slug: 'haitham-al-aoun',
     isFounder: true,
+    tier: 'founder',
     photoThumb: '/media/founder-haitham.jpg',
     photoFull: '/media/founder-haitham-full.jpg',
     ar: {
@@ -36,6 +37,7 @@ export const TEAM = [
   {
     slug: 'bader-saif-al-rashidi',
     isFounder: false,
+    tier: 'partner',
     photoThumb: '/media/team-bader-saif.jpg',
     photoFull: '/media/team-bader-saif-full.jpg',
     ar: {

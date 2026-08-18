@@ -16,3 +16,6 @@ npm-debug.log*
 
 # vercel
 .vercel
+
+# accidentally-committed sibling project - keep out of this repo
+theleaders-nextjs-v2-complete/

@@ -532,7 +532,12 @@
     "colType": "الصفة",
     "colEmail": "البريد الإلكتروني",
     "colPhone": "الهاتف",
-    "colDate": "تاريخ التسجيل"
+    "colDate": "تاريخ التسجيل",
+    "colRef": "المرجع",
+    "colFirm": "الجهة",
+    "colContact": "جهة الاتصال",
+    "colUrgency": "الأولوية",
+    "colSubmitted": "تاريخ التقديم"
   },
   "myRequests": {
     "heading": "طلباتي",

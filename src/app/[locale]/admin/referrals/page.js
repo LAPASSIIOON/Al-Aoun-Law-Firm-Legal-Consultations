@@ -13,9 +13,9 @@ export default async function AdminReferrals() {
       <AdminTable
         rows={rows} tableType="referral" stageOptions={STAGES} emptyLabel={t('emptyList')}
         columns={[
-          { key: 'reference', label: 'Ref' }, { key: 'referring_firm_name', label: 'Firm' },
-          { key: 'referring_contact_name', label: 'Contact' }, { key: 'referring_contact_email', label: 'Email' },
-          { key: 'urgency', label: 'Urgency' }, { key: 'created_at', label: 'Date' },
+          { key: 'reference', label: t('colRef') }, { key: 'referring_firm_name', label: t('colFirm') },
+          { key: 'referring_contact_name', label: t('colContact') }, { key: 'referring_contact_email', label: t('colEmail') },
+          { key: 'urgency', label: t('colUrgency') }, { key: 'created_at', label: t('colSubmitted') },
         ]}
       />
     </>

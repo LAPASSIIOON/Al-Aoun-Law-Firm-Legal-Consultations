@@ -13,9 +13,9 @@ export default async function AdminPartnerships() {
       <AdminTable
         rows={rows} tableType="partnership" stageOptions={STAGES} emptyLabel={t('emptyList')}
         columns={[
-          { key: 'reference', label: 'Ref' }, { key: 'firm_name', label: 'Firm' },
-          { key: 'contact_name', label: 'Contact' }, { key: 'applicant_type', label: 'Type' },
-          { key: 'email', label: 'Email' }, { key: 'created_at', label: 'Date' },
+          { key: 'reference', label: t('colRef') }, { key: 'firm_name', label: t('colFirm') },
+          { key: 'contact_name', label: t('colContact') }, { key: 'applicant_type', label: t('colType') },
+          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted') },
         ]}
       />
     </>

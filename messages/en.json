@@ -532,7 +532,12 @@
     "colType": "Type",
     "colEmail": "Email",
     "colPhone": "Phone",
-    "colDate": "Registered"
+    "colDate": "Registered",
+    "colRef": "Ref",
+    "colFirm": "Firm",
+    "colContact": "Contact",
+    "colUrgency": "Urgency",
+    "colSubmitted": "Date"
   },
   "myRequests": {
     "heading": "My Requests",

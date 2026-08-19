@@ -13,9 +13,9 @@ export default async function AdminConsultations() {
       <AdminTable
         rows={rows} tableType="consultation" stageOptions={STAGES} emptyLabel={t('emptyList')}
         columns={[
-          { key: 'reference', label: 'Ref' }, { key: 'full_name', label: 'Name' },
-          { key: 'client_type', label: 'Type' }, { key: 'phone', label: 'Phone' },
-          { key: 'email', label: 'Email' }, { key: 'created_at', label: 'Date' },
+          { key: 'reference', label: t('colRef') }, { key: 'full_name', label: t('colName') },
+          { key: 'client_type', label: t('colType') }, { key: 'phone', label: t('colPhone') },
+          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted') },
         ]}
       />
     </>

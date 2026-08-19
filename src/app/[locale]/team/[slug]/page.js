@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
   const m = getTeamMember(slug);
   if (!m) return {};
-  return { title: (m[locale] || m.ar).name, alternates: altLangs(`/team/${slug}`) };
+  return { title: (m[locale] || m.ar).name, alternates: altLangs(locale, `/team/${slug}`) };
 }
 
 export default async function TeamMember({ params }) {

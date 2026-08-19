@@ -6,7 +6,7 @@ import s from '../shared.module.css';
 
 export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'insights' }); return { title: t('heading'), description: t('subhead'), alternates: altLangs('/insights') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'insights' }); return { title: t('heading'), description: t('subhead'), alternates: altLangs(locale, '/insights') }; }
 
 export default async function Insights({ params }) {
   const { locale } = await params; setRequestLocale(locale);

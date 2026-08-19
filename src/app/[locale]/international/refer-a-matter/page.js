@@ -8,7 +8,7 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'referMatter' });
-  return { title: t('heading'), description: t('lead'), alternates: altLangs('/international/refer-a-matter') };
+  return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/international/refer-a-matter') };
 }
 
 async function fetchOptions(locale) {

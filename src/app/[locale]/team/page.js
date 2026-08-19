@@ -6,7 +6,7 @@ import s from '../shared.module.css';
 import h from '../home.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading'), alternates: altLangs('/team') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading'), alternates: altLangs(locale, '/team') }; }
 
 export default async function Team({ params }) {
   const { locale } = await params; setRequestLocale(locale);

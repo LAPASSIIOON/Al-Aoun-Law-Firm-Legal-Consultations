@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'account' });
-  return { title: t('resetHeading'), robots: { index: false }, alternates: altLangs('/account/reset-password') };
+  return { title: t('resetHeading'), robots: { index: false }, alternates: altLangs(locale, '/account/reset-password') };
 }
 
 /** @param {{ params: Promise<{ locale: string }> }} props */

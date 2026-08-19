@@ -8,7 +8,7 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'partnerApply' });
-  return { title: t('heading'), description: t('lead'), alternates: altLangs('/international/partner-with-us') };
+  return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/international/partner-with-us') };
 }
 
 async function fetchOptions(locale) {

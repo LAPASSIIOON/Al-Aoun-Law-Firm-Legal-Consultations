@@ -12,7 +12,7 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'practiceAreas' });
-  return { title: t('heading'), description: t('subhead'), alternates: altLangs('/services') };
+  return { title: t('heading'), description: t('subhead'), alternates: altLangs(locale, '/services') };
 }
 
 async function fetchAreas(locale) {

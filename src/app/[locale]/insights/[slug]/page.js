@@ -16,7 +16,7 @@ async function getArticle(slug, locale) {
 }
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params; const a = await getArticle(slug, locale);
-  return a ? { title: a.meta_title || a.title, description: a.meta_description || a.excerpt, alternates: altLangs(`/insights/${slug}`) } : {};
+  return a ? { title: a.meta_title || a.title, description: a.meta_description || a.excerpt, alternates: altLangs(locale, `/insights/${slug}`) } : {};
 }
 export default async function Article({ params }) {
   const { slug, locale } = await params; setRequestLocale(locale);

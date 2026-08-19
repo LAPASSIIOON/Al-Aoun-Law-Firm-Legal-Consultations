@@ -5,7 +5,7 @@ import s from '../shared.module.css';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs('/about') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/about') }; }
 
 export default async function About({ params }) {
   const { locale } = await params; setRequestLocale(locale);

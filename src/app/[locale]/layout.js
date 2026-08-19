@@ -26,10 +26,13 @@ export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'meta' });
   const otherLocale = locale === 'ar' ? 'en' : 'ar';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://al-aoun-law-firm-legal-consultation.vercel.app';
+  const ogImage = `/og/al-oun-og-${locale}.png`;
   return {
     title: { default: t('title'), template: t('titleTemplate') },
     description: t('description'),
     keywords: t('keywords'),
+    metadataBase: new URL(siteUrl),
     icons: {
       icon: [
         { url: '/icons/favicon-32.png', sizes: '32x32', type: 'image/png' },
@@ -37,12 +40,19 @@ export async function generateMetadata({ params }) {
       ],
       apple: '/icons/apple-touch-icon.png',
     },
-    alternates: { languages: { ar: '/ar', en: '/en' } }, // ⚠️ صحيح للرئيسية فقط — كل صفحة أخرى تُلزَم بتحديد alternates خاص بها (انظر src/lib/i18n-meta.js)
+    // ⚠️ صحيح للرئيسية فقط — كل صفحة أخرى تُلزَم بتحديد alternates خاص بها (انظر src/lib/i18n-meta.js)
+    alternates: { canonical: `/${locale}`, languages: { ar: '/ar', en: '/en' } },
     openGraph: {
       type: 'website',
       locale: locale === 'ar' ? 'ar_KW' : 'en_US',
       alternateLocale: otherLocale === 'ar' ? 'ar_KW' : 'en_US',
       title: t('title'), description: t('description'), siteName: t('title'),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: t('title') }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'), description: t('description'),
+      images: [ogImage],
     },
     robots: { index: true, follow: true },
   };

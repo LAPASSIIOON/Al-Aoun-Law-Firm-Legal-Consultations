@@ -4,7 +4,7 @@ import ContactForm from '@/components/ContactForm.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'contactPage' }); return { title: t('heading'), description: t('lead'), alternates: altLangs('/contact') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'contactPage' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/contact') }; }
 
 export default async function Contact({ params }) {
   const { locale } = await params; setRequestLocale(locale);

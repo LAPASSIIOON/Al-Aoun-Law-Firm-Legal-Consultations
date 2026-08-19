@@ -35,7 +35,7 @@ async function getOthers(slug, locale) {
 
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params; const a = await getArea(slug, locale);
-  return a ? { title: a.title, description: a.summary, alternates: altLangs(`/services/${slug}`) } : {};
+  return a ? { title: a.title, description: a.summary, alternates: altLangs(locale, `/services/${slug}`) } : {};
 }
 
 /** @param {{ params: Promise<{ slug: string, locale: string }> }} props */

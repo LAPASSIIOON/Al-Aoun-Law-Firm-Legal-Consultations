@@ -7,7 +7,7 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'account' });
-  return { title: t('signInHeading'), robots: { index: false }, alternates: altLangs('/account/sign-in') };
+  return { title: t('signInHeading'), robots: { index: false }, alternates: altLangs(locale, '/account/sign-in') };
 }
 
 /** @param {{ params: Promise<{ locale: string }> }} props */

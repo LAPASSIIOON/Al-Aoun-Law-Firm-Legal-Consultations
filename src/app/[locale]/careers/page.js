@@ -3,7 +3,7 @@ import { altLangs } from '@/lib/i18n-meta.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'careers' }); return { title: t('heading'), description: t('lead'), alternates: altLangs('/careers') }; }
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'careers' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/careers') }; }
 
 export default async function Careers({ params }) {
   const { locale } = await params; setRequestLocale(locale);

@@ -496,7 +496,21 @@
     "phoneLabel": "Phone Number",
     "organizationNameLabel": "Firm / Company / Institution Name",
     "licenseNumberLabel": "Bar / Professional License Number",
-    "errorMissingField": "Please complete all fields required for the selected membership type."
+    "errorMissingField": "Please complete all fields required for the selected membership type.",
+    "forgotHeading": "Reset your password",
+    "forgotLead": "Enter your email and we'll send you a link to set a new password.",
+    "forgotCta": "Forgot your password?",
+    "forgotSubmit": "Send reset link",
+    "forgotSent": "If your email is registered with us, a reset link is on its way — it should arrive within a few minutes. Check your inbox (and your spam folder).",
+    "resetHeading": "Set a new password",
+    "resetLead": "Choose a strong new password for your account.",
+    "resetSubmit": "Save new password",
+    "resetSuccess": "Your password has been updated. You can now sign in with it.",
+    "resetInvalid": "This link is invalid or has expired.",
+    "newPasswordLabel": "New password",
+    "confirmPasswordLabel": "Confirm password",
+    "errorPasswordMismatch": "The two passwords don't match.",
+    "backToSignIn": "Back to sign in"
   },
   "admin": {
     "title": "Al Oun Desk",

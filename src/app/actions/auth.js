@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 
 /**
@@ -69,4 +70,48 @@ export async function signOutAction(locale) {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
   redirect(`/${locale}`);
+}
+
+/**
+ * طلب رابط إعادة تعيين كلمة المرور. لا يكشف إن كان البريد مسجّلًا (منع تعداد الحسابات):
+ * يُرجِع { ok: true } دائمًا طالما البريد صالح الشكل.
+ * الرابط يمرّ عبر /[locale]/auth/callback الذي يبادل الرمز بجلسة ثم يوجّه لصفحة التعيين.
+ * @param {{ email: string, locale: string }} input
+ */
+export async function requestPasswordReset(input) {
+  const email = (input.email || '').trim();
+  const locale = input.locale === 'en' ? 'en' : 'ar';
+  if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: 'invalid_input' };
+
+  const h = await headers();
+  const proto = h.get('x-forwarded-proto') || 'https';
+  const host = h.get('host') || '';
+  const origin = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL || '');
+  const next = encodeURIComponent(`/${locale}/account/reset-password`);
+  const redirectTo = `${origin}/${locale}/auth/callback?next=${next}`;
+
+  const supabase = await createSupabaseServerClient();
+  await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+  return { ok: true };
+}
+
+/**
+ * تعيين كلمة مرور جديدة للمستخدم داخل جلسة الاستعادة الحالية.
+ * @param {{ password: string }} input
+ */
+export async function updatePassword(input) {
+  const password = (input.password || '').toString();
+  const strong =
+    password.length >= 8 &&
+    /[A-Z]/.test(password) && /[a-z]/.test(password) &&
+    /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+  if (!strong) return { ok: false, error: 'weak_password' };
+
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'no_session' };
+
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) return { ok: false, error: 'server_error' };
+  return { ok: true };
 }

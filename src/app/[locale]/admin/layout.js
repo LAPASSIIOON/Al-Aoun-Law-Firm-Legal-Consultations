@@ -44,10 +44,21 @@ export default async function AdminLayout({ children, params }) {
         <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1.25rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
           <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', whiteSpace: 'nowrap', flexShrink: 0 }}>{t('title')}</strong>
           <AdminNav groups={navGroups} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '.9rem', marginInlineStart: 'auto', flexShrink: 0 }}>
-            <span className="body" style={{ fontSize: '.82rem', color: 'var(--platinum-3)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: '.75rem', marginInlineStart: 'auto', flexShrink: 0,
+            padding: '.4rem .5rem .4rem .9rem', borderRadius: 'var(--r)', boxShadow: 'inset 0 0 0 1px var(--hair-light-strong)',
+          }}>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: '1.7rem', height: '1.7rem', borderRadius: '50%', flexShrink: 0,
+              background: 'var(--clay)', color: '#fff', fontSize: '.78rem', fontWeight: 700,
+            }}>
+              {(member.display_name || '?').trim().charAt(0).toUpperCase()}
+            </span>
+            <span className="body" style={{ fontSize: '.85rem', color: 'var(--platinum-2)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
+            <span style={{ inlineSize: '1px', blockSize: '1.3rem', background: 'var(--hair-light-strong)', flexShrink: 0 }} />
             <form action={async () => { 'use server'; await signOutAction(locale); }}>
-              <button type="submit" className="btn-line" style={{ fontSize: '.85rem', color: 'var(--clay-bright)', whiteSpace: 'nowrap' }}>{t('signOut')}</button>
+              <button type="submit" className="btn btn-ghost" style={{ fontSize: '.82rem', padding: '.4rem .85rem', whiteSpace: 'nowrap' }}>{t('signOut')}</button>
             </form>
           </div>
         </div>

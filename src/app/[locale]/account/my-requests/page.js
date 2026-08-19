@@ -105,7 +105,7 @@ export default async function MyRequests({ params }) {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-start', justifyContent: 'space-between', marginBlockEnd: '.4rem' }}>
           <h1 className="display d-2" style={{ margin: 0 }}>{t('greeting', { name: member.display_name })}</h1>
           <form action={async () => { 'use server'; await signOutAction(locale); }}>
-            <button type="submit" className="btn-line" style={{ fontSize: '.85rem' }}>{locale === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}</button>
+            <button type="submit" className="btn btn-ghost" style={{ fontSize: '.85rem', padding: '.55rem 1.1rem' }}>{locale === 'ar' ? 'تسجيل الخروج' : 'Sign Out'}</button>
           </form>
         </div>
         <p className="lead" style={{ marginBlockEnd: '2.5rem', maxWidth: '52ch' }}>{t('subtitle')}</p>

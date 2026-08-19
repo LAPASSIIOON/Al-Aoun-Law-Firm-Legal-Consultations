@@ -55,7 +55,7 @@ export default function MemberProfileCard({ member, typeLabel, locale, labels })
           <span style={{ fontSize: '.75rem', fontWeight: 700, color: 'var(--clay-bright)', background: 'var(--surface-2)', padding: '.2rem .7rem', borderRadius: '999px' }}>{typeLabel}</span>
         </div>
         {!editing && (
-          <button className="btn-line" style={{ padding: '.4rem .9rem', fontSize: '.85rem' }} onClick={() => { setEditing(true); setSaved(false); }}>
+          <button className="btn btn-ghost" style={{ fontSize: '.85rem', padding: '.55rem 1.1rem' }} onClick={() => { setEditing(true); setSaved(false); }}>
             {labels.editProfile}
           </button>
         )}

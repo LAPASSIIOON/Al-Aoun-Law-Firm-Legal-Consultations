@@ -39,7 +39,7 @@ export default async function AdminLayout({ children, params }) {
   ];
 
   return (
-    <div style={{ minHeight: '80vh', background: 'var(--surface)' }}>
+    <div style={{ minHeight: '80vh', background: 'var(--surface)', paddingBlockStart: '76px' }}>
       <nav style={{ borderBlockEnd: '1px solid var(--hair-light-strong)', background: 'var(--ground)' }}>
         <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1.25rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
           <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', whiteSpace: 'nowrap', flexShrink: 0 }}>{t('title')}</strong>

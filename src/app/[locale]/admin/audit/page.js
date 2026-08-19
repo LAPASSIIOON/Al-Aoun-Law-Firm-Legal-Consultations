@@ -2,10 +2,22 @@ import { getTranslations, getLocale } from 'next-intl/server';
 import { listAuditLog } from '@/app/actions/admin.js';
 
 const ACTION_KEYS = {
-  stage_updated: 'actionLabelStageUpdated', notes_updated: 'actionLabelNotesUpdated', 'member.role_updated': 'actionLabelMemberRoleUpdated',
+  stage_updated: 'actionLabelStageUpdated',
+  notes_updated: 'actionLabelNotesUpdated',
+  'member.role_updated': 'actionLabelMemberRoleUpdated',
+  'member.type_updated': 'actionLabelMemberTypeUpdated',
+  'consultation.submitted': 'actionLabelSubmitted',
+  'referral.submitted': 'actionLabelSubmitted',
+  'partnership_application.submitted': 'actionLabelSubmitted',
 };
 const ENTITY_KEYS = {
-  consultation: 'entityLabelConsultation', referral: 'entityLabelReferral', partnership: 'entityLabelPartnership', portal_members: 'entityLabelMember',
+  consultation: 'entityLabelConsultation',
+  consultation_requests: 'entityLabelConsultation',
+  referral: 'entityLabelReferral',
+  referrals: 'entityLabelReferral',
+  partnership: 'entityLabelPartnership',
+  partnership_applications: 'entityLabelPartnership',
+  portal_members: 'entityLabelMember',
 };
 
 export default async function AdminAudit() {

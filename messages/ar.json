@@ -563,7 +563,9 @@
     "entityLabelMember": "عضو",
     "welcomeBack": "أهلًا",
     "overviewSubhead": "نظرة سريعة على ما يحتاج قرارك الآن.",
-    "auditIntro": "سجلّ كل تغيير جرى على الطلبات والصلاحيات — من غيّر وماذا ومتى."
+    "auditIntro": "سجلّ كل تغيير جرى على الطلبات والصلاحيات — من غيّر وماذا ومتى.",
+    "actionLabelMemberTypeUpdated": "تحديث نوع العضوية",
+    "actionLabelSubmitted": "تقديم طلب جديد"
   },
   "myRequests": {
     "heading": "طلباتي",

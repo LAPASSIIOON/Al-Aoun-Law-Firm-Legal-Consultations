@@ -563,7 +563,9 @@
     "entityLabelMember": "Member",
     "welcomeBack": "Welcome",
     "overviewSubhead": "A quick read on what needs your decision right now.",
-    "auditIntro": "A record of every change to requests and permissions — who changed what, and when."
+    "auditIntro": "A record of every change to requests and permissions — who changed what, and when.",
+    "actionLabelMemberTypeUpdated": "Member type updated",
+    "actionLabelSubmitted": "New request submitted"
   },
   "myRequests": {
     "heading": "My Requests",

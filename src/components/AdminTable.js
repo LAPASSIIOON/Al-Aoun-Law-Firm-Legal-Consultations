@@ -1,12 +1,13 @@
 'use client';
 import { useState, useTransition, useMemo, Fragment } from 'react';
+import { useTranslations } from 'next-intl';
 import { updateStage, updateNotes } from '@/app/actions/admin.js';
 import styles from './AdminTable.module.css';
 
-function toCsv(rows, columns) {
+function toCsv(rows, columns, stageLabel) {
   const header = [...columns.map((c) => c.label), 'Stage', 'Notes'].join(',');
   const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const lines = rows.map((r) => [...columns.map((c) => esc(r[c.key])), esc(r.stage), esc(r.internal_notes)].join(','));
+  const lines = rows.map((r) => [...columns.map((c) => esc(r[c.key])), esc(stageLabel(r.stage)), esc(r.internal_notes)].join(','));
   return [header, ...lines].join('\r\n');
 }
 
@@ -21,6 +22,7 @@ function downloadCsv(text, filename) {
 
 /** @param {{ rows: any[], tableType: 'consultation'|'referral'|'partnership', stageOptions: string[], columns: {key:string,label:string}[], emptyLabel: string }} props */
 export default function AdminTable({ rows, tableType, stageOptions, columns, emptyLabel }) {
+  const t = useTranslations('admin');
   const [data, setData] = useState(rows);
   const [pending, startTransition] = useTransition();
   const [query, setQuery] = useState('');
@@ -28,6 +30,9 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   const [openNotes, setOpenNotes] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [savedFlash, setSavedFlash] = useState(null);
+
+  // تسمية بشرية لأي قيمة حالة خام؛ رجوع آمن للقيمة الخام نفسها لو ظهرت حالة جديدة لم تُترجَم بعد — لا يكسر الواجهة أبدًا.
+  const stageLabel = (s) => t.has(`stage_${s}`) ? t(`stage_${s}`) : s;
 
   function onStageChange(id, stage) {
     setData((cur) => cur.map((r) => (r.id === id ? { ...r, stage } : r)));
@@ -65,30 +70,30 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
     <div>
       <div className={styles.toolbar}>
         <input
-          type="text" className={styles.search} placeholder="بحث…"
+          type="text" className={styles.search} placeholder={t('tableSearchPlaceholder')}
           value={query} onChange={(e) => setQuery(e.target.value)}
         />
         <select className={styles.select} value={stageFilter} onChange={(e) => setStageFilter(e.target.value)}>
-          <option value="all">كل الحالات</option>
-          {stageOptions.map((s) => <option key={s} value={s}>{s}</option>)}
+          <option value="all">{t('tableAllStages')}</option>
+          {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}
         </select>
         <span className={styles.count}>{filtered.length} / {data.length}</span>
         <button type="button" className="btn-line" style={{ fontSize: '.82rem', marginInlineStart: 'auto' }}
-          onClick={() => downloadCsv(toCsv(filtered, columns), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
-          تصدير CSV ↓
+          onClick={() => downloadCsv(toCsv(filtered, columns, stageLabel), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
+          {t('tableExportCsv')}
         </button>
       </div>
 
       {filtered.length === 0 ? (
-        <p className="body" style={{ color: 'var(--muted)', padding: '1rem 0' }}>لا نتائج مطابقة.</p>
+        <p className="body" style={{ color: 'var(--muted)', padding: '1rem 0' }}>{t('tableNoResults')}</p>
       ) : (
         <div className={styles.wrap}>
           <table className={styles.table}>
             <thead>
               <tr>
                 {columns.map((c) => <th key={c.key}>{c.label}</th>)}
-                <th>Stage</th>
-                <th>ملاحظات</th>
+                <th>{t('tableColStage')}</th>
+                <th>{t('tableColNotes')}</th>
               </tr>
             </thead>
             <tbody>
@@ -96,14 +101,14 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
                 <Fragment key={r.id}>
                   <tr>
                     {columns.map((c) => <td key={c.key} data-label={c.label}>{String(r[c.key] ?? '—')}</td>)}
-                    <td>
+                    <td data-label={t('tableColStage')}>
                       <select className={styles.select} value={r.stage} disabled={pending} onChange={(e) => onStageChange(r.id, e.target.value)}>
-                        {stageOptions.map((s) => <option key={s} value={s}>{s}</option>)}
+                        {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}
                       </select>
                     </td>
-                    <td>
+                    <td data-label={t('tableColNotes')}>
                       <button type="button" className={styles.notesBtn} onClick={() => openNotesFor(r)}>
-                        {r.internal_notes ? 'عرض الملاحظة' : '+ إضافة ملاحظة'}
+                        {r.internal_notes ? t('tableViewNote') : t('tableAddNote')}
                       </button>
                     </td>
                   </tr>
@@ -113,13 +118,13 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
                         <textarea
                           className={styles.notesArea} rows={3} value={notesDraft}
                           onChange={(e) => setNotesDraft(e.target.value)}
-                          placeholder="ملاحظة داخلية — لن تظهر للعميل أبدًا…"
+                          placeholder={t('tableNotePlaceholder')}
                         />
                         <div style={{ display: 'flex', gap: '.6rem', alignItems: 'center', marginBlockStart: '.5rem' }}>
                           <button type="button" className="btn btn-solid" style={{ fontSize: '.82rem' }} disabled={pending} onClick={() => saveNotes(r.id)}>
-                            حفظ الملاحظة
+                            {t('tableSaveNote')}
                           </button>
-                          {savedFlash === r.id && <span className={styles.savedFlash}>تم الحفظ ✓</span>}
+                          {savedFlash === r.id && <span className={styles.savedFlash}>{t('tableSaved')}</span>}
                         </div>
                       </td>
                     </tr>

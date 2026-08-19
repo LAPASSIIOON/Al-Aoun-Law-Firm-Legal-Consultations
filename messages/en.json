@@ -510,7 +510,8 @@
     "newPasswordLabel": "New password",
     "confirmPasswordLabel": "Confirm password",
     "errorPasswordMismatch": "The two passwords don't match.",
-    "backToSignIn": "Back to sign in"
+    "backToSignIn": "Back to sign in",
+    "errorCaptcha": "Security check failed — please try again."
   },
   "admin": {
     "title": "Al Oun Desk",

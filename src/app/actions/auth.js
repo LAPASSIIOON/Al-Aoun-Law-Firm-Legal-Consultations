@@ -73,10 +73,12 @@ export async function signOutAction(locale) {
 }
 
 /**
- * طلب رابط إعادة تعيين كلمة المرور. لا يكشف إن كان البريد مسجّلًا (منع تعداد الحسابات):
- * يُرجِع { ok: true } دائمًا طالما البريد صالح الشكل.
- * الرابط يمرّ عبر /[locale]/auth/callback الذي يبادل الرمز بجلسة ثم يوجّه لصفحة التعيين.
- * @param {{ email: string, locale: string }} input
+ * طلب رابط إعادة تعيين كلمة المرور.
+ * ملاحظة: حماية الكابتشا في Supabase مفعّلة على مستوى المشروع لكل نداءات /recover و/token —
+ * لذا turnstileToken إلزامي هنا فعليًا رغم أن استدعاءه في الواجهة قد يبدو اختياريًا.
+ * لا نكشف صراحةً عدم وجود الحساب (Supabase نفسه يتكفّل بهذا داخليًا ولا يُرجِع خطأ مميِّزًا لبريد غير مسجَّل)،
+ * لكن نُظهر أي خطأ تشغيلي حقيقي (كابتشا، حدّ معدّل) بدل التظاهر بالنجاح.
+ * @param {{ email: string, locale: string, turnstileToken?: string }} input
  */
 export async function requestPasswordReset(input) {
   const email = (input.email || '').trim();
@@ -91,7 +93,15 @@ export async function requestPasswordReset(input) {
   const redirectTo = `${origin}/${locale}/auth/callback?next=${next}`;
 
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo,
+    captchaToken: input.turnstileToken || undefined,
+  });
+  if (error) {
+    if (error.code === 'captcha_failed') return { ok: false, error: 'captcha_failed' };
+    if (error.status === 429 || error.code === 'over_email_send_rate_limit') return { ok: false, error: 'rate_limited' };
+    return { ok: false, error: 'server_error' };
+  }
   return { ok: true };
 }
 

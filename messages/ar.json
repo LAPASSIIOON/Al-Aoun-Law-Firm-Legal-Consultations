@@ -510,7 +510,8 @@
     "newPasswordLabel": "كلمة المرور الجديدة",
     "confirmPasswordLabel": "تأكيد كلمة المرور",
     "errorPasswordMismatch": "كلمتا المرور غير متطابقتين.",
-    "backToSignIn": "العودة إلى تسجيل الدخول"
+    "backToSignIn": "العودة إلى تسجيل الدخول",
+    "errorCaptcha": "تعذّر التحقّق الأمني، أعد المحاولة."
   },
   "admin": {
     "title": "لوحة العون",

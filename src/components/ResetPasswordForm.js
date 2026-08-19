@@ -36,7 +36,7 @@ export default function ResetPasswordForm() {
       <div>
         <p className={styles.success} role="status">{t('resetSuccess')}</p>
         <p className="body" style={{ marginBlockStart: '1rem' }}>
-          <a href={`/${locale}/account/sign-in`} style={{ color: 'var(--clay)' }}>{t('signInCta')}</a>
+          <a href={`/${locale}/account/sign-in`} className="text-link">{t('signInCta')}</a>
         </p>
       </div>
     );

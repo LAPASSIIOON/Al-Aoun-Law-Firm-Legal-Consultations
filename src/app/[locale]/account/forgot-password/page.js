@@ -26,7 +26,7 @@ export default async function ForgotPassword({ params }) {
           <p className="body" style={{ marginBlockEnd: '1.5rem' }}>{t('forgotLead')}</p>
           <ForgotPasswordForm />
           <p className="body" style={{ marginBlockStart: '1.5rem' }}>
-            <a href={`/${locale}/account/sign-in`} style={{ color: 'var(--clay)' }}>{t('backToSignIn')}</a>
+            <a href={`/${locale}/account/sign-in`} className="text-link">{t('backToSignIn')}</a>
           </p>
         </div>
       </section>

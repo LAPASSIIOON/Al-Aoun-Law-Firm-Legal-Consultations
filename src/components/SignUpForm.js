@@ -103,7 +103,7 @@ export default function SignUpForm() {
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: '.6rem', cursor: 'pointer' }}>
           <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ marginBlockStart: '.25rem' }} required />
           <span className="body" style={{ fontSize: '.85rem' }}>
-            {t('consentPrefix')} <a href={`/${locale}/privacy`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--clay)' }}>{t('consentPrivacyLink')}</a> {t('consentAnd')} <a href={`/${locale}/terms`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--clay)' }}>{t('consentTermsLink')}</a>
+            {t('consentPrefix')} <a href={`/${locale}/privacy`} target="_blank" rel="noopener noreferrer" className="text-link">{t('consentPrivacyLink')}</a> {t('consentAnd')} <a href={`/${locale}/terms`} target="_blank" rel="noopener noreferrer" className="text-link">{t('consentTermsLink')}</a>
           </span>
         </label>
       </div>

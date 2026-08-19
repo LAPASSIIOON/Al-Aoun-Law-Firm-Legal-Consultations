@@ -26,7 +26,7 @@ export default async function SignUp({ params }) {
         <div className="wrap" style={{ maxWidth: '36rem' }}>
           <SignUpForm />
           <p className="body" style={{ marginBlockStart: '1.5rem' }}>
-            {t('haveAccount')} <a href={`/${locale}/account/sign-in`} style={{ color: 'var(--clay)' }}>{t('signInCta')}</a>
+            {t('haveAccount')} <a href={`/${locale}/account/sign-in`} className="text-link">{t('signInCta')}</a>
           </p>
         </div>
       </section>

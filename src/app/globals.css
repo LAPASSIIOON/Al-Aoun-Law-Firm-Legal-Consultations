@@ -12,6 +12,12 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 :focus-visible{outline:2px solid var(--clay-bright);outline-offset:3px;border-radius:var(--r)}
 ::selection{background:var(--clay);color:#fff}
 
+/* نظام تفاعل الروابط النصية (§UI-7) — لأي رابط داخل نص/فقرة، خارج الأزرار والبطاقات وصفوف مجالات الممارسة اللي لها معالجات خاصة بالفعل. */
+.text-link{color:var(--clay);text-decoration:underline;text-decoration-color:rgba(29,106,144,.35);text-decoration-thickness:1px;text-underline-offset:3px;transition:color .3s var(--ease),text-decoration-color .3s var(--ease)}
+.text-link:hover,.text-link:focus-visible{color:var(--clay-600);text-decoration-color:var(--clay)}
+.text-link-inverse{color:var(--clay-bright);text-decoration:underline;text-decoration-color:rgba(48,161,217,.4);text-decoration-thickness:1px;text-underline-offset:3px;transition:color .3s var(--ease),text-decoration-color .3s var(--ease)}
+.text-link-inverse:hover,.text-link-inverse:focus-visible{color:#fff;text-decoration-color:currentColor}
+
 .skip{position:absolute;inset-inline-start:-9999px;top:0;z-index:200;background:var(--clay);color:#fff;padding:.6rem 1rem}
 .skip:focus{inset-inline-start:1rem;top:1rem}
 

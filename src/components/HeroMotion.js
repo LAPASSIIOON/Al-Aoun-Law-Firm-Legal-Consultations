@@ -79,11 +79,28 @@ export default function HeroMotion() {
 
     size();
     if (reduce) { draw(); return () => {}; }
-    const loop = () => { t += 16; draw(); raf = requestAnimationFrame(loop); };
+
+    let last = performance.now(), visible = true;
+    const loop = (now) => {
+      const dt = now - last; last = now;
+      t += dt; // زمن حقيقي منقضٍ لا عدّاد ثابت لكل إطار — حركة متّسقة بصرف النظر عن معدّل الإطارات الفعلي
+      draw();
+      if (visible) raf = requestAnimationFrame(loop);
+    };
     raf = requestAnimationFrame(loop);
+
     const ro = new ResizeObserver(() => size());
     ro.observe(canvas);
-    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+
+    // إيقاف الحلقة كليًا وقت خروج الهيرو من الشاشة (سكرول متجاوز) — توفير معالج/بطارية بلا أثر بصري
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) { last = performance.now(); raf = requestAnimationFrame(loop); }
+      else cancelAnimationFrame(raf);
+    }, { threshold: 0 });
+    io.observe(canvas);
+
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); };
   }, []);
 
   return <canvas ref={ref} aria-hidden="true" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block' }} />;

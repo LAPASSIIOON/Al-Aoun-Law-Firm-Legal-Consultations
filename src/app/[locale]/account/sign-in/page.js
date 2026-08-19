@@ -25,10 +25,10 @@ export default async function SignIn({ params }) {
         <div className="wrap" style={{ maxWidth: '36rem' }}>
           <SignInForm />
           <p className="body" style={{ marginBlockStart: '1.25rem' }}>
-            <a href={`/${locale}/account/forgot-password`} style={{ color: 'var(--clay)' }}>{t('forgotCta')}</a>
+            <a href={`/${locale}/account/forgot-password`} className="text-link">{t('forgotCta')}</a>
           </p>
           <p className="body" style={{ marginBlockStart: '0.5rem' }}>
-            {t('noAccount')} <a href={`/${locale}/account/sign-up`} style={{ color: 'var(--clay)' }}>{t('signUpCta')}</a>
+            {t('noAccount')} <a href={`/${locale}/account/sign-up`} className="text-link">{t('signUpCta')}</a>
           </p>
         </div>
       </section>

@@ -36,7 +36,7 @@ export default async function ResetPassword({ params }) {
           ) : (
             <p className="body">
               {t('resetInvalid')}{' '}
-              <a href={`/${locale}/account/forgot-password`} style={{ color: 'var(--clay)' }}>{t('forgotCta')}</a>
+              <a href={`/${locale}/account/forgot-password`} className="text-link">{t('forgotCta')}</a>
             </p>
           )}
         </div>

@@ -11,7 +11,16 @@
 .count { font-size: .82rem; color: var(--muted); white-space: nowrap; }
 .notesBtn { font: inherit; font-size: .82rem; background: none; border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: .3rem .7rem; color: var(--clay); cursor: pointer; white-space: nowrap; }
 .notesBtn:hover { background: var(--surface-2); }
-.notesRow { background: var(--surface); white-space: normal !important; padding: 1rem !important; }
+.rowClickable { cursor: pointer; transition: background .15s ease; }
+.rowClickable:hover { background: var(--surface-2); }
+.detailRow { background: var(--surface); white-space: normal !important; padding: 1.25rem 1.5rem !important; }
+.detailGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem 2rem; }
+.detailSection { min-inline-size: 0; }
+.detailSectionTitle { font-family: var(--f-en); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--platinum-3); margin: 0 0 .6rem; }
+.detailItem { display: flex; justify-content: space-between; gap: 1rem; padding-block: .4rem; border-block-end: 1px solid var(--hair-light); font-size: .88rem; }
+.detailSection > .detailItem:last-of-type { border-block-end: none; }
+.detailLabel { color: var(--muted); flex: 0 0 auto; }
+.detailValue { color: var(--ink); text-align: end; word-break: break-word; }
 .notesArea { width: 100%; font: inherit; font-size: .88rem; background: var(--surface-2); color: var(--ink); border: 1px solid var(--hair-light-strong); border-radius: var(--r); padding: .6rem .75rem; resize: vertical; }
 .savedFlash { font-size: .82rem; color: #1C7D5A; }
 
@@ -25,6 +34,7 @@
   .table td { display: flex; align-items: center; justify-content: space-between; gap: .75rem; white-space: normal; border-block-end: 1px solid var(--hair-light); padding: .65rem 0; }
   .table tr td:last-child { border-block-end: none; }
   .table td[data-label]::before { content: attr(data-label); font-size: .78rem; font-weight: 600; color: var(--muted); flex: 0 0 auto; }
-  .notesRow { display: block !important; padding: .9rem 0 !important; }
-  .notesRow::before { content: none; }
+  .detailRow { display: block !important; padding: .9rem 0 !important; }
+  .detailRow::before { content: none; }
+  .detailGrid { grid-template-columns: 1fr; gap: 1.25rem; }
 }

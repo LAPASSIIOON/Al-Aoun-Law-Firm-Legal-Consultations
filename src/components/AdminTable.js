@@ -20,28 +20,47 @@ function downloadCsv(text, filename) {
   URL.revokeObjectURL(url);
 }
 
-/** @param {{ rows: any[], tableType: 'consultation'|'referral'|'partnership', stageOptions: string[], columns: {key:string,label:string}[], emptyLabel: string }} props */
-export default function AdminTable({ rows, tableType, stageOptions, columns, emptyLabel }) {
+/**
+ * Server Components cannot pass functions as props to Client Components (Next.js RSC constraint) —
+ * detailConfig/lookups are plain serializable data; this component interprets them at render time.
+ * @param {{
+ *   rows: any[], tableType: 'consultation'|'referral'|'partnership', stageOptions: string[],
+ *   columns: {key:string,label:string}[], emptyLabel: string,
+ *   detailConfig?: {titleKey:string, fields:{labelKey:string, key:string, dir?:string, translatePrefix?:string, lookup?:string, isArray?:boolean}[]}[],
+ *   lookups?: Record<string, Record<string,string>>
+ * }} props
+ */
+export default function AdminTable({ rows, tableType, stageOptions, columns, emptyLabel, detailConfig, lookups }) {
   const t = useTranslations('admin');
   const [data, setData] = useState(rows);
   const [pending, startTransition] = useTransition();
   const [query, setQuery] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
-  const [openNotes, setOpenNotes] = useState(null);
+  const [openRow, setOpenRow] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [savedFlash, setSavedFlash] = useState(null);
 
   // تسمية بشرية لأي قيمة حالة خام؛ رجوع آمن للقيمة الخام نفسها لو ظهرت حالة جديدة لم تُترجَم بعد — لا يكسر الواجهة أبدًا.
-  const stageLabel = (s) => t.has(`stage_${s}`) ? t(`stage_${s}`) : s;
+  const stageLabel = (s) => (t.has(`stage_${s}`) ? t(`stage_${s}`) : s);
+
+  // يحوّل قيمة حقل خام إلى نص عرض نهائي حسب وصف الحقل (ترجمة مباشرة، أو بحث في lookup، أو مصفوفة مفصولة بفواصل).
+  function resolveFieldValue(row, field) {
+    const raw = row[field.key];
+    if (field.isArray) return Array.isArray(raw) ? raw.map((v) => (field.lookup ? lookups?.[field.lookup]?.[v] || v : v)).join(', ') : null;
+    if (raw == null || raw === '') return null;
+    if (field.lookup) return lookups?.[field.lookup]?.[raw] || null;
+    if (field.translatePrefix) return t.has(`${field.translatePrefix}_${raw}`) ? t(`${field.translatePrefix}_${raw}`) : raw;
+    return String(raw);
+  }
 
   function onStageChange(id, stage) {
     setData((cur) => cur.map((r) => (r.id === id ? { ...r, stage } : r)));
     startTransition(async () => { await updateStage({ table: tableType, id, stage }); });
   }
 
-  function openNotesFor(row) {
-    if (openNotes === row.id) { setOpenNotes(null); return; }
-    setOpenNotes(row.id);
+  function toggleRow(row) {
+    if (openRow === row.id) { setOpenRow(null); return; }
+    setOpenRow(row.id);
     setNotesDraft(row.internal_notes || '');
   }
 
@@ -93,44 +112,63 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
               <tr>
                 {columns.map((c) => <th key={c.key}>{c.label}</th>)}
                 <th>{t('tableColStage')}</th>
-                <th>{t('tableColNotes')}</th>
+                <th>{t('detailNotesHeading')}</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.map((r) => (
-                <Fragment key={r.id}>
-                  <tr>
-                    {columns.map((c) => <td key={c.key} data-label={c.label}>{String(r[c.key] ?? '—')}</td>)}
-                    <td data-label={t('tableColStage')}>
-                      <select className={styles.select} value={r.stage} disabled={pending} onChange={(e) => onStageChange(r.id, e.target.value)}>
-                        {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}
-                      </select>
-                    </td>
-                    <td data-label={t('tableColNotes')}>
-                      <button type="button" className={styles.notesBtn} onClick={() => openNotesFor(r)}>
-                        {r.internal_notes ? t('tableViewNote') : t('tableAddNote')}
-                      </button>
-                    </td>
-                  </tr>
-                  {openNotes === r.id && (
-                    <tr>
-                      <td colSpan={columns.length + 2} className={styles.notesRow}>
-                        <textarea
-                          className={styles.notesArea} rows={3} value={notesDraft}
-                          onChange={(e) => setNotesDraft(e.target.value)}
-                          placeholder={t('tableNotePlaceholder')}
-                        />
-                        <div style={{ display: 'flex', gap: '.6rem', alignItems: 'center', marginBlockStart: '.5rem' }}>
-                          <button type="button" className="btn btn-solid" style={{ fontSize: '.82rem' }} disabled={pending} onClick={() => saveNotes(r.id)}>
-                            {t('tableSaveNote')}
-                          </button>
-                          {savedFlash === r.id && <span className={styles.savedFlash}>{t('tableSaved')}</span>}
-                        </div>
+              {filtered.map((r) => {
+                const isOpen = openRow === r.id;
+                return (
+                  <Fragment key={r.id}>
+                    <tr className={styles.rowClickable} onClick={() => toggleRow(r)}>
+                      {columns.map((c) => <td key={c.key} data-label={c.label}>{String(r[c.key] ?? '—')}</td>)}
+                      <td data-label={t('tableColStage')} onClick={(e) => e.stopPropagation()}>
+                        <select className={styles.select} value={r.stage} disabled={pending} onChange={(e) => onStageChange(r.id, e.target.value)}>
+                          {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}
+                        </select>
+                      </td>
+                      <td data-label={t('detailNotesHeading')}>
+                        <button type="button" className={styles.notesBtn} onClick={(e) => { e.stopPropagation(); toggleRow(r); }}>
+                          {isOpen ? t('hideDetails') : t('viewDetails')}
+                        </button>
                       </td>
                     </tr>
-                  )}
-                </Fragment>
-              ))}
+                    {isOpen && (
+                      <tr>
+                        <td colSpan={columns.length + 2} className={styles.detailRow}>
+                          <div className={styles.detailGrid}>
+                            {(detailConfig || []).map((sec) => (
+                              <div key={sec.titleKey} className={styles.detailSection}>
+                                <h4 className={styles.detailSectionTitle}>{t(sec.titleKey)}</h4>
+                                {sec.fields.map((field) => (
+                                  <div key={field.labelKey} className={styles.detailItem}>
+                                    <span className={styles.detailLabel}>{t(field.labelKey)}</span>
+                                    <span className={styles.detailValue} dir={field.dir}>{resolveFieldValue(r, field) || t('notProvided')}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            ))}
+                            <div className={styles.detailSection}>
+                              <h4 className={styles.detailSectionTitle}>{t('detailNotesHeading')}</h4>
+                              <textarea
+                                className={styles.notesArea} rows={3} value={notesDraft}
+                                onChange={(e) => setNotesDraft(e.target.value)}
+                                placeholder={t('tableNotePlaceholder')}
+                              />
+                              <div style={{ display: 'flex', gap: '.6rem', alignItems: 'center', marginBlockStart: '.5rem' }}>
+                                <button type="button" className="btn btn-solid" style={{ fontSize: '.82rem' }} disabled={pending} onClick={() => saveNotes(r.id)}>
+                                  {t('tableSaveNote')}
+                                </button>
+                                {savedFlash === r.id && <span className={styles.savedFlash}>{t('tableSaved')}</span>}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

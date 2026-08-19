@@ -22,21 +22,28 @@ export default async function AdminLayout({ children, params }) {
   ]);
   const newCount = (rows) => rows.filter((r) => r.stage === 'new').length;
 
-  const links = [
-    { href: '/admin', label: t('navOverview') },
-    { href: '/admin/consultations', label: t('navConsultations'), badge: newCount(consultations) },
-    { href: '/admin/referrals', label: t('navReferrals'), badge: newCount(referrals) },
-    { href: '/admin/partnerships', label: t('navPartnerships'), badge: newCount(partnerships) },
-    { href: '/admin/members', label: t('navMembers') },
-    { href: '/admin/audit', label: t('navAudit') },
+  // مجموعات منطقية — لا تضاف مجموعة "المحتوى" هنا إلا لما تُبنى صفحاتها فعليًا (المرحلة D)،
+  // تجنّبًا لعنصر تنقّل يشير لمكان غير موجود (بالضبط الشكوى اللي بدأت منها إعادة البناء دي).
+  const navGroups = [
+    { label: '', links: [{ href: '/admin', label: t('navOverview') }] },
+    {
+      label: t('navGroupOperations'),
+      links: [
+        { href: '/admin/consultations', label: t('navConsultations'), badge: newCount(consultations) },
+        { href: '/admin/referrals', label: t('navReferrals'), badge: newCount(referrals) },
+        { href: '/admin/partnerships', label: t('navPartnerships'), badge: newCount(partnerships) },
+      ],
+    },
+    { label: t('navGroupPeople'), links: [{ href: '/admin/members', label: t('navMembers') }] },
+    { label: t('navGroupSystem'), links: [{ href: '/admin/audit', label: t('navAudit') }] },
   ];
 
   return (
     <div style={{ minHeight: '80vh', background: 'var(--surface)' }}>
       <nav style={{ borderBlockEnd: '1px solid var(--hair-light-strong)', background: 'var(--ground)' }}>
-        <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
+        <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1.25rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
           <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', whiteSpace: 'nowrap', flexShrink: 0 }}>{t('title')}</strong>
-          <AdminNav links={links} />
+          <AdminNav groups={navGroups} />
           <div style={{ display: 'flex', alignItems: 'center', gap: '.9rem', marginInlineStart: 'auto', flexShrink: 0 }}>
             <span className="body" style={{ fontSize: '.82rem', color: 'var(--platinum-3)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
             <form action={async () => { 'use server'; await signOutAction(locale); }}>

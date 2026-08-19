@@ -70,9 +70,10 @@ export async function updateNotes(input) {
   return data;
 }
 
-export async function listAuditLog() {
+/** @param {number} [limit] */
+export async function listAuditLog(limit = 150) {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc('admin_list_audit_log', { p_limit: 150 });
+  const { data, error } = await supabase.rpc('admin_list_audit_log', { p_limit: limit });
   if (error) return [];
   return data || [];
 }

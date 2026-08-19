@@ -38,8 +38,8 @@ export default async function AdminPartnerships() {
         rows={rows} tableType="partnership" stageOptions={STAGES} emptyLabel={t('emptyList')}
         columns={[
           { key: 'reference', label: t('colRef') }, { key: 'firm_name', label: t('colFirm') },
-          { key: 'contact_name', label: t('colContact') }, { key: 'applicant_type', label: t('colType') },
-          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted') },
+          { key: 'contact_name', label: t('colContact') }, { key: 'applicant_type', label: t('colType'), translatePrefix: 'applicantType' },
+          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted'), displayKey: '_created_fmt' },
         ]}
         detailConfig={DETAIL_CONFIG}
       />

@@ -47,8 +47,8 @@ export default async function AdminConsultations() {
         rows={rows} tableType="consultation" stageOptions={STAGES} emptyLabel={t('emptyList')}
         columns={[
           { key: 'reference', label: t('colRef') }, { key: 'full_name', label: t('colName') },
-          { key: 'client_type', label: t('colType') }, { key: 'phone', label: t('colPhone') },
-          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted') },
+          { key: 'client_type', label: t('colType'), translatePrefix: 'clientType' }, { key: 'phone', label: t('colPhone') },
+          { key: 'email', label: t('colEmail') }, { key: 'created_at', label: t('colSubmitted'), displayKey: '_created_fmt' },
         ]}
         detailConfig={DETAIL_CONFIG}
         lookups={{ practiceAreas: paNames }}

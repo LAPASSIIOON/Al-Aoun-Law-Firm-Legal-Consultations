@@ -49,7 +49,7 @@ export default async function AdminReferrals() {
         columns={[
           { key: 'reference', label: t('colRef') }, { key: 'referring_firm_name', label: t('colFirm') },
           { key: 'referring_contact_name', label: t('colContact') }, { key: 'referring_contact_email', label: t('colEmail') },
-          { key: 'urgency', label: t('colUrgency') }, { key: 'created_at', label: t('colSubmitted') },
+          { key: 'urgency', label: t('colUrgency'), translatePrefix: 'urgency' }, { key: 'created_at', label: t('colSubmitted'), displayKey: '_created_fmt' },
         ]}
         detailConfig={DETAIL_CONFIG}
         lookups={{ practiceAreas: paNames }}

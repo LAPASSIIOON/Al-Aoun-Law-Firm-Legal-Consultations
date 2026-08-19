@@ -631,7 +631,10 @@
     "direction_inbound": "Inbound",
     "direction_outbound": "Outbound",
     "urgency_standard": "Standard",
-    "urgency_urgent": "Urgent"
+    "urgency_urgent": "Urgent",
+    "tableDateFrom": "From date",
+    "tableDateTo": "To date",
+    "tableClearDates": "Clear dates"
   },
   "myRequests": {
     "heading": "My Requests",

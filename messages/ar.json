@@ -631,7 +631,10 @@
     "direction_inbound": "وارد",
     "direction_outbound": "صادر",
     "urgency_standard": "عادي",
-    "urgency_urgent": "عاجل"
+    "urgency_urgent": "عاجل",
+    "tableDateFrom": "من تاريخ",
+    "tableDateTo": "إلى تاريخ",
+    "tableClearDates": "مسح التواريخ"
   },
   "myRequests": {
     "heading": "طلباتي",

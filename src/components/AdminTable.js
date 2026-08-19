@@ -4,10 +4,10 @@ import { useTranslations } from 'next-intl';
 import { updateStage, updateNotes } from '@/app/actions/admin.js';
 import styles from './AdminTable.module.css';
 
-function toCsv(rows, columns, stageLabel) {
+function toCsv(rows, columns, stageLabel, cellValue) {
   const header = [...columns.map((c) => c.label), 'Stage', 'Notes'].join(',');
   const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const lines = rows.map((r) => [...columns.map((c) => esc(r[c.key])), esc(stageLabel(r.stage)), esc(r.internal_notes)].join(','));
+  const lines = rows.map((r) => [...columns.map((c) => esc(cellValue(r, c))), esc(stageLabel(r.stage)), esc(r.internal_notes)].join(','));
   return [header, ...lines].join('\r\n');
 }
 
@@ -36,6 +36,8 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   const [pending, startTransition] = useTransition();
   const [query, setQuery] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [openRow, setOpenRow] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [savedFlash, setSavedFlash] = useState(null);
@@ -50,6 +52,15 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
     if (raw == null || raw === '') return null;
     if (field.lookup) return lookups?.[field.lookup]?.[raw] || null;
     if (field.translatePrefix) return t.has(`${field.translatePrefix}_${raw}`) ? t(`${field.translatePrefix}_${raw}`) : raw;
+    return String(raw);
+  }
+
+  // قيمة خلية العمود المختصر: تترجم قيم enum عبر translatePrefix، أو تعرض حقلًا بديلًا منسّقًا مسبقًا عبر displayKey (مثل التاريخ المنسَّق من الخادم).
+  function cellValue(row, col) {
+    if (col.displayKey && row[col.displayKey] != null) return row[col.displayKey];
+    const raw = row[col.key];
+    if (raw == null || raw === '') return '—';
+    if (col.translatePrefix && t.has(`${col.translatePrefix}_${raw}`)) return t(`${col.translatePrefix}_${raw}`);
     return String(raw);
   }
 
@@ -76,12 +87,14 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   const filtered = useMemo(() => {
     return data.filter((r) => {
       if (stageFilter !== 'all' && r.stage !== stageFilter) return false;
+      if (dateFrom && r.created_at && r.created_at.slice(0, 10) < dateFrom) return false;
+      if (dateTo && r.created_at && r.created_at.slice(0, 10) > dateTo) return false;
       if (!query.trim()) return true;
       const q = query.trim().toLowerCase();
       return columns.some((c) => String(r[c.key] ?? '').toLowerCase().includes(q))
         || String(r.internal_notes ?? '').toLowerCase().includes(q);
     });
-  }, [data, query, stageFilter, columns]);
+  }, [data, query, stageFilter, dateFrom, dateTo, columns]);
 
   if (!data.length) return <p className="body" style={{ color: 'var(--muted)' }}>{emptyLabel}</p>;
 
@@ -96,9 +109,14 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
           <option value="all">{t('tableAllStages')}</option>
           {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}
         </select>
+        <input type="date" className={styles.select} value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} aria-label={t('tableDateFrom')} title={t('tableDateFrom')} />
+        <input type="date" className={styles.select} value={dateTo} onChange={(e) => setDateTo(e.target.value)} aria-label={t('tableDateTo')} title={t('tableDateTo')} />
+        {(dateFrom || dateTo) && (
+          <button type="button" className={styles.notesBtn} onClick={() => { setDateFrom(''); setDateTo(''); }}>{t('tableClearDates')}</button>
+        )}
         <span className={styles.count}>{filtered.length} / {data.length}</span>
         <button type="button" className="btn-line" style={{ fontSize: '.82rem', marginInlineStart: 'auto' }}
-          onClick={() => downloadCsv(toCsv(filtered, columns, stageLabel), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
+          onClick={() => downloadCsv(toCsv(filtered, columns, stageLabel, cellValue), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
           {t('tableExportCsv')}
         </button>
       </div>
@@ -121,7 +139,7 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
                 return (
                   <Fragment key={r.id}>
                     <tr className={styles.rowClickable} onClick={() => toggleRow(r)}>
-                      {columns.map((c) => <td key={c.key} data-label={c.label}>{String(r[c.key] ?? '—')}</td>)}
+                      {columns.map((c) => <td key={c.key} data-label={c.label}>{cellValue(r, c)}</td>)}
                       <td data-label={t('tableColStage')} onClick={(e) => e.stopPropagation()}>
                         <select className={styles.select} value={r.stage} disabled={pending} onChange={(e) => onStageChange(r.id, e.target.value)}>
                           {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}

@@ -35,7 +35,10 @@ export default async function AdminLayout({ children, params }) {
       ],
     },
     { label: t('navGroupPeople'), links: [{ href: '/admin/members', label: t('navMembers') }] },
-    { label: t('navGroupContent'), links: [{ href: '/admin/practice-areas', label: t('navPracticeAreas') }] },
+    { label: t('navGroupContent'), links: [
+        { href: '/admin/practice-areas', label: t('navPracticeAreas') },
+        { href: '/admin/insights', label: t('navInsights') },
+    ] },
     { label: t('navGroupSystem'), links: [{ href: '/admin/audit', label: t('navAudit') }] },
   ];
 

@@ -663,7 +663,10 @@
     "contentCreate": "Create",
     "contentCreateHint": "Create in one language first; add the other later — no machine translation.",
     "contentNoAccess": "You don't have content-management access to this section.",
-    "contentLastUpdated": "Last updated"
+    "contentLastUpdated": "Last updated",
+    "navInsights": "Legal Insights",
+    "contentNewInsight": "New Legal Insight",
+    "contentExcerpt": "Excerpt"
   },
   "myRequests": {
     "heading": "My Requests",

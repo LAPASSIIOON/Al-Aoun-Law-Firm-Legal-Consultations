@@ -663,7 +663,10 @@
     "contentCreate": "إنشاء",
     "contentCreateHint": "أنشئ بلغة واحدة أولًا؛ يمكن إضافة اللغة الأخرى لاحقًا — لا ترجمة آلية.",
     "contentNoAccess": "لا تملك صلاحية إدارة المحتوى في هذا القسم.",
-    "contentLastUpdated": "آخر تحديث"
+    "contentLastUpdated": "آخر تحديث",
+    "navInsights": "الرؤى القانونية",
+    "contentNewInsight": "رؤية قانونية جديدة",
+    "contentExcerpt": "المقتطف"
   },
   "myRequests": {
     "heading": "طلباتي",

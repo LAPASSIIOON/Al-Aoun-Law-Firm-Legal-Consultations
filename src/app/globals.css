@@ -42,6 +42,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
   background:var(--light-ground);
   --ink:var(--light-ink); --ink-2:var(--light-ink); --platinum:var(--light-ink);
   --platinum-2:var(--light-muted); --platinum-3:var(--light-idx); --muted:var(--light-muted); --muted-2:var(--light-idx);
+  --surface:var(--light-ground); --surface-2:var(--light-raised); --surface-3:var(--light-raised-2);
   color:var(--light-ink);
 }
 .on-light .hair,.on-white .hair,.on-ivory .hair{background:var(--light-hair)}

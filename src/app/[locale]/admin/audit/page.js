@@ -9,6 +9,7 @@ const ACTION_KEYS = {
   'consultation.submitted': 'actionLabelSubmitted',
   'referral.submitted': 'actionLabelSubmitted',
   'partnership_application.submitted': 'actionLabelSubmitted',
+  'profile.role_assigned': 'actionLabelProfileRoleAssigned',
 };
 const ENTITY_KEYS = {
   consultation: 'entityLabelConsultation',
@@ -18,6 +19,7 @@ const ENTITY_KEYS = {
   partnership: 'entityLabelPartnership',
   partnership_applications: 'entityLabelPartnership',
   portal_members: 'entityLabelMember',
+  profiles: 'entityLabelProfile',
 };
 
 export default async function AdminAudit() {

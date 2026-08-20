@@ -1,7 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
-import { Link } from '@/i18n/navigation.js';
+import ReferenceRow from '@/components/ReferenceRow.js';
 import s from '../shared.module.css';
 
 export const revalidate = 300;
@@ -16,10 +16,11 @@ export default async function Insights({ params }) {
   try {
     const supabase = createAnonClient();
     const { data } = await supabase.from('article_translations')
-      .select('slug, title, excerpt').eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
+      .select('slug, title, excerpt, created_at').eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
       .order('created_at', { ascending: false });
     rows = data || [];
   } catch (e) { rows = []; }
+  const fmtDate = (v) => new Date(v).toLocaleDateString(locale === 'ar' ? 'ar-KW' : 'en-GB', { year: 'numeric', month: 'short' });
   return (
     <>
       <section className={`on-espresso ${s.pageHead} section-tight`}>
@@ -32,13 +33,10 @@ export default async function Insights({ params }) {
       <section className="on-ivory section">
         <div className="wrap">
           {rows.length > 0 ? (
-            <div className="grid cols-2">
-              {rows.map((r) => (
-                <Link key={r.slug} href={`/insights/${r.slug}`} className="card" data-reveal>
-                  <h2 className="card-title">{r.title}</h2>
-                  {r.excerpt && <p className="body">{r.excerpt}</p>}
-                  <span className="btn-line" style={{ marginBlockStart: 'auto' }}>{tp('readMore')}<span className="arrow">→</span></span>
-                </Link>
+            <div>
+              {rows.map((r, i) => (
+                <ReferenceRow key={r.slug} index={i + 1} title={r.title} href={`/insights/${r.slug}`}
+                  summary={r.excerpt} meta={fmtDate(r.created_at)} />
               ))}
             </div>
           ) : (

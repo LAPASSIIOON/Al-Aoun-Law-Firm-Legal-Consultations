@@ -1,0 +1,29 @@
+.row{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
+.row:first-child{border-block-start:1px solid var(--hair-light)}
+.row:hover{background:var(--surface);padding-inline:1.1rem}
+.row::after{content:'';position:absolute;inset-inline:0;inset-block-end:-1px;block-size:1px;background:var(--ref-rule-active);transform:scaleX(0);transition:transform .6s var(--ease)}
+:global(html[lang=en]) .row::after{transform-origin:left}
+:global(html[lang=ar]) .row::after{transform-origin:right}
+.row:hover::after{transform:scaleX(1)}
+
+.idx{position:relative;font-family:var(--f-en);font-size:.85rem;color:var(--ref-num);font-variant-numeric:tabular-nums;letter-spacing:.06em;padding-block-start:.45em;padding-inline-start:1rem;transition:color .4s var(--ease)}
+.idx::before{content:'';position:absolute;inset-inline-start:0;inset-block-start:.65em;inline-size:5px;block-size:5px;border-radius:50%;background:var(--ref-rule-active);transform:scale(0);transition:transform .4s var(--ease)}
+.row:hover .idx{color:var(--ref-num-active)}
+.row:hover .idx::before{transform:scale(1)}
+
+.body{display:flex;flex-direction:column;gap:.2rem}
+.title{display:block;font-family:var(--f-display);font-weight:600;font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.25;color:var(--ink);transition:color .35s var(--ease)}
+:global(html[lang=ar]) .title{line-height:1.45}
+.row:hover .title{color:var(--ref-rule-active)}
+
+.sum{display:block;color:var(--muted);font-size:.95rem;line-height:1.7;margin-block-start:.15rem;max-inline-size:62ch}
+.meta{display:block;font-family:var(--f-en);font-size:.78rem;color:var(--ref-num);font-variant-numeric:tabular-nums;margin-block-start:.3rem}
+
+.arrow{color:var(--ref-num);font-size:1.15rem;padding-block-start:.35em;transition:transform .45s var(--ease),color .35s var(--ease)}
+.row:hover .arrow{color:var(--ref-rule-active)}
+:global(html[lang=en]) .row:hover .arrow{transform:translateX(4px)}
+:global(html[lang=ar]) .row:hover .arrow{transform:translateX(-4px)}
+
+@media (prefers-reduced-motion:reduce){
+  .row,.row::after,.idx,.idx::before,.title,.arrow{transition:none}
+}

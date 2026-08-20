@@ -52,7 +52,7 @@ export async function createPracticeArea({ locale, title, summary, body }) {
   if (e1) return { error: e1.message };
   const slug = slugify(title);
   const { error: e2 } = await supabase.from('practice_area_translations').insert({
-    practice_area_id: area.id, locale, title, summary, body, status: 'draft', legal_approved: false,
+    practice_area_id: area.id, locale, slug, title, summary, body, status: 'draft', legal_approved: false,
   });
   if (e2) return { error: e2.message };
   revalidatePath('/[locale]/admin/practice-areas', 'page');
@@ -64,7 +64,7 @@ export async function addPracticeAreaTranslation({ practiceAreaId, locale, title
   const supabase = await createSupabaseServerClient();
   const slug = slugify(title);
   const { error } = await supabase.from('practice_area_translations').insert({
-    practice_area_id: practiceAreaId, locale, title, summary, body, status: 'draft', legal_approved: false,
+    practice_area_id: practiceAreaId, locale, slug, title, summary, body, status: 'draft', legal_approved: false,
   });
   if (error) return { error: error.message };
   revalidatePath('/[locale]/admin/practice-areas/[id]', 'page');

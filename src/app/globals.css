@@ -34,16 +34,20 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .on-navy-raised,.on-navy-2,.on-graphite{background:var(--surface);color:var(--platinum)}
 /* on-paper يبقى داكنًا (سطح مرتفع) — كان يُخرج surface فعليًا */
 .on-paper{background:var(--surface);color:var(--platinum)}
-/* on-light / on-white = الفسحة الفاتحة الحقيقية في الإيقاع (نص داكن، تباين تحريري) */
-.on-light,.on-white,.on-ivory{background:var(--light-ground);color:var(--light-ink)}
-.on-light .body,.on-white .body,.on-ivory .body,.on-light .lead,.on-white .lead,.on-ivory .lead{color:var(--light-muted)}
-.on-light .display,.on-white .display,.on-ivory .display{color:var(--light-ink)}
+/* on-light / on-white = الفسحة الفاتحة الحقيقية في الإيقاع (نص داكن، تباين تحريري).
+   إعادة تعريف --ink/--platinum محليًا هنا (لا الأسماء الصريحة فقط) لأن عشرات المكوّنات
+   عبر المشروع تستخدم var(--ink)/var(--platinum) مباشرة بافتراض وضع داكن دائم — هذا يصحّح
+   كل استخدام حالي ومستقبلي تلقائيًا عبر التتالي (cascade)، بلا حاجة لتعديل كل ملف مكوّن. */
+.on-light,.on-white,.on-ivory{
+  background:var(--light-ground);
+  --ink:var(--light-ink); --ink-2:var(--light-ink); --platinum:var(--light-ink);
+  --platinum-2:var(--light-muted); --platinum-3:var(--light-idx); --muted:var(--light-muted); --muted-2:var(--light-idx);
+  color:var(--light-ink);
+}
 .on-light .hair,.on-white .hair,.on-ivory .hair{background:var(--light-hair)}
 .on-light .eyebrow,.on-white .eyebrow,.on-ivory .eyebrow{color:var(--clay-600)}
 .on-light .eyebrow::before,.on-white .eyebrow::before,.on-ivory .eyebrow::before{background:var(--clay)}
 .on-light .idx,.on-white .idx,.on-ivory .idx{color:var(--light-idx)}
-.on-light .counter-n,.on-white .counter-n,.on-ivory .counter-n{color:var(--light-ink)}
-.on-light .counter-l,.on-white .counter-l,.on-ivory .counter-l{color:var(--light-muted)}
 
 /* ═══ نظام السجل المرجعي (The Reference System) — لغة بصرية موحَّدة عبر الموقع ═══
    الرقم المرجعي: خانات ثابتة العرض تحافظ على المحاذاة بين العربي والإنجليزي (tabular-nums).

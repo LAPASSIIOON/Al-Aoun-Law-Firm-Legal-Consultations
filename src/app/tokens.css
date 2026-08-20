@@ -1,70 +1,73 @@
-/* ═══ مجموعة العون — Deep Navy Authority · كحلي عميق غالب + أزرق بارد تقني (وقار Mallesons × دقّة PitchBook) ═══ */
+/* ═══ AL OUN — The Sovereign Knight · إسبريسو دافئ مؤسسي + بلاتين + أزرق إشارة نادر ═══
+   منحوتة معاصرة، أرشيف مؤسسي، سرد سينمائي. داكن دافئ غالب، لا كحلي بارد. */
 :root {
-  /* اللوحة — كحلي/أسود عميق + بلاتيني بارد + أزرق تقني */
-  --ground:#0A0F1A;      /* الأرضية — كحلي أسود عميق (غالب) */
-  --surface:#111A2B;     /* السطح */
-  --surface-2:#18233A;   /* سطح مرتفع — بطاقات */
-  --surface-3:#21304C;   /* تحويم/متداخل */
-  --platinum:#E9EDF4;    /* نص أساسي — أبيض بارد */
-  --platinum-2:#AEB9CC;  /* نص ثانوي */
-  --platinum-3:#7C89A0;  /* نص باهت */
+  /* اللوحة — إسبريسو/جرافيت دافئ عميق + عاجي + بلاتين */
+  --ground:#171310;      /* الأرضية — إسبريسو عميق (غالب) */
+  --surface:#211C18;     /* السطح */
+  --surface-2:#292725;   /* سطح مرتفع — جرافيت */
+  --surface-3:#332F2B;   /* تحويم/متداخل */
+  --platinum:#E9E3D8;    /* نص أساسي — عاجي دافئ */
+  --platinum-2:#B9B5AD;  /* نص ثانوي — بلاتين */
+  --platinum-3:#8A8377;  /* نص باهت — بلاتين معتم */
 
-  /* الأكسنت = أزرق اللوجو المقاس فعليًا (طرفا القوس #30A1D9) — مصدر الحقيقة، بلا تخمين */
-  --clay:#1D6A90;        /* fills/CTA — درجة 700 المقاسة، أبيض عليها 5.97:1 */
-  --clay-bright:#30A1D9; /* أزرق اللوجو الحرفي — نصوص أكسنت/خطوط على الداكن */
-  --clay-600:#175A7C;    /* مضغوط */
-  --clay-050:rgba(48,161,217,0.10);
-  --blue-note:#64B8E3;   /* درجة 400 المقاسة — توهّج الموشن */
+  /* الأكسنت = أزرق إشارة، نادر جدًا فقط (حواف، حالات تفاعل دقيقة) — لا خلفية أبدًا */
+  --clay:#3E6C86;        /* fills/CTA — أزرق إشارة معتم، عاجي عليه تباين آمن */
+  --clay-bright:#5E9DBE; /* أزرق إشارة أوضح — نصوص/خطوط أكسنت على الداكن */
+  --clay-600:#33596F;    /* مضغوط */
+  --clay-050:rgba(94,157,190,0.10);
+  --blue-note:#7FB4D0;   /* توهّج خافت */
 
-  /* لمسة دافية من ألوان مكتب العون الحقيقي — للأزرار فقط، بلا مساس بنظام الأزرق */
-  --gold:#F4B044; --gold-600:#E0680E; --gold-text:var(--ground);
+  /* الأزرار — إسبريسو صلب بحافة بلاتين/إشارة دقيقة، لا ذهبي إطلاقًا */
+  --gold:var(--clay); --gold-600:var(--clay-600); --gold-text:#F4EFE7;
 
   /* نصوص */
-  --ink:var(--platinum); --ink-2:#D6DDE8; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
+  --ink:var(--platinum); --ink-2:#DAD3C6; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
   --ink-dark:var(--platinum); --muted-dark:var(--platinum-2);
 
-  /* أسماء مستعارة */
+  /* أسماء مستعارة — تتبع الطبقة الأساسية الجديدة تلقائيًا */
   --white:#FFFFFF;
   --navy:var(--ground); --navy-2:var(--surface-2); --navy-3:var(--surface-3);
   --paper:var(--surface); --paper-2:var(--surface-2);
-  --espresso:var(--clay); --graphite:var(--surface-2); --ivory:var(--surface); --ivory-sink:var(--surface-3);
+  --espresso:var(--ground); --graphite:var(--surface-2); --ivory:var(--surface); --ivory-sink:var(--surface-3);
   --blue:var(--clay); --blue-600:var(--clay-600); --blue-050:var(--clay-050);
   --blue-glow:var(--clay-bright); --blue-strong:var(--clay-bright); --platinum-dim:var(--platinum-3);
 
-  /* خطوط شعرية — فاتح على داكن */
-  --hair-light:rgba(233,237,244,0.10); --hair-light-strong:rgba(233,237,244,0.17);
-  --hair-dark:rgba(233,237,244,0.12); --hair-dark-strong:rgba(233,237,244,0.22);
+  /* خطوط شعرية — عاجي على إسبريسو */
+  --hair-light:rgba(233,227,216,0.10); --hair-light-strong:rgba(233,227,216,0.17);
+  --hair-dark:rgba(233,227,216,0.12); --hair-dark-strong:rgba(233,227,216,0.22);
 
-  /* السطح الفاتح الحقيقي — الفسحة التحريرية المتعمَّدة في إيقاع «السجل المرجعي» (داكن→فاتح→داكن).
-     أبيض-كسر بارد لا أبيض نقي، ونص كحلي عميق للتباين التحريري الراقي — لا رمادي باهت. */
-  --light-ground:#EEF1F6;   /* أبيض-كسر بارد — خلفية الفسحة الفاتحة */
-  --light-raised:#E1E6EF;   /* سطح مرتفع فاتح — hover/بطاقات على الفاتح */
-  --light-raised-2:#D3DAE6; /* سطح مرتفع أعمق — تحويم أقوى على الفاتح */
-  --light-ink:#141E36;      /* الحبر الكحلي الرسمي كنص على الفاتح — 13.6:1 (ممتاز) */
-  --light-muted:#48546E;    /* نص ثانوي على الفاتح — 7.4:1 */
-  --light-idx:#8A93A6;      /* أرقام/متاداتا باهتة على الفاتح */
-  --light-hair:rgba(20,30,54,0.12); /* خط شعري على الفاتح */
+  /* السطح الفاتح الحقيقي — الفسحة التحريرية (المشهد الأفتح/الأكثر إنسانية: الأشخاص).
+     عاجي دافئ لا أبيض بارد، ونص إسبريسو عميق للتباين التحريري الراقي. */
+  --light-ground:#E9E3D8;   /* عاجي دافئ — خلفية الفسحة الفاتحة */
+  --light-raised:#DDD5C7;   /* سطح مرتفع فاتح — hover على الفاتح */
+  --light-raised-2:#D0C6B5; /* سطح مرتفع أعمق */
+  --light-ink:#171310;      /* الإسبريسو كنص على العاجي — تباين ممتاز */
+  --light-muted:#57503F;    /* نص ثانوي على الفاتح */
+  --light-idx:#8A8377;      /* أرقام/متاداتا باهتة على الفاتح */
+  --light-hair:rgba(23,19,16,0.14); /* خط شعري على الفاتح */
 
-  /* توكنات «السجل المرجعي» — نظام الفهرسة البصري: خط دليل + رقم مرجعي + علامة محاذاة.
-     تُستخدم في الأقسام والصفوف والقائمة الجوّالة والقسم الدولي — لغة واحدة عبر الموقع. */
-  --ref-rule:rgba(48,161,217,0.22);      /* خط الدليل الافتراضي — أزرق اللوجو خافت */
-  --ref-rule-active:var(--clay-bright);  /* خط الدليل عند التفاعل — إشارة دقيقة */
-  --ref-tick:rgba(174,185,204,0.28);     /* علامات التقسيم على خط الدليل */
+  /* توكنات نظام الفهرسة/السجل — تبقى كلغة تحريرية دقيقة (خطوط دليل، أرقام، علامات) */
+  --ref-rule:rgba(94,157,190,0.20);      /* خط الدليل الافتراضي — أزرق إشارة خافت */
+  --ref-rule-active:var(--clay-bright);  /* خط الدليل عند التفاعل */
+  --ref-tick:rgba(185,181,173,0.28);     /* علامات التقسيم — بلاتين */
   --ref-num:var(--platinum-3);           /* الرقم المرجعي على الداكن */
   --ref-num-light:var(--light-idx);      /* الرقم المرجعي على الفاتح */
   --ref-num-active:var(--clay-bright);   /* الرقم المرجعي النشط */
 
-  /* خطوط الكتابة — قرار موثَّق (حوكمة):
-     التنفيذ الفعلي يعتمد Readex Pro (عربي) + Archivo (إنجليزي)، وهو انحراف مقصود ومُعتمَد
-     عن تقدير وثيقة الهوية الأولى (IBM Plex Sans Arabic/IBM Plex Sans). Readex Pro أوضح
-     وأكثر حداثة في الأحجام الكبيرة العربية، وArchivo أقرب للطابع المؤسسي التحريري المطلوب.
-     ملاحظة: Cairo/Tajawal تظلّ مرفوضة كما في القرار الأصلي — لا يُعاد إدخالها. */
-  --f-ar:'Readex Pro Variable','IBM Plex Sans Arabic',system-ui,sans-serif;
-  --f-en:'Archivo Variable',system-ui,sans-serif;
+  /* خطوط الكتابة — التحوّل السينمائي (البريف §6):
+     Serif تحريري راقٍ للعرض (Cormorant إنجليزي / Amiri عربي للحظات المحورية)،
+     وIBM Plex Sans Arabic للواجهة والجسم العربي. مؤسسة تحريرية دولية لا شركة تقنية. */
+  --f-serif-en:'Cormorant','Georgia',serif;
+  --f-serif-ar:'Amiri','Georgia',serif;
+  --f-ui-ar:'IBM Plex Sans Arabic',system-ui,sans-serif;
+  --f-ui-en:'Archivo Variable',system-ui,sans-serif;
+  --f-ar:var(--f-serif-ar);
+  --f-en:var(--f-serif-en);
 
   /* مقاسات/حركة — مساحات أوسع للوقار */
   --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(5.5rem,11vh,9.5rem);
-  --r:5px; --r-lg:8px; --r-card:8px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
+  --r:4px; --r-lg:6px; --r-card:6px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
-html[lang="ar"]{ --f-display:var(--f-ar); --f-ui:var(--f-ar); }
-html[lang="en"]{ --f-display:var(--f-en); --f-ui:var(--f-en); }
+/* العرض الكبير = Serif؛ الواجهة/الجسم = Sans نظيف (تدرّج حادّ: عرض تحريري + واجهة دقيقة) */
+html[lang="ar"]{ --f-display:var(--f-serif-ar); --f-ui:var(--f-ui-ar); }
+html[lang="en"]{ --f-display:var(--f-serif-en); --f-ui:var(--f-ui-en); }

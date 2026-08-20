@@ -12,8 +12,8 @@ export default function HeroMotion() {
     const ctx = canvas.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0, w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2), t = 0;
-    const LINE = '48,161,217';   // #30A1D9 أزرق اللوجو المقاس — خطوط الدليل والعلامات
-    const POINT = '100,184,227'; // #64B8E3 — النقاط المرجعية النابضة
+    const LINE = '138,131,119';   // بلاتين معتم — خطوط الدليل والعلامات (دافئ، لا أزرق بارد)
+    const POINT = '94,157,190';   // أزرق إشارة نادر — النقاط المرجعية فقط
     let lines = [], points = [];
 
     function size() {

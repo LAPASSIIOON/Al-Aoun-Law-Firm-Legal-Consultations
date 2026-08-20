@@ -666,7 +666,9 @@
     "contentLastUpdated": "Last updated",
     "navInsights": "Legal Insights",
     "contentNewInsight": "New Legal Insight",
-    "contentExcerpt": "Excerpt"
+    "contentExcerpt": "Excerpt",
+    "needsAttentionPracticeAreasReview": "{count, plural, one {practice area awaiting legal review} other {# practice areas awaiting legal review}}",
+    "needsAttentionInsightsReview": "{count, plural, one {legal insight awaiting legal review} other {# legal insights awaiting legal review}}"
   },
   "myRequests": {
     "heading": "My Requests",

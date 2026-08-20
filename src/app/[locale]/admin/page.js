@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation.js';
 import {
   listConsultations, listReferrals, listPartnerships, listMembers, listAuditLog,
 } from '@/app/actions/admin.js';
+import { listPracticeAreas, listArticles } from '@/app/actions/content.js';
 
 const ACTION_KEYS = {
   stage_updated: 'actionLabelStageUpdated',
@@ -54,14 +55,19 @@ function KpiCard({ href, n, label }) {
 export default async function AdminOverview() {
   const t = await getTranslations('admin');
   const locale = await getLocale();
-  const [consultations, referrals, partnerships, members, activity] = await Promise.all([
+  const [consultations, referrals, partnerships, members, activity, practiceAreas, articles] = await Promise.all([
     listConsultations(), listReferrals(), listPartnerships(), listMembers(), listAuditLog(6),
+    listPracticeAreas(), listArticles(),
   ]);
 
   const newConsultations = consultations.filter((r) => r.stage === 'new').length;
   const newReferrals = referrals.filter((r) => r.stage === 'new').length;
   const newPartnerships = partnerships.filter((r) => r.stage === 'new').length;
   const totalAttention = newConsultations + newReferrals + newPartnerships;
+
+  const paReview = practiceAreas.filter((a) => a.practice_area_translations.some((tr) => tr.status === 'legal_review')).length;
+  const insightsReview = articles.filter((a) => a.article_translations.some((tr) => tr.status === 'legal_review')).length;
+  const totalContentAttention = paReview + insightsReview;
 
   const fmtDateTime = (v) => (v ? new Date(v).toLocaleString(locale === 'ar' ? 'ar-KW' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—');
 
@@ -74,7 +80,7 @@ export default async function AdminOverview() {
       <h2 style={{ fontFamily: 'var(--f-en)', fontSize: '.75rem', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--platinum-3)', marginBlockEnd: '.9rem' }}>
         {t('needsAttentionHeading')}
       </h2>
-      {totalAttention === 0 ? (
+      {(totalAttention + totalContentAttention) === 0 ? (
         <p className="body" style={{ color: 'var(--muted)', padding: '1rem 1.1rem', borderRadius: 'var(--r)', boxShadow: 'inset 0 0 0 1px var(--hair-light-strong)' }}>
           {t('needsAttentionEmpty')}
         </p>
@@ -88,6 +94,12 @@ export default async function AdminOverview() {
           )}
           {newPartnerships > 0 && (
             <AttentionRow href="/admin/partnerships" count={newPartnerships} label={t('needsAttentionPartnerships', { count: newPartnerships })} />
+          )}
+          {paReview > 0 && (
+            <AttentionRow href="/admin/practice-areas" count={paReview} label={t('needsAttentionPracticeAreasReview', { count: paReview })} />
+          )}
+          {insightsReview > 0 && (
+            <AttentionRow href="/admin/insights" count={insightsReview} label={t('needsAttentionInsightsReview', { count: insightsReview })} />
           )}
         </div>
       )}

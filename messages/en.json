@@ -673,7 +673,30 @@
     "entityLabelProfile": "Content profile",
     "actionLabelContentLegalApproved": "Content legally approved",
     "entityLabelArticleTranslation": "Legal insight translation",
-    "entityLabelPracticeAreaTranslation": "Practice area translation"
+    "entityLabelPracticeAreaTranslation": "Practice area translation",
+    "navMatters": "Client Matters",
+    "matterTitle": "Matter Title",
+    "matterReference": "Reference (optional)",
+    "matterStatus_open": "Open",
+    "matterStatus_closed": "Closed",
+    "matterClient": "Client",
+    "matterNew": "New Matter",
+    "matterCreate": "Create Matter",
+    "matterSelectClient": "Select client",
+    "matterNoClients": "No members with the \"client\" type yet. Any member can be upgraded to this type from the Members page.",
+    "matterFilesHeading": "Files",
+    "matterUploadFile": "Upload file",
+    "matterUploading": "Uploading…",
+    "matterFileFromFirm": "From the firm",
+    "matterFileFromClient": "From the client",
+    "matterNoFiles": "No files yet.",
+    "matterBackToList": "Back to matters ←",
+    "matterDownload": "Download",
+    "matterNoMatters": "No matters yet.",
+    "accountMattersHeading": "My Matters",
+    "accountMattersHint": "Files related to your matters with the firm.",
+    "matterUploadError": "Could not upload the file. Please try again.",
+    "navGroupClientPortal": "Client Portal"
   },
   "myRequests": {
     "heading": "My Requests",
@@ -707,6 +730,7 @@
     "quickPartner": "Discuss a partnership",
     "emptyConsultations": "No consultation requests yet.",
     "emptyReferrals": "No referrals yet.",
-    "emptyPartnerships": "No partnership requests yet."
+    "emptyPartnerships": "No partnership requests yet.",
+    "quickMyMatters": "My Matters"
   }
 }

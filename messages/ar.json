@@ -673,7 +673,30 @@
     "entityLabelProfile": "ملف صلاحية",
     "actionLabelContentLegalApproved": "اعتماد محتوى قانونيًا",
     "entityLabelArticleTranslation": "ترجمة رؤية قانونية",
-    "entityLabelPracticeAreaTranslation": "ترجمة مجال ممارسة"
+    "entityLabelPracticeAreaTranslation": "ترجمة مجال ممارسة",
+    "navMatters": "قضايا الموكلين",
+    "matterTitle": "عنوان القضية",
+    "matterReference": "رقم مرجعي (اختياري)",
+    "matterStatus_open": "مفتوحة",
+    "matterStatus_closed": "مغلقة",
+    "matterClient": "العميل",
+    "matterNew": "قضية جديدة",
+    "matterCreate": "إنشاء القضية",
+    "matterSelectClient": "اختر العميل",
+    "matterNoClients": "لا يوجد أعضاء بصفة «عميل» بعد. يمكن ترقية أي عضو لهذه الصفة من صفحة الأعضاء.",
+    "matterFilesHeading": "الملفات",
+    "matterUploadFile": "رفع ملف",
+    "matterUploading": "جارٍ الرفع…",
+    "matterFileFromFirm": "من المكتب",
+    "matterFileFromClient": "من العميل",
+    "matterNoFiles": "لا توجد ملفات بعد.",
+    "matterBackToList": "العودة لقائمة القضايا ←",
+    "matterDownload": "تنزيل",
+    "matterNoMatters": "لا توجد قضايا بعد.",
+    "accountMattersHeading": "قضاياي",
+    "accountMattersHint": "الملفات الخاصة بقضاياك مع المكتب.",
+    "matterUploadError": "تعذّر رفع الملف. حاول مرة أخرى.",
+    "navGroupClientPortal": "بوابة الموكلين"
   },
   "myRequests": {
     "heading": "طلباتي",
@@ -707,6 +730,7 @@
     "quickPartner": "تواصل بشأن تعاون",
     "emptyConsultations": "لم تطلب استشارة بعد.",
     "emptyReferrals": "لم تُحِل أي ملف بعد.",
-    "emptyPartnerships": "لا طلبات تعاون بعد."
+    "emptyPartnerships": "لا طلبات تعاون بعد.",
+    "quickMyMatters": "قضاياي"
   }
 }

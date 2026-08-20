@@ -5,6 +5,7 @@ import { getCurrentMember, createSupabaseServerClient } from '@/lib/supabase-aut
 import { signOutAction } from '@/app/actions/auth.js';
 import { memberTypeLabel } from '@/lib/member-types.js';
 import MemberProfileCard from '@/components/MemberProfileCard.js';
+import { listMyMatters } from '@/app/actions/matters.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +42,7 @@ export default async function MyRequests({ params }) {
   if (!member) redirect(`/${locale}/account/sign-in`);
 
   const { consultations, referrals, partnerships } = await fetchAll();
+  const myMatters = await listMyMatters();
   const STAGE = locale === 'ar' ? STAGE_LABELS_AR : STAGE_LABELS_EN;
   const group = GROUP_BY_TYPE[member.member_type] || 'client';
   const cfg = GROUP_CONFIG[group];
@@ -59,6 +61,9 @@ export default async function MyRequests({ params }) {
     org: [{ href: '/international/partner-with-us', label: t('quickPartner'), solid: true }, { href: '/contact', label: t('quickAskConsultation'), solid: false }],
   };
   const actions = ACTIONS[group];
+  if (myMatters.length > 0) {
+    actions.unshift({ href: '/account/matters', label: t('quickMyMatters'), solid: true });
+  }
 
   const profileLabels = {
     profileHeading: t('profileHeading'), editProfile: t('editProfile'),

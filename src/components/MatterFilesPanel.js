@@ -29,9 +29,9 @@ export default function MatterFilesPanel({ matterId, files: initialFiles, curren
       const supabase = createSupabaseBrowserClient();
       const path = `${matterId}/${crypto.randomUUID()}-${file.name}`;
       const { error: upErr } = await supabase.storage.from('matter-files').upload(path, file);
-      if (upErr) { setError(t('matterUploadError')); setUploading(false); return; }
+      if (upErr) { setError(`DEBUG upload: ${upErr.message}`); setUploading(false); return; }
       const res = await recordMatterFile({ matterId, fileName: file.name, storagePath: path, fileSize: file.size, mimeType: file.type });
-      if (res?.error) { setError(t('matterUploadError')); setUploading(false); return; }
+      if (res?.error) { setError(`DEBUG record: ${res.error}`); setUploading(false); return; }
       setFiles((cur) => [{ id: path, file_name: file.name, storage_path: path, file_size: file.size, mime_type: file.type, created_at: new Date().toISOString(), uploaded_by: currentUserId }, ...cur]);
     } finally {
       setUploading(false);

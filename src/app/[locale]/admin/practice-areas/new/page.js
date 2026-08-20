@@ -5,7 +5,8 @@ import NewPracticeAreaForm from '@/components/NewPracticeAreaForm.js';
 
 export default async function AdminNewPracticeArea() {
   const t = await getTranslations('admin');
-  const myRole = await getMyContentRole();
+  const roleResult = await getMyContentRole();
+  const myRole = roleResult.role;
 
   return (
     <>
@@ -14,7 +15,7 @@ export default async function AdminNewPracticeArea() {
       </Link>
       <h1 className="display d-2" style={{ marginBlockEnd: '1.5rem' }}>{t('contentNewPracticeArea')}</h1>
       {!myRole ? (
-        <p className="body" style={{ color: '#B42722' }}>{t('contentNoAccess')}</p>
+        <p className="body" style={{ color: '#B42722' }}>{t('contentNoAccess')} [DEBUG: {roleResult.debug}]</p>
       ) : (
         <NewPracticeAreaForm />
       )}

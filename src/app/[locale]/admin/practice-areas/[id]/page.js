@@ -8,9 +8,8 @@ import PracticeAreaEditor from '@/components/PracticeAreaEditor.js';
 export default async function AdminPracticeAreaEdit({ params }) {
   const { id } = await params;
   const t = await getTranslations('admin');
-  const [area, roleResult] = await Promise.all([getPracticeArea(id), getMyContentRole()]);
+  const [area, myRole] = await Promise.all([getPracticeArea(id), getMyContentRole()]);
   if (!area) notFound();
-  const myRole = roleResult.role;
 
   // أسماء المعتمِدين (profiles) لعرضها بشرية بدل UUID خام
   const approverIds = [...new Set(area.practice_area_translations.map((tr) => tr.legal_approved_by).filter(Boolean))];
@@ -30,7 +29,7 @@ export default async function AdminPracticeAreaEdit({ params }) {
       <Link href="/admin/practice-areas" className="body" style={{ fontSize: '.85rem', color: 'var(--clay)', display: 'inline-block', marginBlockEnd: '1rem' }}>
         {t('contentBackToList')}
       </Link>
-      {!myRole && <p className="body" style={{ color: '#B42722' }}>{t('contentNoAccess')} [DEBUG: {roleResult.debug}]</p>}
+      {!myRole && <p className="body" style={{ color: '#B42722' }}>{t('contentNoAccess')}</p>}
       <PracticeAreaEditor practiceAreaId={id} translations={translations} myRole={myRole} isActive={area.is_active} />
     </>
   );

@@ -17,13 +17,11 @@ function slugify(text) {
 /** صفة المستخدم الحالي في نظام إدارة المحتوى (profiles.role) — null لو لا يملك أي صفة. */
 export async function getMyContentRole() {
   const supabase = await createSupabaseServerClient();
-  const { data: { user }, error: userErr } = await supabase.auth.getUser();
-  if (!user) return { role: null, debug: `no user, err=${userErr?.message}` };
-  const { data, error } = await supabase.from('profiles').select('role, is_active').eq('id', user.id).maybeSingle();
-  if (error) return { role: null, debug: `query error: ${error.message} (uid=${user.id})` };
-  if (!data) return { role: null, debug: `no profile row found for uid=${user.id}` };
-  if (!data.is_active) return { role: null, debug: `profile inactive (uid=${user.id})` };
-  return { role: data.role, debug: `ok uid=${user.id}` };
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data } = await supabase.from('profiles').select('role, is_active').eq('id', user.id).maybeSingle();
+  if (!data || !data.is_active) return null;
+  return data.role;
 }
 
 // ===== مجالات الممارسة =====

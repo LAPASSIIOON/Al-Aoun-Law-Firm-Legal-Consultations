@@ -1,9 +1,10 @@
-/** خطٌّ يرسم نفسه أسفل العنوان عند ظهوره لأول مرة — امتداد بصري لقوس شعار العون.
- * عنصر بلا حالة، يعتمد كليًا على data-reveal الأب (لا JS إضافي). */
+/** علامة محاذاة مستقيمة ترسم نفسها أسفل العناوين المحورية عند ظهورها لأول مرة —
+ *  بديل قوس التوقيع القديم (كان صدى لقوس اللوجو، قرار معتمَد بإيقافه): خط دقيق واحد،
+ *  ينتمي للغة السجل المرجعي (خطوط الدليل والعلامات) لا لهندسة اللوجو. */
 export default function SignatureUnderline({ width = 84 }) {
   return (
-    <svg className="sig-underline" width={width} height="14" viewBox={`0 0 ${width} 14`} aria-hidden="true">
-      <path d={`M2 8 Q ${width / 2} 14 ${width - 2} 6`} fill="none" stroke="var(--clay-bright)" strokeWidth="2.5" strokeLinecap="round" />
+    <svg className="align-mark" width={width} height="6" viewBox={`0 0 ${width} 6`} aria-hidden="true" style={{ '--am-len': width - 4 }}>
+      <line x1="2" y1="3" x2={width - 2} y2="3" />
     </svg>
   );
 }

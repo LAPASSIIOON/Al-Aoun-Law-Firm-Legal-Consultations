@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useRef } from 'react';
 
-/** Premium code-built motion graphic: concentric brand arcs + drifting particles on deep navy.
- *  Interim hero visual until real footage is provided. Reduced-motion safe. */
+/** خلفية الهيرو المتحرّكة — نظام خطوط الفهرسة (السجل المرجعي): خطوط دليل رأسية رفيعة
+ *  بعلامات تقسيم دقيقة، ونقاط مرجعية قليلة تتنفّس ببطء شديد — دقّة لا زخرفة، وتحت عتبة
+ *  الملاحظة الواعية عمدًا. لا أقواس متكرّرة (قرار معتمَد نهائيًا). آمنة مع تفضيل تقليل الحركة. */
 export default function HeroMotion() {
   const ref = useRef(null);
   useEffect(() => {
@@ -11,69 +12,57 @@ export default function HeroMotion() {
     const ctx = canvas.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0, w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2), t = 0;
-    const rtl = getComputedStyle(document.documentElement).direction === 'rtl';
-    const CLAY = '48,161,217';        // #30A1D9 measured logo blue
-    const PLAT = '174,185,204';       // --platinum-2 (cool)
-    const GLOW = '100,184,227';       // #64B8E3 measured 400
-    const NOTE = '44,143,214';        // --blue-note (لمسة أزرق اللوجو)
-    let particles = [];
+    const LINE = '48,161,217';   // #30A1D9 أزرق اللوجو المقاس — خطوط الدليل والعلامات
+    const POINT = '100,184,227'; // #64B8E3 — النقاط المرجعية النابضة
+    let lines = [], points = [];
 
     function size() {
       const r = canvas.getBoundingClientRect();
       w = r.width; h = r.height;
       canvas.width = Math.floor(w * dpr); canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      particles = Array.from({ length: Math.round(Math.min(48, w / 26)) }, () => ({
-        x: Math.random() * w, y: Math.random() * h,
-        r: Math.random() * 1.6 + 0.4, s: Math.random() * 0.28 + 0.06,
-        a: Math.random() * 0.5 + 0.15, drift: (Math.random() - 0.5) * 0.15,
+
+      // خطوط دليل رأسية بتباعد منتظم — شبكة قياس هادئة، ثابتة تمامًا (بلا انحراف)
+      const gap = Math.max(90, w / 11);
+      const count = Math.ceil(w / gap) + 1;
+      lines = Array.from({ length: count }, (_, i) => ({
+        x: i * gap,
+        tickGap: 34 + (i % 3) * 6,
+        tickOffset: (i * 11) % 34,
+      }));
+
+      // عدد محدود من النقاط المرجعية (لا حشد) — تتنفّس ببطء شديد فقط، بلا حركة انتقالية
+      const nPoints = Math.max(3, Math.min(6, Math.round(w / 340)));
+      points = Array.from({ length: nPoints }, () => ({
+        x: Math.random() * w,
+        y: h * 0.18 + Math.random() * h * 0.64,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.00035 + Math.random() * 0.00025,
       }));
     }
 
-    function cx() { return rtl ? w * 0.24 : w * 0.76; }
-    const cy = () => h * 0.52;
-
     function draw() {
       ctx.clearRect(0, 0, w, h);
-      const ax = cx(), ay = cy();
 
-      // soft radial glow
-      const g = ctx.createRadialGradient(ax, ay, 0, ax, ay, Math.max(w, h) * 0.6);
-      g.addColorStop(0, `rgba(${GLOW},0.14)`);
-      g.addColorStop(0.35, `rgba(${NOTE},0.05)`);
-      g.addColorStop(0.7, `rgba(${GLOW},0.03)`);
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+      // خطوط الدليل + علامات التقسيم
+      lines.forEach((ln) => {
+        ctx.strokeStyle = `rgba(${LINE},0.055)`;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(ln.x, 0); ctx.lineTo(ln.x, h); ctx.stroke();
 
-      // concentric brand arcs (echo the logo arc), gently rotating
-      const base = Math.min(w, h);
-      const rings = [0.26, 0.40, 0.56, 0.74, 0.94];
-      rings.forEach((rr, i) => {
-        const rad = base * rr;
-        const dir = i % 2 === 0 ? 1 : -1;
-        const start = t * 0.00016 * dir * (1 + i * 0.12) + i * 1.7;
-        const sweep = Math.PI * (0.85 + 0.18 * Math.sin(t * 0.0004 + i));
-        ctx.beginPath();
-        ctx.arc(ax, ay, rad, start, start + sweep);
-        const col = i % 2 === 0 ? PLAT : CLAY;
-        ctx.strokeStyle = `rgba(${col},${0.14 - i * 0.016})`;
-        ctx.lineWidth = i === 1 ? 2 : 1;
-        ctx.stroke();
+        ctx.strokeStyle = `rgba(${LINE},0.16)`;
+        for (let y = ln.tickOffset; y < h; y += ln.tickGap) {
+          ctx.beginPath(); ctx.moveTo(ln.x - 4, y); ctx.lineTo(ln.x + 4, y); ctx.stroke();
+        }
       });
-      // one brighter accent arc
-      const rad = base * 0.40;
-      const st = t * 0.0003 + 0.6;
-      ctx.beginPath();
-      ctx.arc(ax, ay, rad, st, st + Math.PI * 0.42);
-      ctx.strokeStyle = `rgba(${GLOW},0.55)`; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
-      ctx.stroke(); ctx.lineCap = 'butt';
 
-      // drifting particles
-      particles.forEach((p) => {
-        p.y -= p.s; p.x += p.drift;
-        if (p.y < -4) { p.y = h + 4; p.x = Math.random() * w; }
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${PLAT},${p.a * 0.8})`; ctx.fill();
+      // نقاط مرجعية تتنفّس ببطء — إشارة "نشاط" هادئة، تحت عتبة الملاحظة الواعية
+      points.forEach((p) => {
+        const pulse = 0.22 + 0.18 * (0.5 + 0.5 * Math.sin(t * p.speed + p.phase));
+        ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${POINT},${pulse})`; ctx.fill();
+        ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${POINT},${pulse * 0.35})`; ctx.lineWidth = 1; ctx.stroke();
       });
     }
 
@@ -83,7 +72,7 @@ export default function HeroMotion() {
     let last = performance.now(), visible = true;
     const loop = (now) => {
       const dt = now - last; last = now;
-      t += dt; // زمن حقيقي منقضٍ لا عدّاد ثابت لكل إطار — حركة متّسقة بصرف النظر عن معدّل الإطارات الفعلي
+      t += dt;
       draw();
       if (visible) raf = requestAnimationFrame(loop);
     };

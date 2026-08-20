@@ -122,14 +122,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 [data-reveal="file"].reveal-init.in{opacity:1;transform:none}
 
-/* قوس التوقيع — خطٌّ يرسم نفسه أسفل العناوين المحورية عند ظهورها لأول مرة */
-.sig-underline{display:block;overflow:visible}
-.sig-underline path{stroke-dasharray:240;stroke-dashoffset:240;transition:stroke-dashoffset 1s var(--ease) .15s}
-[data-reveal].reveal-init.in .sig-underline path{stroke-dashoffset:0}
-
 @media (prefers-reduced-motion:reduce){
   [data-reveal].reveal-init,[data-reveal="slow"].reveal-init,[data-reveal="stamp"].reveal-init,[data-reveal="file"].reveal-init{opacity:1!important;transform:none!important;transition:none}
-  .sig-underline path{stroke-dashoffset:0!important;transition:none}
 }
 
 /* العلامة المائية — فراغ حقيقي فقط، تختفي على الشاشات الضيقة كي لا تُثقل الجوال */

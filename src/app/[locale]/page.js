@@ -3,9 +3,9 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroMotion from '@/components/HeroMotion.js';
-import HeroWatermark from '@/components/HeroWatermark.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import CounterStat from '@/components/CounterStat.js';
+import ReferenceRow from '@/components/ReferenceRow.js';
 import styles from './home.module.css';
 
 export const revalidate = 60;
@@ -114,7 +114,6 @@ export default async function Home({ params }) {
       {/* HERO */}
       <section className={styles.hero} style={{ '--veilDir': veilDir }}>
         <HeroMotion />
-        <HeroWatermark />
         <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
           <line x1="0" y1="120" x2="1200" y2="120" />
           <line x1="0" y1="680" x2="1200" y2="680" />
@@ -191,14 +190,10 @@ export default async function Home({ params }) {
           </div>
           <div className={styles.paList}>
             {(areas.length ? areas.slice(0, 8) : Array.from({ length: 6 })).map((a, i) => (
-              <Link key={a?.slug || i} href={a ? `/services/${a.slug}` : '/services'} className={styles.paRow} data-reveal="file">
-                <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={styles.paBody}>
-                  <span className={styles.paTitle}>{a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}</span>
-                  {a?.summary && <span className={styles.paSum}>{a.summary}</span>}
-                </span>
-                <span className={styles.paArrow} aria-hidden="true">→</span>
-              </Link>
+              <ReferenceRow key={a?.slug || i} index={i + 1}
+                title={a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}
+                href={a ? `/services/${a.slug}` : '/services'}
+                summary={a?.summary} />
             ))}
           </div>
         </div>
@@ -246,7 +241,7 @@ export default async function Home({ params }) {
       </section>
 
       {/* FOUNDER */}
-      <section className="on-white section">
+      <section className="on-navy section">
         <div className="wrap">
           <div className={styles.founder}>
             <div className={`${styles.founderMedia} img-zoom-frame`} data-reveal="slow">

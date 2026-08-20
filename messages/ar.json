@@ -670,7 +670,10 @@
     "needsAttentionPracticeAreasReview": "{count, plural, one {مجال ممارسة بانتظار المراجعة القانونية} few {# مجالات ممارسة بانتظار المراجعة القانونية} other {# مجال ممارسة بانتظار المراجعة القانونية}}",
     "needsAttentionInsightsReview": "{count, plural, one {رؤية قانونية بانتظار المراجعة القانونية} few {# رؤى قانونية بانتظار المراجعة القانونية} other {# رؤية قانونية بانتظار المراجعة القانونية}}",
     "actionLabelProfileRoleAssigned": "تعيين صلاحية محتوى",
-    "entityLabelProfile": "ملف صلاحية"
+    "entityLabelProfile": "ملف صلاحية",
+    "actionLabelContentLegalApproved": "اعتماد محتوى قانونيًا",
+    "entityLabelArticleTranslation": "ترجمة رؤية قانونية",
+    "entityLabelPracticeAreaTranslation": "ترجمة مجال ممارسة"
   },
   "myRequests": {
     "heading": "طلباتي",

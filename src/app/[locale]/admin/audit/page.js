@@ -10,6 +10,7 @@ const ACTION_KEYS = {
   'referral.submitted': 'actionLabelSubmitted',
   'partnership_application.submitted': 'actionLabelSubmitted',
   'profile.role_assigned': 'actionLabelProfileRoleAssigned',
+  'content.legal_approved': 'actionLabelContentLegalApproved',
 };
 const ENTITY_KEYS = {
   consultation: 'entityLabelConsultation',
@@ -20,6 +21,8 @@ const ENTITY_KEYS = {
   partnership_applications: 'entityLabelPartnership',
   portal_members: 'entityLabelMember',
   profiles: 'entityLabelProfile',
+  article_translations: 'entityLabelArticleTranslation',
+  practice_area_translations: 'entityLabelPracticeAreaTranslation',
 };
 
 export default async function AdminAudit() {

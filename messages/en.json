@@ -670,7 +670,10 @@
     "needsAttentionPracticeAreasReview": "{count, plural, one {practice area awaiting legal review} other {# practice areas awaiting legal review}}",
     "needsAttentionInsightsReview": "{count, plural, one {legal insight awaiting legal review} other {# legal insights awaiting legal review}}",
     "actionLabelProfileRoleAssigned": "Content role assigned",
-    "entityLabelProfile": "Content profile"
+    "entityLabelProfile": "Content profile",
+    "actionLabelContentLegalApproved": "Content legally approved",
+    "entityLabelArticleTranslation": "Legal insight translation",
+    "entityLabelPracticeAreaTranslation": "Practice area translation"
   },
   "myRequests": {
     "heading": "My Requests",

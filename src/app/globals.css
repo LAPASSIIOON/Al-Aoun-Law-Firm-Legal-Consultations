@@ -27,9 +27,41 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .section{padding-block:var(--section)}
 .section-tight{padding-block:clamp(3rem,6vh,5rem)}
 
-/* أسطح — كلها داكنة بإيقاع ground↔surface */
-.on-navy,.on-espresso,.on-paper{background:var(--ground);color:var(--platinum)}
-.on-white,.on-ivory,.on-navy-2,.on-graphite{background:var(--surface);color:var(--platinum)}
+/* أسطح — نظام السجل المرجعي: كحلي سيادي غالب + فسحة فاتحة حقيقية متعمَّدة للتباين التحريري.
+   الأسماء صادقة الآن: on-navy = كحلي عميق، on-navy-raised = سطح كحلي مرتفع، on-light = فسحة فاتحة حقيقية.
+   الأسماء القديمة (on-white/on-paper/…) مُبقاة كأسماء مستعارة للتوافق مع الصفحات القائمة، ومعيَّنة لسلوكها الصحيح. */
+.on-navy,.on-espresso{background:var(--ground);color:var(--platinum)}
+.on-navy-raised,.on-navy-2,.on-graphite{background:var(--surface);color:var(--platinum)}
+/* on-paper يبقى داكنًا (سطح مرتفع) — كان يُخرج surface فعليًا */
+.on-paper{background:var(--surface);color:var(--platinum)}
+/* on-light / on-white = الفسحة الفاتحة الحقيقية في الإيقاع (نص داكن، تباين تحريري) */
+.on-light,.on-white,.on-ivory{background:var(--light-ground);color:var(--light-ink)}
+.on-light .body,.on-white .body,.on-ivory .body,.on-light .lead,.on-white .lead,.on-ivory .lead{color:var(--light-muted)}
+.on-light .display,.on-white .display,.on-ivory .display{color:var(--light-ink)}
+.on-light .hair,.on-white .hair,.on-ivory .hair{background:var(--light-hair)}
+.on-light .eyebrow,.on-white .eyebrow,.on-ivory .eyebrow{color:var(--clay-600)}
+.on-light .eyebrow::before,.on-white .eyebrow::before,.on-ivory .eyebrow::before{background:var(--clay)}
+.on-light .idx,.on-white .idx,.on-ivory .idx{color:var(--light-idx)}
+.on-light .counter-n,.on-white .counter-n,.on-ivory .counter-n{color:var(--light-ink)}
+.on-light .counter-l,.on-white .counter-l,.on-ivory .counter-l{color:var(--light-muted)}
+
+/* ═══ نظام السجل المرجعي (The Reference System) — لغة بصرية موحَّدة عبر الموقع ═══
+   الرقم المرجعي: خانات ثابتة العرض تحافظ على المحاذاة بين العربي والإنجليزي (tabular-nums).
+   خط الدليل: خط رفيع بعلامات تقسيم، يضيء أزرق عند التفاعل — دقّة لا زخرفة. */
+.ref-num{font-family:var(--f-en);font-variant-numeric:tabular-nums;font-weight:600;font-size:.82rem;letter-spacing:.06em;color:var(--ref-num);line-height:1}
+.on-light .ref-num,.on-white .ref-num{color:var(--ref-num-light)}
+.ref-num-lg{font-size:clamp(1rem,1.4vw,1.25rem)}
+
+/* خط الدليل — عمودي رفيع بعلامات تقسيم دقيقة (كخلفية أو حد جانبي) */
+.ref-rule{position:relative;inline-size:1px;background:var(--ref-rule);align-self:stretch}
+.ref-rule::before,.ref-rule::after{content:'';position:absolute;inline-size:5px;block-size:1px;background:var(--ref-tick);inset-inline-start:-2px}
+.ref-rule::before{inset-block-start:0}.ref-rule::after{inset-block-end:0}
+
+/* علامة محاذاة — بديل قوس التوقيع القديم: خط قصير مستقيم دقيق يرسم نفسه عند الظهور */
+.align-mark{display:block;overflow:visible}
+.align-mark line{stroke:var(--clay-bright);stroke-width:2;stroke-linecap:round;stroke-dasharray:var(--am-len,84);stroke-dashoffset:var(--am-len,84);transition:stroke-dashoffset 1s var(--ease) .15s}
+[data-reveal].reveal-init.in .align-mark line{stroke-dashoffset:0}
+@media (prefers-reduced-motion:reduce){.align-mark line{stroke-dashoffset:0!important;transition:none}}
 
 /* تايبوغرافي */
 .eyebrow{font-family:var(--f-ui);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--clay-bright);font-weight:600;display:inline-flex;align-items:center;gap:.7rem}
@@ -51,8 +83,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 
 /* أزرار */
 .btn{display:inline-flex;align-items:center;gap:.6rem;font-family:var(--f-ui);font-weight:500;font-size:.95rem;padding:.9rem 1.6rem;border-radius:var(--r);transition:background var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur) var(--ease)}
-.btn-solid{background:var(--gold);color:var(--gold-text)}
-.btn-solid:hover{background:var(--gold-600)}
+.btn-solid{background:var(--clay);color:#fff;box-shadow:inset 0 0 0 1px transparent}
+.btn-solid:hover{background:var(--clay-600);box-shadow:inset 0 0 0 1px var(--clay-bright)}
 .btn-ghost{color:var(--platinum);box-shadow:inset 0 0 0 1px var(--hair-light-strong)}
 .btn-ghost:hover{box-shadow:inset 0 0 0 1px var(--clay);color:var(--clay-bright)}
 .btn-line{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-ui);font-weight:500;font-size:.95rem;color:var(--clay-bright);padding-block:.3rem}

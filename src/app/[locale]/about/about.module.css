@@ -1,2 +1,2 @@
-.mark{position:absolute;inset-inline-end:clamp(-2rem,2vw,2rem);inset-block-end:-4rem;inline-size:clamp(140px,16vw,240px);block-size:auto;color:var(--platinum-3);display:none;pointer-events:none}
+.mark{position:absolute;inset-inline-end:clamp(1rem,3vw,3.5rem);inset-block-end:-1rem;block-size:clamp(90px,16vh,140px);inline-size:auto;color:var(--platinum-3);display:none;pointer-events:none}
 @media(min-width:860px){.mark{display:block}}

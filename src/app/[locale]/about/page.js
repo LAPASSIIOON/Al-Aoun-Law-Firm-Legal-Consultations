@@ -2,7 +2,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
+import a from './about.module.css';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
+import KnightSilhouette from '@/components/KnightSilhouette.js';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/about') }; }
@@ -16,8 +18,9 @@ export default async function About({ params }) {
   const values = tph.raw('items');
   return (
     <>
-      <section className={`on-espresso ${s.pageHead} section-tight`}>
-        <div className="wrap">
+      <section className={`on-espresso ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
+        <KnightSilhouette className={a.mark} />
+        <div className="wrap" style={{ position: 'relative' }}>
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem', maxWidth: '18ch' }}>{t('heading')}</h1>
           <p className="lead" data-reveal style={{ maxWidth: '48ch' }}>{t('lead')}</p>

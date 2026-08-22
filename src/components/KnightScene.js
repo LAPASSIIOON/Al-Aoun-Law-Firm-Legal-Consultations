@@ -23,7 +23,7 @@ export default function KnightScene() {
         THREE = await import('three');
         ({ RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js'));
         ({ FBXLoader } = await import('three/examples/jsm/loaders/FBXLoader.js'));
-      } catch { return; }
+      } catch (e) { console.error('[KnightScene] فشل تحميل three/FBXLoader:', e); return; }
       if (disposed || !wrapRef.current) return;
 
       const host = wrapRef.current;
@@ -86,7 +86,7 @@ export default function KnightScene() {
         knight.add(obj);
         knight.scale.set(scaleFactor * mirror, scaleFactor, scaleFactor);
         modelLoaded = true;
-      } catch { /* فشل التحميل — نبقى على البديل الثنائي فقط، لا نكسر الصفحة */ }
+      } catch (e) { console.error('[KnightScene] فشل تحميل/تحليل knight.fbx:', e); }
 
       knight.position.set(2.6 * mirror, -1.4, 0);
       knight.rotation.y = 0.35 * mirror;

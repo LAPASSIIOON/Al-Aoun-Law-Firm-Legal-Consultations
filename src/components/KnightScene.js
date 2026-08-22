@@ -66,7 +66,10 @@ export default function KnightScene() {
 
       try {
         const loader = new FBXLoader();
-        const obj = await new Promise((resolve, reject) => loader.load('/models/knight.fbx', resolve, undefined, reject));
+        const res = await fetch('/models/knight.fbx');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const buffer = await res.arrayBuffer();
+        const obj = loader.parse(buffer, '');
         if (disposed) return;
 
         // توسيط النموذج أفقيًا وإجلاسه على الأرض (القاعدة عند y=0 محليًا أصلًا في هذا الأصل)

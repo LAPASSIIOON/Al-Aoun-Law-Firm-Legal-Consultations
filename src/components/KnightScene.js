@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 import HeroMotion from '@/components/HeroMotion.js';
 
-/** «الفارس السيادي» — صورة ظلّية واحدة مبثوقة (Extruded Silhouette)، مضاءة بالكامل،
- *  بلا كوريغرافيا سكرول بعد. منحنى قطاع جانبي واحد مرسوم يدويًا يضمن القراءة الفورية
- *  كـ«فارس شطرنج»، مبثوق بسُمك موحَّد + شطف حواف = «مقطوعة من لوح برونز مُصمَت».
+/** «الفارس السيادي» — نموذج ثلاثي الأبعاد حقيقي (٣٥.٨ ألف مثلّث، منحوت فعليًا)، لا هندسة
+ *  إجرائية. مُحمَّل عبر FBXLoader (مُضمَّنة داخل three.js — صفر تبعية إضافية)، بلا خامات
+ *  مرفقة، فتُطبَّق مادتنا البرونزية/الإسبريسو مباشرة لاتّساق الهوية عبر الموقع.
  *  ديسكتوب فقط عبر تحميل three ديناميكي؛ الموبايل/تقليل الحركة/بلا WebGL = البديل الثنائي. */
 export default function KnightScene() {
   const wrapRef = useRef(null);
@@ -18,10 +18,11 @@ export default function KnightScene() {
     let disposed = false, raf = 0, cleanup = () => {};
 
     (async () => {
-      let THREE, RoomEnvironment;
+      let THREE, RoomEnvironment, FBXLoader;
       try {
         THREE = await import('three');
         ({ RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js'));
+        ({ FBXLoader } = await import('three/examples/jsm/loaders/FBXLoader.js'));
       } catch { return; }
       if (disposed || !wrapRef.current) return;
 
@@ -37,7 +38,7 @@ export default function KnightScene() {
       renderer.setClearColor(0x000000, 0);
       renderer.outputColorSpace = THREE.SRGBColorSpace;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.0;
+      renderer.toneMappingExposure = 1.05;
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       const el = renderer.domElement;
@@ -52,62 +53,46 @@ export default function KnightScene() {
       const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
       camera.position.set(0, 0.3, 8.6);
 
-      // ═══ بناء الفارس — صورة ظلّية واحدة مبثوقة (Extruded Silhouette) ═══
-      // منحنى قطاع جانبي واحد مرسوم يدويًا (لا تركيب من كتل منفصلة): قاعدة، صدر مائل
-      // للأمام، حزّة الفك المميّزة، طرف المخطم، قمة الرأس/الأذن، ثم منحنى العُرف الطويل
-      // الممسوح خلف الرقبة (الملمح الأوضح للفارس). يُبثَق بسُمك موحَّد + شطف حواف خفيف.
-      const knight = new THREE.Group();
-
+      // ═══ تحميل نموذج الفارس الحقيقي ═══
       const bronze = new THREE.MeshPhysicalMaterial({
-        color: 0x2a2019, metalness: 0.92, roughness: 0.4,
-        clearcoat: 0.55, clearcoatRoughness: 0.3, envMapIntensity: 0.9,
+        color: 0x2a2019, metalness: 0.9, roughness: 0.38,
+        clearcoat: 0.5, clearcoatRoughness: 0.3, envMapIntensity: 1,
+        side: THREE.DoubleSide, // أمان بعد المرآة الأفقية (تقليب X قد يعكس اتجاه الأوجه)
       });
 
-      const prof = new THREE.Shape();
-      prof.moveTo(-0.62, 0);
-      prof.lineTo(0.62, 0);
-      prof.lineTo(0.66, 0.18);
-      prof.lineTo(0.42, 0.30);
-      prof.lineTo(0.38, 0.62);
-      prof.lineTo(0.46, 1.02);
-      prof.lineTo(0.40, 1.35);
-      prof.lineTo(0.56, 1.52);
-      prof.lineTo(0.38, 1.66);
-      prof.lineTo(0.64, 1.82);
-      prof.lineTo(0.48, 1.98);
-      prof.lineTo(0.40, 2.22);
-      prof.lineTo(0.28, 2.42);
-      prof.lineTo(0.20, 2.60);
-      prof.lineTo(0.08, 2.35);
-      prof.quadraticCurveTo(-0.08, 2.28, -0.30, 1.95);
-      prof.quadraticCurveTo(-0.55, 1.55, -0.50, 1.05);
-      prof.quadraticCurveTo(-0.46, 0.55, -0.62, 0.20);
-      prof.lineTo(-0.62, 0);
+      const knight = new THREE.Group();
+      const disposables = [];
+      let modelLoaded = false;
 
-      const knightGeo = new THREE.ExtrudeGeometry(prof, {
-        depth: 0.34, bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.03,
-        bevelSegments: 3, curveSegments: 20,
-      });
-      knightGeo.translate(0, 0, -0.17);
+      try {
+        const loader = new FBXLoader();
+        const obj = await new Promise((resolve, reject) => loader.load('/models/knight.fbx', resolve, undefined, reject));
+        if (disposed) return;
 
-      const knightMesh = new THREE.Mesh(knightGeo, bronze);
-      knightMesh.castShadow = true; knightMesh.receiveShadow = true;
-      knight.add(knightMesh);
+        // توسيط النموذج أفقيًا وإجلاسه على الأرض (القاعدة عند y=0 محليًا أصلًا في هذا الأصل)
+        const box = new THREE.Box3().setFromObject(obj);
+        const center = new THREE.Vector3(); box.getCenter(center);
+        obj.position.set(-center.x, -box.min.y, -center.z);
 
-      const edgeGeo = new THREE.EdgesGeometry(knightGeo, 25);
-      const edgeLines = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({
-        color: 0xb9b5ad, transparent: true, opacity: 0.4,
-      }));
-      knight.add(edgeLines);
+        obj.traverse((child) => {
+          if (child.isMesh) {
+            child.material = bronze;
+            child.castShadow = true; child.receiveShadow = true;
+            disposables.push(child.geometry);
+          }
+        });
 
-      knight.position.set(2.6 * mirror, -1.3, 0);
-      knight.rotation.y = -0.1;
-      knight.scale.set(1.05 * mirror, 1.05, 1.05);
+        const scaleFactor = 2.85 / (box.max.y - box.min.y); // ارتفاع نهائي ≈ 2.85 وحدة — يطابق تكوين الكاميرا المضبوط
+        knight.add(obj);
+        knight.scale.set(scaleFactor * mirror, scaleFactor, scaleFactor);
+        modelLoaded = true;
+      } catch { /* فشل التحميل — نبقى على البديل الثنائي فقط، لا نكسر الصفحة */ }
+
+      knight.position.set(2.6 * mirror, -1.4, 0);
+      knight.rotation.y = 0.35 * mirror;
       scene.add(knight);
 
-      // ═══ توهّج شعار العون خلف الفارس — نسيج من ملف الشعار المتجهي الرسمي، لا رسم مستقل ═══
-      // طبقتان: توهّج ناعم ممسوح (blur) خلف الفارس مباشرة، ولُبّ أوضح قليلًا في وسطه.
-      // لون بلاتين دافئ (لا أزرق إشارة) — الأزرق ممنوع كخلفية/مساحة كبيرة حسب توجيه الألوان.
+      // ═══ توهّج شعار العون خلف الفارس — نسيج من ملف الشعار المتجهي الرسمي ═══
       let glowMesh = null, glowTex = null;
       (async () => {
         try {
@@ -139,7 +124,7 @@ export default function KnightScene() {
             blending: THREE.AdditiveBlending, depthWrite: false,
           });
           glowMesh = new THREE.Mesh(new THREE.PlaneGeometry(glowW, glowH), glowMat);
-          glowMesh.position.set(2.6 * mirror, 0.35, -1.7);
+          glowMesh.position.set(2.6 * mirror, 0.35, -1.9);
           scene.add(glowMesh);
         } catch { /* التوهّج تحسين اختياري — فشله لا يكسر المشهد */ }
       })();
@@ -149,22 +134,22 @@ export default function KnightScene() {
       floor.rotation.x = -Math.PI / 2; floor.position.y = -1.45; floor.receiveShadow = true;
       scene.add(floor);
 
-      scene.add(new THREE.AmbientLight(0xb9b5ad, 0.18));
-      const key = new THREE.DirectionalLight(0xf4efe7, 2.1);
+      scene.add(new THREE.AmbientLight(0xb9b5ad, 0.22));
+      const key = new THREE.DirectionalLight(0xf4efe7, 2.3);
       key.position.set(-5 * mirror, 6, 5);
       key.castShadow = true;
       key.shadow.mapSize.set(1024, 1024);
       key.shadow.camera.near = 1; key.shadow.camera.far = 25;
       key.shadow.bias = -0.0004;
       scene.add(key);
-      const rim = new THREE.SpotLight(0x8a8377, 90, 22, 0.6, 0.5);
+      const rim = new THREE.SpotLight(0x8a8377, 100, 22, 0.6, 0.5);
       rim.position.set(6 * mirror, 1.5, -4);
       scene.add(rim);
       const fill = new THREE.PointLight(0x5e9dbe, 8, 16);
       fill.position.set(-3 * mirror, -1, 4);
       scene.add(fill);
 
-      camera.lookAt(knight.position.x * 0.5, 0.05, 0);
+      camera.lookAt(knight.position.x * 0.5, 0.1, 0);
 
       let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       function size() {
@@ -180,7 +165,8 @@ export default function KnightScene() {
       let visible = true, last = performance.now(), t = 0;
       function frame(now) {
         const dt = Math.min(50, now - last); last = now; t += dt;
-        knight.rotation.y = -0.1 + Math.sin(t * 0.00018) * 0.035;
+        // حركة خمول تحت عتبة الملاحظة فقط — تنفّس دوراني طفيف جدًا (لا دوران استعراضي)
+        knight.rotation.y = 0.35 * mirror + Math.sin(t * 0.00018) * 0.03;
         renderer.render(scene, camera);
         if (visible) raf = requestAnimationFrame(frame);
       }
@@ -201,7 +187,7 @@ export default function KnightScene() {
       cleanup = () => {
         cancelAnimationFrame(raf);
         ro.disconnect(); io.disconnect();
-        knightGeo.dispose(); edgeGeo.dispose();
+        disposables.forEach((g) => g.dispose());
         bronze.dispose(); shadowMat.dispose();
         floor.geometry.dispose();
         if (glowMesh) { glowMesh.geometry.dispose(); glowMesh.material.dispose(); }

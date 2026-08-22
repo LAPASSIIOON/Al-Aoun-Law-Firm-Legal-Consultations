@@ -74,7 +74,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 :lang(ar) .eyebrow{letter-spacing:0;text-transform:none;font-size:.95rem}
 
 .display{font-family:var(--f-display);font-weight:600;line-height:1.14;letter-spacing:-.015em;color:var(--platinum)}
-:lang(ar) .display{font-weight:600;line-height:1.3;letter-spacing:0}
+:lang(ar) .display{font-weight:400;line-height:1.3;letter-spacing:0}
 .d-hero{font-size:clamp(2.5rem,5.4vw,4.6rem)}
 .d-1{font-size:clamp(2rem,4vw,3.3rem)}
 .d-2{font-size:clamp(1.6rem,3vw,2.5rem)}
@@ -141,5 +141,5 @@ html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 /* عدّادات */
 .counter{display:flex;flex-direction:column}
 .counter-n{font-family:var(--f-en);font-weight:700;font-size:clamp(1.9rem,3vw,2.7rem);line-height:1;color:var(--platinum);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-:lang(ar) .counter-n{font-family:var(--f-ar);font-weight:600}
+:lang(ar) .counter-n{font-family:var(--f-ar);font-weight:700}
 .counter-l{color:var(--platinum-2);font-size:.85rem;margin-block-start:.5rem;line-height:1.4}

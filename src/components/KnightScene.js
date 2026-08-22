@@ -49,8 +49,8 @@ export default function KnightScene() {
       const pmrem = new THREE.PMREMGenerator(renderer);
       scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
 
-      const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
-      camera.position.set(0, 0.6, 9);
+      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+      camera.position.set(0, 0.3, 8.6);
 
       // ═══ بناء الفارس الإجرائي ═══
       const knight = new THREE.Group();
@@ -127,9 +127,9 @@ export default function KnightScene() {
       ring.rotation.x = Math.PI / 2; ring.position.y = 0.52;
       knight.add(ring);
 
-      knight.position.set(2.6 * mirror, -1.4, 0);
+      knight.position.set(2.6 * mirror, -1.15, 0);
       knight.rotation.y = -0.35 * mirror;
-      knight.scale.setScalar(1.15);
+      knight.scale.setScalar(0.85);
       scene.add(knight);
 
       // أرضية غير مرئية تستقبل الظل فقط (عمق سينمائي)
@@ -154,7 +154,7 @@ export default function KnightScene() {
       fill.position.set(-3 * mirror, -1, 4);
       scene.add(fill);
 
-      camera.lookAt(knight.position.x * 0.5, 0.2, 0);
+      camera.lookAt(knight.position.x * 0.5, 0.4, 0);
 
       // ═══ القياس + الرندر ═══
       let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.75);

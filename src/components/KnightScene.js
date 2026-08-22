@@ -92,7 +92,7 @@ export default function KnightScene() {
       } catch { /* فشل التحميل — نبقى على البديل الثنائي فقط، لا نكسر الصفحة */ }
 
       knight.position.set(2.6 * mirror, -1.4, 0);
-      knight.rotation.y = 0.35 * mirror;
+      knight.rotation.y = 0.35 * mirror + Math.PI;
       scene.add(knight);
 
       // ═══ توهّج شعار العون خلف الفارس — نسيج من ملف الشعار المتجهي الرسمي ═══
@@ -169,7 +169,7 @@ export default function KnightScene() {
       function frame(now) {
         const dt = Math.min(50, now - last); last = now; t += dt;
         // حركة خمول تحت عتبة الملاحظة فقط — تنفّس دوراني طفيف جدًا (لا دوران استعراضي)
-        knight.rotation.y = 0.35 * mirror + Math.sin(t * 0.00018) * 0.03;
+        knight.rotation.y = 0.35 * mirror + Math.PI + Math.sin(t * 0.00018) * 0.03;
         renderer.render(scene, camera);
         if (visible) raf = requestAnimationFrame(frame);
       }

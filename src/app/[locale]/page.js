@@ -126,6 +126,7 @@ export default async function Home({ params }) {
         </svg>
         <div className={styles.heroVeil} />
         <span className={styles.heroTag} aria-hidden="true">01</span>
+        <span className={styles.heroMark} aria-hidden="true" />
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroRule} aria-hidden="true" />
           <div className={styles.heroContent}>

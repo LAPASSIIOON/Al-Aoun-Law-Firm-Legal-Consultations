@@ -7,6 +7,11 @@
 @media(min-width:860px){.heroRule{display:block}}
 .heroTag{position:absolute;inset-block-start:clamp(5.5rem,10vh,7.2rem);inset-inline-start:calc(var(--gutter) + 90px * (100vw / 1200));z-index:2;font-family:var(--f-en);font-size:.75rem;color:var(--platinum-3);letter-spacing:.08em;font-variant-numeric:tabular-nums;display:none}
 @media(min-width:860px){.heroTag{display:block}}
+.heroMark{position:absolute;inset-block-start:clamp(1.5rem,4vh,3rem);inset-inline-start:var(--gutter);z-index:1;inline-size:clamp(70px,7vw,110px);block-size:clamp(70px,7vw,110px);background-color:var(--platinum-3);opacity:.14;
+  -webkit-mask-image:url(/brand/al-aoun-mark.svg);mask-image:url(/brand/al-aoun-mark.svg);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain;
+  display:none}
+@media(min-width:860px){.heroMark{display:block}}
 .heroContent{max-inline-size:44rem}
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.6rem,6vw,5.2rem);line-height:1.1;letter-spacing:-.02em;color:#fff;margin-block:1.4rem 0}
 :lang(ar) .heroHead{line-height:1.28;letter-spacing:0}

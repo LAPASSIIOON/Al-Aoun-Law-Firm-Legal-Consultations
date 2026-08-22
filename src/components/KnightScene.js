@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 import HeroMotion from '@/components/HeroMotion.js';
 
-/** «الفارس السيادي» — المرحلة ٢: نحت إجرائي ثابت مُضاء بالكامل (بلا كوريغرافيا سكرول بعد).
- *  صورة ظلّية فارس شطرنج معماري مُجرَّد: قاعدة/جسم منحنيان عبر LatheGeometry + رأس منحوت،
- *  مادة برونز مُسوَّد/إسبريسو PBR بحواف بلاتين، إضاءة استوديو سينمائية بضوء حافة دافئ.
+/** «الفارس السيادي» — صورة ظلّية واحدة مبثوقة (Extruded Silhouette)، مضاءة بالكامل،
+ *  بلا كوريغرافيا سكرول بعد. منحنى قطاع جانبي واحد مرسوم يدويًا يضمن القراءة الفورية
+ *  كـ«فارس شطرنج»، مبثوق بسُمك موحَّد + شطف حواف = «مقطوعة من لوح برونز مُصمَت».
  *  ديسكتوب فقط عبر تحميل three ديناميكي؛ الموبايل/تقليل الحركة/بلا WebGL = البديل الثنائي. */
 export default function KnightScene() {
   const wrapRef = useRef(null);
@@ -52,111 +52,120 @@ export default function KnightScene() {
       const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
       camera.position.set(0, 0.3, 8.6);
 
-      // ═══ بناء الفارس الإجرائي ═══
+      // ═══ بناء الفارس — صورة ظلّية واحدة مبثوقة (Extruded Silhouette) ═══
+      // منحنى قطاع جانبي واحد مرسوم يدويًا (لا تركيب من كتل منفصلة): قاعدة، صدر مائل
+      // للأمام، حزّة الفك المميّزة، طرف المخطم، قمة الرأس/الأذن، ثم منحنى العُرف الطويل
+      // الممسوح خلف الرقبة (الملمح الأوضح للفارس). يُبثَق بسُمك موحَّد + شطف حواف خفيف.
       const knight = new THREE.Group();
 
       const bronze = new THREE.MeshPhysicalMaterial({
-        color: 0x2a2019, metalness: 0.92, roughness: 0.42,
-        clearcoat: 0.5, clearcoatRoughness: 0.35, envMapIntensity: 0.85,
-      });
-      const platinum = new THREE.MeshStandardMaterial({
-        color: 0xb9b5ad, metalness: 1, roughness: 0.3, envMapIntensity: 1.1,
+        color: 0x2a2019, metalness: 0.92, roughness: 0.4,
+        clearcoat: 0.55, clearcoatRoughness: 0.3, envMapIntensity: 0.9,
       });
 
-      // القاعدة — LatheGeometry: مقطع جانبي منحنٍ يُدار حول المحور (قاعدة أسطوانية أنيقة)
-      const baseProfile = [];
-      const bpts = [[0, 0], [1.15, 0], [1.15, 0.12], [0.95, 0.2], [0.9, 0.34], [0.78, 0.42], [0.7, 0.55]];
-      bpts.forEach(([x, y]) => baseProfile.push(new THREE.Vector2(x, y)));
-      const baseGeo = new THREE.LatheGeometry(baseProfile, 64);
-      const base = new THREE.Mesh(baseGeo, bronze);
-      base.castShadow = true; base.receiveShadow = true;
-      knight.add(base);
+      const prof = new THREE.Shape();
+      prof.moveTo(-0.62, 0);
+      prof.lineTo(0.62, 0);
+      prof.lineTo(0.66, 0.18);
+      prof.lineTo(0.42, 0.30);
+      prof.lineTo(0.38, 0.62);
+      prof.lineTo(0.46, 1.02);
+      prof.lineTo(0.40, 1.35);
+      prof.lineTo(0.56, 1.52);
+      prof.lineTo(0.38, 1.66);
+      prof.lineTo(0.64, 1.82);
+      prof.lineTo(0.48, 1.98);
+      prof.lineTo(0.40, 2.22);
+      prof.lineTo(0.28, 2.42);
+      prof.lineTo(0.20, 2.60);
+      prof.lineTo(0.08, 2.35);
+      prof.quadraticCurveTo(-0.08, 2.28, -0.30, 1.95);
+      prof.quadraticCurveTo(-0.55, 1.55, -0.50, 1.05);
+      prof.quadraticCurveTo(-0.46, 0.55, -0.62, 0.20);
+      prof.lineTo(-0.62, 0);
 
-      // العمود/الجسم الصاعد — LatheGeometry بمقطع يتناقص لأعلى
-      const bodyProfile = [
-        [0.7, 0], [0.62, 0.35], [0.52, 0.85], [0.48, 1.35], [0.5, 1.75], [0.46, 2.05], [0.3, 2.2],
-      ].map(([x, y]) => new THREE.Vector2(x, y));
-      const bodyGeo = new THREE.LatheGeometry(bodyProfile, 64);
-      const body = new THREE.Mesh(bodyGeo, bronze);
-      body.position.y = 0.5; body.castShadow = true;
-      knight.add(body);
-
-      // الرأس/العنق المنحني — الكتلة التي تجعل الصورة الظلّية «فارسًا» فورًا.
-      // نبنيه من صندوق مُشكَّل + انحناء أمامي، بأوجه معمارية مُبسَّطة لا خيول واقعية.
-      const headGroup = new THREE.Group();
-      headGroup.position.y = 2.55;
-
-      // كتلة العنق المائلة للأمام
-      const neckGeo = new THREE.BoxGeometry(0.62, 1.1, 0.85);
-      const neck = new THREE.Mesh(neckGeo, bronze);
-      neck.rotation.z = -0.32 * mirror;
-      neck.position.set(0.12 * mirror, 0.1, 0);
-      neck.castShadow = true;
-      headGroup.add(neck);
-
-      // الخطم/المقدمة الممتدة (يعرّف اتجاه الفارس)
-      const muzzleGeo = new THREE.BoxGeometry(0.9, 0.42, 0.6);
-      const muzzle = new THREE.Mesh(muzzleGeo, bronze);
-      muzzle.rotation.z = 0.15 * mirror;
-      muzzle.position.set(0.5 * mirror, 0.62, 0);
-      muzzle.castShadow = true;
-      headGroup.add(muzzle);
-
-      // الأذنان/العُرف — شريحتان رفيعتان تكملان الصورة الظلّية
-      const earGeo = new THREE.BoxGeometry(0.14, 0.5, 0.16);
-      [-0.16, 0.02].forEach((z, i) => {
-        const ear = new THREE.Mesh(earGeo, bronze);
-        ear.position.set(-0.16 * mirror, 0.78, z);
-        ear.rotation.z = 0.25 * mirror;
-        ear.castShadow = true;
-        headGroup.add(ear);
+      const knightGeo = new THREE.ExtrudeGeometry(prof, {
+        depth: 0.34, bevelEnabled: true, bevelThickness: 0.035, bevelSize: 0.03,
+        bevelSegments: 3, curveSegments: 20,
       });
+      knightGeo.translate(0, 0, -0.17);
 
-      // خط حافة بلاتين على طول العُرف — لمسة معدنية دقيقة (لا زخرفة)
-      const crestGeo = new THREE.BoxGeometry(0.05, 0.9, 0.05);
-      const crest = new THREE.Mesh(crestGeo, platinum);
-      crest.position.set(-0.1 * mirror, 0.62, -0.07);
-      crest.rotation.z = 0.4 * mirror;
-      headGroup.add(crest);
+      const knightMesh = new THREE.Mesh(knightGeo, bronze);
+      knightMesh.castShadow = true; knightMesh.receiveShadow = true;
+      knight.add(knightMesh);
 
-      knight.add(headGroup);
+      const edgeGeo = new THREE.EdgesGeometry(knightGeo, 25);
+      const edgeLines = new THREE.LineSegments(edgeGeo, new THREE.LineBasicMaterial({
+        color: 0xb9b5ad, transparent: true, opacity: 0.4,
+      }));
+      knight.add(edgeLines);
 
-      // حلقة بلاتين دقيقة عند قاعدة الجسم — تفصيل مؤسسي منضبط
-      const ringGeo = new THREE.TorusGeometry(0.66, 0.02, 12, 64);
-      const ring = new THREE.Mesh(ringGeo, platinum);
-      ring.rotation.x = Math.PI / 2; ring.position.y = 0.52;
-      knight.add(ring);
-
-      knight.position.set(2.6 * mirror, -1.15, 0);
-      knight.rotation.y = -0.35 * mirror;
-      knight.scale.setScalar(0.85);
+      knight.position.set(2.6 * mirror, -1.3, 0);
+      knight.rotation.y = -0.1;
+      knight.scale.set(1.05 * mirror, 1.05, 1.05);
       scene.add(knight);
 
-      // أرضية غير مرئية تستقبل الظل فقط (عمق سينمائي)
+      // ═══ توهّج شعار العون خلف الفارس — نسيج من ملف الشعار المتجهي الرسمي، لا رسم مستقل ═══
+      // طبقتان: توهّج ناعم ممسوح (blur) خلف الفارس مباشرة، ولُبّ أوضح قليلًا في وسطه.
+      // لون بلاتين دافئ (لا أزرق إشارة) — الأزرق ممنوع كخلفية/مساحة كبيرة حسب توجيه الألوان.
+      let glowMesh = null, glowTex = null;
+      (async () => {
+        try {
+          const img = new Image();
+          await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = '/brand/al-aoun-mark.svg'; });
+          if (disposed) return;
+          const W = 640, H = Math.round(W * (2600 / 2898)), pad = 60;
+
+          const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H;
+          const tctx = tmp.getContext('2d');
+          tctx.drawImage(img, pad, pad, W - pad * 2, H - pad * 2);
+          tctx.globalCompositeOperation = 'source-in';
+          tctx.fillStyle = '#B9B5AD';
+          tctx.fillRect(0, 0, W, H);
+
+          const final = document.createElement('canvas'); final.width = W; final.height = H;
+          const fctx = final.getContext('2d');
+          fctx.filter = 'blur(20px)';
+          fctx.drawImage(tmp, 0, 0);
+          fctx.filter = 'blur(5px)'; fctx.globalAlpha = 0.65;
+          fctx.drawImage(tmp, 0, 0);
+
+          if (disposed) return;
+          glowTex = new THREE.CanvasTexture(final);
+          glowTex.colorSpace = THREE.SRGBColorSpace;
+          const glowH = 4.6, glowW = glowH * (W / H);
+          const glowMat = new THREE.MeshBasicMaterial({
+            map: glowTex, transparent: true, opacity: 0.5,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+          });
+          glowMesh = new THREE.Mesh(new THREE.PlaneGeometry(glowW, glowH), glowMat);
+          glowMesh.position.set(2.6 * mirror, 0.35, -1.7);
+          scene.add(glowMesh);
+        } catch { /* التوهّج تحسين اختياري — فشله لا يكسر المشهد */ }
+      })();
+
       const shadowMat = new THREE.ShadowMaterial({ opacity: 0.35 });
       const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), shadowMat);
       floor.rotation.x = -Math.PI / 2; floor.position.y = -1.45; floor.receiveShadow = true;
       scene.add(floor);
 
-      // ═══ الإضاءة السينمائية ═══
       scene.add(new THREE.AmbientLight(0xb9b5ad, 0.18));
-      const key = new THREE.DirectionalLight(0xf4efe7, 2.1); // مفتاح دافئ
+      const key = new THREE.DirectionalLight(0xf4efe7, 2.1);
       key.position.set(-5 * mirror, 6, 5);
       key.castShadow = true;
       key.shadow.mapSize.set(1024, 1024);
       key.shadow.camera.near = 1; key.shadow.camera.far = 25;
       key.shadow.bias = -0.0004;
       scene.add(key);
-      const rim = new THREE.SpotLight(0x8a8377, 90, 22, 0.6, 0.5); // ضوء حافة دافئ يكشف الصورة الظلّية
+      const rim = new THREE.SpotLight(0x8a8377, 90, 22, 0.6, 0.5);
       rim.position.set(6 * mirror, 1.5, -4);
       scene.add(rim);
-      const fill = new THREE.PointLight(0x5e9dbe, 8, 16); // إشارة زرقاء نادرة جدًا كملء بارد خافت
+      const fill = new THREE.PointLight(0x5e9dbe, 8, 16);
       fill.position.set(-3 * mirror, -1, 4);
       scene.add(fill);
 
-      camera.lookAt(knight.position.x * 0.5, 0.4, 0);
+      camera.lookAt(knight.position.x * 0.5, 0.05, 0);
 
-      // ═══ القياس + الرندر ═══
       let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       function size() {
         const r = host.getBoundingClientRect();
@@ -171,8 +180,7 @@ export default function KnightScene() {
       let visible = true, last = performance.now(), t = 0;
       function frame(now) {
         const dt = Math.min(50, now - last); last = now; t += dt;
-        // حركة خمول تحت عتبة الملاحظة فقط — تنفّس دوراني طفيف جدًا (لا دوران استعراضي)
-        knight.rotation.y = (-0.35 + Math.sin(t * 0.00018) * 0.05) * mirror;
+        knight.rotation.y = -0.1 + Math.sin(t * 0.00018) * 0.035;
         renderer.render(scene, camera);
         if (visible) raf = requestAnimationFrame(frame);
       }
@@ -193,9 +201,11 @@ export default function KnightScene() {
       cleanup = () => {
         cancelAnimationFrame(raf);
         ro.disconnect(); io.disconnect();
-        [baseGeo, bodyGeo, neckGeo, muzzleGeo, earGeo, crestGeo, ringGeo].forEach((g) => g.dispose());
-        bronze.dispose(); platinum.dispose(); shadowMat.dispose();
+        knightGeo.dispose(); edgeGeo.dispose();
+        bronze.dispose(); shadowMat.dispose();
         floor.geometry.dispose();
+        if (glowMesh) { glowMesh.geometry.dispose(); glowMesh.material.dispose(); }
+        if (glowTex) glowTex.dispose();
         pmrem.dispose();
         renderer.dispose();
         el.remove();

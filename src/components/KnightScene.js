@@ -163,6 +163,15 @@ export default function KnightScene() {
 
       camera.lookAt(knight.position.x * 0.5, 0.1, 0);
 
+      // ═══ كوريغرافيا السكرول — الكاميرا تتراجع ببطء، الإضاءة تتصاعد، الفارس يتفاعل بحساسية ═══
+      let progress = 0, smooth = 0;
+      function readScroll() {
+        const r = host.getBoundingClientRect();
+        progress = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height * 0.92)));
+      }
+      window.addEventListener('scroll', readScroll, { passive: true });
+      readScroll();
+
       let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       function size() {
         const r = host.getBoundingClientRect();
@@ -177,8 +186,23 @@ export default function KnightScene() {
       let visible = true, last = performance.now(), t = 0;
       function frame(now) {
         const dt = Math.min(50, now - last); last = now; t += dt;
-        // حركة خمول تحت عتبة الملاحظة فقط — تنفّس دوراني طفيف جدًا (لا دوران استعراضي)
-        knight.rotation.y = 0.35 * mirror + Math.PI + Math.sin(t * 0.00018) * 0.03;
+        smooth += (progress - smooth) * 0.055; // تخميد — حركة محسوبة بطيئة، لا قفزات
+
+        // حركة خمول تحت عتبة الملاحظة + استجابة سكرول خفيفة جدًا (لا دوران استعراضي)
+        knight.rotation.y = 0.35 * mirror + Math.PI + Math.sin(t * 0.00018) * 0.03 + smooth * 0.14 * mirror;
+
+        // الكاميرا تتراجع ببطء وترتفع قليلًا — كشف تدريجي للمشهد
+        camera.position.z = 8.6 + smooth * 1.5;
+        camera.position.y = 0.3 + smooth * 0.45;
+        camera.lookAt(knight.position.x * 0.5, 0.1 + smooth * 0.12, 0);
+
+        // الإضاءة تتصاعد تدريجيًا — الفارس يزداد وضوحًا مع تقدّم السكرول
+        key.intensity = 2.3 + smooth * 0.55;
+        rim.intensity = 100 + smooth * 55;
+
+        // التوهّج يتراجع في العمق قليلًا — إحساس عمق طفيف خلف الفارس
+        if (glowMesh) glowMesh.position.z = -1.9 - smooth * 0.7;
+
         renderer.render(scene, camera);
         if (visible) raf = requestAnimationFrame(frame);
       }
@@ -198,6 +222,7 @@ export default function KnightScene() {
 
       cleanup = () => {
         cancelAnimationFrame(raf);
+        window.removeEventListener('scroll', readScroll);
         ro.disconnect(); io.disconnect();
         disposables.forEach((g) => g.dispose());
         bronze.dispose(); shadowMat.dispose();

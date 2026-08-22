@@ -95,35 +95,44 @@ export default function KnightScene() {
       knight.rotation.y = 0.35 * mirror + Math.PI;
       scene.add(knight);
 
-      // ═══ توهّج شعار العون خلف الفارس — نسيج من ملف الشعار المتجهي الرسمي ═══
+      // ═══ توهّج شعار العون خلف الفارس — نسخة النيون التي زوّدنا بها العميل ═══
+      // الملف صورة نقطية (خطوط بيضاء على رمادي مصمت #919191، لا شفافية حقيقية رغم اسمه) —
+      // نستخلص الخطوط باستخدام السطوع فوق خلفية معروفة (١٤٥,١٤٥,١٤٥)، لا قناع SVG هذه المرة.
       let glowMesh = null, glowTex = null;
       (async () => {
         try {
           const img = new Image();
-          await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = '/brand/al-aoun-mark.svg'; });
+          await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = '/brand/al-aoun-neon.png'; });
           if (disposed) return;
-          const W = 640, H = Math.round(W * (2600 / 2898)), pad = 60;
+          const W = 640, H = Math.round(W * (img.naturalHeight / img.naturalWidth));
 
+          const raw = document.createElement('canvas'); raw.width = W; raw.height = H;
+          const rctx = raw.getContext('2d');
+          rctx.drawImage(img, 0, 0, W, H);
+          const frame = rctx.getImageData(0, 0, W, H);
+          const BG = 145, d = frame.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const lum = (d[i] + d[i + 1] + d[i + 2]) / 3;
+            const a = Math.max(0, Math.min(255, ((lum - BG) / (255 - BG)) * 255));
+            d[i] = 0xB9; d[i + 1] = 0xB5; d[i + 2] = 0xAD; // تلوين بلاتين دافئ
+            d[i + 3] = a;
+          }
           const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H;
-          const tctx = tmp.getContext('2d');
-          tctx.drawImage(img, pad, pad, W - pad * 2, H - pad * 2);
-          tctx.globalCompositeOperation = 'source-in';
-          tctx.fillStyle = '#B9B5AD';
-          tctx.fillRect(0, 0, W, H);
+          tmp.getContext('2d').putImageData(frame, 0, 0);
 
           const final = document.createElement('canvas'); final.width = W; final.height = H;
           const fctx = final.getContext('2d');
-          fctx.filter = 'blur(20px)';
+          fctx.filter = 'blur(14px)';
           fctx.drawImage(tmp, 0, 0);
-          fctx.filter = 'blur(5px)'; fctx.globalAlpha = 0.65;
+          fctx.filter = 'blur(3px)'; fctx.globalAlpha = 0.75;
           fctx.drawImage(tmp, 0, 0);
 
           if (disposed) return;
           glowTex = new THREE.CanvasTexture(final);
           glowTex.colorSpace = THREE.SRGBColorSpace;
-          const glowH = 4.6, glowW = glowH * (W / H);
+          const glowH = 6.6, glowW = glowH * (W / H); // "أكبر شوية" — كان ٤.٦، بقى ٦.٦
           const glowMat = new THREE.MeshBasicMaterial({
-            map: glowTex, transparent: true, opacity: 0.5,
+            map: glowTex, transparent: true, opacity: 0.55,
             blending: THREE.AdditiveBlending, depthWrite: false,
           });
           glowMesh = new THREE.Mesh(new THREE.PlaneGeometry(glowW, glowH), glowMat);

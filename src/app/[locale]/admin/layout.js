@@ -32,6 +32,7 @@ export default async function AdminLayout({ children, params }) {
         { href: '/admin/consultations', label: t('navConsultations'), badge: newCount(consultations) },
         { href: '/admin/referrals', label: t('navReferrals'), badge: newCount(referrals) },
         { href: '/admin/partnerships', label: t('navPartnerships'), badge: newCount(partnerships) },
+        { href: '/admin/partner-firms', label: t('navPartnerFirms') },
       ],
     },
     { label: t('navGroupPeople'), links: [{ href: '/admin/members', label: t('navMembers') }] },

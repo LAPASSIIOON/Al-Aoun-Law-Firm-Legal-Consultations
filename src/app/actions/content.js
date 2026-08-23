@@ -177,3 +177,69 @@ export async function setArticleActive({ id, isActive }) {
   revalidatePath('/[locale]/admin/insights', 'page');
   return { ok: true };
 }
+
+// ===== الشبكة الدولية — الشركاء (network.partner_firms) =====
+// ملاحظة معمارية: مخطَّط network غير معروض عبر REST مباشرة (postgrest يعرض public فقط) —
+// كل الوصول هنا عبر دوال RPC أمنية (admin_*) بنفس نمط باقي لوحة التحكم المُتحقَّق من أمانه.
+// صف الشريك لا يظهر علنًا إلا بـ public_visible=true AND consent_to_display=true معًا — موافقة صريحة، لا افتراض.
+
+export async function listPartnerFirms() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_list_partner_firms');
+  if (error) return [];
+  return data || [];
+}
+
+export async function getPartnerFirm(id) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_get_partner_firm', { p_id: id });
+  if (error) return null;
+  return data;
+}
+
+export async function listActiveCountries() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('list_countries');
+  if (error) return [];
+  return data || [];
+}
+
+export async function createPartnerFirm(fields) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_create_partner_firm', {
+    p_legal_name: fields.legalName,
+    p_display_name_ar: fields.displayNameAr || '',
+    p_display_name_en: fields.displayNameEn || '',
+    p_country_id: fields.countryId || null,
+    p_city: fields.city || '',
+    p_website: fields.website || '',
+    p_relationship_status: fields.relationshipStatus || 'prospect',
+    p_internal_notes: fields.internalNotes || '',
+  });
+  if (error) return { error: error.message };
+  if (data && data.error) return { error: data.error };
+  revalidatePath('/[locale]/admin/partner-firms', 'page');
+  return { id: data.id };
+}
+
+export async function updatePartnerFirm({ id, ...fields }) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc('admin_update_partner_firm', {
+    p_id: id,
+    p_legal_name: fields.legalName,
+    p_display_name_ar: fields.displayNameAr || '',
+    p_display_name_en: fields.displayNameEn || '',
+    p_country_id: fields.countryId || null,
+    p_city: fields.city || '',
+    p_website: fields.website || '',
+    p_relationship_status: fields.relationshipStatus,
+    p_public_visible: !!fields.publicVisible,
+    p_consent_to_display: !!fields.consentToDisplay,
+    p_internal_notes: fields.internalNotes || '',
+  });
+  if (error) return { error: error.message };
+  if (data && data.error) return { error: data.error };
+  revalidatePath('/[locale]/admin/partner-firms/[id]', 'page');
+  revalidatePath('/[locale]/admin/partner-firms', 'page');
+  return { ok: true };
+}

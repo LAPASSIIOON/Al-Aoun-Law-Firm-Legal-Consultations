@@ -732,5 +732,16 @@
     "emptyReferrals": "No referrals yet.",
     "emptyPartnerships": "No partnership requests yet.",
     "quickMyMatters": "My Matters"
+  },
+  "search": {
+    "open": "Search",
+    "title": "Search the site",
+    "placeholder": "Search a practice area or article...",
+    "close": "Close",
+    "searching": "Searching...",
+    "noResults": "No matching results.",
+    "hint": "Type at least 2 characters to search.",
+    "kindPracticeArea": "Practice Area",
+    "kindInsight": "Insight"
   }
 }

@@ -1,0 +1,22 @@
+.trigger{display:inline-flex;align-items:center;justify-content:center;inline-size:36px;block-size:36px;color:inherit;background:transparent;border:0;border-radius:var(--r);cursor:pointer;transition:background .18s ease}
+.trigger:hover{background:rgba(0,0,0,.06)}
+
+.overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-block-start:clamp(4rem,10vh,9rem)}
+.scrim{position:absolute;inset:0;background:rgba(6,10,16,.72);backdrop-filter:blur(2px);border:0;cursor:default}
+.panel{position:relative;inline-size:min(92vw,640px);max-block-size:70vh;background:var(--surface);border:1px solid var(--hair-dark-strong);border-radius:var(--r-lg);box-shadow:0 20px 60px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden;animation:rise .18s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+.inputRow{display:flex;align-items:center;gap:.75rem;padding:1.1rem 1.25rem;border-block-end:1px solid var(--hair-dark);color:var(--platinum-3)}
+.input{flex:1;background:transparent;border:0;outline:0;color:var(--platinum);font-family:var(--f-ui);font-size:1.05rem}
+.input::placeholder{color:var(--platinum-3)}
+.close{background:transparent;border:0;color:var(--platinum-3);font-size:1.5rem;line-height:1;cursor:pointer;padding:.2rem .4rem}
+.close:hover{color:var(--platinum)}
+
+.results{overflow-y:auto;padding:.5rem}
+.hint{padding:1.5rem 1rem;color:var(--platinum-3);font-size:.92rem;text-align:center}
+.result{display:flex;flex-direction:column;gap:.15rem;padding:.85rem 1rem;border-radius:var(--r);text-decoration:none;transition:background .15s ease}
+.result:hover{background:var(--surface-2)}
+.resultKind{font-family:var(--f-ui);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--clay-bright)}
+:global(html[lang=ar]) .resultKind{letter-spacing:0;text-transform:none}
+.resultTitle{color:var(--platinum);font-family:var(--f-display);font-size:1.1rem}
+.resultSnippet{color:var(--platinum-3);font-size:.85rem;line-height:1.5}

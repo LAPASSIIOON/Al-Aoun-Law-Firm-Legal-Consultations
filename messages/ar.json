@@ -732,5 +732,16 @@
     "emptyReferrals": "لم تُحِل أي ملف بعد.",
     "emptyPartnerships": "لا طلبات تعاون بعد.",
     "quickMyMatters": "قضاياي"
+  },
+  "search": {
+    "open": "بحث",
+    "title": "بحث في الموقع",
+    "placeholder": "ابحث عن مجال ممارسة أو مقال...",
+    "close": "إغلاق",
+    "searching": "جارٍ البحث...",
+    "noResults": "لا نتائج مطابقة.",
+    "hint": "اكتب حرفين على الأقل للبحث.",
+    "kindPracticeArea": "مجال ممارسة",
+    "kindInsight": "مقال"
   }
 }

@@ -5,6 +5,7 @@ import PageHeroImage from '@/components/PageHeroImage.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import s from '../shared.module.css';
 
+export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) {
   const { locale } = await params;

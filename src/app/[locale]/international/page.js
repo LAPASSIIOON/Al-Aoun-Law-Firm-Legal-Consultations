@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import { createAnonClient } from '@/lib/supabase-server.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -16,6 +17,13 @@ export default async function International({ params }) {
   const { locale } = await params; setRequestLocale(locale);
   const t = await getTranslations('international');
   const n = await getTranslations('nav');
+
+  let jurisdictions = [];
+  try {
+    const supabase = createAnonClient();
+    const { data } = await supabase.from('v_active_jurisdictions').select('id, name_ar, name_en').order('name_en');
+    jurisdictions = (data || []).map((x) => (locale === 'ar' ? x.name_ar : x.name_en));
+  } catch (e) { jurisdictions = []; }
 
   const howSteps = [1, 2, 3, 4, 5];
 
@@ -78,6 +86,25 @@ export default async function International({ params }) {
           <p className="body" data-reveal style={{ fontSize: '1.05rem', maxWidth: '62ch' }}>{t('anchorBody')}</p>
         </div>
       </section>
+
+      {/* تغطية التنسيق — بيانات حقيقية من قاعدة الشبكة، صياغة صادقة (تنسيق لا شراكة رسمية) */}
+      {jurisdictions.length > 0 && (
+        <section className="on-paper section-tight">
+          <div className="wrap">
+            <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
+            <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.2rem', maxWidth: '26ch' }}>{t('jurisdictionsHead')}</h2>
+            <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '2rem' }}>{t('jurisdictionsBody')}</p>
+            <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '.6rem .7rem', listStyle: 'none', padding: 0, margin: 0 }} data-reveal>
+              {jurisdictions.map((name) => (
+                <li key={name} style={{
+                  padding: '.5rem 1.1rem', border: '1px solid var(--light-hair)', borderRadius: '999px',
+                  fontSize: '.92rem', color: 'var(--light-ink)', background: 'var(--light-raised)',
+                }}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* الحوكمة */}
       <section className="on-navy section-tight">

@@ -60,6 +60,10 @@
 
 
 /* ── مجالات الممارسة — صفوف تحريرية مرقّمة (§11: لا بطاقات SaaS) ── */
+.paFilterRow{margin-block-end:1.75rem}
+.paFilterInput{inline-size:100%;max-inline-size:420px;padding:.85rem 1.1rem;border:1px solid var(--light-hair);border-radius:var(--r);background:var(--light-raised);color:var(--light-ink);font-family:var(--f-ui);font-size:.98rem;transition:border-color .2s ease}
+.paFilterInput::placeholder{color:var(--light-muted)}
+.paFilterInput:focus{outline:0;border-color:var(--clay-bright)}
 .paList{display:flex;flex-direction:column;border-block-start:1px solid var(--hair-light)}
 .paRow{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
 .paRow:hover{background:var(--surface);padding-inline:1.1rem}

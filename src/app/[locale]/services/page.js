@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import styles from '../home.module.css';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import PracticeAreasFilter from '@/components/PracticeAreasFilter.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -53,23 +54,16 @@ export default async function Services({ params }) {
 
       <section className="on-white section">
         <div className="wrap">
-          <div className={styles.paList}>
-            {(items || Array.from({ length: 6 })).map((r, i) => (
-              items ? (
-                <Link key={r.slug} href={`/services/${r.slug}`} className={styles.paRow} data-reveal="file">
-                  <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-                  <span className={styles.paBody}>
-                    <span className={styles.paTitle} style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
-                      {hasIcon(r.slug) && (
-                        <img src={`/practice-areas/icons/${r.slug}.png`} alt="" width={30} height={30} style={{ flex: '0 0 auto', opacity: .92 }} />
-                      )}
-                      {r.title}
-                    </span>
-                    {r.summary && <span className={styles.paSum}>{r.summary}</span>}
-                  </span>
-                  <span className={styles.paArrow} aria-hidden="true">→</span>
-                </Link>
-              ) : (
+          {items ? (
+            <PracticeAreasFilter
+              items={items.map((r) => ({ ...r, hasIcon: hasIcon(r.slug) }))}
+              locale={locale}
+              placeholder={locale === 'ar' ? 'ابحث عن مجال ممارسة...' : 'Search a practice area...'}
+              noResults={locale === 'ar' ? 'لا نتائج مطابقة لبحثك.' : 'No practice areas match your search.'}
+            />
+          ) : (
+            <div className={styles.paList}>
+              {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className={styles.paRow} data-reveal="file">
                   <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
                   <span className={styles.paBody}>
@@ -77,9 +71,9 @@ export default async function Services({ params }) {
                     <span className={styles.paSum}>{t('flag')}</span>
                   </span>
                 </div>
-              )
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <p data-reveal style={{ marginBlockStart: '2.75rem', display: 'flex', flexWrap: 'wrap', gap: '.6rem', alignItems: 'baseline' }}>
             <span className="muted" style={{ fontSize: '.95rem' }}>

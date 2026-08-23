@@ -12,7 +12,7 @@ export default function HeroMarkWatermark() {
         inlineSize: '42%',
         maxInlineSize: '520px',
         blockSize: 'auto',
-        opacity: 0.14,
+        opacity: 0.28,
         zIndex: 1,
         pointerEvents: 'none',
         userSelect: 'none',

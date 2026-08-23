@@ -4,7 +4,7 @@ import Image from 'next/image';
 export default function HeroImageBackground() {
   return (
     <Image
-      src="/kuwait/glass-tower-view-street.webp"
+      src="/kuwait/hero-glass-towers-v2.webp"
       alt=""
       aria-hidden="true"
       fill

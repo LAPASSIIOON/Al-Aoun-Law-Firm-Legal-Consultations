@@ -3,6 +3,7 @@ import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
+import PageHeroImage from '@/components/PageHeroImage.js';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/about') }; }
@@ -16,8 +17,9 @@ export default async function About({ params }) {
   const values = tph.raw('items');
   return (
     <>
-      <section className={`on-espresso ${s.pageHead} section-tight`}>
-        <div className="wrap">
+      <section className={`on-espresso ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
+        <PageHeroImage src="/kuwait/courthouse-columns.webp" />
+        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem', maxWidth: '18ch' }}>{t('heading')}</h1>
           <p className="lead" data-reveal style={{ maxWidth: '48ch' }}>{t('lead')}</p>

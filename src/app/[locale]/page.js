@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
-import HeroVideoBackground from '@/components/HeroVideoBackground.js';
+import HeroImageBackground from '@/components/HeroImageBackground.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import CounterStat from '@/components/CounterStat.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
@@ -113,7 +113,7 @@ export default async function Home({ params }) {
     <>
       {/* HERO */}
       <section className={styles.hero} style={{ '--veilDir': veilDir }}>
-        <HeroVideoBackground />
+        <HeroImageBackground />
         <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
           <line x1="0" y1="120" x2="1200" y2="120" />
           <line x1="0" y1="680" x2="1200" y2="680" />

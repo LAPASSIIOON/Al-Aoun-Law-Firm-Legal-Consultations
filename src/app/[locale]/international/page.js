@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
+import PageHeroImage from '@/components/PageHeroImage.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -20,8 +21,9 @@ export default async function International({ params }) {
 
   return (
     <>
-      <section className={`on-navy ${s.pageHead} section-tight`}>
-        <div className="wrap">
+      <section className={`on-navy ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
+        <PageHeroImage src="/kuwait/glass-tower-view-street.webp" />
+        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem' }}>{t('heading')}</h1>
           <p className="lead" data-reveal style={{ maxWidth: '54ch' }}>{t('lead')}</p>

@@ -4,6 +4,7 @@ import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import s from '../shared.module.css';
 import styles from '../home.module.css';
+import PageHeroImage from '@/components/PageHeroImage.js';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -41,8 +42,9 @@ export default async function Services({ params }) {
 
   return (
     <>
-      <section className={`on-navy ${s.pageHead} section-tight`}>
-        <div className="wrap">
+      <section className={`on-navy ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
+        <PageHeroImage src="/kuwait/modern-facade-geometric.webp" />
+        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem' }}>{t('heading')}</h1>
           <p className="lead" data-reveal style={{ maxWidth: '52ch' }}>{tp('lead')}</p>

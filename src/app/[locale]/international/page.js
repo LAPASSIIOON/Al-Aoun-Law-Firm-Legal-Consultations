@@ -22,7 +22,7 @@ export default async function International({ params }) {
   return (
     <>
       <section className={`on-navy ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
-        <PageHeroImage src="/kuwait/glass-tower-view-street.webp" />
+        <PageHeroImage src="/kuwait/skyline-water-reflection.webp" />
         <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem' }}>{t('heading')}</h1>

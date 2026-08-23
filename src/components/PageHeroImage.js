@@ -1,17 +1,19 @@
 import Image from 'next/image';
 
-/** خلفية صورة حقيقية لرأس صفحة داخلية + طبقة تعتيم لوضوح النص فوقها. */
+/** خلفية صورة حقيقية لرأس صفحة داخلية + طبقة تعتيم لوضوح النص فوقها + حركة بطيئة واحدة. */
 export default function PageHeroImage({ src, position = 'center' }) {
   return (
     <>
-      <Image
-        src={src}
-        alt=""
-        aria-hidden="true"
-        fill
-        sizes="100vw"
-        style={{ objectFit: 'cover', objectPosition: position }}
-      />
+      <div className="hero-slow-zoom" style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+        <Image
+          src={src}
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          style={{ objectFit: 'cover', objectPosition: position }}
+        />
+      </div>
       <div
         aria-hidden="true"
         style={{

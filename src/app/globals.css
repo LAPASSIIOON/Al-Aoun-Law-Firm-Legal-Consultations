@@ -109,6 +109,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .img-zoom-frame:hover img{transform:scale(1.06)}
 @media (prefers-reduced-motion:reduce){.img-zoom-frame:hover img{transform:none}}
 
+/* حركة بطيئة واحدة (Ken Burns) لصور خلفية الهيرو الممتدة بالعرض الكامل — لا تكرار، لا لفت انتباه، مجرد حياة هادئة. */
+@keyframes hero-slow-zoom{from{transform:scale(1)}to{transform:scale(1.045)}}
+.hero-slow-zoom img{animation:hero-slow-zoom 26s var(--ease) forwards}
+@media (prefers-reduced-motion:reduce){.hero-slow-zoom img{animation:none}}
+
 /* بطيء — للمحتوى المؤسسي (الإحصائيات، الإرث، سيرة المؤسس): وقارٌ أبطأ من التفاعلات العادية */
 [data-reveal="slow"].reveal-init{opacity:0;transform:translateY(28px);transition:opacity 1.15s var(--ease),transform 1.15s var(--ease)}
 [data-reveal="slow"].reveal-init.in{opacity:1;transform:none}

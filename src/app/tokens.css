@@ -1,30 +1,27 @@
-/* ═══ AL OUN — The Sovereign Knight · إسبريسو دافئ مؤسسي + بلاتين + أزرق إشارة نادر ═══
-   منحوتة معاصرة، أرشيف مؤسسي، سرد سينمائي. داكن دافئ غالب، لا كحلي بارد. */
+/* ═══ AL OUN — مؤسسة قانونية دولية · هوية باردة مؤسسية (مستوحاة من مكاتب المحاماة الدولية الكبرى) ═══
+   كحلي/جرافيت بارد + أبيض + رمادي فولاذي كأكسنت نادر. وقار وثقة، لا دفء زخرفي. */
 :root {
-  /* اللوحة — إسبريسو/جرافيت دافئ عميق + عاجي + بلاتين */
-  --ground:#171310;      /* الأرضية — إسبريسو عميق (غالب) */
-  --surface:#211C18;     /* السطح */
-  --surface-2:#292725;   /* سطح مرتفع — جرافيت */
-  --surface-3:#332F2B;   /* تحويم/متداخل */
-  --platinum:#E9E3D8;    /* نص أساسي — عاجي دافئ */
-  --platinum-2:#B9B5AD;  /* نص ثانوي — بلاتين */
-  --platinum-3:#8A8377;  /* نص باهت — بلاتين معتم */
+  /* اللوحة — كحلي/جرافيت بارد عميق + أبيض + فضي */
+  --ground:#0E1826;      /* الأرضية — كحلي عميق بارد (غالب) */
+  --surface:#131F30;     /* السطح */
+  --surface-2:#1B2A3E;   /* سطح مرتفع */
+  --surface-3:#25374D;   /* تحويم/متداخل */
+  --platinum:#F3F5F7;    /* نص أساسي — أبيض بارد شبه صافٍ */
+  --platinum-2:#B7C1CC;  /* نص ثانوي — رمادي فولاذي فاتح */
+  --platinum-3:#7C8896;  /* نص باهت */
 
-  /* الأكسنت = أزرق إشارة، نادر جدًا فقط (حواف، حالات تفاعل دقيقة) — لا خلفية أبدًا */
-  --clay:#3E6C86;        /* fills/CTA — أزرق إشارة معتم، عاجي عليه تباين آمن */
-  --clay-bright:#5E9DBE; /* أزرق إشارة أوضح — نصوص/خطوط أكسنت على الداكن */
-  --clay-600:#33596F;    /* مضغوط */
-  --clay-050:rgba(94,157,190,0.10);
-  --blue-note:#7FB4D0;   /* توهّج خافت */
+  /* الأكسنت = أزرق فولاذي مقيَّد — للحواف وحالات التفاعل الدقيقة فقط */
+  --clay:#3D6B92;        /* fills/CTA */
+  --clay-bright:#6FA3CC; /* أزرق أوضح — نصوص/خطوط أكسنت على الداكن */
+  --clay-600:#325A7B;    /* مضغوط */
+  --clay-050:rgba(111,163,204,0.10);
+  --blue-note:#8FBEDE;
 
-  /* الأزرار — إسبريسو صلب بحافة بلاتين/إشارة دقيقة، لا ذهبي إطلاقًا */
-  --gold:var(--clay); --gold-600:var(--clay-600); --gold-text:#F4EFE7;
+  --gold:var(--clay); --gold-600:var(--clay-600); --gold-text:#F3F5F7;
 
-  /* نصوص */
-  --ink:var(--platinum); --ink-2:#DAD3C6; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
+  --ink:var(--platinum); --ink-2:#E4E9ED; --muted:var(--platinum-2); --muted-2:var(--platinum-3);
   --ink-dark:var(--platinum); --muted-dark:var(--platinum-2);
 
-  /* أسماء مستعارة — تتبع الطبقة الأساسية الجديدة تلقائيًا */
   --white:#FFFFFF;
   --navy:var(--ground); --navy-2:var(--surface-2); --navy-3:var(--surface-3);
   --paper:var(--surface); --paper-2:var(--surface-2);
@@ -32,31 +29,27 @@
   --blue:var(--clay); --blue-600:var(--clay-600); --blue-050:var(--clay-050);
   --blue-glow:var(--clay-bright); --blue-strong:var(--clay-bright); --platinum-dim:var(--platinum-3);
 
-  /* خطوط شعرية — عاجي على إسبريسو */
-  --hair-light:rgba(233,227,216,0.10); --hair-light-strong:rgba(233,227,216,0.17);
-  --hair-dark:rgba(233,227,216,0.12); --hair-dark-strong:rgba(233,227,216,0.22);
+  --hair-light:rgba(243,245,247,0.10); --hair-light-strong:rgba(243,245,247,0.17);
+  --hair-dark:rgba(243,245,247,0.12); --hair-dark-strong:rgba(243,245,247,0.22);
 
-  /* السطح الفاتح الحقيقي — الفسحة التحريرية (المشهد الأفتح/الأكثر إنسانية: الأشخاص).
-     عاجي دافئ لا أبيض بارد، ونص إسبريسو عميق للتباين التحريري الراقي. */
-  --light-ground:#E9E3D8;   /* عاجي دافئ — خلفية الفسحة الفاتحة */
-  --light-raised:#DDD5C7;   /* سطح مرتفع فاتح — hover على الفاتح */
-  --light-raised-2:#D0C6B5; /* سطح مرتفع أعمق */
-  --light-ink:#171310;      /* الإسبريسو كنص على العاجي — تباين ممتاز */
-  --light-muted:#57503F;    /* نص ثانوي على الفاتح */
-  --light-idx:#8A8377;      /* أرقام/متاداتا باهتة على الفاتح */
-  --light-hair:rgba(23,19,16,0.14); /* خط شعري على الفاتح */
+  /* السطح الفاتح الحقيقي — أبيض-كسر بارد حقيقي، لا عاجي دافئ */
+  --light-ground:#F4F6F8;
+  --light-raised:#E6EAED;
+  --light-raised-2:#D8DEE3;
+  --light-ink:#0E1826;
+  --light-muted:#4A5763;
+  --light-idx:#7C8896;
+  --light-hair:rgba(14,24,38,0.12);
 
-  /* توكنات نظام الفهرسة/السجل — تبقى كلغة تحريرية دقيقة (خطوط دليل، أرقام، علامات) */
-  --ref-rule:rgba(94,157,190,0.20);      /* خط الدليل الافتراضي — أزرق إشارة خافت */
-  --ref-rule-active:var(--clay-bright);  /* خط الدليل عند التفاعل */
-  --ref-tick:rgba(185,181,173,0.28);     /* علامات التقسيم — بلاتين */
-  --ref-num:var(--platinum-3);           /* الرقم المرجعي على الداكن */
-  --ref-num-light:var(--light-idx);      /* الرقم المرجعي على الفاتح */
-  --ref-num-active:var(--clay-bright);   /* الرقم المرجعي النشط */
+  --ref-rule:rgba(111,163,204,0.20);
+  --ref-rule-active:var(--clay-bright);
+  --ref-tick:rgba(183,193,204,0.28);
+  --ref-num:var(--platinum-3);
+  --ref-num-light:var(--light-idx);
+  --ref-num-active:var(--clay-bright);
 
-  /* خطوط الكتابة — التحوّل السينمائي (البريف §6):
-     Serif تحريري راقٍ للعرض (Cormorant إنجليزي / Amiri عربي للحظات المحورية)،
-     وIBM Plex Sans Arabic للواجهة والجسم العربي. مؤسسة تحريرية دولية لا شركة تقنية. */
+  /* خطوط الكتابة — نفس الخطوط المحترمة (Cormorant/Amiri) بعد إصلاح أوزانها، تُستخدَم الآن
+     بروح "مكتب دولي راسخ" (Kim & Chang-style) لا سينمائية — نفس الجودة، سياق مختلف */
   --f-serif-en:'Cormorant','Georgia',serif;
   --f-serif-ar:'Amiri','Georgia',serif;
   --f-ui-ar:'IBM Plex Sans Arabic',system-ui,sans-serif;
@@ -64,10 +57,8 @@
   --f-ar:var(--f-serif-ar);
   --f-en:var(--f-serif-en);
 
-  /* مقاسات/حركة — مساحات أوسع للوقار */
   --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(5.5rem,11vh,9.5rem);
   --r:4px; --r-lg:6px; --r-card:6px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
 }
-/* العرض الكبير = Serif؛ الواجهة/الجسم = Sans نظيف (تدرّج حادّ: عرض تحريري + واجهة دقيقة) */
 html[lang="ar"]{ --f-display:var(--f-serif-ar); --f-ui:var(--f-ui-ar); }
 html[lang="en"]{ --f-display:var(--f-serif-en); --f-ui:var(--f-ui-en); }

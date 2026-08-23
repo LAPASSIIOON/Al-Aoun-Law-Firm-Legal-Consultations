@@ -50,8 +50,8 @@
 
   /* خطوط الكتابة — نفس الخطوط المحترمة (Cormorant/Amiri) بعد إصلاح أوزانها، تُستخدَم الآن
      بروح "مكتب دولي راسخ" (Kim & Chang-style) لا سينمائية — نفس الجودة، سياق مختلف */
-  --f-serif-en:'Cormorant','Georgia',serif;
-  --f-serif-ar:'Amiri','Georgia',serif;
+  --f-serif-en:'Noto Serif','Georgia',serif;
+  --f-serif-ar:'Noto Naskh Arabic','Georgia',serif;
   --f-ui-ar:'IBM Plex Sans Arabic',system-ui,sans-serif;
   --f-ui-en:'Archivo Variable',system-ui,sans-serif;
   --f-ar:var(--f-serif-ar);

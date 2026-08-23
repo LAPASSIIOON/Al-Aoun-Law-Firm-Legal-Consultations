@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroImageBackground from '@/components/HeroImageBackground.js';
+import HeroMarkWatermark from '@/components/HeroMarkWatermark.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import CounterStat from '@/components/CounterStat.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
@@ -125,6 +126,7 @@ export default async function Home({ params }) {
           <circle cx="1110" cy="680" r="2.5" />
         </svg>
         <div className={styles.heroVeil} />
+        <HeroMarkWatermark />
         <span className={styles.heroTag} aria-hidden="true">01</span>
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroRule} aria-hidden="true" />

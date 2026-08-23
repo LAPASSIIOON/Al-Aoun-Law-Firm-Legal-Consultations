@@ -30,6 +30,13 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
     { key: 'careers', href: '/careers' },
   ];
 
+  const intlLinks = [
+    { label: locale === 'ar' ? 'نظرة عامة' : 'Overview', href: '/international' },
+    { label: locale === 'ar' ? 'للمكاتب الأجنبية' : 'For Law Firms', href: '/international/for-law-firms' },
+    { label: locale === 'ar' ? 'إحالة ملف' : 'Refer a Matter', href: '/international/refer-a-matter' },
+    { label: locale === 'ar' ? 'التعاون المهني' : 'Partner With Us', href: '/international/partner-with-us' },
+  ];
+
   const closeAll = () => { setMobile(false); setOpenMenu(null); };
 
   return (
@@ -75,7 +82,16 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
             </div>
           </div>
 
-          <Link href="/international" className={styles.navLink}>{t('international')}</Link>
+          <div className={styles.navItem} onMouseEnter={() => setOpenMenu('intl')} onMouseLeave={() => setOpenMenu((m) => (m === 'intl' ? null : m))}>
+            <button className={styles.navLink} aria-expanded={openMenu === 'intl'} onClick={() => setOpenMenu((m) => (m === 'intl' ? null : 'intl'))}>
+              {t('international')} <span className={`${styles.chev} ${openMenu === 'intl' ? styles.chevUp : ''}`}><Chevron /></span>
+            </button>
+            <div className={`${styles.drop} ${openMenu === 'intl' ? styles.dropOpen : ''}`} role="menu">
+              <div className={styles.dropInner}>
+                {intlLinks.map((l) => (<Link key={l.href} href={l.href} className={styles.dropLink} onClick={closeAll} role="menuitem">{l.label}</Link>))}
+              </div>
+            </div>
+          </div>
           <Link href="/insights" className={styles.navLink}>{t('insights')}</Link>
           <Link href="/contact" className={styles.navLink}>{t('contact')}</Link>
         </nav>
@@ -122,7 +138,15 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
             </div>
           )}
 
-          <Link href="/international" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.14s' }}><span className={styles.oIdx}>03</span>{t('international')}</Link>
+          <button className={styles.oGroupHead} onClick={() => setMOpen((v) => (v === 'intl' ? null : 'intl'))} style={{ animationDelay: '.14s' }}>
+            <span><span className={styles.oIdx}>03</span>{t('international')}</span>
+            <span className={`${styles.chev} ${mOpen === 'intl' ? styles.chevUp : ''}`}><Chevron /></span>
+          </button>
+          {mOpen === 'intl' && (
+            <div className={styles.oSub}>
+              {intlLinks.map((l) => (<Link key={l.href} href={l.href} className={styles.oSubLink} onClick={closeAll}>{l.label}</Link>))}
+            </div>
+          )}
           <Link href="/insights" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.16s' }}><span className={styles.oIdx}>04</span>{t('insights')}</Link>
           <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>05</span>{t('contact')}</Link>
         </nav>

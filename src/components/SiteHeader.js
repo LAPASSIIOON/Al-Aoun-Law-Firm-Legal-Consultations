@@ -82,10 +82,10 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
 
         <div className={styles.actions}>
           <SiteSearch locale={locale} />
-          <Link href={member ? (member.role === 'admin' ? '/admin' : '/account/my-requests') : '/account/sign-in'} className={styles.lang}>
+          <Link href={member ? (member.role === 'admin' ? '/admin' : '/account/my-requests') : '/account/sign-in'} className={`${styles.lang} ${styles.barOnly}`}>
             {member ? (locale === 'ar' ? 'لوحة التحكم' : 'Dashboard') : (locale === 'ar' ? 'تسجيل الدخول' : 'Sign In')}
           </Link>
-          <Link href={pathname} locale={other} className={styles.lang}>{other === 'en' ? 'EN' : 'ع'}</Link>
+          <Link href={pathname} locale={other} className={`${styles.lang} ${styles.barOnly}`}>{other === 'en' ? 'EN' : 'ع'}</Link>
           <Link href="/contact" className={`btn btn-solid ${styles.cta}`}>{t('consult')}</Link>
           <button className={styles.burger} aria-label={locale === 'ar' ? 'القائمة' : 'Menu'} aria-expanded={mobile} onClick={() => setMobile(true)}>
             <span /><span /><span />

@@ -16,6 +16,8 @@
 .actions{display:flex;align-items:center;gap:clamp(.6rem,1.2vw,1.1rem);flex:0 0 auto}
 .lang{font-family:var(--f-en);font-size:.82rem;letter-spacing:.06em;color:rgba(10,15,26,.7);padding:.4rem .55rem;border-radius:var(--r);transition:color .35s}
 .lang:hover{color:var(--ground)}
+.barOnly{display:none}
+@media(min-width:960px){.barOnly{display:inline-flex}}
 .cta{display:none!important}
 .burger{display:inline-flex;flex-direction:column;gap:5px;padding:.6rem .3rem}
 .burger span{display:block;inline-size:24px;block-size:1.6px;background:var(--ground);border-radius:2px}

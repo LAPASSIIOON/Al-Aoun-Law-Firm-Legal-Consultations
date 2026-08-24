@@ -4,6 +4,7 @@ import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroImageBackground from '@/components/HeroImageBackground.js';
 import HeroMarkWatermark from '@/components/HeroMarkWatermark.js';
+import HeroSearch from '@/components/HeroSearch.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import CounterStat from '@/components/CounterStat.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
@@ -134,6 +135,7 @@ export default async function Home({ params }) {
             <span className="eyebrow">{c.eyebrow}</span>
             <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
             <p className={styles.heroSub}>{c.sub}</p>
+            <HeroSearch locale={locale} />
             <div className={styles.heroCtas}>
               <Link href="/contact" className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
               <Link href="/about" className="btn btn-ghost">{c.ctaAbout}</Link>

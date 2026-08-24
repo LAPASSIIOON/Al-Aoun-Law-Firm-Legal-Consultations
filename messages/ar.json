@@ -767,6 +767,7 @@
     "noResults": "لا نتائج مطابقة.",
     "hint": "اكتب حرفين على الأقل للبحث.",
     "kindPracticeArea": "مجال ممارسة",
-    "kindInsight": "مقال"
+    "kindInsight": "مقال",
+    "heroPlaceholder": "ابحث في مجالات ممارستنا..."
   }
 }

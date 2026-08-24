@@ -767,6 +767,7 @@
     "noResults": "No matching results.",
     "hint": "Type at least 2 characters to search.",
     "kindPracticeArea": "Practice Area",
-    "kindInsight": "Insight"
+    "kindInsight": "Insight",
+    "heroPlaceholder": "Search our practice areas..."
   }
 }

@@ -214,6 +214,7 @@
     "errorGeneric": "Couldn't send, please try again.",
     "errorName": "Please enter your name.",
     "errorContact": "Enter a phone or email to reach you.",
+    "errorPhoneFormat": "Please enter a valid phone number.",
     "hoursLabel": "Working hours",
     "hoursValue": "Sunday – Thursday, 9:00 AM – 5:00 PM",
     "addressLabel": "Address",

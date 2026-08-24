@@ -41,6 +41,8 @@ export default function ContactForm() {
     e.preventDefault();
     if (fullName.trim().length < 2) { setStatus('error'); setErr(t('errorName')); return; }
     if (!phone.trim()) { setStatus('error'); setErr(t('errorContact')); return; }
+    const digitCount = phone.replace(/\D/g, '').length;
+    if (digitCount < 7) { setStatus('error'); setErr(t('errorPhoneFormat')); return; }
     setStatus('idle'); setErr(''); setStep(2);
   }
 

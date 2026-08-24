@@ -46,6 +46,9 @@ const T = {
     fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة. خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.',
     fLink: 'الملف الكامل',
     inEye: 'رؤى قانونية', inHead: 'رؤى ومقالات', inAll: 'كل الرؤى', inEmpty: 'نُثري هذا القسم بتحليلاتٍ قانونية تباعًا.',
+    inSoon: ['القانون الدستوري والطعون', 'التحكيم التجاري الدولي', 'القانون التجاري والشركات'],
+    inSoonNote: 'تحليلات قانونية من فريق العون في هذا المجال — تُنشر تباعًا.',
+    inSoonTag: 'قريبًا',
     bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'ابدأ بخطوةٍ سهلة — اسمك ورقمك فقط، والباقي نتولّاه بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
   },
   en: {
@@ -80,6 +83,9 @@ const T = {
     fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres. Over two decades across constitutional matters, cassation appeals and international commercial arbitration.',
     fLink: 'Full profile',
     inEye: 'Insights', inHead: 'Insights & articles', inAll: 'All insights', inEmpty: 'We’re adding legal analysis to this section shortly.',
+    inSoon: ['Constitutional Law & Cassation', 'International Commercial Arbitration', 'Corporate & Commercial Law'],
+    inSoonNote: 'Legal analysis from the AL OUN team in this area — published in due course.',
+    inSoonTag: 'Coming soon',
     bandHead: 'Ready for a clear first step?', bandBody: 'Start with one easy step — just your name and number. We’ll handle the rest, in full confidence.', bandPhone: 'Or call us',
   },
 };
@@ -284,7 +290,16 @@ export default async function Home({ params }) {
               ))}
             </div>
           ) : (
-            <p className="lead" data-reveal>{c.inEmpty}</p>
+            <div className="grid cols-3">
+              {c.inSoon.map((topic, i) => (
+                <div key={i} className="card" data-reveal aria-hidden="true" style={{ opacity: 0.92 }}>
+                  <span className="tag">{c.inEye}</span>
+                  <h3 className="card-title" style={{ color: 'var(--muted)' }}>{topic}</h3>
+                  <p className="body" style={{ fontSize: '0.98rem', color: 'var(--muted-2)' }}>{c.inSoonNote}</p>
+                  <span className="btn-line" style={{ color: 'var(--muted-2)', pointerEvents: 'none' }}>{c.inSoonTag}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </section>

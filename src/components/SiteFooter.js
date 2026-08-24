@@ -25,7 +25,7 @@ export function SiteFooter({ locale, areas = [] }) {
       <div className={`wrap ${styles.top}`}>
         <div className={styles.brandCol}>
           <span className={styles.logoPlinth}>
-            <img src={`/brand/logo-full-${locale}-color.png`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+            <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
           </span>
           <p className={styles.tagline}>{t('tagline')}</p>
         </div>

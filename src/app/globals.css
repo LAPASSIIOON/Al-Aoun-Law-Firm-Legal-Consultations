@@ -146,6 +146,6 @@ html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 
 /* عدّادات */
 .counter{display:flex;flex-direction:column}
-.counter-n{font-family:var(--f-en);font-weight:700;font-size:clamp(1.9rem,3vw,2.7rem);line-height:1;color:var(--platinum);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.counter-n{font-family:var(--f-en);font-weight:700;font-size:clamp(2.6rem,4.5vw,4rem);line-height:1;color:var(--clay-bright);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 :lang(ar) .counter-n{font-family:var(--f-ar);font-weight:700}
-.counter-l{color:var(--platinum-2);font-size:.85rem;margin-block-start:.5rem;line-height:1.4}
+.counter-l{color:var(--platinum-2);font-size:.9rem;margin-block-start:.7rem;line-height:1.4;letter-spacing:.01em}

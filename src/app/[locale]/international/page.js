@@ -103,6 +103,11 @@ export default async function International({ params }) {
                 locale={locale}
               />
             </div>
+            <p data-reveal style={{ marginBlockStart: '2rem', textAlign: 'center' }}>
+              <Link href="/international/refer-a-matter" className="btn btn-solid">
+                {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
+              </Link>
+            </p>
           </div>
         </section>
       )}

@@ -156,3 +156,11 @@ html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
   body{background:#fff!important;color:#000!important}
   a[href]::after{content:''}
 }
+
+/* خريطة الشبكة الشعاعية (صفحة دولي) — عُقد تتلاشى ظهورًا بتتابع عند الكشف، بنفس آلية data-reveal الحالية. */
+.jn-node{opacity:0;transition:opacity .6s var(--ease)}
+[data-reveal].reveal-init.in .jn-node{opacity:1}
+.jn-label{font-family:var(--f-ui);font-size:13px;fill:var(--platinum-2)}
+.jn-hub-label{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--platinum);letter-spacing:.02em}
+@media (prefers-reduced-motion:reduce){.jn-node{opacity:1!important;transition:none}}
+

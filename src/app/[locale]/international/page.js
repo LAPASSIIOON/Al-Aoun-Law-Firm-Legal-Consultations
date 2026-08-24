@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import JurisdictionsNetwork from '@/components/JurisdictionsNetwork.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import s from '../shared.module.css';
 
@@ -94,15 +95,14 @@ export default async function International({ params }) {
           <div className="wrap">
             <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
             <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.2rem', maxWidth: '26ch' }}>{t('jurisdictionsHead')}</h2>
-            <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '2rem' }}>{t('jurisdictionsBody')}</p>
-            <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '.6rem .7rem', listStyle: 'none', padding: 0, margin: 0 }} data-reveal>
-              {jurisdictions.map((name) => (
-                <li key={name} style={{
-                  padding: '.5rem 1.1rem', border: '1px solid var(--light-hair)', borderRadius: '999px',
-                  fontSize: '.92rem', color: 'var(--light-ink)', background: 'var(--light-raised)',
-                }}>{name}</li>
-              ))}
-            </ul>
+            <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '2.5rem' }}>{t('jurisdictionsBody')}</p>
+            <div style={{ background: 'var(--ground)', borderRadius: 'var(--r-lg)', padding: 'clamp(1.5rem,4vw,3rem)' }}>
+              <JurisdictionsNetwork
+                jurisdictions={jurisdictions.filter((name) => name !== 'الكويت' && name !== 'Kuwait')}
+                hubLabel={locale === 'ar' ? 'الكويت' : 'Kuwait'}
+                locale={locale}
+              />
+            </div>
           </div>
         </section>
       )}

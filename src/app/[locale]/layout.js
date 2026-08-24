@@ -95,6 +95,7 @@ export default async function LocaleLayout({ children, params }) {
               '@type': 'LegalService',
               name: locale === 'ar' ? 'مجموعة العون للمحاماة والاستشارات القانونية' : 'AL OUN — Legal Consultations & Advocacy',
               url: `https://al-aoun-law-firm-legal-consultation.vercel.app/${locale}`,
+              logo: `https://al-aoun-law-firm-legal-consultation.vercel.app/brand/logo-full-${locale}-color.png`,
               telephone: '+96599010470',
               email: 'Aloun.Law@gmail.com',
               foundingDate: '2000',

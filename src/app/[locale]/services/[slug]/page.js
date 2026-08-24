@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import Breadcrumbs from '@/components/Breadcrumbs.js';
+import PageUtilityIcons from '@/components/PageUtilityIcons.js';
 import s from '../../shared.module.css';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -62,6 +63,7 @@ export default async function ServiceDetail({ params }) {
           <span className="eyebrow" data-reveal>{tPA('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.2rem' }}>{a.title}</h1>
           {a.summary && <p className="lead" data-reveal style={{ maxWidth: '52ch' }}>{a.summary}</p>}
+          <PageUtilityIcons title={a.title} locale={locale} />
         </div>
       </section>
 

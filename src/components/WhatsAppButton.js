@@ -10,6 +10,7 @@ export default function WhatsAppButton({ locale }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={locale === 'ar' ? 'تواصل عبر واتساب' : 'Chat on WhatsApp'}
+      className="no-print"
       style={{
         position: 'fixed', insetBlockEnd: '5.5rem', insetInlineEnd: '1.25rem', zIndex: 60,
         width: '50px', height: '50px', borderRadius: '50%', background: '#25D366',

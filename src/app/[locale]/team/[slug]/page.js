@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
+import Breadcrumbs from '@/components/Breadcrumbs.js';
+import PageUtilityIcons from '@/components/PageUtilityIcons.js';
 import { TEAM, getTeamMember } from '@/lib/team-data.js';
 import s from '../../shared.module.css';
 import h from '../../home.module.css';
@@ -25,7 +27,11 @@ export default async function TeamMember({ params }) {
   return (
     <section className={`on-ivory ${s.pageHead} section`}>
       <div className="wrap">
-        <Link href="/team" className="btn-line" style={{ marginBlockEnd: '2.5rem' }}>{t('heading')}</Link>
+        <Breadcrumbs items={[
+          { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
+          { label: t('heading'), href: '/team' },
+          { label: f.name },
+        ]} />
         <div className={h.founder}>
           <div className={`${h.founderMedia} img-zoom-frame`}><img src={m.photoFull} alt={f.name} /></div>
           <div>
@@ -35,6 +41,7 @@ export default async function TeamMember({ params }) {
             <ul className={s.pointList} style={{ marginBlockStart: '1.5rem' }}>
               {f.creds.map((c, i) => (<li key={i} className={s.point} data-reveal="stamp"><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
             </ul>
+            <PageUtilityIcons title={f.name} locale={locale} />
 
             {f.education && (
               <>

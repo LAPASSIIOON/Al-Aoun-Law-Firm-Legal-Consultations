@@ -3,6 +3,8 @@ import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
+import Breadcrumbs from '@/components/Breadcrumbs.js';
+import PageUtilityIcons from '@/components/PageUtilityIcons.js';
 import s from '../../shared.module.css';
 
 async function getArticle(slug, locale) {
@@ -26,9 +28,14 @@ export default async function Article({ params }) {
   return (
     <article className={`on-ivory ${s.pageHead} section`}>
       <div className="wrap-narrow wrap">
-        <Link href="/insights" className="btn-line" style={{ marginBlockEnd: '2rem' }}>{t('heading')}</Link>
+        <Breadcrumbs items={[
+          { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
+          { label: t('heading'), href: '/insights' },
+          { label: a.title },
+        ]} />
         <h1 className="display d-1" data-reveal style={{ marginBlock: '1rem 1.2rem' }}>{a.title}</h1>
         {a.excerpt && <p className="lead" data-reveal style={{ marginBlockEnd: '2rem' }}>{a.excerpt}</p>}
+        <PageUtilityIcons title={a.title} locale={locale} />
         {a.body && <div className="prose body" data-reveal style={{ color: 'var(--muted)', whiteSpace: 'pre-wrap' }}>{a.body}</div>}
       </div>
     </article>

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
+import Breadcrumbs from '@/components/Breadcrumbs.js';
 import s from '../../shared.module.css';
 import hs from '../../home.module.css';
 
@@ -34,6 +35,11 @@ export default async function ForLawFirms({ params }) {
     <>
       <section className={`on-navy ${s.pageHead} section-tight`}>
         <div className="wrap">
+          <Breadcrumbs items={[
+            { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
+            { label: locale === 'ar' ? 'دولي' : 'International', href: '/international' },
+            { label: t('heading') },
+          ]} />
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
           <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem' }}>{t('heading')}</h1>
           <p className="lead" data-reveal style={{ maxWidth: '54ch' }}>{t('lead')}</p>

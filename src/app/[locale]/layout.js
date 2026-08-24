@@ -17,6 +17,7 @@ import '../globals.css';
 import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
 import WhatsAppButton from '@/components/WhatsAppButton.js';
+import ScrollToTop from '@/components/ScrollToTop.js';
 import { getCurrentMember } from '@/lib/supabase-auth-server.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
@@ -120,6 +121,7 @@ export default async function LocaleLayout({ children, params }) {
           <main id="main" className="main">{children}</main>
           <SiteFooter locale={locale} areas={areas} />
           <WhatsAppButton locale={locale} />
+          <ScrollToTop locale={locale} />
           <RevealController />
         </NextIntlClientProvider>
       </body>

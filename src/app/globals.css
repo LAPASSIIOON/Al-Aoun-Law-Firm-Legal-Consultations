@@ -149,3 +149,10 @@ html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 .counter-n{font-family:var(--f-en);font-weight:700;font-size:clamp(2.6rem,4.5vw,4rem);line-height:1;color:var(--clay-bright);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 :lang(ar) .counter-n{font-family:var(--f-ar);font-weight:700}
 .counter-l{color:var(--platinum-2);font-size:.9rem;margin-block-start:.7rem;line-height:1.4;letter-spacing:.01em}
+
+/* طباعة نظيفة — تُستخدَم أيضًا لـ"حفظ كـPDF" عبر مربّع حوار طباعة المتصفح، بلا خط أنابيب PDF مصطنَع. */
+@media print{
+  header, footer, .no-print{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  a[href]::after{content:''}
+}

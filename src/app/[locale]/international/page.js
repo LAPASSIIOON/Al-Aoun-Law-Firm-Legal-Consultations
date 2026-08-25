@@ -40,16 +40,24 @@ export default async function International({ params }) {
         </div>
       </section>
 
-      {/* الازدواج — القرار المعماري الأهم في الصفحة */}
+      {/* الازدواج — القرار المعماري الأهم في الصفحة، مُوسَّع لثلاث مسارات (المسار الأوسط كان ناقصًا فعليًا) */}
       <section className="on-white section">
         <div className="wrap">
-          <div className={s.forkGrid}>
+          <div className={`${s.forkGrid} ${s.forkGrid3}`}>
             <div className={s.forkCard} data-reveal>
               <span className="eyebrow">{t('forkClientEye')}</span>
               <h2 className="display d-2" style={{ marginBlock: '1rem .9rem' }}>{t('forkClientHead')}</h2>
               <p className="body">{t('forkClientBody')}</p>
               <p style={{ marginBlockStart: '1.5rem' }}>
-                <Link href="/contact" className="btn btn-solid">{t('forkClientCta')} <span className="arrow">→</span></Link>
+                <Link href="/contact?intent=kuwaitCounsel" className="btn btn-solid">{t('forkClientCta')} <span className="arrow">→</span></Link>
+              </p>
+            </div>
+            <div className={s.forkCard} data-reveal>
+              <span className="eyebrow">{t('forkOutboundEye')}</span>
+              <h2 className="display d-2" style={{ marginBlock: '1rem .9rem' }}>{t('forkOutboundHead')}</h2>
+              <p className="body">{t('forkOutboundBody')}</p>
+              <p style={{ marginBlockStart: '1.5rem' }}>
+                <Link href="/contact?intent=internationalMatter" className="btn-line">{t('forkOutboundCta')} <span className="arrow">→</span></Link>
               </p>
             </div>
             <div className={s.forkCard} data-reveal>

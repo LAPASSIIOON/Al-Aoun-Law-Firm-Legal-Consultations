@@ -28,7 +28,7 @@ export default async function Article({ params }) {
   return (
     <article className={`on-ivory ${s.pageHead} section`}>
       <div className="wrap-narrow wrap">
-        <Breadcrumbs items={[
+        <Breadcrumbs locale={locale} items={[
           { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
           { label: t('heading'), href: '/insights' },
           { label: a.title },

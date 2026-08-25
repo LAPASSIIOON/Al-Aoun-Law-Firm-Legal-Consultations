@@ -27,7 +27,7 @@ export default async function TeamMember({ params }) {
   return (
     <section className={`on-ivory ${s.pageHead} section`}>
       <div className="wrap">
-        <Breadcrumbs items={[
+        <Breadcrumbs locale={locale} items={[
           { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
           { label: t('heading'), href: '/team' },
           { label: f.name },

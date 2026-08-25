@@ -1,6 +1,7 @@
+import { Suspense } from 'react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
-import ContactForm from '@/components/ContactForm.js';
+import ContactIntentRouter from '@/components/ContactIntentRouter.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
 import s from '../shared.module.css';
 
@@ -50,7 +51,7 @@ export default async function Contact({ params }) {
           </div>
           <div data-reveal>
             <span className="eyebrow">{t('formHeading')}</span>
-            <div style={{ marginBlockStart: '1.5rem' }}><ContactForm /></div>
+            <div style={{ marginBlockStart: '1.5rem' }}><Suspense fallback={null}><ContactIntentRouter /></Suspense></div>
           </div>
         </div>
       </section>

@@ -35,7 +35,7 @@ export default async function ForLawFirms({ params }) {
     <>
       <section className={`on-navy ${s.pageHead} section-tight`}>
         <div className="wrap">
-          <Breadcrumbs items={[
+          <Breadcrumbs locale={locale} items={[
             { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
             { label: locale === 'ar' ? 'دولي' : 'International', href: '/international' },
             { label: t('heading') },

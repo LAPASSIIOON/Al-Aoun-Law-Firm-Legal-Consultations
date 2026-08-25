@@ -22,7 +22,8 @@
     "team": "Team",
     "careers": "Careers",
     "international": "International",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "professionals": "Professionals"
   },
   "hero": {
     "eyebrow": "Kuwaiti Law Firm · Since 2000",
@@ -245,7 +246,16 @@
     "processStep2D": "We confirm your matter doesn't conflict with our existing files.",
     "processStep3T": "Secure follow-up",
     "processStep3D": "We reach you via your chosen channel, in full confidence.",
-    "errorCaptcha": "Security check failed, please try again."
+    "errorCaptcha": "Security check failed, please try again.",
+    "intentPrompt": "What brings you here?",
+    "intentCorporate": "Corporate services",
+    "intentKuwaitCounsel": "Kuwait counsel request (foreign)",
+    "intentInternationalMatter": "International matter (outbound)",
+    "intentForeignFirm": "Foreign firm cooperation",
+    "intentProfessionalCoop": "Professional cooperation",
+    "intentCareer": "Career",
+    "intentGeneral": "General inquiry",
+    "intentLegalConsultation": "Legal consultation"
   },
   "careers": {
     "eyebrow": "Careers",
@@ -376,7 +386,11 @@
     "ctaFirmHead": "A firm looking for a Kuwaiti partner?",
     "jurisdictionsEye": "Coordination coverage",
     "jurisdictionsHead": "We coordinate matter referrals across these jurisdictions.",
-    "jurisdictionsBody": "This is the current coverage of our referral system — a signal of geographic coordination reach, not a claim of formal established partnerships in every jurisdiction listed."
+    "jurisdictionsBody": "This is the current coverage of our referral system — a signal of geographic coordination reach, not a claim of formal established partnerships in every jurisdiction listed.",
+    "forkOutboundEye": "For Clients in Kuwait",
+    "forkOutboundHead": "I have a matter outside Kuwait",
+    "forkOutboundBody": "We coordinate representation across the jurisdictions the firm engages with for your matter — through the real network shown below.",
+    "forkOutboundCta": "Get in touch"
   },
   "forLawFirms": {
     "eyebrow": "For Law Firms & Lawyers",

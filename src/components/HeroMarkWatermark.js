@@ -1,8 +1,9 @@
-/** علامة المونوجرام الهندسية بشفافية منخفضة — لمسة هوية هادئة فوق صورة الهيرو، بطلب د. هيثم. */
+/** علامة المونوجرام الهندسية بشفافية منخفضة — لمسة هوية هادئة فوق صورة الهيرو، بطلب د. هيثم.
+ *  تستخدم الآن ملف SVG متجهي حقيقي (مسارات حقيقية، لا صورة نقطية) — حدّة كاملة مهما كبر حجم العرض. */
 export default function HeroMarkWatermark() {
   return (
     <img
-      src="/brand/mark-watermark.png"
+      src="/brand/al-aoun-mark.svg"
       alt=""
       aria-hidden="true"
       style={{
@@ -16,6 +17,7 @@ export default function HeroMarkWatermark() {
         zIndex: 1,
         pointerEvents: 'none',
         userSelect: 'none',
+        filter: 'brightness(0) invert(1)', // currentColor لا يعمل عبر <img> — نحوّل الأسود الافتراضي لأبيض نقي
       }}
     />
   );

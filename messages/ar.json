@@ -135,7 +135,14 @@
     "rights": "جميع الحقوق محفوظة",
     "hoursHeading": "ساعات العمل",
     "hoursValue": "الأحد – الخميس · ٩ ص – ٥ م",
-    "portal": "بوابة الأعضاء"
+    "portal": "بوابة الأعضاء",
+    "newsletterLead": "اشترك ليصلك كل تحديث قانوني جديد أول بأول.",
+    "newsletterPlaceholder": "بريدك الإلكتروني",
+    "newsletterSubmit": "اشتراك",
+    "newsletterSending": "جارٍ الإرسال…",
+    "newsletterSuccess": "تم الاشتراك، شكرًا لك.",
+    "newsletterDuplicate": "هذا البريد مُشترِك بالفعل.",
+    "newsletterError": "تعذّر الاشتراك، حاول مرة أخرى."
   },
   "langSwitch": {
     "label": "English",

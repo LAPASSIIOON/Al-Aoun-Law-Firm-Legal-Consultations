@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation.js';
+import NewsletterSubscribe from './NewsletterSubscribe.js';
 import styles from './SiteFooter.module.css';
 
 /** @param {{ locale: string, areas: {slug:string,title:string}[] }} props */
@@ -28,6 +29,9 @@ export function SiteFooter({ locale, areas = [] }) {
             <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
           </span>
           <p className={styles.tagline}>{t('tagline')}</p>
+          <div style={{ marginBlockStart: '1.5rem', maxWidth: '360px' }}>
+            <NewsletterSubscribe locale={locale} />
+          </div>
         </div>
         <div className={styles.col}>
           <span className={styles.head}>{n('services')}</span>

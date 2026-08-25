@@ -135,7 +135,14 @@
     "rights": "All rights reserved",
     "hoursHeading": "Working hours",
     "hoursValue": "Sun – Thu · 9 AM – 5 PM",
-    "portal": "Member Portal"
+    "portal": "Member Portal",
+    "newsletterLead": "Subscribe to get new legal updates as soon as they're published.",
+    "newsletterPlaceholder": "Your email",
+    "newsletterSubmit": "Subscribe",
+    "newsletterSending": "Sending…",
+    "newsletterSuccess": "Subscribed, thank you.",
+    "newsletterDuplicate": "This email is already subscribed.",
+    "newsletterError": "Couldn't subscribe, please try again."
   },
   "langSwitch": {
     "label": "العربية",

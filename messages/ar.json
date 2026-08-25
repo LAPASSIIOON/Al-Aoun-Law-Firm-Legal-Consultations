@@ -346,7 +346,10 @@
     "teamHeading": "أعضاء الفريق",
     "educationHeading": "المؤهلات العلمية",
     "experienceHeading": "الخبرات المهنية",
-    "partnersHeading": "الشركاء"
+    "partnersHeading": "الشركاء",
+    "closingHead": "تحتاج إلى التحدث مع فريقنا القانوني؟",
+    "closingBody": "ابدأ بتواصل واضح وسري مع المكتب.",
+    "closingCta": "تواصل مع المكتب"
   },
   "insightsPage": {
     "lead": "مقالات وتحديثات قانونية من مجموعة العون.",

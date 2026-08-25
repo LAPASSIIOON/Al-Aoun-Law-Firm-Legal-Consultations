@@ -46,6 +46,14 @@
 .founderName{font-family:var(--f-display);font-weight:600;font-size:clamp(1.6rem,2.6vw,2.2rem);color:var(--ink);margin-block:1rem .35rem}
 .founderRole{color:var(--blue);font-weight:500;font-size:1.02rem;margin-block-end:1.25rem}
 
+/* فاصل تحريري رفيع بين محترفَين على نفس الخلفية — لا تبديل لون قسم */
+.profileDivider{margin-block-start:clamp(3rem,6vw,5rem);padding-block-start:clamp(3rem,6vw,5rem);border-block-start:1px solid var(--hair-light)}
+
+/* سطور اعتماد تحريرية موجزة — تمايز مقصود عن القائمة النقطية بصفحة الملف التفصيلي */
+.proofLines{display:flex;flex-direction:column;margin-block-start:1.5rem}
+.proofLine{font-family:var(--f-ui);font-size:.92rem;color:var(--ink);line-height:1.6;padding-block:.6rem;border-block-start:1px solid var(--hair-light)}
+.proofLine:first-child{border-block-start:none;padding-block-start:0}
+
 /* ── Values ── */
 .value{display:flex;flex-direction:column;gap:.7rem}
 .valueNum{font-family:var(--f-en);font-size:.85rem;color:var(--blue-glow);letter-spacing:.08em}

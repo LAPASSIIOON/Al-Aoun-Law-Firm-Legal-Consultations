@@ -346,7 +346,10 @@
     "teamHeading": "Team Members",
     "educationHeading": "Education",
     "experienceHeading": "Professional Experience",
-    "partnersHeading": "Partners"
+    "partnersHeading": "Partners",
+    "closingHead": "Need to speak with our legal team?",
+    "closingBody": "Start with a clear, confidential conversation with the firm.",
+    "closingCta": "Contact the Firm"
   },
   "insightsPage": {
     "lead": "Legal articles and updates from Al Oun.",

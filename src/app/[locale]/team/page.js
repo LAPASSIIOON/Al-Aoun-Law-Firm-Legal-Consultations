@@ -9,10 +9,11 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading'), alternates: altLangs(locale, '/team') }; }
 
 /** ملف محترف "مميّز" بمعاملة متساوية — يُستخدَم لكل شخص، بلا تمييز بصري بين الأول والثاني.
- *  reverse=true تعكس ترتيب الصورة/النص عند سطح المكتب فقط (إيقاع تحريري، لا فرق أهمية). */
+ *  reverse=true تعكس ترتيب الصورة/النص عند سطح المكتب فقط (إيقاع تحريري، لا فرق أهمية).
+ *  الاعتمادات: سطور تحريرية موجزة (فاصل رفيع بينها) بدل قائمة نقطية — تمايز مقصود عن صفحة الملف التفصيلي. */
 function ProfileBlock({ member, locale, reverse, ctaLabel }) {
   const f = member[locale] || member.ar;
-  const creds = (f.creds || []).slice(0, 4);
+  const proofLines = (f.creds || []).slice(0, 4);
   return (
     <div className={`${h.founder} ${reverse ? h.founderReverse : ''}`} data-reveal>
       <div className={`${h.founderMedia} img-zoom-frame`}>
@@ -22,10 +23,10 @@ function ProfileBlock({ member, locale, reverse, ctaLabel }) {
         <h2 className="display d-2">{f.name}</h2>
         <p className={h.founderRole}>{f.role} · {f.title}</p>
         {f.bio && <p className="body" style={{ marginBlockStart: '1.25rem', maxWidth: '58ch' }}>{f.bio}</p>}
-        {creds.length > 0 && (
-          <ul className={s.pointList} style={{ marginBlockStart: '1.5rem' }}>
-            {creds.map((c, i) => (<li key={i} className={s.point}><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
-          </ul>
+        {proofLines.length > 0 && (
+          <div className={h.proofLines}>
+            {proofLines.map((c, i) => (<p key={i} className={h.proofLine}>{c}</p>))}
+          </div>
         )}
         <Link href={`/team/${member.slug}`} className="btn-line" style={{ marginBlockStart: '1.75rem' }}>{ctaLabel}<span className="arrow">→</span></Link>
       </div>
@@ -53,13 +54,16 @@ export default async function Team({ params }) {
         </div>
       </section>
 
-      {featured.map((m, i) => (
-        <section key={m.slug} className={i % 2 === 0 ? 'on-ivory section' : 'on-graphite section'}>
-          <div className="wrap">
-            <ProfileBlock member={m} locale={locale} reverse={i % 2 === 1} ctaLabel={ctaLabel} />
-          </div>
-        </section>
-      ))}
+      {/* خلفية موحَّدة واحدة لكل المحترفين — فصل بخط رفيع + تباعد، لا بتبديل لون القسم */}
+      <section className="on-ivory section">
+        <div className="wrap">
+          {featured.map((m, i) => (
+            <div key={m.slug} className={i > 0 ? h.profileDivider : ''}>
+              <ProfileBlock member={m} locale={locale} reverse={i % 2 === 1} ctaLabel={ctaLabel} />
+            </div>
+          ))}
+        </div>
+      </section>
 
       {members.length > 0 && (
         <section className="on-ivory section">
@@ -82,6 +86,21 @@ export default async function Team({ params }) {
           </div>
         </section>
       )}
+
+      {/* دعوة ختامية هادئة — قبل الفوتر مباشرة */}
+      <section className="on-navy section-tight">
+        <div className="wrap">
+          <div className={h.band}>
+            <div className={h.bandText} data-reveal>
+              <h2 className="display d-2" style={{ color: '#fff' }}>{tt('closingHead')}</h2>
+              <p className="lead" style={{ marginBlockStart: '.75rem' }}>{tt('closingBody')}</p>
+            </div>
+            <div data-reveal>
+              <Link href="/contact?intent=legalConsultation" className="btn btn-solid">{tt('closingCta')} <span className="arrow">→</span></Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

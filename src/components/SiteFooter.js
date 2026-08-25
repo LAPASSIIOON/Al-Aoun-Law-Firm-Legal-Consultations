@@ -25,9 +25,13 @@ export function SiteFooter({ locale, areas = [] }) {
       </div>
       <div className={`wrap ${styles.top}`}>
         <div className={styles.brandCol}>
-          <span className={styles.logoPlinth}>
-            <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
-          </span>
+          <div className={styles.darkLockup}>
+            <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.darkMark} />
+            <div>
+              <span className={styles.darkWordmark}>{locale === 'ar' ? 'مجموعة العون' : 'OUN GROUP'}</span>
+              <span className={styles.darkSubline}>{locale === 'ar' ? 'محامون ومستشارون قانونيون' : 'Advocates & Legal Consultants'}</span>
+            </div>
+          </div>
           <p className={styles.tagline}>{t('tagline')}</p>
           <div style={{ marginBlockStart: '1.5rem', maxWidth: '360px' }}>
             <NewsletterSubscribe locale={locale} />

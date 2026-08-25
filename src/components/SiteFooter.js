@@ -11,7 +11,7 @@ export function SiteFooter({ locale, areas = [] }) {
   const firmLinks = [
     { key: 'about', href: '/about' }, { key: 'team', href: '/team' },
     { key: 'international', href: '/international' }, { key: 'insights', href: '/insights' },
-    { key: 'careers', href: '/careers' }, { key: 'contact', href: '/contact' },
+    { key: 'careers', href: '/careers' }, { key: 'faq', href: '/faq' }, { key: 'contact', href: '/contact' },
   ];
   return (
     <footer className={`${styles.footer} on-navy`}>

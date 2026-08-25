@@ -21,7 +21,8 @@
     "services": "Practice Areas",
     "team": "Team",
     "careers": "Careers",
-    "international": "International"
+    "international": "International",
+    "faq": "FAQ"
   },
   "hero": {
     "eyebrow": "Kuwaiti Law Firm · Since 2000",
@@ -770,5 +771,40 @@
     "kindPracticeArea": "Practice Area",
     "kindInsight": "Insight",
     "heroPlaceholder": "Search our practice areas..."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "heading": "Frequently Asked Questions",
+    "lead": "Direct answers to the most common questions about AL OUN — how to reach us, our scope of practice, and international coordination.",
+    "items": [
+      {
+        "q": "What practice areas does AL OUN cover?",
+        "a": "The firm covers 48 real practice areas, including Constitutional Law and Cassation, Commercial Arbitration, Corporate and Commercial Law, Real Estate, and Labor Law. The full list is available on the Practice Areas page."
+      },
+      {
+        "q": "Does AL OUN represent clients outside Kuwait?",
+        "a": "The firm is based in Kuwait and coordinates file referrals with lawyers across ten other jurisdictions (including Egypt, Saudi Arabia, the UAE, the UK, and the US), without claiming any formal existing partnerships. Details are on the International page."
+      },
+      {
+        "q": "How do I request a legal consultation?",
+        "a": "Through the consultation request form on the site. The first step only asks for your name and preferred contact method — no case details — and the firm follows up after an initial conflict check."
+      },
+      {
+        "q": "Does the firm check for conflicts of interest before accepting a consultation?",
+        "a": "Yes. A conflict-of-interest check is a mandatory step in every consultation request's lifecycle, before any substantive contact about the matter itself."
+      },
+      {
+        "q": "What languages does the firm provide services in?",
+        "a": "The firm's website content and services are fully available in both Arabic and English."
+      },
+      {
+        "q": "When was AL OUN founded?",
+        "a": "The firm was founded in 2000 and is based in Kuwait."
+      },
+      {
+        "q": "Can a foreign law firm refer a matter to AL OUN in Kuwait?",
+        "a": "Yes, through the dedicated \"Refer a Matter to Us\" form on the International page."
+      }
+    ]
   }
 }

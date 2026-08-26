@@ -71,7 +71,7 @@ async function notifyNewConsultation(d) {
  *   fullName: string, clientType: string, preferredContact: string,
  *   preferredLocale?: string, phone?: string, email?: string,
  *   practiceAreaId?: string|null, routingNote?: string,
- *   turnstileToken?: string
+ *   turnstileToken?: string, intent?: string|null, sourceRoute?: string|null
  * }} input
  * @returns {Promise<{ ok: boolean, reference?: string, error?: string }>}
  */
@@ -105,6 +105,8 @@ export async function submitConsultation(input) {
     p_routing_note: input.routingNote || null,
     p_ip_hash: hashIp(ip),
     p_user_agent: userAgent,
+    p_intent: input.intent || null,
+    p_source_route: input.sourceRoute || null,
   });
 
   if (error) {

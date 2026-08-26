@@ -49,6 +49,12 @@ export default function ContactIntentRouter() {
     }
   }, [searchParams, router]);
 
+  // from= مسار داخلي فقط (مرآة العميل لنفس صيغة الخادم — الخادم هو المرجع النهائي دائمًا)
+  const rawFrom = searchParams.get('from');
+  const sourceRoute = rawFrom && /^\/(ar|en)(\/[a-z0-9-]+){0,4}$/.test(rawFrom)
+    ? rawFrom
+    : `/${locale}/contact`; // احتياط معروف يقينًا — لا NULL، لا sessionStorage، لا referrer
+
   const options = OPTION_ORDER.map((key) => ({
     key,
     label: t(`intent${key.charAt(0).toUpperCase()}${key.slice(1)}`),
@@ -64,7 +70,7 @@ export default function ContactIntentRouter() {
   }
 
   if (redirecting) return null; // تفادي وميض القائمة القديمة أثناء التوجيه اللحظي
-  if (selected) return <ContactForm />;
+  if (selected) return <ContactForm intent={selected} sourceRoute={sourceRoute} />;
 
   return (
     <div>

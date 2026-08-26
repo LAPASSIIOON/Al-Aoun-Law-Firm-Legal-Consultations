@@ -49,7 +49,7 @@ export default async function International({ params }) {
               <h2 className="display d-2" style={{ marginBlock: '1rem .9rem' }}>{t('forkClientHead')}</h2>
               <p className="body">{t('forkClientBody')}</p>
               <p style={{ marginBlockStart: '1.5rem' }}>
-                <Link href="/contact?intent=kuwaitCounsel" className="btn btn-solid">{t('forkClientCta')} <span className="arrow">→</span></Link>
+                <Link href={`/contact?intent=kuwaitCounsel&from=/${locale}/international`} className="btn btn-solid">{t('forkClientCta')} <span className="arrow">→</span></Link>
               </p>
             </div>
             <div className={s.forkCard} data-reveal>
@@ -57,7 +57,7 @@ export default async function International({ params }) {
               <h2 className="display d-2" style={{ marginBlock: '1rem .9rem' }}>{t('forkOutboundHead')}</h2>
               <p className="body">{t('forkOutboundBody')}</p>
               <p style={{ marginBlockStart: '1.5rem' }}>
-                <Link href="/contact?intent=internationalMatter" className="btn-line">{t('forkOutboundCta')} <span className="arrow">→</span></Link>
+                <Link href={`/contact?intent=internationalMatter&from=/${locale}/international`} className="btn-line">{t('forkOutboundCta')} <span className="arrow">→</span></Link>
               </p>
             </div>
             <div className={s.forkCard} data-reveal>

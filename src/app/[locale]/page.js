@@ -123,7 +123,7 @@ export default async function Home({ params }) {
             <p className={styles.heroSub}>{c.sub}</p>
             <HeroSearch locale={locale} />
             <div className={styles.heroCtas}>
-              <Link href="/contact?intent=legalConsultation" className="btn btn-solid">{c.heroCta1} <span className="arrow">→</span></Link>
+              <Link href={`/contact?intent=legalConsultation&from=/${locale}`} className="btn btn-solid">{c.heroCta1} <span className="arrow">→</span></Link>
               <Link href="/services" className="btn btn-ghost">{c.heroCta2}</Link>
             </div>
             <div className={styles.counters}>

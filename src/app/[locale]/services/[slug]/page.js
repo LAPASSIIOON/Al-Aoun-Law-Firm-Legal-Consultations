@@ -89,7 +89,7 @@ export default async function ServiceDetail({ params }) {
             <p className="body" style={{ marginBlockEnd: '1.1rem', fontSize: '1rem' }}>
               {locale === 'ar' ? 'لمناقشة مسألتك ضمن هذا المجال، يمكنك طلب استشارة مباشرة.' : 'To discuss your matter in this area, you can request a consultation directly.'}
             </p>
-            <Link href="/contact" className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
+            <Link href={`/contact?intent=legalConsultation&from=/${locale}/services/${slug}`} className="btn btn-solid">{n('consult')} <span className="arrow">→</span></Link>
           </div>
         </div>
       </section>

@@ -7,7 +7,7 @@ import styles from './ContactForm.module.css';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 
-export default function ContactForm() {
+export default function ContactForm({ intent = null, sourceRoute = null } = {}) {
   const t = useTranslations('contactPage');
   const locale = useLocale();
   const [step, setStep] = useState(1);
@@ -54,7 +54,7 @@ export default function ContactForm() {
     if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     try {
-      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken });
+      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken, intent, sourceRoute });
       if (res && res.ok) { setStatus('success'); }
       else if (res && res.error === 'captcha_failed') {
         setStatus('error'); setErr(t('errorCaptcha'));

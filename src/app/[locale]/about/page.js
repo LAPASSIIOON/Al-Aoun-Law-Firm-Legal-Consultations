@@ -66,15 +66,11 @@ export default async function About({ params }) {
         <div className="wrap">
           <div className={s.officeGrid}>
             <div className={s.officeMedia}>
-              <video
+              <img
                 className={s.officeVideo}
-                poster="/media/office-interior-poster.jpg"
-                autoPlay muted loop playsInline preload="metadata"
-                aria-label={t('officeVideoHead')}
-              >
-                <source src="/media/office-interior.webm" type="video/webm" />
-                <source src="/media/office-interior.mp4" type="video/mp4" />
-              </video>
+                src="/media/office-interior-poster.jpg"
+                alt={t('officeVideoHead')}
+              />
             </div>
             <div className={s.officeText} data-reveal>
               <span className="eyebrow">{t('officeVideoEye')}</span>

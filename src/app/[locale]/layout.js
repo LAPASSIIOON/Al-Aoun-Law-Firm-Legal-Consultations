@@ -63,10 +63,6 @@ export async function generateMetadata({ params }) {
       images: [ogImage],
     },
     robots: { index: true, follow: true },
-    // مؤقّت — تحقّق نطاق Strix. يُزال بعد اكتمال التحقّق.
-    other: {
-      'strix-verification': 'strix-verify-f068874231768bd6da1273dd8bd9a20f'
-    },
   };
 }
 

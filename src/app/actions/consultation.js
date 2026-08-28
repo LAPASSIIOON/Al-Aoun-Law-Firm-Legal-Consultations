@@ -4,13 +4,18 @@ import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { createServerClient } from '@/lib/supabase-server.js';
 import { verifyTurnstile } from '@/lib/turnstile.js';
+import { escapeHtml } from '@/lib/escape-html.js';
 
 /**
  * تجزئة IP بملح ثابت — لحد المعدل دون تخزين IP خام (خصوصية §٥/CITRA).
  * @param {string} ip
  */
 function hashIp(ip) {
-  const salt = process.env.IP_HASH_SALT || 'al-aoun-default-salt';
+  const salt = process.env.IP_HASH_SALT;
+  // مطلوب في كل البيئات: ملح معروف يسمح بمطابقة قاموسية على مساحة IPv4 المحدودة،
+  // فيُبطل التسمية المستعارة. نفشل بوضوح بدل التدهور الصامت — ولا نُرجع null
+  // لأن ذلك يعطّل حدّ المعدّل في submit_consultation.
+  if (!salt) throw new Error('IP_HASH_SALT is not configured');
   return createHash('sha256').update(salt + ip).digest('hex').slice(0, 32);
 }
 
@@ -25,19 +30,20 @@ function hashIp(ip) {
 async function notifyNewConsultation(d) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return; // غير مُهيَّأ بعد — لا نكسر تدفّق الطلب لهذا السبب
-  const typeLabel = { individual: 'فرد', company: 'شركة', investor: 'مستثمر' }[d.clientType] || d.clientType;
-  const contactLabel = { phone: 'هاتف', email: 'بريد إلكتروني' }[d.preferredContact] || d.preferredContact;
+  // الاحتياط `|| d.clientType` يمرّر قيمة المستخدم الخام عند عدم مطابقة الخريطة — لذا يُهرَّب أيضًا.
+  const typeLabel = { individual: 'فرد', company: 'شركة', investor: 'مستثمر' }[d.clientType] || escapeHtml(d.clientType);
+  const contactLabel = { phone: 'هاتف', email: 'بريد إلكتروني' }[d.preferredContact] || escapeHtml(d.preferredContact);
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.8;color:#14213A">
       <h2 style="margin:0 0 4px">طلب استشارة جديد — ${d.reference}</h2>
       <p style="color:#666;margin:0 0 20px">استلمناه الآن. فحص التعارض مطلوب قبل أي تواصل موضوعي.</p>
       <table style="border-collapse:collapse;width:100%;max-width:480px">
-        <tr><td style="padding:6px 0;color:#666">الاسم</td><td style="padding:6px 0;font-weight:bold">${d.fullName}</td></tr>
+        <tr><td style="padding:6px 0;color:#666">الاسم</td><td style="padding:6px 0;font-weight:bold">${escapeHtml(d.fullName)}</td></tr>
         <tr><td style="padding:6px 0;color:#666">الصفة</td><td style="padding:6px 0">${typeLabel}</td></tr>
         <tr><td style="padding:6px 0;color:#666">طريقة التواصل المفضّلة</td><td style="padding:6px 0">${contactLabel}</td></tr>
-        ${d.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${d.phone}</td></tr>` : ''}
-        ${d.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${d.email}</td></tr>` : ''}
-        ${d.routingNote ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">ملاحظة</td><td style="padding:6px 0">${d.routingNote}</td></tr>` : ''}
+        ${d.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(d.phone)}</td></tr>` : ''}
+        ${d.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(d.email)}</td></tr>` : ''}
+        ${d.routingNote ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">ملاحظة</td><td style="padding:6px 0">${escapeHtml(d.routingNote)}</td></tr>` : ''}
       </table>
     </div>`;
   try {

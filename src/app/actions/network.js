@@ -4,9 +4,13 @@ import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { createServerClient } from '@/lib/supabase-server.js';
 import { verifyTurnstile } from '@/lib/turnstile.js';
+import { escapeHtml } from '@/lib/escape-html.js';
 
 function hashIp(ip) {
-  const salt = process.env.IP_HASH_SALT || 'al-aoun-default-salt';
+  const salt = process.env.IP_HASH_SALT;
+  // مطلوب في كل البيئات — انظر التعليل نفسه في consultation.js. نفشل بوضوح
+  // بدل التدهور الصامت، ولا نُرجع null حتى لا يتعطّل حدّ المعدّل.
+  if (!salt) throw new Error('IP_HASH_SALT is not configured');
   return createHash('sha256').update(salt + ip).digest('hex').slice(0, 32);
 }
 
@@ -82,11 +86,11 @@ export async function submitReferral(input) {
         <h2 style="margin:0 0 4px">إحالة ملف جديدة — ${data.reference}</h2>
         <p style="color:#666;margin:0 0 20px">وردت عبر المكتب الدولي. فحص التعارض مطلوب قبل أي تواصل موضوعي.</p>
         <table style="border-collapse:collapse;width:100%;max-width:480px">
-          <tr><td style="padding:6px 0;color:#666">المكتب المُحيل</td><td style="padding:6px 0;font-weight:bold">${input.referringFirmName || '—'}</td></tr>
-          <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${input.contactName}</td></tr>
-          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${input.email}</td></tr>` : ''}
-          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${input.phone}</td></tr>` : ''}
-          ${input.matterSummary ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">موجز</td><td style="padding:6px 0">${input.matterSummary}</td></tr>` : ''}
+          <tr><td style="padding:6px 0;color:#666">المكتب المُحيل</td><td style="padding:6px 0;font-weight:bold">${input.referringFirmName ? escapeHtml(input.referringFirmName) : '—'}</td></tr>
+          <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${escapeHtml(input.contactName)}</td></tr>
+          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.email)}</td></tr>` : ''}
+          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.phone)}</td></tr>` : ''}
+          ${input.matterSummary ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">موجز</td><td style="padding:6px 0">${escapeHtml(input.matterSummary)}</td></tr>` : ''}
         </table>
       </div>`
     );
@@ -144,13 +148,13 @@ export async function submitPartnershipApplication(input) {
         <h2 style="margin:0 0 4px">طلب تعاون جديد — ${data.reference}</h2>
         <p style="color:#666;margin:0 0 20px">وصل عبر صفحة "التعاون معنا" في المكتب الدولي.</p>
         <table style="border-collapse:collapse;width:100%;max-width:480px">
-          <tr><td style="padding:6px 0;color:#666">المكتب/الجهة</td><td style="padding:6px 0;font-weight:bold">${input.firmName}</td></tr>
-          <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${input.contactName}</td></tr>
-          <tr><td style="padding:6px 0;color:#666">الصفة</td><td style="padding:6px 0">${input.applicantType}</td></tr>
-          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${input.email}</td></tr>` : ''}
-          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${input.phone}</td></tr>` : ''}
-          ${input.website ? `<tr><td style="padding:6px 0;color:#666">الموقع</td><td style="padding:6px 0" dir="ltr">${input.website}</td></tr>` : ''}
-          ${input.message ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">رسالة</td><td style="padding:6px 0">${input.message}</td></tr>` : ''}
+          <tr><td style="padding:6px 0;color:#666">المكتب/الجهة</td><td style="padding:6px 0;font-weight:bold">${escapeHtml(input.firmName)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${escapeHtml(input.contactName)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666">الصفة</td><td style="padding:6px 0">${escapeHtml(input.applicantType)}</td></tr>
+          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.email)}</td></tr>` : ''}
+          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.phone)}</td></tr>` : ''}
+          ${input.website ? `<tr><td style="padding:6px 0;color:#666">الموقع</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.website)}</td></tr>` : ''}
+          ${input.message ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">رسالة</td><td style="padding:6px 0">${escapeHtml(input.message)}</td></tr>` : ''}
         </table>
       </div>`
     );

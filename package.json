@@ -2,7 +2,7 @@
   "name": "al-aoun-site",
   "version": "0.1.0",
   "private": true,
-  "description": "مجموعة العون — الموقع الإلكتروني. نموذج بصري أولي (صفحتان: الرئيسية + مجال ممارسة) قبل بناء نظام المكوّنات الكامل.",
+  "description": "AL OUN Digital Legal Platform — bilingual Kuwait law firm platform for expertise discovery, structured legal intake, international coordination, member services, and legal operations.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

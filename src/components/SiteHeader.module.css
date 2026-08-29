@@ -46,6 +46,13 @@
 .overlaySubLink{font-size:1.05rem;color:var(--platinum-2);padding:.5rem .2rem}
 .overlaySubLink:hover{color:var(--clay-bright)}
 .overlayFoot{display:flex;align-items:center;gap:1.25rem;padding-block:1.75rem;border-block-start:1px solid var(--hair-light);flex:0 0 auto}
+/* تباين الدرج الداكن: .lang و.chev مُعرَّفتان بحبر شبه أسود للشريط الفاتح،
+   وتُعاد استخدامهما داخل الدرج على خلفية --ground (#0E1826) فتكادان تختفيان
+   (1.05:1 و1.04:1 — قياس فعلي على iPhone 11). تجاوزات محصورة بالدرج فقط،
+   فلا تتأثر قواعد سطح المكتب الأساسية. لون فقط — بلا أي تغيير هندسي. */
+.overlayFoot .lang,
+.overlayFoot .lang:hover{color:var(--platinum)}
+.overlayNav .chev{color:var(--platinum-2)}
 
 /* ── المرحلة ٢: تجميع مؤسسي (§12) ── */
 .megaIdx{font-family:var(--f-en);font-size:.72rem;color:var(--platinum-3);inline-size:1.4rem;flex:0 0 auto;font-variant-numeric:tabular-nums}

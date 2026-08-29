@@ -2,6 +2,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing.js';
+import { jsonLdScript } from '@/lib/json-ld.js';
 import '@fontsource/noto-serif/400.css';
 import '@fontsource/noto-serif/500.css';
 import '@fontsource/noto-serif/600.css';
@@ -90,7 +91,7 @@ export default async function LocaleLayout({ children, params }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: jsonLdScript({
               '@context': 'https://schema.org',
               '@type': 'LegalService',
               name: locale === 'ar' ? 'مجموعة العون للمحاماة والاستشارات القانونية' : 'AL OUN — Legal Consultations & Advocacy',

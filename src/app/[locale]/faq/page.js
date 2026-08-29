@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
+import { jsonLdScript } from '@/lib/json-ld.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -23,7 +24,7 @@ export default async function FaqPage({ params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
       <section className={`on-espresso ${s.pageHead} section-tight`}>
         <div className="wrap">
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>

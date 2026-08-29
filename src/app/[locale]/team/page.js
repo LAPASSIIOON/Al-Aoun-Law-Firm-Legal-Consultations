@@ -8,28 +8,26 @@ import h from '../home.module.css';
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'people' }); return { title: t('heading'), alternates: altLangs(locale, '/team') }; }
 
-/** ملف محترف "مميّز" بمعاملة متساوية — يُستخدَم لكل شخص، بلا تمييز بصري بين الأول والثاني.
- *  reverse=true تعكس ترتيب الصورة/النص عند سطح المكتب فقط (إيقاع تحريري، لا فرق أهمية).
- *  الاعتمادات: سطور تحريرية موجزة (فاصل رفيع بينها) بدل قائمة نقطية — تمايز مقصود عن صفحة الملف التفصيلي. */
-function ProfileBlock({ member, locale, reverse, ctaLabel }) {
+/** بطاقة محترف — معاملة متساوية تمامًا بين المؤسِّس والشركاء، ضمن شبكة ذاتية التوسّع (h.teamGrid).
+ *  صورة أعلى النص (لا صورة-بجانب-نص كـ.founder — تفاديًا للازدحام داخل عمود شبكة ضيّق).
+ *  نفس معالجة صور شبكة "أعضاء الفريق" أدناه (نسبة الأبعاد وأسلوب التكبير) لاتساق بصري بين القسمين. */
+function ProfessionalCard({ member, locale, ctaLabel }) {
   const f = member[locale] || member.ar;
-  const proofLines = (f.creds || []).slice(0, 4);
+  const proofLines = (f.creds || []).slice(0, 2);
   return (
-    <div className={`${h.founder} ${reverse ? h.founderReverse : ''}`} data-reveal>
-      <div className={`${h.founderMedia} img-zoom-frame`}>
+    <div className={h.teamCard} data-reveal>
+      <div className={`${h.teamCardMedia} img-zoom-frame`}>
         <img src={member.photoThumb} alt={f.name} />
       </div>
-      <div>
-        <h2 className="display d-2">{f.name}</h2>
-        <p className={h.founderRole}>{f.role} · {f.title}</p>
-        {f.bio && <p className="body" style={{ marginBlockStart: '1.25rem', maxWidth: '58ch' }}>{f.bio}</p>}
-        {proofLines.length > 0 && (
-          <div className={h.proofLines}>
-            {proofLines.map((c, i) => (<p key={i} className={h.proofLine}>{c}</p>))}
-          </div>
-        )}
-        <Link href={`/team/${member.slug}`} className="btn-line" style={{ marginBlockStart: '1.75rem' }}>{ctaLabel}<span className="arrow">→</span></Link>
-      </div>
+      <h2 className="display d-3" style={{ marginBlockStart: '1.1rem' }}>{f.name}</h2>
+      <p className={h.founderRole}>{f.role} · {f.title}</p>
+      {f.bio && <p className={`body ${h.teamCardBio}`}>{f.bio}</p>}
+      {proofLines.length > 0 && (
+        <div className={h.proofLines}>
+          {proofLines.map((c, i) => (<p key={i} className={h.proofLine}>{c}</p>))}
+        </div>
+      )}
+      <Link href={`/team/${member.slug}`} className={`btn-line ${h.teamCardCta}`}>{ctaLabel}<span className="arrow">→</span></Link>
     </div>
   );
 }
@@ -54,14 +52,14 @@ export default async function Team({ params }) {
         </div>
       </section>
 
-      {/* خلفية موحَّدة واحدة لكل المحترفين — فصل بخط رفيع + تباعد، لا بتبديل لون القسم */}
+      {/* شبكة المحترفين المميَّزين (المؤسِّس + الشركاء) — بطاقات متساوية جنبًا إلى جنب، تتّسع ذاتيًا لأي عدد مستقبلي */}
       <section className="on-ivory section">
         <div className="wrap">
-          {featured.map((m, i) => (
-            <div key={m.slug} className={i > 0 ? h.profileDivider : ''}>
-              <ProfileBlock member={m} locale={locale} reverse={i % 2 === 1} ctaLabel={ctaLabel} />
-            </div>
-          ))}
+          <div className={h.teamGrid}>
+            {featured.map((m) => (
+              <ProfessionalCard key={m.slug} member={m} locale={locale} ctaLabel={ctaLabel} />
+            ))}
+          </div>
         </div>
       </section>
 

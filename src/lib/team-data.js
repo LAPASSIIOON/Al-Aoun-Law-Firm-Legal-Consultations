@@ -43,7 +43,7 @@ export const TEAM = [
     ar: {
       name: 'بدر سيف عبدالله عسكر الرشيدي',
       role: 'محامٍ ومستشار قانوني دولي',
-      title: 'محكّم ووسيط قانوني دولي معتمد',
+      title: 'شريك في المجموعة',
       bio: 'محامٍ مرخّص لدى محكمة التمييز والمحكمة الدستورية في دولة الكويت، ومحامٍ للقضايا الدولية في القضايا التجارية والمدنية، ووسيط قانوني ومحكّم تجاري معتمد دوليًا، يتمتع بخبرة مهنية في تسوية المنازعات والتحكيم والوساطة القانونية. يعمل كمدرب قانوني معتمد لدى جمعية المحامين الكويتية، وله إسهامات في تطوير القدرات القانونية وبناء الكفاءات المهنية.',
       creds: [
         'محامٍ أمام محكمة التمييز والمحكمة الدستورية — دولة الكويت',
@@ -66,7 +66,7 @@ export const TEAM = [
     en: {
       name: 'Bader Saif Abdullah Askar Al-Rashidi',
       role: 'Attorney & International Legal Consultant',
-      title: 'Certified International Arbitrator & Mediator',
+      title: 'Partner, AL OUN Group',
       bio: 'Attorney licensed before the Court of Cassation and the Constitutional Court in Kuwait, with extensive experience in international commercial and civil litigation. Certified international commercial arbitrator and legal mediator, with a strong background in legal consultancy, arbitration, protocol management, and legal training. Actively involved in advising corporations, business leaders, and governmental bodies locally and internationally since 2013.',
       creds: [
         'Attorney before the Court of Cassation and Constitutional Court — Kuwait',

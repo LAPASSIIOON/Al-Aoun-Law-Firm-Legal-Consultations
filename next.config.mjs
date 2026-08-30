@@ -29,6 +29,23 @@ const nextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+          // مرحلة رصد فقط — Report-Only لا يفرض السياسة ولا يوفّر حماية بعد.
+          {
+            key: 'Content-Security-Policy-Report-Only',
+            value: [
+              "default-src 'self'",
+              "base-uri 'self'",
+              "object-src 'none'",
+              "frame-ancestors 'none'",
+              "form-action 'self'",
+              "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self'",
+              "font-src 'self'",
+              "connect-src 'self' https://ngyhplcnmedafjzotgho.supabase.co",
+              "frame-src https://challenges.cloudflare.com https://www.google.com",
+            ].join('; '),
+          },
         ],
       },
     ];

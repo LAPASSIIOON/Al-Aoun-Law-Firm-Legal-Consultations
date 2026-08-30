@@ -11,6 +11,50 @@ function fmtSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+/** الصيغ المعتمَدة — للفلترة المبكّرة في الواجهة فقط. الخادم هو المرجع، وهذه ليست ضابطًا أمنيًا. */
+const ACCEPT_ATTR = '.pdf,.docx,.xlsx,.jpg,.jpeg,.png,.heic,.heif';
+/** خريطة امتداد ⇄ نوع مطابقة لقائمة الخادم — تُستخدَم للرفض المبكّر حين يعلن المتصفّح نوعًا. */
+const ALLOWED_TYPES = {
+  pdf: ['application/pdf'],
+  docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  jpg: ['image/jpeg'],
+  jpeg: ['image/jpeg'],
+  png: ['image/png'],
+  heic: ['image/heic'],
+  heif: ['image/heif'],
+};
+const ALLOWED_EXT = Object.keys(ALLOWED_TYPES);
+const MAX_FILE_BYTES = 25 * 1024 * 1024;
+const MAX_NAME = 120;
+
+/**
+ * تطبيع اسم الملف قبل بناء المسار — يجب أن يوافق ما يقبله الخادم.
+ * تحسين سلامة وقابلية قراءة فقط؛ لا يُعتمَد عليه أمنيًا (الخادم يعيد التحقّق).
+ */
+function normalizeFileName(raw) {
+  const dot = raw.lastIndexOf('.');
+  const ext = dot > 0 ? raw.slice(dot + 1).toLowerCase() : '';
+  let base = dot > 0 ? raw.slice(0, dot) : raw;
+  base = base
+    .normalize('NFC')
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001F\u007F]/g, '')      // محارف تحكّم
+    .replace(/[/\\]/g, '')                       // فواصل مسارات — يمنع التعشيش
+    .replace(/[^A-Za-z0-9\u0600-\u06FF._ -]/g, '') // إبقاء العربية واللاتينية وعلامات آمنة
+    .replace(/\s+/g, ' ')                        // توحيد المسافات
+    .trim()
+    .replace(/^[.\s-]+|[.\s-]+$/g, '');          // نقاط/مسافات بادئة أو لاحقة
+  if (!base) base = 'file';                       // منع الاسم الفارغ
+  const room = MAX_NAME - (ext ? ext.length + 1 : 0);
+  if (base.length > room) {
+    // إعادة تنظيف بعد القصّ: القصّ قد يترك نقطة/مسافة/شرطة في النهاية فينتج اسمًا يرفضه الخادم
+    base = base.slice(0, room).replace(/[.\s-]+$/, '').trim();
+    if (!base) base = 'file';
+  }
+  return ext ? `${base}.${ext}` : base;
+}
+
 /** @param {{ matterId: string, files: any[], currentUserId: string|null, clientId: string }} props */
 export default function MatterFilesPanel({ matterId, files: initialFiles, currentUserId, clientId }) {
   const t = useTranslations('admin');
@@ -23,16 +67,34 @@ export default function MatterFilesPanel({ matterId, files: initialFiles, curren
   async function handleFile(e) {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // فحوصات مبكّرة لتجربة المستخدم فقط — رفض واضح قبل رفع لا طائل منه. الخادم يظل المرجع.
+    const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+    const extOk = ALLOWED_EXT.includes(ext);
+    const sizeOk = file.size > 0 && file.size <= MAX_FILE_BYTES;
+    // النوع المُعلَن من المتصفّح: يُفحَص فقط إن وُجد. لا نفترض نوعًا عند غيابه — يحسم الخادم.
+    const mimeOk = !file.type || (extOk && ALLOWED_TYPES[ext].includes(file.type.toLowerCase()));
+    if (!extOk || !sizeOk || !mimeOk) {
+      setError(t('matterUploadError'));
+      if (inputRef.current) inputRef.current.value = '';
+      return;
+    }
+
     setUploading(true);
     setError('');
     try {
       const supabase = createSupabaseBrowserClient();
-      const path = `${matterId}/${crypto.randomUUID()}-${file.name}`;
+      const safeName = normalizeFileName(file.name);
+      const path = `${matterId}/${crypto.randomUUID()}-${safeName}`;
       const { error: upErr } = await supabase.storage.from('matter-files').upload(path, file);
       if (upErr) { setError(t('matterUploadError')); setUploading(false); return; }
-      const res = await recordMatterFile({ matterId, fileName: file.name, storagePath: path, fileSize: file.size, mimeType: file.type });
+      // عقد مُصغَّر: الخادم يشتقّ الاسم والحجم والنوع من كائن Storage الفعلي.
+      const res = await recordMatterFile({ matterId, storagePath: path });
       if (res?.error) { setError(t('matterUploadError')); setUploading(false); return; }
-      setFiles((cur) => [{ id: path, file_name: file.name, storage_path: path, file_size: file.size, mime_type: file.type, created_at: new Date().toISOString(), uploaded_by: currentUserId }, ...cur]);
+      setFiles((cur) => [{
+        id: path, file_name: res.fileName, storage_path: path, file_size: res.fileSize,
+        mime_type: res.mimeType, created_at: new Date().toISOString(), uploaded_by: currentUserId,
+      }, ...cur]);
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = '';
@@ -52,7 +114,7 @@ export default function MatterFilesPanel({ matterId, files: initialFiles, curren
         <h2 className="display d-3" style={{ margin: 0 }}>{t('matterFilesHeading')}</h2>
         <label className="btn btn-solid" style={{ fontSize: '.85rem', cursor: 'pointer' }}>
           {uploading ? t('matterUploading') : t('matterUploadFile')}
-          <input ref={inputRef} type="file" onChange={handleFile} disabled={uploading} style={{ display: 'none' }} />
+          <input ref={inputRef} type="file" accept={ACCEPT_ATTR} onChange={handleFile} disabled={uploading} style={{ display: 'none' }} />
         </label>
       </div>
       {error && <p style={{ color: '#B42722', fontSize: '.85rem', marginBlockEnd: '.75rem' }}>{error}</p>}

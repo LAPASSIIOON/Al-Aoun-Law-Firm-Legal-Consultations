@@ -25,7 +25,8 @@
   .logo{display:none}
   .logoMark{display:block}
 }
-/* تقليص الشعار عند التمرير — من ٤٨٠px فأعلى فقط، فيبقى ٤٨px على الهاتف الضيق كما هو.
+/* تقليص الشعار الكامل عند التمرير — من ٤٨٠px فأعلى فقط.
+   تحت ٤٨٠px لا ينطبق: الشعار الكامل مخفي، وتُعرض العلامة المتجهية الرسمية (.logoMark) بارتفاع ٤٠px بدلًا منه.
    يأتي بعد قاعدة الهاتف عمدًا (ترتيب المصدر) حتى لا يُلغى أيٌّ منهما. */
 @media(min-width:480px){.solid .logo{height:56px}}
 .logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--white,#fff);border-radius:var(--r-lg);padding:.55rem 1.05rem;box-shadow:0 3px 12px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}

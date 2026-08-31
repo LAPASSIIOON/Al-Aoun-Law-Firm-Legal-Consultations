@@ -1,5 +1,6 @@
-.trigger{display:inline-flex;align-items:center;justify-content:center;inline-size:36px;block-size:36px;color:inherit;background:transparent;border:0;border-radius:var(--r);cursor:pointer;transition:background .18s ease}
-.trigger:hover{background:rgba(0,0,0,.06)}
+/* هدف لمس ٤٤×٤٤ — الأيقونة نفسها لم تكبر، فقط منطقة اللمس. */
+.trigger{display:inline-flex;align-items:center;justify-content:center;inline-size:var(--tap-min);block-size:var(--tap-min);color:inherit;background:transparent;border:0;border-radius:var(--r);cursor:pointer;transition:background .18s ease}
+.trigger:hover{background:rgba(243,245,247,.10)}
 
 .overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-start;justify-content:center;padding-block-start:clamp(4rem,10vh,9rem)}
 .scrim{position:absolute;inset:0;background:rgba(6,10,16,.72);backdrop-filter:blur(2px);border:0;cursor:default}

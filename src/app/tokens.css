@@ -70,6 +70,12 @@
 
   /* مقاس النص — نفس 62ch المستخدَمة سابقًا مضمَّنة في .body */
   --measure:62ch;
+
+  /* ═══ الموجة ب — ارتفاع الهيدر ═══
+     ٧٦px ← ٦٨px عند التمرير (تقليص ٨px). ٦٨ لا ٥٦ لأن الشعار ٧٢px،
+     ويتقلّص هو الآخر إلى ٥٦px عند ≥٤٨٠px. */
+  --header-h:76px;
+  --header-h-scrolled:68px;
 }
 html[lang="ar"]{ --f-display:var(--f-serif-ar); --f-ui:var(--f-ui-ar); }
 html[lang="en"]{ --f-display:var(--f-serif-en); --f-ui:var(--f-ui-en); }

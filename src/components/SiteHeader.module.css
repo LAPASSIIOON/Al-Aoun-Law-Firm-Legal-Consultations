@@ -1,26 +1,44 @@
-.header{position:fixed;inset-block-start:0;inset-inline:0;z-index:100;background:rgba(247,245,240,.90);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(10,15,26,.08);transition:box-shadow .4s var(--ease),background .4s var(--ease)}
-.solid{background:rgba(247,245,240,.97);box-shadow:0 1px 0 rgba(10,15,26,.08),0 12px 34px rgba(10,15,26,.10)}
-.bar{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter);block-size:76px;display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+/* ═══ الموجة ب — الهيدر ═══
+   قبل: شريط كريمي فاتح ثابت (rgba(247,245,240,.90)) — أضعف إشارة مؤسسية في الموقع.
+   بعد: شفاف فوق القسم الداكن الأول، ثم كحلي صلب عند التمرير.
+   آمن على كل الصفحات: كل صفحة تبدأ بقسم داكن (on-navy/on-espresso) والهيرو --navy. */
+.header{position:fixed;inset-block-start:0;inset-inline:0;z-index:100;
+  background:transparent;box-shadow:none;
+  transition:background .4s var(--ease),box-shadow .4s var(--ease),backdrop-filter .4s var(--ease)}
+.solid{background:rgba(14,24,38,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 1px 0 var(--hair-light)}
+.bar{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter);block-size:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+  transition:block-size .4s var(--ease)}
+/* تقليص عند التمرير — ٧٦px ← ٦٨px (٨px) */
+.solid .bar{block-size:var(--header-h-scrolled)}
 .brand{display:inline-flex;align-items:center;flex:0 0 auto}
-.logo{height:72px;width:auto;display:block}
+.logo{height:72px;width:auto;display:block;transition:height .4s var(--ease)}
 /* هاتف ضيق (مقيس فعليًا: طفح أفقي 27px عند 375px بسبب تصادم اللوجو + أزرار الإجراءات) — تضييق الفراغ وتصغير اللوجو تناسبيًا (width:auto فيحافظ على النسبة) بلا أي أثر على سطح مكتب/تابلت. لازم يجي بعد قاعدة .logo الأساسية (ترتيب المصدر) وإلا اتلغى. */
 @media(max-width:479px){.bar{gap:.6rem}.logo{height:48px}}
+/* تقليص الشعار عند التمرير — من ٤٨٠px فأعلى فقط، فيبقى ٤٨px على الهاتف الضيق كما هو.
+   يأتي بعد قاعدة الهاتف عمدًا (ترتيب المصدر) حتى لا يُلغى أيٌّ منهما. */
+@media(min-width:480px){.solid .logo{height:56px}}
 .logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--white,#fff);border-radius:var(--r-lg);padding:.55rem 1.05rem;box-shadow:0 3px 12px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
 .brand:hover .logoPlinth{box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.14);transform:translateY(-1px)}
 .nav{display:none;align-items:center;gap:clamp(1rem,1.8vw,2rem)}
 .navItem{position:relative}
-.navLink{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--f-ui);font-size:.95rem;color:var(--ground);opacity:.82;transition:opacity .35s,color .35s;padding-block:.4rem}
-.navLink:hover{opacity:1;color:var(--clay)}
-.chev{display:inline-flex;transition:transform .35s var(--ease);color:rgba(10,15,26,.5)}
+.navLink{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--f-ui);font-size:.95rem;color:var(--platinum);opacity:.82;transition:opacity .35s,color .35s;padding-block:.4rem}
+.navLink:hover{opacity:1;color:var(--clay-bright)}
+/* الشيفرون على هيدر داكن — كان rgba(10,15,26,.5) (حبر للشريط الفاتح القديم). */
+.chev{display:inline-flex;transition:transform .35s var(--ease);color:var(--platinum-2)}
 .chevUp{transform:rotate(180deg)}
 .actions{display:flex;align-items:center;gap:clamp(.6rem,1.2vw,1.1rem);flex:0 0 auto}
-.lang{font-family:var(--f-en);font-size:.82rem;letter-spacing:.06em;color:rgba(10,15,26,.7);padding:.4rem .55rem;border-radius:var(--r);transition:color .35s}
-.lang:hover{color:var(--ground)}
+.lang{font-family:var(--f-en);font-size:.82rem;letter-spacing:.06em;color:var(--platinum-2);padding:.4rem .55rem;border-radius:var(--r);transition:color .35s;
+  display:inline-flex;align-items:center;justify-content:center;min-block-size:var(--tap-min)}
+.lang:hover{color:var(--platinum)}
 .barOnly{display:none}
 @media(min-width:960px){.barOnly{display:inline-flex}}
 .cta{display:none!important}
-.burger{display:inline-flex;flex-direction:column;gap:5px;padding:.6rem .3rem}
-.burger span{display:block;inline-size:24px;block-size:1.6px;background:var(--ground);border-radius:2px}
+/* هدف لمس حقيقي ٤٤×٤٤ — نقيس العنصر التفاعلي نفسه (لا عنصرًا زائفًا متراكبًا).
+   الأيقونة تبقى ٢٤px؛ المنطقة فقط هي التي تتّسع. */
+.burger{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  min-inline-size:var(--tap-min);min-block-size:var(--tap-min);padding:0}
+.burger span{display:block;inline-size:24px;block-size:1.6px;background:var(--platinum);border-radius:2px}
 @media(min-width:960px){.nav{display:flex}.cta{display:inline-flex!important}.burger{display:none}}
 
 /* mega */
@@ -40,19 +58,21 @@
 .overlayTop{block-size:76px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto}
 .close{font-size:2.2rem;line-height:1;color:var(--platinum);padding:.4rem}
 .overlayNav{display:flex;flex-direction:column;gap:.35rem;padding-block:1.5rem;flex:1 1 auto}
-.overlayLink{display:flex;align-items:center;justify-content:space-between;font-family:var(--f-display);font-size:1.6rem;font-weight:600;color:var(--platinum);padding-block:.7rem;border-block-end:1px solid var(--hair-light)}
+/* الروابط المفردة: الرقم والعنوان على حافة القراءة نفسها (لا انقسام على طرفين).
+   flex-start يعمل منطقيًا في RTL وLTR معًا — لا حاجة لقواعد اتجاهية.
+   المجموعات (.oGroupHead) تبقى space-between لأن الشيفرون يحتاج الحافة المقابلة. */
+.overlayLink{display:flex;align-items:center;justify-content:flex-start;font-family:var(--f-display);font-size:1.6rem;font-weight:600;color:var(--platinum);padding-block:.7rem;border-block-end:1px solid var(--hair-light)}
 .overlayLink:hover{color:var(--clay-bright)}
 .overlaySub{display:flex;flex-direction:column;gap:.1rem;padding:.4rem 0 1rem;margin-block-start:-.3rem}
 .overlaySubLink{font-size:1.05rem;color:var(--platinum-2);padding:.5rem .2rem}
 .overlaySubLink:hover{color:var(--clay-bright)}
 .overlayFoot{display:flex;align-items:center;gap:1.25rem;padding-block:1.75rem;border-block-start:1px solid var(--hair-light);flex:0 0 auto}
-/* تباين الدرج الداكن: .lang و.chev مُعرَّفتان بحبر شبه أسود للشريط الفاتح،
-   وتُعاد استخدامهما داخل الدرج على خلفية --ground (#0E1826) فتكادان تختفيان
-   (1.05:1 و1.04:1 — قياس فعلي على iPhone 11). تجاوزات محصورة بالدرج فقط،
-   فلا تتأثر قواعد سطح المكتب الأساسية. لون فقط — بلا أي تغيير هندسي. */
+/* مبدّل اللغة داخل الدرج: .lang الأساسية تستخدم --platinum-2، وداخل الدرج
+   نرفعها إلى --platinum الأسطع لأنها إجراء تنقّل رئيسي على خلفية --ground.
+   (الشيفرون لم يعد يحتاج تجاوزًا هنا — .chev الأساسية صارت --platinum-2 بعد
+   تحويل الهيدر إلى داكن في الموجة ب.) */
 .overlayFoot .lang,
 .overlayFoot .lang:hover{color:var(--platinum)}
-.overlayNav .chev{color:var(--platinum-2)}
 
 /* ── المرحلة ٢: تجميع مؤسسي (§12) ── */
 .megaIdx{font-family:var(--f-en);font-size:.72rem;color:var(--platinum-3);inline-size:1.4rem;flex:0 0 auto;font-variant-numeric:tabular-nums}

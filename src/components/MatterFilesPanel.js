@@ -2,7 +2,7 @@
 import { useState, useRef, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser.js';
-import { recordMatterFile, getFileSignedUrl } from '@/app/actions/matters.js';
+import { recordMatterFile, getFileSignedUrl, cleanupFailedMatterUpload } from '@/app/actions/matters.js';
 
 function fmtSize(bytes) {
   if (!bytes) return '';
@@ -90,7 +90,31 @@ export default function MatterFilesPanel({ matterId, files: initialFiles, curren
       if (upErr) { setError(t('matterUploadError')); setUploading(false); return; }
       // عقد مُصغَّر: الخادم يشتقّ الاسم والحجم والنوع من كائن Storage الفعلي.
       const res = await recordMatterFile({ matterId, storagePath: path });
-      if (res?.error) { setError(t('matterUploadError')); setUploading(false); return; }
+      if (res?.error) {
+        // F-07: الكائن مرفوع بالفعل والإنهاء فشل — نطلب تنظيفًا تعويضيًا لمسار واحد بالضبط.
+        // لا إعادة رفع تلقائية إطلاقًا.
+        const cu = await cleanupFailedMatterUpload({ matterId, storagePath: path });
+        if (cu?.ok && cu.result === 'already_finalized') {
+          // سباق: الإنهاء نجح فعلًا رغم ظنّ المتصفّح بالفشل. لم يُحذف شيء.
+          // نبني الصف من القيم القانونية العائدة من الخادم حصرًا — لا safeName
+          // ولا file.size ولا file.type ولا طابع زمني محلي (قاعدة المرحلة ١).
+          if (cu.file) {
+            setError('');
+            setFiles((cur) => cur.some((f) => f.storage_path === cu.file.storagePath) ? cur : [{
+              id: cu.file.id, file_name: cu.file.fileName, storage_path: cu.file.storagePath,
+              file_size: cu.file.fileSize, mime_type: cu.file.mimeType,
+              created_at: cu.file.createdAt, uploaded_by: currentUserId,
+            }, ...cur]);
+            setUploading(false);
+            return;
+          }
+          // لم تصل القيم القانونية لسبب ما: لا نختلق بيانات — نعرض الخطأ الأصلي.
+        }
+        // نجح التنظيف أو فشل: نعرض في الحالتين خطأ الرفع الأصلي حتى لا يحجبه خطأ التنظيف.
+        setError(t('matterUploadError'));
+        setUploading(false);
+        return;
+      }
       setFiles((cur) => [{
         id: path, file_name: res.fileName, storage_path: path, file_size: res.fileSize,
         mime_type: res.mimeType, created_at: new Date().toISOString(), uploaded_by: currentUserId,

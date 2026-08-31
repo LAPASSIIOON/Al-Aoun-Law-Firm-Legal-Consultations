@@ -1,6 +1,8 @@
 'use server';
 import { revalidatePath } from 'next/cache';
 import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
+// عميل الخدمة — خادم فقط، ويُستخدَم حصرًا في الحذف التعويضي بعد اكتمال التفويض.
+import { createServerClient } from '@/lib/supabase-server.js';
 
 /** قائمة القضايا للأدمن (عبر RPC تُرجِع اسم العميل مدموجًا؛ فاضية تلقائيًا لغير الأدمن). */
 export async function listMattersAdmin() {
@@ -175,6 +177,83 @@ export async function recordMatterFile({ matterId, storagePath }) {
 }
 
 /** رابط تنزيل مؤقت (٦٠ ثانية) — يُنشأ فقط لمن يملك صلاحية القراءة فعليًا وفق RLS. */
+/**
+ * تنظيف تعويضي لكائن Storage بعد فشل الإنهاء (F-07).
+ *
+ * سلطتان متعمّدتان:
+ *  ١) التفويض — عميل الجلسة المُصادَقة (RLS سارية): هوية المستخدم، صحّة المعرّفات،
+ *     التحقّق البنيوي من المسار، وملكية القضية عبر استعلام محكوم بـRLS.
+ *  ٢) الحذف — عميل الخدمة (خادم فقط) بعد نجاح كل فحوصات التفويض حصرًا.
+ *     السبب: لا توجد سياسة DELETE للعميل على storage.objects (وهذا مقصود)، فحذف
+ *     الكائن عبر جلسة المستخدم يفشل بـRLS. لا يُستخدَم عميل الخدمة في أي فحص ملكية.
+ *
+ * حارس السباق (إلزامي): إن وُجد صف في matter_files بنفس storage_path فالإنهاء نجح
+ * فعليًا وإن ظنّ المتصفّح غير ذلك — عندها لا يُحذف الكائن إطلاقًا.
+ *
+ * @param {{ matterId: string, storagePath: string }} input
+ */
+export async function cleanupFailedMatterUpload({ matterId, storagePath }) {
+  // ── السلطة الأولى: جلسة المستخدم (RLS سارية) ──
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'unauthorized' };
+
+  if (typeof matterId !== 'string' || !UUID_RE.test(matterId)) return { ok: false, error: 'invalid_request' };
+
+  // تحقّق بنيوي صارم: مستوى مجلد واحد، المجلد الأول = matterId بالمساواة، لا تعشيش
+  // ولا شرطة عكسية ولا مقاطع «.»/«..» ولا مقاطع فارغة. (نفس دالة الإنهاء.)
+  const parsed = parseStoragePath(storagePath, matterId);
+  if (!parsed.ok) return { ok: false, error: 'invalid_request' };
+
+  // ملكية القضية عبر استعلام محكوم بـRLS: لغير المالك/غير الأدمن يعود فارغًا.
+  const { data: matterRow, error: matterErr } = await supabase
+    .from('matters').select('id').eq('id', matterId).maybeSingle();
+  if (matterErr) return { ok: false, error: 'verification_failed' };
+  if (!matterRow) return { ok: false, error: 'forbidden' };
+
+  // ── حارس السباق: هل نجح الإنهاء فعلًا؟ ──
+  // نختار الحقول القانونية اللازمة للاسترداد فقط — لا أعمدة زائدة.
+  const { data: existingRow, error: rowErr } = await supabase
+    .from('matter_files')
+    .select('id, file_name, file_size, mime_type, created_at, storage_path')
+    .eq('storage_path', storagePath)
+    .maybeSingle();
+  // فشل مُغلَق: إن تعذّر التحقّق فلا نحذف إطلاقًا.
+  if (rowErr) return { ok: false, error: 'verification_failed' };
+  if (existingRow) {
+    // الإنهاء نجح — ممنوع حذف مستند قانوني مكتمل. نُعيد القيم كما خزّنها الخادم
+    // (مشتقّة من كائن Storage) ليعرضها العميل بلا اختلاق بيانات من المتصفّح.
+    return {
+      ok: true,
+      cleaned: false,
+      result: 'already_finalized',
+      file: {
+        id: existingRow.id,
+        fileName: existingRow.file_name,
+        fileSize: existingRow.file_size,
+        mimeType: existingRow.mime_type,
+        createdAt: existingRow.created_at,
+        storagePath: existingRow.storage_path,
+      },
+    };
+  }
+
+  // ── السلطة الثانية: عميل الخدمة (خادم فقط) — حذف مسار واحد بالضبط ──
+  try {
+    const admin = createServerClient();
+    const { error: rmErr } = await admin.storage.from('matter-files').remove([storagePath]);
+    if (rmErr) {
+      console.error('[cleanupFailedMatterUpload] storage remove failed', { matterId, code: rmErr.name || 'unknown' });
+      return { ok: false, error: 'cleanup_failed' };
+    }
+    // remove() لا يفشل إن كان الكائن غائبًا أصلًا — سلوك ساكن (idempotent) مقبول.
+    return { ok: true, cleaned: true, result: 'deleted' };
+  } catch (e) {
+    console.error('[cleanupFailedMatterUpload] unexpected', { matterId, code: e?.name || 'unknown' });
+    return { ok: false, error: 'cleanup_failed' };
+  }
+}
+
 export async function getFileSignedUrl(storagePath) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.storage.from('matter-files').createSignedUrl(storagePath, 60);

@@ -59,6 +59,17 @@
 
   --wrap:1200px; --wrap-narrow:820px; --gutter:clamp(1.25rem,4vw,4rem); --section:clamp(5.5rem,11vh,9.5rem);
   --r:4px; --r-lg:6px; --r-card:6px; --ease:cubic-bezier(0.22,1,0.36,1); --dur:0.55s;
+
+  /* ═══ الموجة أ — أساسات مُستهلَكة فعليًا فقط ═══ */
+
+  /* هدف اللمس المريح — يستهلكه .btn-line تحت pointer:coarse */
+  --tap-min:44px;
+
+  /* إيقاع القسم المضغوط — نفس القيمة المستخدمة سابقًا مضمَّنة، صارت توكِن */
+  --section-tight:clamp(3rem,6vh,5rem);
+
+  /* مقاس النص — نفس 62ch المستخدَمة سابقًا مضمَّنة في .body */
+  --measure:62ch;
 }
 html[lang="ar"]{ --f-display:var(--f-serif-ar); --f-ui:var(--f-ui-ar); }
 html[lang="en"]{ --f-display:var(--f-serif-en); --f-ui:var(--f-ui-en); }

@@ -25,7 +25,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter)}
 .wrap-narrow{max-width:var(--wrap-narrow)}
 .section{padding-block:var(--section)}
-.section-tight{padding-block:clamp(3rem,6vh,5rem)}
+.section-tight{padding-block:var(--section-tight)}
 
 /* أسطح — نظام السجل المرجعي: كحلي سيادي غالب + فسحة فاتحة حقيقية متعمَّدة للتباين التحريري.
    الأسماء صادقة الآن: on-navy = كحلي عميق، on-navy-raised = سطح كحلي مرتفع، on-light = فسحة فاتحة حقيقية.
@@ -82,7 +82,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .d-3{font-size:clamp(1.3rem,2.1vw,1.75rem)}
 .lead{font-size:clamp(1.15rem,1.7vw,1.4rem);line-height:1.6;color:var(--platinum-2);font-weight:400}
 :lang(ar) .lead{line-height:1.9}
-.body{font-size:clamp(1rem,1.1vw,1.0625rem);color:var(--platinum-2);max-width:62ch}
+.body{font-size:clamp(1rem,1.1vw,1.0625rem);color:var(--platinum-2);max-width:var(--measure)}
 .muted{color:var(--platinum-2)}
 .idx{font-family:var(--f-en);font-size:.8rem;letter-spacing:.08em;color:var(--platinum-3);font-variant-numeric:tabular-nums}
 .hair{block-size:1px;background:var(--hair-light);border:0}
@@ -96,6 +96,16 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .btn-line{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-ui);font-weight:500;font-size:.95rem;color:var(--clay-bright);padding-block:.3rem}
 .btn-line:hover{color:#fff}
 .btn:disabled,.btn-line:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+
+/* ═══ الموجة أ — هدف اللمس المريح ═══
+   .btn (solid/ghost) مقيس فعليًا عند 56px فلا يحتاج تغييرًا.
+   الفجوة الحقيقية في .btn-line (رابط نصّي، حشو ٤٫٨px).
+   يُطبَّق على أجهزة اللمس فقط حتى لا يتغيّر مظهر سطح المكتب.
+   ملاحظة للموجة ب: عناصر الأيقونات (البرغر/البحث) تُقاس بـ
+   min-inline-size/min-block-size على العنصر التفاعلي نفسه، لا بعنصر زائف متراكب. */
+@media (pointer:coarse){
+  .btn-line{min-block-size:var(--tap-min)}
+}
 .btn .arrow,.btn-line .arrow{transition:transform var(--dur) var(--ease)}
 :lang(en) .btn:hover .arrow,:lang(en) .btn-line:hover .arrow{transform:translateX(3px)}
 :lang(ar) .btn:hover .arrow,:lang(ar) .btn-line:hover .arrow{transform:translateX(-3px)}

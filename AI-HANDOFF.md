@@ -2,7 +2,7 @@
 
 > **Shared operational context between Claude and ChatGPT.**
 > Every factual claim below was verified against the repository, Supabase, or live deployment at the time of writing. Anything not verifiable is explicitly marked.
-> **Last updated by:** Claude · **Against commit:** `e63592d`
+> **Last updated by:** Claude · **Against commit:** `af96c03`
 
 ---
 
@@ -43,8 +43,8 @@ Explicitly **not** part of the vision: fabricated international presence, invent
 
 | Field | Value | Status |
 |---|---|---|
-| Current main commit | `e63592df39ae79899c54291e69e9c9a0af4c9706` (`e63592d`) | VERIFIED |
-| Commit subject | `feat(phase-c): persist consultation intent and source attribution` | VERIFIED |
+| Current main commit | `af96c03c76f968bd1a42c4cfe1af90c32ead87dd` (`af96c03`) | VERIFIED |
+| Commit subject | `security: clean up failed matter uploads` | VERIFIED |
 | Production URL | `https://al-aoun-law-firm-legal-consultation.vercel.app` | LIVE VERIFIED |
 | Repository | `github.com/LAPASSIIOON/Al-Aoun-Law-Firm-Legal-Consultations` (branch `main`) | VERIFIED |
 | Framework | Next.js 15.5.23 (App Router), React 19 | VERIFIED |
@@ -115,10 +115,15 @@ VERIFIED unless marked otherwise.
 | SECURITY DEFINER functions | Audited (32 functions). **Administrative functions are admin-gated; explicitly public submission RPCs remain callable only through their intended grants and internal validation** — the correct design for public intake. No IDOR found; `profiles_update_own_name` blocks self-role-escalation; `handle_new_user` hardcodes `role='member'` |
 | `submit_consultation` | `SECURITY DEFINER`, `search_path = ''`, EXECUTE granted only to `anon`, `authenticated`, `service_role`, `postgres` — **no PUBLIC execute** (VERIFIED post-migration) |
 | Server-side validation | Name length, contact presence, phone digit count (≥7), client-type allowlist, intent allowlist, `source_route` regex + 100-char cap, locale normalization — all server-side |
-| Turnstile | Deployed on intake forms; **verified working through successful real submissions during live QA.** Initialization failures in some automated sessions are TOOL INCONCLUSIVE — evidence of neither a site failure nor a successful bot rejection |
+| Turnstile | **VERIFIED — both paths.** Path A (app-level: contact, refer-a-matter, partner-application) calls Cloudflare `siteverify` server-side via `verifyTurnstile()` with a server-only secret; fail-closed on missing token, invalid token, and network error; verification precedes the RPC. **LIVE FUNCTIONALLY VERIFIED** by a controlled production submission (`AON-7B547745`, since removed). Path B (sign-in / sign-up / forgot-password) delegates captcha to Supabase Auth; project-level CAPTCHA confirmed **ON**, provider Cloudflare Turnstile, secret configured — **HUMAN VERIFIED in the Supabase dashboard** |
 | Rate limits | Postgres-based (`ops.check_rate_limit`), 5 consultations/hour per IP hash |
 | Security headers | Applied (X-Frame-Options, HSTS, etc.) |
-| CSP | **Deliberately deferred**, reason documented in `next.config.mjs` |
+| CSP | **`Content-Security-Policy-Report-Only` baseline is live** — 11 directives; enforcement deferred. **It currently enforces nothing and provides no XSS protection.** No reporting endpoint (`report-uri`/`report-to`) is configured, so there is **no comprehensive violation telemetry** — a clean observation state is therefore **NOT VERIFIED**. Spot checks on a handful of pages surfaced no violations, which is not equivalent to comprehensive coverage |
+| Storage — bucket | `matter-files` is **private**; 25 MB per-file limit; MIME allowlist applied and verified: `application/pdf`, `…wordprocessingml.document`, `…spreadsheetml.sheet`, `image/jpeg`, `image/png`, `image/heic`, `image/heif` — VERIFIED |
+| Storage — upload hardening (Phase 1) | Server-authoritative: `matterId` UUID validation, structured path parsing with `folder[1] == matterId` by equality, exact Storage object-existence check, **`file_size` and `mime_type` derived from Storage metadata (never from the browser)**, MIME↔extension pairing enforced, `uploaded_by` from the authenticated session. **PRODUCTION VERIFIED** end-to-end. Note: MIME validation is type-declaration checking, **not** content/magic-byte inspection |
+| Storage — orphan cleanup (F-07) | `cleanupFailedMatterUpload()` — compensating transaction using two deliberate authorities: session/RLS for all authorization, server-only `service_role` **solely** for the final exact-path delete. Includes a `matter_files` race guard that refuses to delete a successfully finalized document. **LIVE VERIFIED on preview** by controlled failure: upload → finalization failure → authorization → race guard → exact delete, proven by Supabase runtime logs. **F-07 CLOSED.** Not atomic — compensating only |
+| Storage — RLS | `storage.objects`: client SELECT/INSERT bound to owned matters via path folder; **no client DELETE policy**; admin `ALL` gated by `portal.is_portal_admin()` — VERIFIED |
+| HEIC/HEIF on mobile Safari | **NOT VERIFIED** — no real-device file-selection test performed |
 | Attribution trust model | `source_route`/`source_type` are **analytics/intake metadata only** — documented in SQL comments; must never be used for authorization, RLS, privilege, legal-eligibility, or trusted audit decisions |
 | Backup / restore procedure | **NOT VERIFIED** — never documented or tested |
 | Penetration testing | **NOT VERIFIED** — never performed |
@@ -193,12 +198,12 @@ Explicitly rejected (do not reintroduce): AI-beige / gold-on-black clichés · g
 ## 12. Current Open Work
 
 ### P0
-- **Documentation sync** — `README.md` and `package.json` description still describe a two-page prototype. **README REWRITE — REQUIRED · PACKAGE DESCRIPTION UPDATE — REQUIRED.**
-- **Mobile Reality Baseline** — moved ahead of the Path Finder, because the Path Finder is mobile-first and must not be designed against unverified responsive assumptions.
-- Legal Path Finder (guided routing for visitors who don't know the legal domain) — designed, not implemented.
+- **Mobile Reality Baseline** — the immediate next UI/UX execution task. Audit-first: the Path Finder is mobile-first and must not be designed against unverified responsive assumptions.
+- **Legal Path Finder** (guided routing for visitors who don't know the legal domain) — designed, not implemented. **Follows the Mobile Reality Baseline.**
 - Insights editorial launch (3–5 approved pieces) — blocked on human content; **content preparation runs in parallel from now**.
 
 *(Custom domain, official email, and production Resend configuration moved to **Launch Gate** — commercially critical, but they block no current development phase.)*
+*(`README.md` / `package.json` documentation drift is **governance backlog only** — see P2. It does **not** block UI execution.)*
 
 ### P1
 - Surface Phase C attribution in the admin console (Phase I).
@@ -206,27 +211,50 @@ Explicitly rejected (do not reintroduce): AI-beige / gold-on-black clichés · g
 - Professionals ↔ practice-area approval sheet (Phase E), then richer expertise pages (Phase D).
 - International trust copy sharpening (Phase F).
 - Accessibility pass: keyboard, screen reader, touch targets (Phase L).
-- Security hardening plan execution, including staged CSP rollout (Phase J).
+- Security hardening plan execution — **B1/B2/B3, Turnstile, Storage Phase 1, and F-07 are CLOSED. Remaining: staged CSP rollout from Report-Only to enforcement (Phase J).**
 
-### P2
+### P2 — backlog (none blocking UI)
+
+**Deferred security items:**
+- **F-08 — upload quotas / count limits / rate limiting.** DESIGN READY (hybrid: preflight + finalize enforcement + monitoring) / **PRODUCT POLICY DEFERRED.** No quota numbers invented; the firm must approve files-per-matter, bytes-per-matter, and upload frequency first. Severity LOW under the current closed client/matter model — matter creation is admin-only, so a self-registered user cannot upload at all.
+- **F-T1 — auth captcha server guard.** Optional defense-in-depth only; **not a blocker.** Path B is already protected by Supabase project-level CAPTCHA (human-verified). Do not implement without separate authorization.
+- **Finalized-file deletion workflow.** No application delete path exists for a successfully finalized matter file — for clients or admins. Removal is currently manual dashboard work. Separate from F-07; backlog only.
+
+**Governance / documentation backlog — NOT a blocker before UI:**
+- **`README.md` and `package.json` description drift.** Both were rewritten earlier (commit `d43d8c5`) but should be re-checked against the current production state. Classified **GOVERNANCE BACKLOG**, not a UI blocker. Not edited in this pass.
+
+**Other:**
 - Performance baseline measurement before any optimization (Phase M).
 - `Article` structured data once articles exist.
 - Analytics / error monitoring (currently zero installed).
 - Team CMS migration — only if the team grows beyond ~4–5 professionals.
 
+**First UI/UX execution task remains: Mobile Reality Baseline.**
+
 ## 13. Current Recommended Roadmap
 
 Revised sequence after ChatGPT review (Phase C complete):
 
-**0. AI Governance + Documentation Sync → 1. Mobile Reality Baseline → 2. Legal Path Finder → 3. Admin Attribution / Intake Operations → 4. Unified Search → 5. Professionals ↔ Expertise Approval → 6. Expertise 2.0 → 7. Insights Launch → 8. International 2.0 → 9. Security + Privacy Hardening → 10. Accessibility + Performance → 11. Launch Gate.**
+**Execution order (UI/product):**
+
+**1. Mobile Reality Baseline → 2. Legal Path Finder → 3. Admin Attribution / Intake Operations → 4. Unified Search → 5. Professionals ↔ Expertise Approval → 6. Expertise 2.0 → 7. Insights Launch → 8. International 2.0 → 9. Security + Privacy Hardening → 10. Accessibility + Performance → 11. Launch Gate.**
+
+**Running asynchronously (blocks nothing):** AI governance upkeep and documentation sync (`README.md`, `package.json`). These are **governance work, not execution gates** — they may be done at any time and **do not block the Mobile Reality Baseline or any subsequent phase**.
 
 Dependencies: `Mobile Baseline → Path Finder` · `C ✅ → Admin Attribution` · `Approval → Expertise 2.0` · `Insights → Article schema`. Insights content preparation runs in parallel throughout, since its blocker is human/legal rather than engineering.
 
 ## 14. Current In-Progress Task
 
-**Nothing is actively being implemented.** Phase C was closed with verdict **PASS WITH TOOL LIMITATION**. Test data fully cleaned (0 test records remain). The repository working tree matches `origin/main`.
+**Nothing is actively being implemented.** The security/storage hardening phase is closed; no code work is in progress.
 
-## 15. Next Recommended Feature
+**Working-tree state — stated precisely:**
+- **Application source** matches `origin/main` (`af96c03`). No uncommitted application-code changes.
+- **`AI-HANDOFF.md`** carries **uncommitted documentation edits** (this closure/consistency pass). Not committed, not pushed.
+
+## 15. Next Recommended Product Feature — Legal Path Finder
+
+> **The immediate next UI/UX execution task is the Mobile Reality Baseline (§24), not this.**
+> **Do not begin implementation until the Mobile Reality Baseline is complete.**
 
 **Legal Path Finder (Phase B).** Evidence still supports it: 48 practice areas and 3 international paths are presented to visitors who often cannot name their own legal domain, and no guided entry layer exists. It is deterministic (no AI API, no new dependency), bilingual, mobile-first, and additive — it sits above existing structure rather than replacing it. Phase C now makes its impact measurable, since intent and source are captured per request.
 
@@ -316,37 +344,62 @@ Known trap: local `git status` can show phantom differences due to index artifac
 
 ## 22. Last Claude Technical State
 
-Phase C delivered end-to-end: design → amendment cycles → atomic migration → server-side hardening → live verification → source-of-truth reconciliation. Three DB migrations registered. Application changes shipped in `e63592d` (6 files, +16/−8). Two genuine issues were caught by post-execution verification rather than assumed away: an unintended `PUBLIC` EXECUTE grant (revoked and registered as its own migration) and unnormalized locale input feeding path construction (fixed). Test data fully cleaned. Working tree matches `origin/main`.
+**Production main:** `af96c03c76f968bd1a42c4cfe1af90c32ead87dd` (`af96c03` — `security: clean up failed matter uploads`).
+
+Security/storage hardening phase delivered and closed:
+
+- **Storage Hardening Phase 1** — server-authoritative upload validation, **PRODUCTION VERIFIED** end-to-end via a controlled upload (path↔matter binding, object-existence check, Storage-derived size and MIME, MIME↔extension pairing, session-bound `uploaded_by`).
+- **`matter-files` bucket** — private, 25 MB per-file limit, MIME allowlist applied and verified (7 types).
+- **F-07 compensating cleanup** — `cleanupFailedMatterUpload()` implemented, live-tested on preview through a controlled finalization failure, and deployed to production. The full sequence (upload success → finalization failure → session/RLS authorization → race guard → exact single-path Storage delete) was proven by Supabase runtime logs, not inferred from state.
+- **Controlled test artifacts fully cleaned** — both the consultation test record and the storage test row/object removed; DB and Storage returned to their exact pre-test baseline; **orphan count = 0** (verified in both directions).
+- **F-08** — deferred (product policy). **F-T1** — optional defense-in-depth backlog.
+
+**No active implementation currently.**
 
 ## 23. Last ChatGPT Review State
 
 **Reviewed by:** ChatGPT
-**Reviewed against:** `origin/main` `e63592d`
+**Reviewed against:** current production state `af96c03`
 
-**Scope:**
-- Governance synchronization
-- Roadmap
-- Final product vision
-- Documentation drift
-- Security wording
-- Brand source vs implementation
-- Launch classification
+**Current verdict:** **SECURITY PHASE CLOSED. NO SECURITY BLOCKER BEFORE UI.**
 
-**Verdict before this correction:** **FIX BEFORE PUSH — governance-only corrections.**
+**No vulnerability found in the audits conducted so far.** This statement is scoped to the audits actually performed; **it is not a claim of comprehensive security.** Items explicitly recorded as NOT VERIFIED in §7 (backup/restore, penetration testing, HEIC/HEIF on mobile Safari, comprehensive CSP violation telemetry) remain outside that scope.
 
-**Corrections requested and applied (5):**
-1. Resolve the contradictory public-schema table count — resolved by direct `information_schema` query: **12 base tables + 2 views** (the earlier "14" conflated the two).
-2. Correct Turnstile wording — removed the unwarranted inference that automation initialization failure proves successful bot rejection.
-3. Correct the `IP_HASH_SALT` explanation — hashing is one-way regardless; a predictable salt weakens **pseudonymization** by enabling candidate-IP/dictionary matching.
-4. Normalize the product name in §2 — **AL OUN Digital Legal Platform**, four layers, with Legal Operations as a layer rather than the product name.
-5. Update this section.
+**Closed in this phase:** B1 (admin RPC grants + `search_path`) · B2 (`IP_HASH_SALT` fail-closed) · B3 (JSON-LD script escaping) · Turnstile both paths · Storage Hardening Phase 1 · F-07 orphan cleanup.
 
-**Prior round (same review cycle):** contradictions found in colors (source vs implementation), vector asset status, SECURITY DEFINER phrasing, mobile priority ordering, and domain/email classification — all corrected. Documentation drift (§36) and security hardening follow-up (§37) added to the Sync Brief.
-
-**Status after corrections:** awaiting ChatGPT final governance confirmation.
+**Deferred, not blocking:** F-08 (product policy) · F-T1 (optional defense-in-depth) · CSP enforcement (Report-Only observation only) · finalized-file deletion workflow · README/`package.json` governance drift.
 
 ## 24. Immediate Next Action
 
-**Complete roadmap item #0 — Documentation Sync: rewrite `README.md` and update the `package.json` description**, both of which still describe the project as a two-page visual prototype and contradict the production application. This is small, low-risk, and unblocks these governance documents being treated as authoritative.
+### **MOBILE REALITY BASELINE**
 
-*(Then #1 Mobile Reality Baseline, then the Legal Path Finder brief — which must not be designed before mobile behavior is verified.)*
+**Audit-first and read-only. No redesign implementation in this phase.**
+
+Inspect current **production** responsive behaviour and record what is actually there — no fixes, no restyling, no refactors until the register below exists and is reviewed.
+
+**Scope — both locales:** Arabic **RTL** and English **LTR**.
+
+**Surfaces to inspect:**
+- header / navigation (including the mobile drawer)
+- hero
+- practice areas
+- professionals
+- international
+- contact / intake
+- footer
+
+**Behaviours to inspect:**
+- key breakpoints and viewport widths
+- horizontal overflow
+- typography (sizes, line length, Arabic vs Latin rendering)
+- spacing and rhythm
+- touch targets
+- forms (fields, controls, error states)
+- fixed / sticky elements
+- image and video behaviour
+
+**Goal:** produce a **prioritized UI/UX issue register** before any redesign implementation begins. The register is the deliverable — not code changes.
+
+**Not blocking this phase:** `README.md` and `package.json` documentation drift remain **governance backlog only** (§12 P2). They do not gate the Mobile Reality Baseline or any UI work.
+
+*(After the baseline: the Legal Path Finder brief — §15 — which must not be designed before mobile behaviour is verified.)*

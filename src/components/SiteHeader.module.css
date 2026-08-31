@@ -13,8 +13,18 @@
 .solid .bar{block-size:var(--header-h-scrolled)}
 .brand{display:inline-flex;align-items:center;flex:0 0 auto}
 .logo{height:72px;width:auto;display:block;transition:height .4s var(--ease)}
+/* العلامة المتجهية الرسمية — مخفية افتراضيًا؛ تظهر على الهاتف الضيق فقط.
+   filter: brightness(0) invert(1) هو المعالجة المعتمَدة في المشروع لهذا الملف تحديدًا
+   (نفسها في SiteFooter.module.css و HeroMarkWatermark) لأن fill="currentColor"
+   لا يورَّث عبر <img>. لا يُطبَّق أي فلتر على الشعار النقطي الكامل. */
+.logoMark{display:none;block-size:40px;inline-size:auto;filter:brightness(0) invert(1);flex:0 0 auto}
 /* هاتف ضيق (مقيس فعليًا: طفح أفقي 27px عند 375px بسبب تصادم اللوجو + أزرار الإجراءات) — تضييق الفراغ وتصغير اللوجو تناسبيًا (width:auto فيحافظ على النسبة) بلا أي أثر على سطح مكتب/تابلت. لازم يجي بعد قاعدة .logo الأساسية (ترتيب المصدر) وإلا اتلغى. */
-@media(max-width:479px){.bar{gap:.6rem}.logo{height:48px}}
+@media(max-width:479px){
+  .bar{gap:.6rem}
+  /* تبديل الشعار الكامل بالعلامة الرسمية — في شريط الهيدر ورأس الدرج معًا */
+  .logo{display:none}
+  .logoMark{display:block}
+}
 /* تقليص الشعار عند التمرير — من ٤٨٠px فأعلى فقط، فيبقى ٤٨px على الهاتف الضيق كما هو.
    يأتي بعد قاعدة الهاتف عمدًا (ترتيب المصدر) حتى لا يُلغى أيٌّ منهما. */
 @media(min-width:480px){.solid .logo{height:56px}}

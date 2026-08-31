@@ -44,6 +44,7 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} onClick={closeAll}>
           <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+          <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
@@ -113,6 +114,7 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
       <div className={styles.overlay}>
         <div className={styles.overlayTop}>
           <img src={`/brand/logo-full-${locale}-color.webp`} alt="" className={styles.logo} />
+          <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
           <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={closeAll}>×</button>
         </div>
         <nav className={styles.overlayNav}>

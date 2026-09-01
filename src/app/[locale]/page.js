@@ -113,7 +113,7 @@ export default async function Home({ params }) {
       </section>
 
       {/* DUAL TRACK — عميل / مكتب دولي، مباشرة بعد الهيرو */}
-      <section className="on-white section-tight">
+      <section className={`on-white section-tight ${styles.heroHandoff}`}>
         <div className="wrap">
           <div className={styles.dualBar}>
             <Link href="/contact" className={styles.dualItem}>

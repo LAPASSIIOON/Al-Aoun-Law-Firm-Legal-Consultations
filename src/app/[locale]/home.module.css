@@ -1,49 +1,76 @@
-/* ── Hero — تايبوغرافيا أولًا (الموجة C1) ──
-   حقل كحلي عميق، بلا صورة ولا حجاب ولا شبكة زخرفية.
-   هندسة التسجيل: خطّ أساس عمودي عند حافة قراءة النص، وأفقي عند نقطة تسجيل العنوان،
-   والعلامة الرسمية عند نقطة التقائهما. ثابتة بالكامل — لا حركة في C1. */
-.hero{position:relative;background:var(--ground);color:var(--platinum);overflow:hidden;
-  min-block-size:clamp(640px,90vh,880px);display:flex;align-items:center}
-.heroInner{position:relative;z-index:2;width:100%;padding-block:9rem 4rem}
-.heroContent{max-inline-size:46ch}
+/* ── Hero — تايبوغرافيا أولًا (الموجة C1.1) ──
+   حقل كحلي عميق، بلا صورة ولا حجاب ولا شبكة زخرفية. ثابتة بالكامل — لا حركة.
+   C1.1: تصحيح تركيبي بعد مراجعة بصرية حقيقية (سطح مكتب 1536×702 + آيفون فعلي). */
 
-/* حاوية الهندسة الزخرفية — تغطي القسم كاملًا خلف المحتوى */
+/* الهاتف: svh يتجنّب افتراضات شريط المتصفّح؛ فراغ علوي أقلّ ليصل المحتوى أسرع.
+   المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
+.hero{position:relative;background:var(--ground);color:var(--platinum);overflow:hidden;
+  min-block-size:min(88svh,760px);display:flex;align-items:flex-start}
+.heroInner{position:relative;z-index:2;width:100%;padding-block:6.5rem 3.5rem}
+
+/* المقاس التحريري: نسبة من عرض الحاوية لا وحدة ch (الأخيرة تنهار عند أحجام العرض الكبيرة).
+   الهاتف: العرض كاملًا. سطح المكتب: ~٥٦٪ من الحاوية عبر استعلام أدناه. */
+.heroContent{max-inline-size:100%}
+
+/* حاوية الهندسة الزخرفية */
 .heroDatum{position:absolute;inset:0;z-index:1;pointer-events:none}
 
-/* خطّ الأساس العمودي — ظاهر في كل المقاسات (توقيع AL OUN البنيوي).
-   يُحسب موضعه من نفس هامش .wrap فيبقى محاذيًا للنص في RTL وLTR معًا. */
+/* خطّ الأساس العمودي — الهاتف: مُزاح للداخل ٢٢px عن حافة القراءة كي لا يقرأ كإطار صفحة. */
 .heroDatum [data-datum="v"]{position:absolute;inset-block:0;
-  inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
-  inline-size:1px;background:var(--hair-light-strong);opacity:.5}
+  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) - 22px);
+  inline-size:1px;background:var(--hair-light-strong);opacity:.55}
 
-/* خطّ الأساس الأفقي — من حافة القراءة إلى حافة العرض، عند نقطة تسجيل العنوان.
-   مخفيّ تحت 860px: لا يوجد عمود مقابل، فيقرأ كخط عابر لا كبنية. */
-.heroDatum [data-datum="h"]{position:absolute;inset-block-start:50%;
+/* خطّ الأساس الأفقي — سطح المكتب فقط، من حافة القراءة إلى حافة العرض. */
+.heroDatum [data-datum="h"]{position:absolute;inset-block-start:52%;
   inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
   inset-inline-end:0;block-size:1px;background:var(--hair-light-strong);opacity:.35;display:none}
 
-/* العلامة الرسمية — الهاتف: أسفل ناحية حافة القراءة، ختمٌ هادئ لا عنصر تخطيط.
-   inset-block-end:2.5rem يبقيها بعيدة عن الـCTA (المحتوى ينتهي بحشو 4rem سفلي)،
-   و inset-inline-start يحاذيها مع خطّ الأساس العمودي في RTL وLTR. */
-.heroMark{position:absolute;inset-block-end:2.5rem;
-  inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
-  inline-size:44px;block-size:auto;color:var(--platinum);opacity:.12}
+/* العلامة — الهاتف: أعلى داخل الحقل لتشارك في المشهد الأول، ومحاذية لخطّ الأساس. */
+.heroMark{position:absolute;inset-block-start:58%;
+  inset-inline-end:clamp(1.25rem,7vw,3rem);
+  inline-size:48px;block-size:auto;color:var(--platinum);opacity:.12}
 
-/* سطح المكتب: يظهر الخطّ الأفقي، وتنتقل العلامة إلى نقطة التقاء الخطّين في العمود المقابل */
+.heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,7.2vw,3rem);
+  line-height:1.12;letter-spacing:-.02em;color:#fff;margin-block:1.2rem 0}
+:lang(ar) .heroHead{font-size:clamp(2.2rem,7.4vw,3.1rem);line-height:1.34;letter-spacing:0}
+.heroSub{color:var(--platinum-2);font-size:clamp(1rem,1.3vw,1.2rem);line-height:1.7;
+  max-inline-size:52ch;margin-block:1.6rem 2.2rem}
+:lang(ar) .heroSub{line-height:1.95}
+.heroCtas{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.75rem}
+
+/* ── سطح المكتب ── */
 @media(min-width:860px){
+  .hero{min-block-size:clamp(620px,86vh,820px)}
+  /* حشو علوي يفسح للهيدر الثابت، وسفلي يضمن ظهور الـCTA فوق الطيّة عند ارتفاع ٧٠٠px */
+  .heroInner{padding-block:7.5rem 3rem}
+
+  /* المقاس التحريري: ~٥٦٪ من الحاوية — يحلّ EN في ٣ أسطر قوية بلا كلمات يتيمة */
+  .heroContent{max-inline-size:min(56%,640px)}
+
+  .heroDatum [data-datum="v"]{
+    inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
+    opacity:.7}
   .heroDatum [data-datum="h"]{display:block}
-  .heroMark{inset-block-end:auto;inset-block-start:50%;
-    inset-inline-start:auto;inset-inline-end:clamp(2rem,8vw,7rem);
-    inline-size:88px;transform:translateY(-50%);opacity:.16}
+
+  /* العلامة: مجاورة لتقاطع الخطّين داخل الحقل الفارغ — مسجَّلة، لا علامة مائية عشوائية.
+     inset-inline-start يضعها بعد عمود النص مباشرةً لا في الطرف المقابل للشاشة. */
+  .heroMark{inset-block-start:52%;
+    inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + min(56%,640px) + clamp(3rem,7vw,7rem));
+    inset-inline-end:auto;
+    inline-size:clamp(110px,10vw,140px);transform:translateY(-50%);opacity:.12}
+
+  .heroHead{font-size:clamp(3rem,4.4vw,4.4rem);line-height:1.06}
+  :lang(ar) .heroHead{font-size:clamp(3rem,4.6vw,4.5rem);line-height:1.3}
+  .heroSub{max-inline-size:46ch;margin-block:2rem 2.4rem}
 }
 
-.heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.6rem,5.6vw,5rem);
-  line-height:1.08;letter-spacing:-.02em;color:#fff;margin-block:1.4rem 0}
-:lang(ar) .heroHead{font-size:clamp(2.4rem,5.2vw,4.6rem);line-height:1.32;letter-spacing:0}
-.heroSub{color:var(--platinum-2);font-size:clamp(1.05rem,1.3vw,1.25rem);line-height:1.7;
-  max-inline-size:46ch;margin-block:2rem 2.6rem}
-:lang(ar) .heroSub{line-height:2}
-.heroCtas{display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem 2rem}
+/* استمرار خطّ الأساس إلى القسم التالي — إشارة بنيوية صغيرة، لا إعادة تصميم.
+   نفس الموضع المنطقي، بلون مناسب للخلفية الفاتحة. */
+.heroHandoff{position:relative}
+.heroHandoff::before{content:'';position:absolute;inset-block-start:0;
+  inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
+  inline-size:1px;block-size:clamp(2.5rem,6vh,4.5rem);
+  background:var(--light-hair);opacity:.9;pointer-events:none}
 
 /* ── Authority strip ── */
 .authority{display:flex;flex-wrap:wrap;gap:1rem 2.25rem;align-items:center;justify-content:center}

@@ -2,11 +2,8 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
-import HeroImageBackground from '@/components/HeroImageBackground.js';
-import HeroMarkWatermark from '@/components/HeroMarkWatermark.js';
-import HeroSearch from '@/components/HeroSearch.js';
+import HeroDatum from '@/components/HeroDatum.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
-import CounterStat from '@/components/CounterStat.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import styles from './home.module.css';
 
@@ -95,41 +92,21 @@ export default async function Home({ params }) {
   const ti = await getTranslations({ locale, namespace: 'international' });
   const c = T[locale] || T.ar;
   const { areas, articles } = await fetchData(locale);
-  const veilDir = locale === 'ar' ? 'to left' : 'to right';
 
   return (
     <>
       {/* HERO */}
-      <section className={styles.hero} style={{ '--veilDir': veilDir }}>
-        <HeroImageBackground />
-        <svg className={styles.heroGrid} aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="none">
-          <line x1="0" y1="120" x2="1200" y2="120" />
-          <line x1="0" y1="680" x2="1200" y2="680" />
-          <line x1="90" y1="0" x2="90" y2="800" />
-          <line x1="1110" y1="0" x2="1110" y2="800" />
-          <circle cx="90" cy="120" r="2.5" />
-          <circle cx="1110" cy="120" r="2.5" />
-          <circle cx="90" cy="680" r="2.5" />
-          <circle cx="1110" cy="680" r="2.5" />
-        </svg>
-        <div className={styles.heroVeil} />
-        <HeroMarkWatermark />
-        <span className={styles.heroTag} aria-hidden="true">01</span>
+      {/* HERO — تايبوغرافيا أولًا (الموجة C1): حقل كحلي، هندسة تسجيل ثابتة، بلا صورة ولا حركة */}
+      <section className={styles.hero}>
+        <HeroDatum className={styles.heroDatum} markClassName={styles.heroMark} />
         <div className={`wrap ${styles.heroInner}`}>
-          <div className={styles.heroRule} aria-hidden="true" />
           <div className={styles.heroContent}>
             <span className="eyebrow">{c.eyebrow}</span>
             <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
             <p className={styles.heroSub}>{c.sub}</p>
-            <HeroSearch locale={locale} />
             <div className={styles.heroCtas}>
               <Link href={`/contact?intent=legalConsultation&from=/${locale}`} className="btn btn-solid">{c.heroCta1} <span className="arrow">→</span></Link>
-              <Link href="/services" className="btn btn-ghost">{c.heroCta2}</Link>
-            </div>
-            <div className={styles.counters}>
-              {c.counters.map((s, i) => (
-                <CounterStat key={i} value={s.l.includes('مجال') || s.l.toLowerCase().includes('practice area') ? (areas.length || s.v) : s.v} suffix={s.s || ''} label={s.l} locale={locale} />
-              ))}
+              <Link href="/services" className="btn-line">{c.heroCta2} <span className="arrow">→</span></Link>
             </div>
           </div>
         </div>

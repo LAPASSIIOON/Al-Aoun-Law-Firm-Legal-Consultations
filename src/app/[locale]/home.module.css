@@ -27,12 +27,14 @@
   inset-inline-end:0;block-size:1px;background:var(--hair-light-strong);opacity:.35;display:none}
 
 /* العلامة — الهاتف: ختمٌ هادئ على جانب خطّ الأساس نفسه (لا الجانب المقابل)،
-   فتقرأ كعلاقة تسجيل لا كعنصر عائم. مُزاحة للداخل بما يكفي لتفادي الخطّ نفسه،
-   وموضوعة أسفل مجموعة المحتوى وفوق نهاية القسم — بلا تداخل مع العنوان أو النص
-   أو الـCTA أو الهيدر أو زرّي واتساب/الوصول (كلاهما في الحافة السفلية المقابلة). */
+   فتقرأ كعلاقة تسجيل لا كعنصر عائم.
+   سبب ضعف الإدراك: القياس أثبت أن العنصر يُرسَم بأبعاده الصحيحة (60×54) وأن التكديس
+   والقصّ سليمان — المشكلة تباينية بحتة: عند .17 يعطي --platinum على --ground نسبة
+   1.65:1 فقط، وهي حدّية لمونوغرام رفيع الحدود على شاشة هاتف تحت ضوء النهار.
+   عند .22 ترتفع إلى 1.95:1 (+18٪) مع بقائها تابعة للعنوان والـCTA. */
 .heroMark{position:absolute;inset-block-end:clamp(2rem,7vh,3.5rem);
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 44px);
-  inline-size:54px;block-size:auto;color:var(--platinum);opacity:.17}
+  inline-size:60px;block-size:auto;color:var(--platinum);opacity:.22}
 
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,7.2vw,3rem);
   line-height:1.12;letter-spacing:-.02em;color:#fff;margin-block:1.2rem 0}

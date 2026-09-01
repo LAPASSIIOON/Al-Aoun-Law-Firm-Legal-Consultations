@@ -5,7 +5,7 @@
 /* الهاتف: svh يتجنّب افتراضات شريط المتصفّح؛ فراغ علوي أقلّ ليصل المحتوى أسرع.
    المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
 .hero{position:relative;background:var(--ground);color:var(--platinum);overflow:hidden;
-  min-block-size:min(88svh,760px);display:flex;align-items:flex-start}
+  min-block-size:min(80svh,700px);display:flex;align-items:flex-start}
 .heroInner{position:relative;z-index:2;width:100%;padding-block:6.5rem 3.5rem}
 
 /* المقاس التحريري: نسبة من عرض الحاوية لا وحدة ch (الأخيرة تنهار عند أحجام العرض الكبيرة).
@@ -15,9 +15,10 @@
 /* حاوية الهندسة الزخرفية */
 .heroDatum{position:absolute;inset:0;z-index:1;pointer-events:none}
 
-/* خطّ الأساس العمودي — الهاتف: مُزاح للداخل ٢٢px عن حافة القراءة كي لا يقرأ كإطار صفحة. */
+/* خطّ الأساس العمودي — الهاتف: مُزاح ٢٢px للداخل عن حافة القراءة كي لا يقرأ كإطار صفحة.
+   inset-inline-start يُقاس من حافة القراءة، فالجمع (+) يبعده عن الحافة نحو الداخل. */
 .heroDatum [data-datum="v"]{position:absolute;inset-block:0;
-  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) - 22px);
+  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
   inline-size:1px;background:var(--hair-light-strong);opacity:.55}
 
 /* خطّ الأساس الأفقي — سطح المكتب فقط، من حافة القراءة إلى حافة العرض. */
@@ -25,10 +26,13 @@
   inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
   inset-inline-end:0;block-size:1px;background:var(--hair-light-strong);opacity:.35;display:none}
 
-/* العلامة — الهاتف: أعلى داخل الحقل لتشارك في المشهد الأول، ومحاذية لخطّ الأساس. */
-.heroMark{position:absolute;inset-block-start:58%;
-  inset-inline-end:clamp(1.25rem,7vw,3rem);
-  inline-size:48px;block-size:auto;color:var(--platinum);opacity:.12}
+/* العلامة — الهاتف: ختمٌ هادئ على جانب خطّ الأساس نفسه (لا الجانب المقابل)،
+   فتقرأ كعلاقة تسجيل لا كعنصر عائم. مُزاحة للداخل بما يكفي لتفادي الخطّ نفسه،
+   وموضوعة أسفل مجموعة المحتوى وفوق نهاية القسم — بلا تداخل مع العنوان أو النص
+   أو الـCTA أو الهيدر أو زرّي واتساب/الوصول (كلاهما في الحافة السفلية المقابلة). */
+.heroMark{position:absolute;inset-block-end:clamp(2rem,7vh,3.5rem);
+  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 44px);
+  inline-size:54px;block-size:auto;color:var(--platinum);opacity:.17}
 
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,7.2vw,3rem);
   line-height:1.12;letter-spacing:-.02em;color:#fff;margin-block:1.2rem 0}
@@ -54,7 +58,7 @@
 
   /* العلامة: مجاورة لتقاطع الخطّين داخل الحقل الفارغ — مسجَّلة، لا علامة مائية عشوائية.
      inset-inline-start يضعها بعد عمود النص مباشرةً لا في الطرف المقابل للشاشة. */
-  .heroMark{inset-block-start:52%;
+  .heroMark{inset-block-end:auto;inset-block-start:52%;
     inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + min(56%,640px) + clamp(3rem,7vw,7rem));
     inset-inline-end:auto;
     inline-size:clamp(110px,10vw,140px);transform:translateY(-50%);opacity:.12}
@@ -65,12 +69,16 @@
 }
 
 /* استمرار خطّ الأساس إلى القسم التالي — إشارة بنيوية صغيرة، لا إعادة تصميم.
-   نفس الموضع المنطقي، بلون مناسب للخلفية الفاتحة. */
+   يطابق موضع خطّ الأساس تمامًا في كل مقاس: الهاتف +22px، وسطح المكتب الموضع الأساسي. */
 .heroHandoff{position:relative}
 .heroHandoff::before{content:'';position:absolute;inset-block-start:0;
-  inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
+  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
   inline-size:1px;block-size:clamp(2.5rem,6vh,4.5rem);
   background:var(--light-hair);opacity:.9;pointer-events:none}
+@media(min-width:860px){
+  .heroHandoff::before{
+    inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)))}
+}
 
 /* ── Authority strip ── */
 .authority{display:flex;flex-wrap:wrap;gap:1rem 2.25rem;align-items:center;justify-content:center}

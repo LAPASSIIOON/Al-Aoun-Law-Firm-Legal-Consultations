@@ -28,13 +28,14 @@
 
 /* العلامة — الهاتف: ختمٌ هادئ على جانب خطّ الأساس نفسه (لا الجانب المقابل)،
    فتقرأ كعلاقة تسجيل لا كعنصر عائم.
-   سبب ضعف الإدراك: القياس أثبت أن العنصر يُرسَم بأبعاده الصحيحة (60×54) وأن التكديس
-   والقصّ سليمان — المشكلة تباينية بحتة: عند .17 يعطي --platinum على --ground نسبة
-   1.65:1 فقط، وهي حدّية لمونوغرام رفيع الحدود على شاشة هاتف تحت ضوء النهار.
-   عند .22 ترتفع إلى 1.95:1 (+18٪) مع بقائها تابعة للعنوان والـCTA. */
+   سبب ضعف الإدراك (مُثبَت بدليل بكسل في C1.4b): العنصر يُرسَم بأبعاده الصحيحة
+   (60×54) والتكديس والقصّ سليمان ولا عنصر يطلي فوقه — المشكلة تباينية بحتة.
+   ٢٧٪ فقط من مستطيل العلامة حبر، فلا كتلة تلفت العين. عند .22 كان التباين
+   1.95:1، وعند .32 يصير 2.76:1 (+41٪) مع بقائها تابعة للعنوان والـCTA.
+   (لا يُستخدَم --clay-bright: يعطي 1.46:1 فقط عند .22 — أقلّ من --platinum.) */
 .heroMark{position:absolute;inset-block-end:clamp(2rem,7vh,3.5rem);
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 44px);
-  inline-size:60px;block-size:auto;color:var(--platinum);opacity:.22}
+  inline-size:60px;block-size:auto;color:var(--platinum);opacity:.32}
 
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,7.2vw,3rem);
   line-height:1.12;letter-spacing:-.02em;color:#fff;margin-block:1.2rem 0}

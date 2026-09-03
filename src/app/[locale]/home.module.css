@@ -1,6 +1,6 @@
-/* ── Hero — تايبوغرافيا أولًا (الموجة C1.1) ──
-   حقل كحلي عميق، بلا صورة ولا حجاب ولا شبكة زخرفية. ثابتة بالكامل — لا حركة.
-   C1.1: تصحيح تركيبي بعد مراجعة بصرية حقيقية (سطح مكتب 1536×702 + آيفون فعلي). */
+/* ── Hero — تايبوغرافيا أولًا (الموجة C2) ──
+   يحافظ على تركيب C1 المقبول، ويضيف توقيع التسجيل: قياس ← محاذاة ← استقرار.
+   العنوان والنص الداعم ثابتان من أول طلاء؛ الحركة للخطوط والعلامة والتفاصيل الثانوية فقط. */
 
 /* الهاتف: svh يتجنّب افتراضات شريط المتصفّح؛ فراغ علوي أقلّ ليصل المحتوى أسرع.
    المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
@@ -19,23 +19,32 @@
    inset-inline-start يُقاس من حافة القراءة، فالجمع (+) يبعده عن الحافة نحو الداخل. */
 .heroDatum [data-datum="v"]{position:absolute;inset-block:0;
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
-  inline-size:1px;background:var(--hair-light-strong);opacity:.55}
+  inline-size:1px;background:var(--hair-light-strong);opacity:.55;
+  transform-origin:top center;animation:c2DatumVertical 360ms var(--ease) both}
 
 /* خطّ الأساس الأفقي — سطح المكتب فقط، من حافة القراءة إلى حافة العرض. */
 .heroDatum [data-datum="h"]{position:absolute;inset-block-start:52%;
   inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
   inset-inline-end:0;block-size:1px;background:var(--hair-light-strong);opacity:.35;display:none}
 
-/* العلامة — الهاتف: ختمٌ هادئ على جانب خطّ الأساس نفسه (لا الجانب المقابل)،
-   فتقرأ كعلاقة تسجيل لا كعنصر عائم.
-   سبب ضعف الإدراك (مُثبَت بدليل بكسل في C1.4b): العنصر يُرسَم بأبعاده الصحيحة
-   (60×54) والتكديس والقصّ سليمان ولا عنصر يطلي فوقه — المشكلة تباينية بحتة.
-   ٢٧٪ فقط من مستطيل العلامة حبر، فلا كتلة تلفت العين. عند .22 كان التباين
-   1.95:1، وعند .32 يصير 2.76:1 (+41٪) مع بقائها تابعة للعنوان والـCTA.
-   (لا يُستخدَم --clay-bright: يعطي 1.46:1 فقط عند .22 — أقلّ من --platinum.) */
+/* العلامة — الهاتف: عنصر تسجيل عابر على جانب خطّ الأساس نفسه (لا الجانب المقابل).
+   يحتفظ بمقاس C1 المثبت 60px، يبلغ ذروة .5 أثناء المحاذاة، ثم يختفي نهائيًا؛
+   الخط العمودي وحده هو التوقيع الدائم على الهاتف. */
 .heroMark{position:absolute;inset-block-end:clamp(2rem,7vh,3.5rem);
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 44px);
-  inline-size:60px;block-size:auto;color:var(--platinum);opacity:.32}
+  display:block;inline-size:60px;block-size:auto;aspect-ratio:2898/2600;
+  color:var(--platinum);opacity:0;
+  animation:c2MobileMark 680ms linear both}
+.heroMark>svg{position:absolute;inset:0;display:block;inline-size:100%;block-size:100%}
+
+/* غلافا الحركة خارج مصفوفة تحويل المسارات؛ النسبة تُقاس من viewBox الكامل.
+   12% من عرض العلامة المعروض (60px) ≈ 7px مرئية على الهاتف. */
+.heroMark [data-mark]{transform-box:border-box;transform-origin:center;
+  animation:c2MarkRegister 420ms 150ms var(--ease) both}
+:global(html[dir="ltr"]) .heroMark [data-mark="outer"]{--c2-mark-offset:-12%}
+:global(html[dir="ltr"]) .heroMark [data-mark="inner"]{--c2-mark-offset:12%}
+:global(html[dir="rtl"]) .heroMark [data-mark="outer"]{--c2-mark-offset:12%}
+:global(html[dir="rtl"]) .heroMark [data-mark="inner"]{--c2-mark-offset:-12%}
 
 .heroHead{font-family:var(--f-display);font-weight:600;font-size:clamp(2.2rem,7.2vw,3rem);
   line-height:1.12;letter-spacing:-.02em;color:#fff;margin-block:1.2rem 0}
@@ -43,7 +52,20 @@
 .heroSub{color:var(--platinum-2);font-size:clamp(1rem,1.3vw,1.2rem);line-height:1.7;
   max-inline-size:52ch;margin-block:1.6rem 2.2rem}
 :lang(ar) .heroSub{line-height:1.95}
-.heroCtas{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.75rem}
+.heroContent :global(.eyebrow){animation:c2EyebrowSettle 350ms 220ms var(--ease) both}
+.heroCtas{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.75rem;
+  animation:c2CtaSettle 360ms 260ms var(--ease) both}
+
+@keyframes c2DatumVertical{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes c2DatumHorizontal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes c2MarkRegister{from{transform:translateX(var(--c2-mark-offset))}to{transform:translateX(0)}}
+@keyframes c2EyebrowSettle{from{transform:translateY(5px)}to{transform:translateY(0)}}
+@keyframes c2CtaSettle{from{transform:translateY(4px)}to{transform:translateY(0)}}
+@keyframes c2MobileMark{
+  0%,22%{opacity:0}
+  84%{opacity:.48}
+  100%{opacity:0}
+}
 
 /* ── سطح المكتب ── */
 @media(min-width:860px){
@@ -57,18 +79,41 @@
   .heroDatum [data-datum="v"]{
     inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
     opacity:.7}
-  .heroDatum [data-datum="h"]{display:block}
+  .heroDatum [data-datum="h"]{display:block;animation:c2DatumHorizontal 480ms 90ms var(--ease) both}
+  :global(html[dir="ltr"]) .heroDatum [data-datum="h"]{transform-origin:left center}
+  :global(html[dir="rtl"]) .heroDatum [data-datum="h"]{transform-origin:right center}
 
   /* العلامة: مجاورة لتقاطع الخطّين داخل الحقل الفارغ — مسجَّلة، لا علامة مائية عشوائية.
      inset-inline-start يضعها بعد عمود النص مباشرةً لا في الطرف المقابل للشاشة. */
   .heroMark{inset-block-end:auto;inset-block-start:52%;
     inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + min(56%,640px) + clamp(3rem,7vw,7rem));
     inset-inline-end:auto;
-    inline-size:clamp(110px,10vw,140px);transform:translateY(-50%);opacity:.12}
+    inline-size:clamp(110px,10vw,140px);transform:translateY(-50%);opacity:.12;animation:none}
+  /* 7% من المقاس المقبول 110–140px تنتج نحو 8–10px. */
+  :global(html[dir="ltr"]) .heroMark [data-mark="outer"]{--c2-mark-offset:-7%}
+  :global(html[dir="ltr"]) .heroMark [data-mark="inner"]{--c2-mark-offset:7%}
+  :global(html[dir="rtl"]) .heroMark [data-mark="outer"]{--c2-mark-offset:7%}
+  :global(html[dir="rtl"]) .heroMark [data-mark="inner"]{--c2-mark-offset:-7%}
 
   .heroHead{font-size:clamp(3rem,4.4vw,4.4rem);line-height:1.06}
   :lang(ar) .heroHead{font-size:clamp(3rem,4.6vw,4.5rem);line-height:1.3}
   .heroSub{max-inline-size:46ch;margin-block:2rem 2.4rem}
+}
+
+/* الحركة المخفّضة: الحالة النهائية فورًا. opacity الأساسي يحسم العلامة:
+   0 على الهاتف، و.12 داخل استعلام سطح المكتب أعلاه. */
+@media(prefers-reduced-motion:reduce){
+  .heroDatum [data-datum="v"],
+  .heroDatum [data-datum="h"],
+  .heroMark,
+  .heroMark [data-mark],
+  .heroContent :global(.eyebrow),
+  .heroCtas{animation:none}
+  .heroDatum [data-datum="v"],
+  .heroDatum [data-datum="h"],
+  .heroMark [data-mark],
+  .heroContent :global(.eyebrow),
+  .heroCtas{transform:none}
 }
 
 /* استمرار خطّ الأساس إلى القسم التالي — إشارة بنيوية صغيرة، لا إعادة تصميم.

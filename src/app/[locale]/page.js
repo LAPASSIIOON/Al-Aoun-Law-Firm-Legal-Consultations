@@ -141,20 +141,23 @@ export default async function Home({ params }) {
       {/* PRACTICE AREAS — moved to lead position (discovery-first, per approved restructuring) */}
       <section className="on-paper section">
         <div className="wrap">
+          {/* D1 «الفهرس المشروح»: العنوان بلا CTA علوي — المخرج الوحيد صفٌّ ختامي أسفل الفهرس */}
           <div className={styles.headRow}>
             <div>
               <span className="eyebrow" data-reveal>{c.paEye}</span>
               <h2 className="display d-1" data-reveal style={{ marginBlockStart: '1rem' }}>{c.paHead}</h2>
             </div>
-            <Link href="/services" className="btn-line" data-reveal>{c.paAll} <span className="arrow">→</span></Link>
           </div>
-          <div className={styles.paList}>
-            {(areas.length ? areas.slice(0, 8) : Array.from({ length: 6 })).map((a, i) => (
-              <ReferenceRow key={a?.slug || i} index={i + 1}
-                title={a ? a.title : (locale === 'ar' ? 'مجال ممارسة' : 'Practice area')}
-                href={a ? `/services/${a.slug}` : '/services'}
-                summary={a?.summary} />
+          <div className={`${styles.paList} ${styles.paIndex}`}>
+            {/* أمان وقائعي: لا صفوف مُختلَقة عند غياب البيانات — العنوان والصفّ الختامي فقط */}
+            {areas.slice(0, 8).map((a, i) => (
+              <ReferenceRow key={a.slug} index={i + 1} variant="annotated"
+                title={a.title} href={`/services/${a.slug}`} summary={a.summary} />
             ))}
+            <Link href="/services" className={styles.paAllRow} data-reveal="file">
+              <span className={styles.paAllT}>{c.paAll}</span>
+              <span className="arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>

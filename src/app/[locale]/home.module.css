@@ -244,6 +244,28 @@
 .paFilterInput::placeholder{color:var(--light-muted)}
 .paFilterInput:focus{outline:0;border-color:var(--clay-bright)}
 .paList{display:flex;flex-direction:column;border-block-start:1px solid var(--hair-light)}
+
+/* ── D1 «الفهرس المشروح» — نطاق الصفحة الرئيسية فقط (.paIndex بجانب .paList) ──
+   إصلاح الشعيرة المزدوجة: paList يرسم شعيرة افتتاحية وأول صفٍّ يرسم أخرى —
+   داخل الفهرس تُحذف شعيرة أول صف فتبقى شعيرة افتتاحية واحدة مقصودة.
+   (نطاق العنصر a:first-child محصور بـ.paIndex فلا يمسّ /services أو «للمكاتب».) */
+.paIndex a:first-child{border-block-start:0}
+
+/* الصفّ الختامي — «كولوفون» الفهرس: بلا رقم، بخطّ العناوين، بنفس إيقاع الصفوف،
+   الصفّ كله رابط؛ استجابة التحويم تطابق لغة الصفوف (خلفية + أكسنت + دفعة سهم). */
+.paAllRow{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding-block:clamp(1.1rem,2.2vh,1.5rem);padding-inline:.25rem;
+  border-block-end:1px solid var(--hair-light);
+  transition:background .45s var(--ease)}
+.paAllRow:hover{background:var(--surface)}
+.paAllT{font-family:var(--f-display);font-weight:600;font-size:clamp(1.05rem,1.6vw,1.3rem);
+  color:var(--platinum-2);transition:color .35s var(--ease)}
+.paAllRow:hover .paAllT{color:var(--clay-bright)}
+.paAllRow :global(.arrow){color:var(--platinum-3);font-size:1.15rem;
+  transition:transform .45s var(--ease),color .35s var(--ease)}
+.paAllRow:hover :global(.arrow){color:var(--clay-bright)}
+:global(html[lang=en]) .paAllRow:hover :global(.arrow){transform:translateX(4px)}
+:global(html[lang=ar]) .paAllRow:hover :global(.arrow){transform:translateX(-4px)}
 .paRow{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:start;gap:clamp(1rem,3vw,2.5rem);padding-block:clamp(1.2rem,2.4vh,1.75rem);padding-inline:.25rem;border-block-end:1px solid var(--hair-light);transition:background .45s var(--ease),padding .45s var(--ease)}
 .paRow:hover{background:var(--surface);padding-inline:1.1rem}
 .paRow::after{content:'';position:absolute;inset-inline:0;inset-block-end:-1px;block-size:1px;background:var(--clay-bright);transform:scaleX(0);transition:transform .6s var(--ease)}

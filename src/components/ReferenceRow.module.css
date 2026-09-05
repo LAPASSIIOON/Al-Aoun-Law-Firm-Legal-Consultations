@@ -32,3 +32,40 @@
 @media (prefers-reduced-motion:reduce){
   .row,.row::after,.idx,.idx::before,.title,.arrow{transition:none}
 }
+
+/* ── التنويعة «annotated» — الموجة D1: «الفهرس المشروح» (الصفحة الرئيسية فقط) ──
+   انضباط الفهرس: لا قفزة حشو عند التحويم، لا نقطة فهرس، لا كشف ملخّص متحرّك.
+   سطح المكتب: [رقم | عمود عناوين ثابت | شرح ظاهر دائمًا بسطرين | سهم] —
+   display:contents يفكّ .body فيشارك العنوان والشرح في شبكة الصف مباشرةً.
+   الهاتف: [رقم | عنوان | سهم] والشرح محذوف بصريًا (يعيش في صفحة المجال). */
+.annotated,.annotated:hover{padding-inline:.25rem}
+.annotated .idx::before{display:none}
+.annotated .body{display:contents}
+/* .row.annotated لرفع الأسبقية فوق قاعدة الكشف بالتحويم (.row:hover .sum) في كل الحالات */
+.row.annotated .sum{max-block-size:none;opacity:1;overflow:hidden;margin-block-start:0;transition:none;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  font-size:.92rem;line-height:1.65;max-inline-size:52ch}
+.annotated .title{transition:color .35s var(--ease)}
+
+/* إغلاق الوصولية (D1): :focus-visible يعكس نفس قابلية التنقّل التي يعلنها التحويم —
+   خلفية + خط الاجتياح + تلوين الرقم والعنوان والسهم + دفعة السهم الاتجاهية.
+   بلا حركة حشو، بلا نقطة فهرس، بلا كشف ملخّص — الملخّص ظاهر دائمًا أصلًا. */
+.row.annotated:focus-visible{background:var(--surface)}
+.row.annotated:focus-visible::after{transform:scaleX(1)}
+.row.annotated:focus-visible .idx{color:var(--ref-num-active)}
+.row.annotated:focus-visible .title{color:var(--ref-rule-active)}
+.row.annotated:focus-visible .arrow{color:var(--ref-rule-active)}
+:global(html[lang=en]) .row.annotated:focus-visible .arrow{transform:translateX(4px)}
+:global(html[lang=ar]) .row.annotated:focus-visible .arrow{transform:translateX(-4px)}
+
+@media(min-width:860px){
+  .annotated{grid-template-columns:auto clamp(280px,30%,380px) 1fr auto;
+    align-items:baseline;column-gap:clamp(1.25rem,2.5vw,2.5rem)}
+  .annotated .arrow{align-self:start}
+}
+@media(max-width:859px){
+  .annotated{grid-template-columns:auto 1fr auto;align-items:baseline;
+    padding-block:clamp(1rem,2vh,1.3rem)}
+  .row.annotated .sum{display:none}
+  .annotated .meta{display:none}
+}

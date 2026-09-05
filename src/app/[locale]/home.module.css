@@ -163,12 +163,13 @@
   .heroCtas{transform:none}
 }
 
-/* استمرار خطّ الأساس إلى القسم التالي — إشارة بنيوية صغيرة، لا إعادة تصميم.
-   يطابق موضع خطّ الأساس تمامًا في كل مقاس: الهاتف +22px، وسطح المكتب الموضع الأساسي. */
+/* C3 (السجل D1.1): خطّ الأساس صار قضيب التسجيل البنيوي للقسم كله — يهبط من حافة
+   الهيرو ويحمل صفّي المسارات، ثم يتوقف قبل حشوة القسم السفلية فلا يلمس «مجالات
+   الممارسة». الموضع يطابق خطّ أساس الهيرو تمامًا: الهاتف +22px، وسطح المكتب الأساسي. */
 .heroHandoff{position:relative}
 .heroHandoff::before{content:'';position:absolute;inset-block-start:0;
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
-  inline-size:1px;block-size:clamp(2.5rem,6vh,4.5rem);
+  inline-size:1px;inset-block-end:var(--section-tight);
   background:var(--light-hair);opacity:.9;pointer-events:none}
 @media(min-width:860px){
   .heroHandoff::before{
@@ -282,10 +283,44 @@
 }
 
 /* ── شريط الازدواج (عميل / مكتب دولي) — تحت الهيرو مباشرة ── */
-.dualBar{display:grid;grid-template-columns:1fr;border-block-start:1px solid var(--hair-light);border-block-end:1px solid var(--hair-light)}
-@media(min-width:760px){.dualBar{grid-template-columns:1fr 1fr}}
-.dualItem{display:flex;align-items:center;gap:.9rem;padding:1.4rem 1.5rem;text-decoration:none;transition:background .3s var(--ease)}
+/* C3 — «السجل» D1.1: عتبة قرارٍ تحريرية سريعة، لا قسم محتوى ثالث.
+   صفّان مكدّسان معلّقان على قضيب التسجيل؛ سؤالان بسلطة تحريرية يبدآن من عمودٍ
+   بصري ثابت (عمود التسمية عرضه محدد فلا تعتمد المحاذاة على طول التسمية).
+   لا بطاقات، لا أنصاف أقطار، لا ظلال — شعيرات فاصلة فقط. الصفّ كله رابط. */
+.dualBar{display:block}
+.dualItem{display:grid;grid-template-columns:clamp(150px,16vw,200px) 1fr auto;
+  align-items:baseline;gap:.5rem 2rem;
+  padding-block:clamp(1.5rem,3vh,2.1rem);
+  padding-inline:clamp(1.25rem,2vw,1.75rem) .25rem;
+  text-decoration:none;transition:background .3s var(--ease)}
 .dualItem:hover{background:var(--surface-2)}
-@media(min-width:760px){.dualItem:first-child{border-inline-end:1px solid var(--hair-light)}}
-.dualEye{font-family:var(--f-en);font-size:.72rem;letter-spacing:.08em;color:var(--clay-bright);flex:0 0 auto}
-.dualT{font-family:var(--f-display);font-weight:600;font-size:1rem;color:var(--ink,#14213A);flex:1 1 auto}
+.dualItem + .dualItem{border-block-start:1px solid var(--light-hair)}
+.dualEye{font-family:var(--f-en);font-size:.72rem;letter-spacing:.08em;color:var(--clay-bright)}
+:lang(ar) .dualEye{font-family:var(--f-ui);font-size:.85rem;letter-spacing:0}
+.dualT{font-family:var(--f-display);font-weight:600;
+  font-size:clamp(1.35rem,1.9vw,1.75rem);line-height:1.3;color:var(--ink,#14213A);
+  transition:color .35s var(--ease)}
+:lang(ar) .dualT{line-height:1.5}
+.dualItem:hover .dualT{color:var(--clay-bright)}
+.dualItem :global(.arrow){align-self:center;color:var(--platinum-3);font-size:1.25rem;
+  transition:transform .45s var(--ease),color .35s var(--ease)}
+.dualItem:hover :global(.arrow){color:var(--clay-bright)}
+:global(html[lang=en]) .dualItem:hover :global(.arrow){transform:translateX(4px)}
+:global(html[lang=ar]) .dualItem:hover :global(.arrow){transform:translateX(-4px)}
+/* الهاتف: تركيب مستقل — التسمية فوق السؤال (لا بجانبه أبدًا)، السهم عند نهاية
+   القراءة بمحاذاة كتلة السؤال؛ الصفّ كاملًا هدف لمس ~110–130px، والنص مُزاح
+   عن قضيب التسجيل (+22px) فلا يقطعه القضيب. */
+@media(max-width:859px){
+  /* ضبط الكثافة (D1.1 النهائي): القسم عتبةُ قرارٍ سريعة لا فصلًا مستقلًا —
+     حشوة القسم وحشوة الصفوف تُخفَّض على الهاتف فقط؛ القضيب يُنهى عند الحشوة
+     الجديدة نفسها ليظل متصلًا بالهيرو ومتوقفًا قبل «مجالات الممارسة». */
+  .heroHandoff.heroHandoff{padding-block:clamp(2rem,4.5vh,2.75rem)}
+  .heroHandoff.heroHandoff::before{inset-block-end:clamp(2rem,4.5vh,2.75rem)}
+  .dualItem{grid-template-columns:1fr auto;grid-template-areas:'eye eye' 't arrow';
+    align-items:center;gap:.5rem 1.25rem;
+    padding-block:clamp(1.15rem,2.4vh,1.5rem);
+    padding-inline:calc(22px + 1rem) .25rem}
+  .dualEye{grid-area:eye}
+  .dualT{grid-area:t;font-size:clamp(1.25rem,5.5vw,1.45rem)}
+  .dualItem :global(.arrow){grid-area:arrow}
+}

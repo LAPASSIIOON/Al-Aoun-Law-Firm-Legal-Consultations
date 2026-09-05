@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroDatum from '@/components/HeroDatum.js';
+import HeroMonument from '@/components/HeroMonument.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import styles from './home.module.css';
@@ -16,6 +17,7 @@ const T = {
     head: 'قوّةٌ قانونية كويتية،\nبمعايير عالمية.',
     sub: 'نرافق الأفراد والشركات والمستثمرين في الكويت وخارجها بمشورة دقيقة وسرّية تامة — من أول سؤالٍ إلى القرار.',
     heroCta1: 'أحتاج مساعدة قانونية', heroCta2: 'ابحث عن مجال',
+    regLine: 'مجموعة العون · الكويت · منذ ٢٠٠٠',
     counters: [
       { v: 2000, l: 'سنة التأسيس' }, { v: 25, s: '+', l: 'سنة خبرة' },
       { v: 48, l: 'مجال ممارسة' }, { v: 4, l: 'مراكز تحكيم معتمدة' },
@@ -43,6 +45,7 @@ const T = {
     head: 'Kuwaiti legal strength,\nto a global standard.',
     sub: 'We stand with individuals, companies and investors in Kuwait and beyond — precise, fully confidential counsel from the first question to the decision.',
     heroCta1: 'I need legal help', heroCta2: 'Find a practice area',
+    regLine: 'AL OUN · KUWAIT · EST. 2000',
     counters: [
       { v: 2000, l: 'Established' }, { v: 25, s: '+', l: 'Years of experience' },
       { v: 48, l: 'Practice areas' }, { v: 4, l: 'Arbitration centres' },
@@ -96,8 +99,10 @@ export default async function Home({ params }) {
   return (
     <>
       {/* HERO */}
-      {/* HERO — تايبوغرافيا أولًا (الموجة C1): حقل كحلي، هندسة تسجيل ثابتة، بلا صورة ولا حركة */}
+      {/* HERO — تايبوغرافيا أولًا (الموجة C1): حقل كحلي، هندسة تسجيل ثابتة، بلا صورة ولا حركة.
+          C2.5: «حقل النصب» — ذراع المهد الرسمية كطبقة معمارية ثابتة أسفل خطوط الأساس */}
       <section className={styles.hero}>
+        <HeroMonument className={styles.heroMonument} dir={locale === 'ar' ? 'rtl' : 'ltr'} />
         <HeroDatum className={styles.heroDatum} markClassName={styles.heroMark} />
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroContent}>
@@ -110,6 +115,9 @@ export default async function Home({ params }) {
             </div>
           </div>
         </div>
+        {/* سطر التسجيل الوقائعي — هاتف فقط (يُخفى على سطح المكتب عبر CSS)؛ زخرفي بحت:
+            حقائقه مكررة من الآيبرو، فلا يُقرأ على قارئات الشاشة */}
+        <span className={styles.heroRegLine} aria-hidden="true">{c.regLine}</span>
       </section>
 
       {/* DUAL TRACK — عميل / مكتب دولي، مباشرة بعد الهيرو */}

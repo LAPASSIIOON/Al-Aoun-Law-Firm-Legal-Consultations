@@ -15,6 +15,29 @@
 /* حاوية الهندسة الزخرفية */
 .heroDatum{position:absolute;inset:0;z-index:1;pointer-events:none}
 
+/* ── C2.5 «حقل النصب» (D2.1) — ذراع المهد الرسمية عبر كاميرات viewBox مقصوصة ──
+   طبقة معمارية ثابتة تمامًا (صفر حركة) تحت خطوط الأساس (z:0 < z:1) وفوق الأرضية.
+   مسطّح لوني واحد: سطح مرتفع على الأرضية — بلا حدود ولا تدرّج ولا ظلّ ولا مرشّحات. */
+.heroMonument{position:absolute;inset:0;z-index:0;pointer-events:none;color:var(--surface-2)}
+.heroMonument [data-monument]{position:absolute;display:none}
+/* الهاتف: أفق منخفض بعرض كامل، مثبَّت بقاع الهيرو؛ نسبة العنصر تطابق نافذة الكاميرا
+   حرفيًا فلا وجود لقصّ غامض — LTR كاميرا 900×380 وRTL كاميرا 950×400 (من المكوّن). */
+.heroMonument [data-monument="mobile"]{display:block;inset-inline:0;inset-block-end:0;
+  inline-size:100%;block-size:auto;aspect-ratio:900/380}
+:global(html[dir="rtl"]) .heroMonument [data-monument="mobile"]{aspect-ratio:950/400}
+/* LTR فقط: النص الإنجليزي أطول فيهبط صفّ الأزرار؛ يُغرَق القوس قليلًا تحت حافة الهيرو
+   (قصّ على الحافة بالتصميم) ليبقى خلوص منطقة اللمس — قياسات التحقق تحكم القيمة. */
+:global(html[dir="ltr"]) .heroMonument [data-monument="mobile"]{inset-block-end:clamp(-4.5rem,-14vw,-2.5rem)}
+
+/* سطر التسجيل الوقائعي — هاتف فقط، مُسجَّل على جانب خطّ الأساس نفسه (+22px مثل الخطّ
+   تمامًا): يبدأ عليه في LTR وينتهي عنده في RTL — جزء من نظام التسجيل لا تعليق عائم،
+   وبعيدًا عن ركن زر واتساب العائم على الشاشات القصيرة. زخرفي: aria-hidden. */
+.heroRegLine{position:absolute;z-index:2;inset-block-end:1.5rem;
+  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
+  font-family:var(--f-ui);font-size:.72rem;font-weight:600;letter-spacing:.16em;
+  color:var(--platinum-3);white-space:nowrap;pointer-events:none}
+:lang(ar) .heroRegLine{letter-spacing:0;font-size:.8rem}
+
 /* خطّ الأساس العمودي — الهاتف: مُزاح ٢٢px للداخل عن حافة القراءة كي لا يقرأ كإطار صفحة.
    inset-inline-start يُقاس من حافة القراءة، فالجمع (+) يبعده عن الحافة نحو الداخل. */
 .heroDatum [data-datum="v"]{position:absolute;inset-block:0;
@@ -29,7 +52,10 @@
 
 /* العلامة — الهاتف: عنصر تسجيل عابر على جانب خطّ الأساس نفسه (لا الجانب المقابل).
    يحتفظ بمقاس C1 المثبت 60px، يبلغ ذروة .5 أثناء المحاذاة، ثم يختفي نهائيًا؛
-   الخط العمودي وحده هو التوقيع الدائم على الهاتف. */
+   الخط العمودي وحده هو التوقيع الدائم على الهاتف.
+   C2.5: أُبقي الموضع كما في C2 حرفيًا — القيمة المقترحة clamp(9rem,20vh,11rem) قيست
+   فتَبيَّن تصادمها مع صفّ الأزرار EN؛ الموضع الأصلي يظلّ الوحيد الخالي من تصادم
+   الأزرار على كل المقاسات المفحوصة (انظر تقرير تحقق C2.5). */
 .heroMark{position:absolute;inset-block-end:clamp(2rem,7vh,3.5rem);
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 44px);
   display:block;inline-size:60px;block-size:auto;aspect-ratio:2898/2600;
@@ -61,6 +87,15 @@
 @keyframes c2MarkRegister{from{transform:translateX(var(--c2-mark-offset))}to{transform:translateX(0)}}
 @keyframes c2EyebrowSettle{from{transform:translateY(5px)}to{transform:translateY(0)}}
 @keyframes c2CtaSettle{from{transform:translateY(4px)}to{transform:translateY(0)}}
+/* C2.5: غلاف شفافية الختم على سطح المكتب — مرحلةٌ لا نبضة: صعود بطيء يبلغ ذروته
+   لحظة اكتمال المحاذاة (10%=150ms بدء التقارب، 38%=570ms اكتمال التقارب وخطّ الأساس
+   الأفقي معًا)، ثبات قصير (63%=945ms)، ثم تلاشٍ طويل إلى الصفر — طلقة واحدة، بلا
+   ذروة ثانية ولا ارتداد ولا إزاحة موضع. الحالة النهائية: صفر (النصب يحمل الهوية). */
+@keyframes c2DesktopSeal{
+  0%,10%{opacity:0}
+  38%,63%{opacity:.32}
+  100%{opacity:0}
+}
 @keyframes c2MobileMark{
   0%,22%{opacity:0}
   84%{opacity:.48}
@@ -70,6 +105,13 @@
 /* ── سطح المكتب ── */
 @media(min-width:860px){
   .hero{min-block-size:clamp(620px,86vh,820px)}
+
+  /* C2.5 — النصب على سطح المكتب: غطاء كامل للهيرو؛ الكاميرا (من المكوّن) تجعل القوس
+     يدخل من الحافة العلوية ويخرج من السفلية داخل الحقل المقابل للنص — قصّ على حواف
+     الهيرو فقط، بلا نهايات معلّقة. سطر التسجيل خاص بالهاتف. */
+  .heroMonument [data-monument="mobile"]{display:none}
+  .heroMonument [data-monument="desktop"]{display:block;inset:0;inline-size:100%;block-size:100%}
+  .heroRegLine{display:none}
   /* حشو علوي يفسح للهيدر الثابت، وسفلي يضمن ظهور الـCTA فوق الطيّة عند ارتفاع ٧٠٠px */
   .heroInner{padding-block:7.5rem 3rem}
 
@@ -88,8 +130,12 @@
   .heroMark{inset-block-end:auto;inset-block-start:52%;
     inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + min(56%,640px) + clamp(3rem,7vw,7rem));
     inset-inline-end:auto;
-    inline-size:clamp(110px,10vw,140px);transform:translateY(-50%);opacity:.12;animation:none}
-  /* 7% من المقاس المقبول 110–140px تنتج نحو 8–10px. */
+    inline-size:clamp(88px,7vw,104px);transform:translateY(-50%);opacity:0;
+    animation:c2DesktopSeal 1500ms linear both}
+  /* C2.5 (الإغلاق البصري): الختم حدثُ تسجيلٍ عابر لا علامة دائمة — النصب يحمل الهوية
+     الساكنة والهيدر يحمل التعريف؛ opacity الأساس 0 والغلاف c2DesktopSeal يرفعه إلى
+     ذروة .32 لحظة المحاذاة ثم يعيده صفرًا. هندسة التقارب و±7% كما في C2 حرفيًا؛
+     7% من 88–104px تنتج نحو 6–7px انزياح تسجيل. */
   :global(html[dir="ltr"]) .heroMark [data-mark="outer"]{--c2-mark-offset:-7%}
   :global(html[dir="ltr"]) .heroMark [data-mark="inner"]{--c2-mark-offset:7%}
   :global(html[dir="rtl"]) .heroMark [data-mark="outer"]{--c2-mark-offset:7%}
@@ -100,8 +146,9 @@
   .heroSub{max-inline-size:46ch;margin-block:2rem 2.4rem}
 }
 
-/* الحركة المخفّضة: الحالة النهائية فورًا. opacity الأساسي يحسم العلامة:
-   0 على الهاتف، و.12 داخل استعلام سطح المكتب أعلاه. */
+/* الحركة المخفّضة: الحالة النهائية فورًا. opacity الأساس يحسم العلامة: 0 على الهاتف
+   و0 على سطح المكتب أيضًا (منذ C2.5 الختم مراسمُ حركةٍ زخرفية، فيغيب كليًا هنا —
+   النصب الساكن يحمل الهوية). */
 @media(prefers-reduced-motion:reduce){
   .heroDatum [data-datum="v"],
   .heroDatum [data-datum="h"],

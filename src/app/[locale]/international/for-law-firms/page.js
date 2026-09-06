@@ -85,15 +85,14 @@ export default async function ForLawFirms({ params }) {
       <section className="on-white section">
         <div className="wrap">
           <h2 className="display d-2" data-reveal style={{ marginBlockEnd: '2rem' }}>{t('areasHeading')}</h2>
+          {/* D3 أمان وقائعي: لا صفوف placeholder مُختلَقة عند غياب البيانات — الصفوف الحقيقية فقط (نمط D1) */}
           <div className={hs.paList}>
-            {(rows.length ? rows : Array.from({ length: 6 })).map((r, i) => (
-              rows.length ? (
-                <Link key={r.slug} href={`/services/${r.slug}`} className={hs.paRow} data-reveal>
-                  <span className={hs.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-                  <span className={hs.paBody}><span className={hs.paTitle}>{r.title}</span></span>
-                  <span className={hs.paArrow} aria-hidden="true">→</span>
-                </Link>
-              ) : <div key={i} className={hs.paRow} data-reveal><span className={hs.paIdx}>{String(i + 1).padStart(2, '0')}</span></div>
+            {rows.map((r, i) => (
+              <Link key={r.slug} href={`/services/${r.slug}`} className={hs.paRow} data-reveal>
+                <span className={hs.paIdx}>{String(i + 1).padStart(2, '0')}</span>
+                <span className={hs.paBody}><span className={hs.paTitle}>{r.title}</span></span>
+                <span className={hs.paArrow} aria-hidden="true">→</span>
+              </Link>
             ))}
           </div>
         </div>

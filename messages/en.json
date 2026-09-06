@@ -392,8 +392,12 @@
     "jurisdictionsBody": "This is the current coverage of our referral system — a signal of geographic coordination reach, not a claim of formal established partnerships in every jurisdiction listed.",
     "forkOutboundEye": "For Clients in Kuwait",
     "forkOutboundHead": "I have a matter outside Kuwait",
-    "forkOutboundBody": "We coordinate representation across the jurisdictions the firm engages with for your matter — through the real network shown below.",
-    "forkOutboundCta": "Get in touch"
+    "forkOutboundBody": "We coordinate your representation abroad through established professional relationships and our referral system. AL OUN remains your Kuwait point of contact for coordination.",
+    "forkOutboundCta": "Get in touch",
+    "relHead": "Established professional relationships",
+    "relChinaDesc": "Cross-border coordination through an established professional relationship in China.",
+    "relDiscretion": "We disclose the country, not the identity of the professional relationship.",
+    "homeStatement": "Matters that cross borders stay under one Kuwaiti point of coordination."
   },
   "forLawFirms": {
     "eyebrow": "For Law Firms & Lawyers",

@@ -7,6 +7,7 @@ import HeroMonument from '@/components/HeroMonument.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import { getTeamMember } from '@/lib/team-data.js';
+import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
 import styles from './home.module.css';
 
 export const revalidate = 60;
@@ -220,6 +221,30 @@ export default async function Home({ params }) {
               <span className={styles.proAllT}>{n('professionals')}</span>
               <span className="arrow" aria-hidden="true">→</span>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* D3 «سجلّ الممرّات» — فصل دولي موجز: عبارة واحدة + صفّ ممرّ العلاقة الموثَّقة (الكويت ⇄ الصين)
+          من المصدر الثابت المعتمد حصرًا — الدولة تُعلن والطرف المهني لا يُنشر. الصفّ كله رابط لـ/international. */}
+      <section className="on-paper section-tight">
+        <div className="wrap">
+          <span className="eyebrow" data-reveal>{ti('eyebrow')}</span>
+          <h2 className="display d-2" data-reveal style={{ marginBlockStart: '1rem', maxWidth: '24ch' }}>{ti('homeStatement')}</h2>
+          <div className={styles.intlList} style={{ marginBlockStart: 'clamp(1.75rem,3.5vh,2.5rem)' }}>
+            {RELATIONSHIP_COUNTRIES.map((rc) => (
+              <Link key={rc.code} href="/international" className={styles.intlRow} data-reveal="file">
+                <span>
+                  <span className={styles.intlCorridor}>
+                    {locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
+                    {' '}<span aria-hidden="true">⇄</span>{' '}
+                    {locale === 'ar' ? rc.ar : rc.en}
+                  </span>
+                  <span className={styles.intlDesc}>{ti('relChinaDesc')}</span>
+                </span>
+                <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

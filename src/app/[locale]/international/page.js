@@ -2,9 +2,10 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
-import JurisdictionsNetwork from '@/components/JurisdictionsNetwork.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
+import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
 import s from '../shared.module.css';
+import hs from '../home.module.css';
 
 export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -28,6 +29,14 @@ export default async function International({ params }) {
   } catch (e) { jurisdictions = []; }
 
   const howSteps = [1, 2, 3, 4, 5];
+
+  /* تحصين فصل الطبقتين: أي دولة معتمدة في طبقة العلاقات (المصدر الثابت) تُستبعد آليًا
+     من قائمة التغطية — فلا تظهر دولة في الطبقتين معًا حتى لو دخلت مستقبلًا في بيانات
+     نظام الإحالة. الاستبعاد بالاسمين المعرَّبين والإنجليزيين معًا، والمرتكز (الكويت) كذلك. */
+  const stratumAExcluded = new Set([
+    INTERNATIONAL_ANCHOR.ar, INTERNATIONAL_ANCHOR.en,
+    ...RELATIONSHIP_COUNTRIES.flatMap((rc) => [rc.ar, rc.en]),
+  ]);
 
   return (
     <>
@@ -97,28 +106,48 @@ export default async function International({ params }) {
         </div>
       </section>
 
-      {/* تغطية التنسيق — بيانات حقيقية من قاعدة الشبكة، صياغة صادقة (تنسيق لا شراكة رسمية) */}
-      {jurisdictions.length > 0 && (
-        <section className="on-paper section-tight">
-          <div className="wrap">
-            <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
-            <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 1.2rem', maxWidth: '26ch' }}>{t('jurisdictionsHead')}</h2>
-            <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '2.5rem' }}>{t('jurisdictionsBody')}</p>
-            <div style={{ background: 'var(--ground)', borderRadius: 'var(--r-lg)', padding: 'clamp(1.5rem,4vw,3rem)' }}>
-              <JurisdictionsNetwork
-                jurisdictions={jurisdictions.filter((name) => name !== 'الكويت' && name !== 'Kuwait')}
-                hubLabel={locale === 'ar' ? 'الكويت' : 'Kuwait'}
-                locale={locale}
-              />
-            </div>
-            <p data-reveal style={{ marginBlockStart: '2rem', textAlign: 'center' }}>
-              <Link href="/international/refer-a-matter" className="btn btn-solid">
-                {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
-              </Link>
-            </p>
+      {/* D3 «سجلّ الممرّات» — طبقتان مفصولتان بصرامة:
+          الطبقة أ (العلاقات): دول ذات علاقات مهنية موثَّقة من مصدر ثابت معتمد — نص كامل الحجم،
+          الدولة تُعلن والطرف المهني لا يُنشر. لا خرائط ولا عُقد ولا أشعّة (تقاعدت خريطة الشبكة —
+          كانت تعرض بيانات تغطية كأنها علاقات). الطبقة ب (التغطية): ولايات نظام الإحالة من
+          قاعدة البيانات كنصّ هادئ غير تفاعلي تحت نصّ الإفصاح المعتمد القائم. */}
+      <section className="on-paper section-tight">
+        <div className="wrap">
+          <h2 className="display d-2" data-reveal style={{ marginBlockEnd: '1.5rem', maxWidth: '26ch' }}>{t('relHead')}</h2>
+          <div className={hs.intlList}>
+            {RELATIONSHIP_COUNTRIES.map((rc) => (
+              <div key={rc.code} className={hs.intlRowStatic} data-reveal="file">
+                <span className={hs.intlCorridor}>
+                  {locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
+                  {' '}<span aria-hidden="true">⇄</span>{' '}
+                  {locale === 'ar' ? rc.ar : rc.en}
+                </span>
+                <span className={hs.intlDesc}>{t('relChinaDesc')}</span>
+              </div>
+            ))}
           </div>
-        </section>
-      )}
+          <p className={hs.intlDiscretion} data-reveal>{t('relDiscretion')}</p>
+
+          {jurisdictions.length > 0 && (
+            <div style={{ marginBlockStart: 'clamp(2.5rem,5vh,3.5rem)' }}>
+              <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
+              <h3 className="display d-3" data-reveal style={{ marginBlock: '1rem .9rem', maxWidth: '26ch' }}>{t('jurisdictionsHead')}</h3>
+              <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '1.75rem' }}>{t('jurisdictionsBody')}</p>
+              <ul className={hs.intlCoverage} data-reveal>
+                {jurisdictions.filter((nm) => !stratumAExcluded.has(nm)).map((nm) => (
+                  <li key={nm}>{nm}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <p data-reveal style={{ marginBlockStart: '2.25rem' }}>
+            <Link href="/international/refer-a-matter" className="btn btn-solid">
+              {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
+            </Link>
+          </p>
+        </div>
+      </section>
 
       {/* الحوكمة */}
       <section className="on-navy section-tight">

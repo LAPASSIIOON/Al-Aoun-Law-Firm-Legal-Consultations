@@ -346,3 +346,46 @@
   .dualT{grid-area:t;font-size:clamp(1.25rem,5.5vw,1.45rem)}
   .dualItem :global(.arrow){grid-area:arrow}
 }
+
+/* ── «سجلّ المستشارين» (D2) — طبقة الثقة الإنسانية على الفسحة الفاتحة ──
+   المؤسسة > المؤسِّس > الشريك: المؤسِّس تقديم تحريري كبير (.founder القائمة)،
+   والشريك صفّ سجلٍّ تابع بخطوط شعر فاتحة — لا بطاقات متساوية ولا شبكة فريق.
+   سطح المكتب ≥1100px: [صورة | اسم+دور | سطر إثبات | سهم]؛ دونها يُخفى الإثبات.
+   الهاتف: [صورة 56px | اسم+دور | سهم] — اسم الشخص لا يُقتطع أبدًا (لفّ طبيعي).
+   التفاعل: تحويم و:focus-visible بتكافؤ تام — خلفية وتلوين ودفعة سهم، صفر حركة تخطيط. */
+.proList{margin-block-start:clamp(2.75rem,5vh,4rem);border-block-start:1px solid var(--light-hair)}
+.proRow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;
+  column-gap:clamp(1rem,2.5vw,1.75rem);
+  padding-block:clamp(.9rem,1.8vh,1.25rem);padding-inline:.25rem;
+  border-block-end:1px solid var(--light-hair);color:inherit;
+  transition:background .45s var(--ease)}
+@media(min-width:1100px){.proRow{grid-template-columns:auto minmax(260px,1.05fr) 1fr auto}}
+.proRow:hover,.proRow:focus-visible{background:var(--light-raised)}
+.proPortrait{display:block;inline-size:clamp(56px,6vw,84px);aspect-ratio:1000/1042;
+  border-radius:var(--r-lg);overflow:hidden;box-shadow:inset 0 0 0 1px var(--light-hair)}
+.proPortrait img{display:block;inline-size:100%;block-size:100%;object-fit:cover;object-position:top center}
+.proId{display:flex;flex-direction:column;gap:.3rem;min-inline-size:0}
+.proName{font-family:var(--f-display);font-weight:600;font-size:clamp(1.05rem,1.5vw,1.3rem);
+  line-height:1.45;color:var(--ink);transition:color .35s var(--ease)}
+.proRole{color:var(--muted);font-size:.9rem;line-height:1.55}
+.proProof{display:none}
+@media(min-width:1100px){.proProof{display:block;color:var(--muted);font-size:.92rem;line-height:1.6;max-inline-size:46ch}}
+.proRow:hover .proName,.proRow:focus-visible .proName{color:var(--clay-600)}
+.proRow :global(.arrow),.proAllRow :global(.arrow){color:var(--light-idx);font-size:1.15rem;
+  transition:transform .45s var(--ease),color .35s var(--ease)}
+.proRow:hover :global(.arrow),.proRow:focus-visible :global(.arrow),
+.proAllRow:hover :global(.arrow),.proAllRow:focus-visible :global(.arrow){color:var(--clay-600)}
+:global(html[lang=en]) .proRow:hover :global(.arrow),:global(html[lang=en]) .proRow:focus-visible :global(.arrow),
+:global(html[lang=en]) .proAllRow:hover :global(.arrow),:global(html[lang=en]) .proAllRow:focus-visible :global(.arrow){transform:translateX(4px)}
+:global(html[lang=ar]) .proRow:hover :global(.arrow),:global(html[lang=ar]) .proRow:focus-visible :global(.arrow),
+:global(html[lang=ar]) .proAllRow:hover :global(.arrow),:global(html[lang=ar]) .proAllRow:focus-visible :global(.arrow){transform:translateX(-4px)}
+.proAllRow{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding-block:clamp(1rem,2vh,1.35rem);padding-inline:.25rem;
+  border-block-end:1px solid var(--light-hair);transition:background .45s var(--ease)}
+.proAllRow:hover,.proAllRow:focus-visible{background:var(--light-raised)}
+.proAllT{font-family:var(--f-display);font-weight:600;font-size:clamp(1rem,1.4vw,1.2rem);
+  color:var(--ink);transition:color .35s var(--ease)}
+.proAllRow:hover .proAllT,.proAllRow:focus-visible .proAllT{color:var(--clay-600)}
+@media (prefers-reduced-motion:reduce){
+  .proRow,.proAllRow,.proName,.proAllT,.proRow :global(.arrow),.proAllRow :global(.arrow){transition:none}
+}

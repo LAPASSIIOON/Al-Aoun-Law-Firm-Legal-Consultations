@@ -6,6 +6,7 @@ import HeroDatum from '@/components/HeroDatum.js';
 import HeroMonument from '@/components/HeroMonument.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
+import { getTeamMember } from '@/lib/team-data.js';
 import styles from './home.module.css';
 
 export const revalidate = 60;
@@ -35,7 +36,8 @@ const T = {
     paEye: 'مجالات الممارسة', paHead: 'خبرةٌ تُغطّي ما يهمّك', paAll: 'استعراض كل المجالات', paMore: 'استعراض',
     fEye: 'المؤسِّس', fName: 'الدكتور هيثم أحمد العون',
     fRole: 'المؤسِّس ورئيس مجلس الإدارة · محامٍ بالتمييز والدستورية',
-    fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة. خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.',
+    /* D2: الجملة الأولى الكاملة فقط من النص المعتمد — بلا إعادة صياغة (بقية السيرة في الملف الشخصي) */
+    fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة.',
     fLink: 'الملف الكامل',
     inEye: 'رؤى قانونية', inHead: 'رؤى ومقالات', inAll: 'كل الرؤى', inEmpty: 'نُثري هذا القسم بتحليلاتٍ قانونية تباعًا.',
     bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'ابدأ بخطوةٍ سهلة — اسمك ورقمك فقط، والباقي نتولّاه بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
@@ -63,7 +65,8 @@ const T = {
     paEye: 'Practice Areas', paHead: 'Expertise across what matters to you', paAll: 'View all practice areas', paMore: 'Explore',
     fEye: 'The Founder', fName: 'Dr. Haitham Ahmed Al Oun',
     fRole: 'Founder & Chairman · Cassation & Constitutional Lawyer',
-    fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres. Over two decades across constitutional matters, cassation appeals and international commercial arbitration.',
+    /* D2: first complete sentence of the approved bio only — no paraphrase (rest lives on the profile page) */
+    fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres.',
     fLink: 'Full profile',
     inEye: 'Insights', inHead: 'Insights & articles', inAll: 'All insights', inEmpty: 'We’re adding legal analysis to this section shortly.',
     bandHead: 'Ready for a clear first step?', bandBody: 'Start with one easy step — just your name and number. We’ll handle the rest, in full confidence.', bandPhone: 'Or call us',
@@ -95,6 +98,9 @@ export default async function Home({ params }) {
   const ti = await getTranslations({ locale, namespace: 'international' });
   const c = T[locale] || T.ar;
   const { areas, articles } = await fetchData(locale);
+  /* D2 «سجلّ المستشارين»: هوية الشريك من مصدر بيانات الفريق المعتمد حصرًا — لا إعادة كتابة */
+  const partner = getTeamMember('bader-saif-al-rashidi');
+  const pf = partner ? (partner[locale] || partner.ar) : null;
 
   return (
     <>
@@ -175,29 +181,45 @@ export default async function Home({ params }) {
           </div>
           <p className="lead" data-reveal style={{ maxWidth: '52rem' }}>{c.posBody}</p>
 
-          <div className={styles.legacyList} style={{ marginBlockStart: '2.5rem' }}>
-            {c.legacyItems.map((it) => (
-              <div key={it.n} className={styles.legacyRow} data-reveal="file">
-                <span className={styles.legacyIdx}>{it.n}</span>
-                <span className={styles.legacyBody}>
-                  <span className={styles.legacyTitle}>{it.t}</span>
-                  <span className={styles.legacyDesc}>{it.d}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-
+          {/* D2 «سجلّ المستشارين»: قائمة الإرث حُذفت من الرئيسية (كانت تكرارًا لاعتماديات المؤسِّس
+              الظاهرة في عدّادات الهيرو وسيرته أدناه وملفه الشخصي) — المؤسسة تتحدث مرة واحدة أعلاه،
+              ثم يقف خلفها البشر: المؤسِّس كتقديم تحريري أوّل، والشريك كصفّ سجلٍّ تابع. */}
           <div className={styles.founder} style={{ marginBlockStart: 'clamp(2.5rem,5vh,4rem)' }}>
             <div className={`${styles.founderMedia} img-zoom-frame`} data-reveal="slow">
-              <img src="/media/founder-haitham.jpg" alt={c.fName} />
+              <img src="/media/founder-haitham.jpg" alt={c.fName} width="1000" height="1042" loading="lazy" decoding="async" />
             </div>
             <div data-reveal="slow">
               <span className="eyebrow">{c.fEye}</span>
               <h2 className={styles.founderName}>{c.fName}</h2>
               <p className={styles.founderRole}>{c.fRole}</p>
               <p className="body" style={{ fontSize: '1.08rem', maxWidth: '46rem' }}>{c.fBio}</p>
-              <p style={{ marginBlockStart: '1.75rem' }}><Link href="/team" className="btn-line">{c.fLink} <span className="arrow">→</span></Link></p>
+              {/* D2: الوجهة تطابق الوعد أخيرًا — الملف الشخصي الكامل للمؤسِّس لا فهرس الفريق */}
+              <p style={{ marginBlockStart: '1.75rem' }}><Link href="/team/haitham-al-aoun" className="btn-line">{c.fLink} <span className="arrow">→</span></Link></p>
             </div>
+          </div>
+
+          {/* صفّ الشريك: هوية كاملة دائمة الظهور (لا معلومات خلف التحويم)، الصفّ كله رابط لملفه */}
+          <div className={styles.proList}>
+            {pf && (
+              <Link href={`/team/${partner.slug}`} className={styles.proRow} data-reveal="file">
+                {/* إغلاق الوصولية (D2): الصورة زخرفية داخل رابطٍ نصُّه المرئي يحمل الاسم كاملًا —
+                    alt فارغ يمنع تكرار الاسم في الاسم الوصولي للصف */}
+                <span className={styles.proPortrait}>
+                  <img src={partner.photoThumb} alt="" width="1000" height="1042" loading="lazy" decoding="async" />
+                </span>
+                <span className={styles.proId}>
+                  <span className={styles.proName}>{pf.name}</span>
+                  <span className={styles.proRole}>{pf.role} · {pf.title}</span>
+                </span>
+                {pf.creds?.[0] && <span className={styles.proProof}>{pf.creds[0]}</span>}
+                <span className="arrow" aria-hidden="true">→</span>
+              </Link>
+            )}
+            {/* الصفّ الختامي: نصّ الملاحة المعتمد وحده («المحترفون» / Professionals) — بلا عدّاد ولا نصّ جديد */}
+            <Link href="/team" className={styles.proAllRow} data-reveal="file">
+              <span className={styles.proAllT}>{n('professionals')}</span>
+              <span className="arrow" aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>

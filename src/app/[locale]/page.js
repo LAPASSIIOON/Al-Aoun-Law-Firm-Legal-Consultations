@@ -8,6 +8,7 @@ import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import { getTeamMember } from '@/lib/team-data.js';
 import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
+import CoordinationField from '@/components/CoordinationField.js';
 import styles from './home.module.css';
 
 export const revalidate = 60;
@@ -75,7 +76,7 @@ const T = {
 };
 
 async function fetchData(locale) {
-  let areas = [], articles = [];
+  let areas = [], articles = [], fieldCountries = [];
   try {
     const supabase = createAnonClient();
     const { data: a } = await supabase.from('practice_area_translations')
@@ -87,8 +88,20 @@ async function fetchData(locale) {
       .eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
       .order('created_at', { ascending: false }).limit(3);
     articles = ar || [];
+    /* D3.1: قائمة حقل التنسيق — تغطية قاعدة البيانات + دول العلاقات الموثَّقة، بلا تكرار،
+       باستبعاد الكويت (المرتكز)، وبترتيب قانوني حتمي واحد (أبجدي إنجليزي) في الاتجاهين.
+       أمان وقائعي عند تعذّر التغطية: تبقى القائمة فارغة — لا شريط «الصين وحدها» أبدًا
+       ولا دول مُختلَقة؛ العبارة ورابط /international يبقيان صالحين للاستخدام. */
+    const { data: j } = await supabase.from('v_active_jurisdictions').select('id, name_ar, name_en').order('name_en');
+    const coverage = (j || []).filter((x) => x.name_en !== INTERNATIONAL_ANCHOR.en);
+    if (coverage.length > 0) {
+      const merged = new Map();
+      coverage.forEach((x) => merged.set(x.name_en, { en: x.name_en, ar: x.name_ar }));
+      RELATIONSHIP_COUNTRIES.forEach((rc) => merged.set(rc.en, { en: rc.en, ar: rc.ar }));
+      fieldCountries = [...merged.values()].sort((x, y) => x.en.localeCompare(y.en));
+    }
   } catch (e) { /* graceful */ }
-  return { areas, articles };
+  return { areas, articles, fieldCountries };
 }
 
 /** @param {{ params: Promise<{ locale: string }> }} props */
@@ -98,7 +111,7 @@ export default async function Home({ params }) {
   const n = await getTranslations({ locale, namespace: 'nav' });
   const ti = await getTranslations({ locale, namespace: 'international' });
   const c = T[locale] || T.ar;
-  const { areas, articles } = await fetchData(locale);
+  const { areas, articles, fieldCountries } = await fetchData(locale);
   /* D2 «سجلّ المستشارين»: هوية الشريك من مصدر بيانات الفريق المعتمد حصرًا — لا إعادة كتابة */
   const partner = getTeamMember('bader-saif-al-rashidi');
   const pf = partner ? (partner[locale] || partner.ar) : null;
@@ -225,27 +238,26 @@ export default async function Home({ params }) {
         </div>
       </section>
 
-      {/* D3 «سجلّ الممرّات» — فصل دولي موجز: عبارة واحدة + صفّ ممرّ العلاقة الموثَّقة (الكويت ⇄ الصين)
-          من المصدر الثابت المعتمد حصرًا — الدولة تُعلن والطرف المهني لا يُنشر. الصفّ كله رابط لـ/international. */}
+      {/* D3.1 «حقل التنسيق» — معاينة موجزة للحقل الدولي: كل الدول بوزن بصري واحد
+          (تقاعد صفّ الصين المنفرد)، ورابط واضح منفصل إلى /international —
+          لا رابط عملاقًا على مجموعة الدول كلها، ولا روابط لدول مفردة. */}
       <section className="on-paper section-tight">
         <div className="wrap">
           <span className="eyebrow" data-reveal>{ti('eyebrow')}</span>
           <h2 className="display d-2" data-reveal style={{ marginBlockStart: '1rem', maxWidth: '24ch' }}>{ti('homeStatement')}</h2>
-          <div className={styles.intlList} style={{ marginBlockStart: 'clamp(1.75rem,3.5vh,2.5rem)' }}>
-            {RELATIONSHIP_COUNTRIES.map((rc) => (
-              <Link key={rc.code} href="/international" className={styles.intlRow} data-reveal="file">
-                <span>
-                  <span className={styles.intlCorridor}>
-                    {locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
-                    {' '}<span aria-hidden="true">⇄</span>{' '}
-                    {locale === 'ar' ? rc.ar : rc.en}
-                  </span>
-                  <span className={styles.intlDesc}>{ti('relChinaDesc')}</span>
-                </span>
-                <span className="arrow" aria-hidden="true">→</span>
-              </Link>
-            ))}
-          </div>
+          {/* الشريط مشروط ببيانات تغطية حقيقية — لا شريط أحادي الدولة عند تعذّرها */}
+          {fieldCountries.length > 0 && (
+            <div style={{ marginBlockStart: 'clamp(1.75rem,3.5vh,2.5rem)' }}>
+              <CoordinationField
+                variant="strip"
+                dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                countries={fieldCountries.map((c2) => (locale === 'ar' ? c2.ar : c2.en))}
+              />
+            </div>
+          )}
+          <p data-reveal style={{ marginBlockStart: '1.75rem' }}>
+            <Link href="/international" className="btn-line">{c.paMore} <span className="arrow">→</span></Link>
+          </p>
         </div>
       </section>
 

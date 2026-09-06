@@ -2,10 +2,10 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import CoordinationField from '@/components/CoordinationField.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
 import s from '../shared.module.css';
-import hs from '../home.module.css';
 
 export const revalidate = 300;
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -21,22 +21,28 @@ export default async function International({ params }) {
   const t = await getTranslations('international');
   const n = await getTranslations('nav');
 
-  let jurisdictions = [];
+  /* D3.1 «حقل التنسيق»: قائمة حقل واحدة بمساواة بصرية تامة — دمج تغطية نظام الإحالة
+     (قاعدة البيانات) مع دول العلاقات الموثَّقة (المصدر الثابت المعتمد)، بلا تكرار،
+     باستبعاد الكويت (المرتكز)، وبترتيب قانوني حتمي واحد (أبجدي إنجليزي) في الاتجاهين.
+     التمييز الوقائعي يبقى في بيانات الحوكمة والنص الشارح — لا في أي ترتيب بصري. */
+  /* أمان وقائعي عند تعذّر بيانات التغطية: لا حقل «الصين وحدها» أبدًا — ذلك يعيد
+     ترتيب الأهمية الذي صُمّمت D3.1 لإزالته، ولا دول مُختلَقة ولا نسخة ثابتة من
+     قائمة التغطية. الحقل وتعليقه («هذه الولايات») لا يُعرضان إلا ببيانات تغطية حقيقية. */
+  let fieldCountries = [];
   try {
     const supabase = createAnonClient();
     const { data } = await supabase.from('v_active_jurisdictions').select('id, name_ar, name_en').order('name_en');
-    jurisdictions = (data || []).map((x) => (locale === 'ar' ? x.name_ar : x.name_en));
-  } catch (e) { jurisdictions = []; }
+    const coverage = (data || []).filter((x) => x.name_en !== INTERNATIONAL_ANCHOR.en);
+    if (coverage.length > 0) {
+      const merged = new Map();
+      coverage.forEach((x) => merged.set(x.name_en, { en: x.name_en, ar: x.name_ar }));
+      RELATIONSHIP_COUNTRIES.forEach((rc) => merged.set(rc.en, { en: rc.en, ar: rc.ar }));
+      fieldCountries = [...merged.values()].sort((a, b) => a.en.localeCompare(b.en));
+    }
+  } catch (e) { fieldCountries = []; }
+  const fieldNames = fieldCountries.map((c2) => (locale === 'ar' ? c2.ar : c2.en));
 
   const howSteps = [1, 2, 3, 4, 5];
-
-  /* تحصين فصل الطبقتين: أي دولة معتمدة في طبقة العلاقات (المصدر الثابت) تُستبعد آليًا
-     من قائمة التغطية — فلا تظهر دولة في الطبقتين معًا حتى لو دخلت مستقبلًا في بيانات
-     نظام الإحالة. الاستبعاد بالاسمين المعرَّبين والإنجليزيين معًا، والمرتكز (الكويت) كذلك. */
-  const stratumAExcluded = new Set([
-    INTERNATIONAL_ANCHOR.ar, INTERNATIONAL_ANCHOR.en,
-    ...RELATIONSHIP_COUNTRIES.flatMap((rc) => [rc.ar, rc.en]),
-  ]);
 
   return (
     <>
@@ -106,42 +112,32 @@ export default async function International({ params }) {
         </div>
       </section>
 
-      {/* D3 «سجلّ الممرّات» — طبقتان مفصولتان بصرامة:
-          الطبقة أ (العلاقات): دول ذات علاقات مهنية موثَّقة من مصدر ثابت معتمد — نص كامل الحجم،
-          الدولة تُعلن والطرف المهني لا يُنشر. لا خرائط ولا عُقد ولا أشعّة (تقاعدت خريطة الشبكة —
-          كانت تعرض بيانات تغطية كأنها علاقات). الطبقة ب (التغطية): ولايات نظام الإحالة من
-          قاعدة البيانات كنصّ هادئ غير تفاعلي تحت نصّ الإفصاح المعتمد القائم. */}
+      {/* D3.1 «حقل التنسيق» — حقل مساحي واحد يضمّ كل الدول بمساواة بصرية تامة
+          (تقاعد سطر الصين المنفرد وقائمة التغطية التابعة اللذان أوحيا بترتيب أهمية).
+          الشرح الوقائعي المعتمد أسفل الحقل يوضح اختلاف الآلية بحسب الولاية —
+          دون وسم أي دولة بصريًا. مفاتيح D3 القديمة (relHead/relChinaDesc/relDiscretion
+          وjurisdictionsHead/Body) محفوظة في الترجمة غير معروضة، تفاديًا لتضخّم لا داعي له. */}
       <section className="on-paper section-tight">
         <div className="wrap">
-          <h2 className="display d-2" data-reveal style={{ marginBlockEnd: '1.5rem', maxWidth: '26ch' }}>{t('relHead')}</h2>
-          <div className={hs.intlList}>
-            {RELATIONSHIP_COUNTRIES.map((rc) => (
-              <div key={rc.code} className={hs.intlRowStatic} data-reveal="file">
-                <span className={hs.intlCorridor}>
-                  {locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
-                  {' '}<span aria-hidden="true">⇄</span>{' '}
-                  {locale === 'ar' ? rc.ar : rc.en}
-                </span>
-                <span className={hs.intlDesc}>{t('relChinaDesc')}</span>
+          <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
+          {/* الحقل والتعليق مشروطان ببيانات تغطية حقيقية — لا حقل أحادي الدولة ولا
+              «هذه الولايات» بلا حقل؛ بقية القسم (والصفحة) يعملان طبيعيًا في كل الأحوال */}
+          {fieldNames.length > 0 && (
+            <>
+              <div style={{ marginBlockStart: 'clamp(1.75rem,3.5vh,2.5rem)' }}>
+                <CoordinationField
+                  variant="full"
+                  dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                  countries={fieldNames}
+                  anchorLabel={locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
+                />
               </div>
-            ))}
-          </div>
-          <p className={hs.intlDiscretion} data-reveal>{t('relDiscretion')}</p>
-
-          {jurisdictions.length > 0 && (
-            <div style={{ marginBlockStart: 'clamp(2.5rem,5vh,3.5rem)' }}>
-              <span className="eyebrow" data-reveal>{t('jurisdictionsEye')}</span>
-              <h3 className="display d-3" data-reveal style={{ marginBlock: '1rem .9rem', maxWidth: '26ch' }}>{t('jurisdictionsHead')}</h3>
-              <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockEnd: '1.75rem' }}>{t('jurisdictionsBody')}</p>
-              <ul className={hs.intlCoverage} data-reveal>
-                {jurisdictions.filter((nm) => !stratumAExcluded.has(nm)).map((nm) => (
-                  <li key={nm}>{nm}</li>
-                ))}
-              </ul>
-            </div>
+              <p className="body" data-reveal style={{ maxWidth: '58ch', marginBlockStart: '1.75rem', fontSize: '.95rem' }}>
+                {t('fieldCaption')}
+              </p>
+            </>
           )}
-
-          <p data-reveal style={{ marginBlockStart: '2.25rem' }}>
+          <p data-reveal style={{ marginBlockStart: '2rem' }}>
             <Link href="/international/refer-a-matter" className="btn btn-solid">
               {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
             </Link>

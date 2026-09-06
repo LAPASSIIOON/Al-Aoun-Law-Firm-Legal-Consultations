@@ -389,37 +389,3 @@
 @media (prefers-reduced-motion:reduce){
   .proRow,.proAllRow,.proName,.proAllT,.proRow :global(.arrow),.proAllRow :global(.arrow){transition:none}
 }
-
-/* ── «سجلّ الممرّات» (D3) — الفصل الدولي على سطح السجل الداكن (on-paper) ──
-   ممرّ = الكويت ⇄ دولة علاقة مهنية موثَّقة (حاليًا: الصين وحدها).
-   لا خرائط ولا نقاط ولا شبكات — نصّ كامل الحجم يقرأه القارئ والقارئ الآلي سواء.
-   صف الرئيسية (.intlRow) رابط بتكافؤ تحويم/focus-visible (نمط D1/D2، صفر إزاحة)؛
-   صف /international الثابت (.intlRowStatic) معلوماتي بلا تأثيرات ولا سهم؛
-   قائمة التغطية (.intlCoverage) نصّ هادئ غير تفاعلي — تغطية نظام لا ادّعاء علاقات. */
-.intlList{border-block-start:1px solid var(--hair-light)}
-.intlRow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;
-  padding-block:clamp(1.15rem,2.3vh,1.6rem);padding-inline:.25rem;
-  border-block-end:1px solid var(--hair-light);color:inherit;
-  transition:background .45s var(--ease)}
-.intlRow:hover,.intlRow:focus-visible{background:var(--surface)}
-.intlCorridor{display:block;font-family:var(--f-display);font-weight:600;
-  font-size:clamp(1.25rem,2.2vw,1.7rem);line-height:1.5;color:var(--platinum);
-  transition:color .35s var(--ease)}
-.intlRow:hover .intlCorridor,.intlRow:focus-visible .intlCorridor{color:var(--clay-bright)}
-.intlDesc{display:block;color:var(--platinum-2);font-size:.95rem;line-height:1.65;
-  max-inline-size:56ch;margin-block-start:.4rem}
-.intlRow :global(.arrow){color:var(--platinum-3);font-size:1.15rem;
-  transition:transform .45s var(--ease),color .35s var(--ease)}
-.intlRow:hover :global(.arrow),.intlRow:focus-visible :global(.arrow){color:var(--clay-bright)}
-:global(html[lang=en]) .intlRow:hover :global(.arrow),:global(html[lang=en]) .intlRow:focus-visible :global(.arrow){transform:translateX(4px)}
-:global(html[lang=ar]) .intlRow:hover :global(.arrow),:global(html[lang=ar]) .intlRow:focus-visible :global(.arrow){transform:translateX(-4px)}
-.intlRowStatic{display:block;padding-block:clamp(1.15rem,2.3vh,1.6rem);padding-inline:.25rem;
-  border-block-end:1px solid var(--hair-light)}
-.intlDiscretion{color:var(--platinum-3);font-size:.88rem;line-height:1.6;margin-block-start:1rem}
-.intlCoverage{list-style:none;padding:0;margin:0;display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.25rem 2rem}
-.intlCoverage li{color:var(--platinum-2);font-size:.98rem;line-height:1.7;
-  padding-block:.45rem;border-block-end:1px solid var(--hair-light)}
-@media (prefers-reduced-motion:reduce){
-  .intlRow,.intlCorridor,.intlRow :global(.arrow){transition:none}
-}

@@ -1,0 +1,113 @@
+/* ═══ «حقل التنسيق» (D3.1) — ملكية معزولة للحقل، لا إطار حركة عامًّا ═══
+   الأساس المكتوب هنا = التكوين النهائي المرتّب («لحظة النظام») — GSAP يضيف
+   الإزاحات ويُذيبها إلى الصفر، فيحصل زائر reduced-motion وزائر بلا JS على
+   التكوين الكامل ساكنًا. المساواة بالبناء: صنف واحد `.country` لكل الدول،
+   ولا يوجد في هذا الملف أي مُحدِّد لدولة بعينها — خانات هندسية فقط (nth-child).
+   الترتيب القانوني للخانات (أبجدي إنجليزي، ثابت في الاتجاهين):
+   1 البحرين · 2 الصين · 3 مصر · 4 الأردن · 5 عُمان · 6 قطر · 7 السعودية
+   · 8 تركيا · 9 الإمارات · 10 المملكة المتحدة · 11 الولايات المتحدة */
+
+.field{position:relative}
+.list{list-style:none;margin:0;padding:0}
+
+/* ── تكافؤ نصّي ملزم: كل خصائص النص تُعرَّف مرة واحدة هنا فقط ── */
+.country{font-family:var(--f-display);font-weight:600;color:var(--platinum);
+  font-size:clamp(1.05rem,1.5vw,1.35rem);line-height:1.5;opacity:1}
+
+/* ═══ الحقل الكامل (صفحة /international) ═══ */
+.full{block-size:clamp(500px,58vh,620px)}
+.full .country{position:absolute;inset-inline-start:var(--x);inset-block-start:var(--y);
+  max-inline-size:44%;white-space:nowrap}
+.full .tick{position:absolute;inset-inline-start:-14px;inset-block-start:.62em;
+  inline-size:7px;block-size:1px;background:var(--clay-bright);opacity:.75}
+.paths{position:absolute;inset:0;inline-size:100%;block-size:100%;pointer-events:none}
+.paths line{stroke:var(--clay-bright);stroke-width:1}
+.datum{position:absolute;inset-inline:0;block-size:1px;background:var(--hair-light)}
+.datumA{inset-block-start:30%}
+.datumB{inset-block-start:68%}
+.originWrap{position:absolute;inset-inline-start:var(--ox,44%);inset-block-start:var(--oy,47%);
+  display:flex;align-items:center;gap:.55rem;
+  /* الأصل بلا امتياز نصّي: نفس خط الدول وحجمها ووزنها ولونها حرفيًا */
+  font-family:var(--f-display);font-weight:600;color:var(--platinum);
+  font-size:clamp(1.05rem,1.5vw,1.35rem);line-height:1.5}
+.originMark{position:relative;inline-size:15px;block-size:15px;flex:none}
+.originMark::before,.originMark::after{content:'';position:absolute;background:var(--clay-bright)}
+.originMark::before{inset-inline-start:7px;inset-block:0;inline-size:1px}
+.originMark::after{inset-block-start:7px;inset-inline:0;block-size:1px}
+
+/* خرائط الخانات — سطح المكتب LTR (مؤلَّفة، فضاء سلبي مقصود، لا شبكة بطاقات) */
+.ltr.full .country:nth-child(1){--x:6%;--y:12%}
+.ltr.full .country:nth-child(2){--x:30%;--y:19%}
+.ltr.full .country:nth-child(3){--x:57%;--y:9%}
+.ltr.full .country:nth-child(4){--x:81%;--y:17%}
+.ltr.full .country:nth-child(5){--x:11%;--y:41%}
+.ltr.full .country:nth-child(6){--x:29%;--y:52%}
+.ltr.full .country:nth-child(7){--x:63%;--y:39%}
+.ltr.full .country:nth-child(8){--x:86%;--y:50%}
+.ltr.full .country:nth-child(9){--x:8%;--y:76%}
+.ltr.full .country:nth-child(10){--x:42%;--y:85%}
+.ltr.full .country:nth-child(11){--x:71%;--y:74%}
+.ltr.full{--ox:45%;--oy:47%}
+
+/* سطح المكتب RTL — تأليف عربي مستقل (لا انعكاس آلي): متّسع مضمون للأسماء الطويلة
+   (المملكة المتحدة/الولايات المتحدة في خانتين فسيحتين) */
+.rtl.full .country:nth-child(1){--x:7%;--y:14%}
+.rtl.full .country:nth-child(2){--x:28%;--y:8%}
+.rtl.full .country:nth-child(3){--x:55%;--y:16%}
+.rtl.full .country:nth-child(4){--x:82%;--y:10%}
+.rtl.full .country:nth-child(5){--x:12%;--y:43%}
+.rtl.full .country:nth-child(6){--x:33%;--y:52%}
+.rtl.full .country:nth-child(7){--x:66%;--y:41%}
+.rtl.full .country:nth-child(8){--x:88%;--y:52%}
+.rtl.full .country:nth-child(9){--x:9%;--y:78%}
+.rtl.full .country:nth-child(10){--x:38%;--y:86%}
+.rtl.full .country:nth-child(11){--x:67%;--y:75%}
+.rtl.full{--ox:47%;--oy:46%}
+
+/* ── الهاتف (البوابة الأولى): تكوين رأسي أصيل — عمودان متناوبان، لا تصغير لسطح المكتب ── */
+@media (max-width:759px){
+  .full{block-size:660px}
+  /* الهاتف: يُسمح باللفّ الطبيعي للجميع بالتساوي (لا قصّ ولا اقتطاع لأي اسم) */
+  .full .country{font-size:1.08rem;max-inline-size:46%;white-space:normal}
+  /* تكافؤ صارم: الأصل بنفس حجم الدول على الهاتف أيضًا (لا فرق ولو نصف بكسل) */
+  .originWrap{font-size:1.08rem}
+  .datumA{inset-block-start:4%}
+  .datumB{inset-block-start:96%}
+  .ltr.full .country:nth-child(1){--x:5%;--y:7%}
+  .ltr.full .country:nth-child(2){--x:54%;--y:13%}
+  .ltr.full .country:nth-child(3){--x:5%;--y:21%}
+  .ltr.full .country:nth-child(4){--x:54%;--y:27%}
+  .ltr.full .country:nth-child(5){--x:5%;--y:35%}
+  .ltr.full .country:nth-child(6){--x:54%;--y:41%}
+  .ltr.full .country:nth-child(7){--x:5%;--y:49%}
+  .ltr.full .country:nth-child(8){--x:54%;--y:56%}
+  .ltr.full .country:nth-child(9){--x:5%;--y:64%}
+  .ltr.full .country:nth-child(10){--x:5%;--y:78%}
+  .ltr.full .country:nth-child(11){--x:47%;--y:86%}
+  .ltr.full{--ox:56%;--oy:69%}
+  /* عربي هاتف: الأسماء الطويلة (٩–١١) في خاناتٍ تبدأ قرب حافة البداية لتجد متّسعها كاملًا */
+  .rtl.full .country:nth-child(1){--x:6%;--y:7%}
+  .rtl.full .country:nth-child(2){--x:56%;--y:13%}
+  .rtl.full .country:nth-child(3){--x:6%;--y:21%}
+  .rtl.full .country:nth-child(4){--x:56%;--y:27%}
+  .rtl.full .country:nth-child(5){--x:6%;--y:35%}
+  .rtl.full .country:nth-child(6){--x:56%;--y:41%}
+  .rtl.full .country:nth-child(7){--x:6%;--y:49%}
+  .rtl.full .country:nth-child(8){--x:56%;--y:56%}
+  .rtl.full .country:nth-child(9){--x:6%;--y:64%}
+  .rtl.full .country:nth-child(10){--x:6%;--y:78%}
+  .rtl.full .country:nth-child(11){--x:6%;--y:92%}
+  .rtl.full{--ox:58%;--oy:73%}
+  .rtl.full .datumB{inset-block-start:99%}
+}
+
+/* أي دولة تتجاوز الخانات المؤلَّفة (١٢+ مستقبلًا) تهبط بأمان لتدفّق ثابت مقروء —
+   بلا كسر تكوين، وتُعاد التأليف عندها بقرار تصميمي واعٍ */
+.full .country:nth-child(n+12){position:static;display:inline-block;margin:1rem 1.5rem 0 0}
+
+/* ═══ الشريط الموجز (الرئيسية): كل الدول الإحدى عشرة بوزن واحد، سطر متدفق ═══ */
+.strip .list{display:flex;flex-wrap:wrap;column-gap:1.9rem;row-gap:.65rem}
+.strip .country{position:relative;font-size:clamp(.98rem,1.2vw,1.1rem);white-space:nowrap}
+.strip .country::before{content:'';position:absolute;inset-inline-start:-1.05rem;
+  inset-block-start:.68em;inline-size:6px;block-size:1px;background:var(--clay-bright);opacity:.55}
+.strip .country:first-child::before{display:none}

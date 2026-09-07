@@ -264,8 +264,12 @@ export default async function Home({ params }) {
         </div>
       </section>
 
-      {/* INSIGHTS — hidden entirely while zero approved articles exist (not a "coming soon" placeholder) */}
-      {articles.length > 0 && (
+      {/* INSIGHTS — سجلّ تحريري بلغة السجلّ المرجعي نفسها (D1/D2): صفوف مرقّمة، لا شبكة بطاقات.
+          العتبة: القسم لا يُعرض إطلاقًا دون ثلاث مواد مؤهَّلة للّغة النشطة. الاستعلام محدود
+          بثلاثة أصلًا، فطول المصفوفة = 3 يعني توفّر ثلاث مواد فعليًا (بلا مساس بالاستعلام).
+          العنوان والملخّص القائمان فقط — بلا صور ولا شارات ولا تواريخ ولا تصنيفات ولا نصّ عام جديد.
+          المخرج الوحيد صفٌّ ختامي إلى الأرشيف بنصّ الترجمة القائم نفسه. */}
+      {articles.length >= 3 && (
         <section className="on-paper section">
           <div className="wrap">
             <div className={styles.headRow}>
@@ -273,17 +277,22 @@ export default async function Home({ params }) {
                 <span className="eyebrow" data-reveal>{c.inEye}</span>
                 <h2 className="display d-1" data-reveal style={{ marginBlockStart: '1rem' }}>{c.inHead}</h2>
               </div>
-              <Link href="/insights" className="btn-line" data-reveal>{c.inAll} <span className="arrow">→</span></Link>
             </div>
-            <div className="grid cols-3">
-              {articles.map((a) => (
-                <Link key={a.slug} href={`/insights/${a.slug}`} className="card" data-reveal>
-                  <span className="tag">{c.inEye}</span>
-                  <h3 className="card-title">{a.title}</h3>
-                  {a.excerpt && <p className="body" style={{ fontSize: '0.98rem' }}>{a.excerpt}</p>}
-                  <span className="btn-line">{locale === 'ar' ? 'اقرأ' : 'Read'} <span className="arrow">→</span></span>
+            <div className={styles.inList}>
+              {articles.map((a, i) => (
+                <Link key={a.slug} href={`/insights/${a.slug}`} className={styles.inRow} data-reveal="file">
+                  <span className={styles.inIdx}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className={styles.inBody}>
+                    <span className={styles.inTitle}>{a.title}</span>
+                    {a.excerpt && <span className={styles.inSum}>{a.excerpt}</span>}
+                  </span>
+                  <span className="arrow" aria-hidden="true">→</span>
                 </Link>
               ))}
+              <Link href="/insights" className={styles.inAllRow} data-reveal="file">
+                <span className={styles.inAllT}>{c.inAll}</span>
+                <span className="arrow" aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </section>

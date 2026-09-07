@@ -22,7 +22,6 @@
 .link{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.95rem;transition:color .3s var(--ease);inline-size:fit-content}
 .link:hover,.link:focus-visible{color:#fff}
 .linkMore{display:inline-flex;align-items:center;min-block-size:24px;color:var(--blue-glow);font-size:.95rem;font-weight:500;margin-block-start:.2rem;inline-size:fit-content}
-@media (pointer:coarse){.link,.linkMore,.legalLink{min-block-size:var(--tap-min)}}
 .hours{color:#fff;font-size:.9rem;margin-block-start:.6rem}
 .hoursVal{color:var(--muted-dark);font-size:.9rem}
 .bottom{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;padding-block:1.75rem}
@@ -30,6 +29,13 @@
 .legal{display:flex;gap:1.5rem}
 .legalLink{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.9rem}
 .legalLink:hover,.legalLink:focus-visible{color:#fff}
+
+/* Wave 1.1 — تصحيح ترتيب تتالٍ: كانت كتلة pointer:coarse تسبق تعريف .legalLink، وبما أن
+   الاثنين بالتخصيص نفسه (0,1,0) فإن min-block-size:24px الآتي بعدها كان يغلبها — فبقي
+   الرابطان القانونيان ٢٦px تحت اللمس بدل ٤٤px (قياس إنتاج على 404b287). الكتلة هنا بعد
+   التعريفات الثلاثة جميعًا، فتغلبها بالترتيب. .link و.linkMore كانا سليمَين أصلًا وسلوكهما
+   لا يتغيّر. المقاس البصري للنصّ كما هو — المنطقة القابلة للنقر وحدها هي التي كبرت. */
+@media (pointer:coarse){.link,.linkMore,.legalLink{min-block-size:var(--tap-min)}}
 .discWrap{padding-block-start:.25rem}
 .disc{color:var(--muted-2);font-size:.82rem;line-height:1.7;max-width:80ch}
 

@@ -5,7 +5,13 @@
 .legalItem { padding-block: clamp(1.5rem, 3vw, 2.25rem); border-block-start: 1px solid var(--hair-light); display: grid; gap: 0.6rem 2rem; grid-template-columns: 1fr; }
 @media (min-width: 720px) { .legalItem { grid-template-columns: 0.4fr 1fr; } }
 .legalH { font-family: var(--f-display); font-size: 1.2rem; font-weight: 600; }
-.updated { font-family: var(--f-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--blue-strong); }
+/* Wave 1.1 — إصلاح تباين شارة «نسخة أوّلية — قيد المراجعة» على /privacy و/terms (كلاهما on-ivory).
+   السبب الجذري هو نفسه الذي عالجته Wave 1 في .infoLabel: --blue-strong اسم بديل مُعرَّف على :root
+   بقيمة var(--clay-bright)، فيُحسَب عند :root بالقيمة الداكنة #6FA3CC ويُورَّث محسوبًا — إعادة تعريف
+   .on-ivory لا تصله. النتيجة كانت #6FA3CC على #F4F6F8 = ٢٫٤٩:١ (المطلوب ٤٫٥:١).
+   var(--clay-bright) يُحسَب داخل كتلة .on-ivory نفسها فيصير #325A7B ≈ ٦٫٧:١، ويبقى #6FA3CC على
+   الأسطح الداكنة لو استُخدم الصنف لاحقًا هناك. لا متغيّر عام مُعدَّل؛ .updated لا يُستخدم إلا في هاتين الصفحتين. */
+.updated { font-family: var(--f-ui); font-size: 0.8rem; letter-spacing: 0.1em; color: var(--clay-bright); }
 .pending { margin-block-start: 2.5rem; padding: 1.1rem 1.4rem; border-radius: var(--r-lg); background: var(--ivory-sink); font-size: 0.9rem; color: var(--muted); box-shadow: inset 0 0 0 1px var(--hair-light); }
 .infoRow { display: flex; flex-direction: column; gap: 0.35rem; padding-block: 1.1rem; border-block-start: 1px solid var(--hair-dark); }
 /* Wave 1 — إصلاح تباين تسميات بيانات التواصل (الهاتف/البريد/العنوان/الساعات).

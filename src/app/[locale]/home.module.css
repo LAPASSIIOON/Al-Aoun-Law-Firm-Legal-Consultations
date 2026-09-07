@@ -231,7 +231,13 @@
 .bandText{max-inline-size:34rem}
 .bandActions{display:flex;flex-direction:column;gap:.75rem;align-items:flex-start}
 .bandPhone{color:var(--muted-dark);font-size:.95rem}
-.bandPhone a{color:#fff;font-weight:500}
+/* Wave 1.1 — هدف النقر لرابط الهاتف في شريط الختام: كان يُقاس ١٠٨×١٦ على سطح المكتب
+   و١١٣×٢٢ على الجوال (قياس إنتاج على 404b287)، دون الحدّ الأدنى ٢٤×٢٤ (WCAG 2.5.8 AA).
+   inline-flex + vertical-align:middle يبقيان الرابط في مجرى السطر نفسه بجوار «أو اتصل بنا»
+   ويوسّطانه معه رأسيًا. لا font-size هنا ولا font-weight جديد — حجم النصّ البصري كما هو،
+   والمنطقة القابلة للنقر وحدها هي التي كبرت. الكتلة اللمسية بعد التعريف كي لا يغلبها ٢٤px. */
+.bandPhone a{display:inline-flex;align-items:center;vertical-align:middle;min-block-size:24px;color:#fff;font-weight:500}
+@media (pointer:coarse){.bandPhone a{min-block-size:var(--tap-min)}}
 
 
 /* ── مجالات الممارسة — صفوف تحريرية مرقّمة (§11: لا بطاقات SaaS) ── */

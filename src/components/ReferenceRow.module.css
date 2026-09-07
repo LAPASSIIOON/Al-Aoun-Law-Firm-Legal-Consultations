@@ -69,3 +69,15 @@
   .row.annotated .sum{display:none}
   .annotated .meta{display:none}
 }
+
+/* ── Wave 1 — إتمام حارس تقليل الحركة ──
+   الحارس أعلى الملف (سطر ٣٢) كان ناقصًا في موضعَين، وكلاهما لا يُرى في مراجعة بصرية:
+   ١) .sum يحمل انتقال max-block-size داخل كتلة (hover:hover) — أي أن كشف الملخّص كان
+      لا يزال يتمدّد زمنيًا لمن طلب تقليل الحركة. الكشف نفسه يبقى، ويصير فوريًا.
+   ٢) .annotated .title بتخصيص (0,2,0) يأتي بعد الحارس، فيتفوّق على .title{transition:none}
+      بتخصيص (0,1,0) ويُبطله. الكتلة هنا في آخر الملف وبتخصيص مطابق، فتغلبه بالترتيب.
+   لا يُمسّ أي سلوك لمن لم يطلب تقليل الحركة. */
+@media (prefers-reduced-motion:reduce){
+  .sum{transition:none}
+  .annotated .title{transition:none}
+}

@@ -8,6 +8,13 @@ const UpIcon = () => (
 );
 
 /** زرار تمرير سريع لأعلى — يظهر فقط بعد تمرير حقيقي، لا يزاحم زرار واتساب. */
+/* Wave 1 — إغلاق تقليل الحركة: كان behavior:'smooth' يُمرَّر دائمًا، وهو يتجاوز حارس
+   CSS (html{scroll-behavior:auto}) لأن خيار scrollTo أعلى أسبقية من الخاصية. تُقرأ
+   الحالة عند كل نقرة (لا مرة واحدة عند التركيب) كي يسري تغيير إعداد النظام فورًا.
+   الوظيفة نفسها لم تتغيّر: من طلب تقليل الحركة يقفز لأعلى فورًا بدل الانزلاق. */
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export default function ScrollToTop({ locale }) {
   const [visible, setVisible] = useState(false);
 
@@ -23,7 +30,7 @@ export default function ScrollToTop({ locale }) {
   return (
     <button
       type="button"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })}
       aria-label={locale === 'ar' ? 'التمرير لأعلى' : 'Scroll to top'}
       className="no-print"
       style={{
@@ -33,7 +40,7 @@ export default function ScrollToTop({ locale }) {
         boxShadow: '0 6px 18px rgba(0,0,0,.3), inset 0 0 0 1px var(--hair-dark-strong)',
         transition: 'transform .2s ease, opacity .2s ease',
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.08)'; }}
+      onMouseEnter={(e) => { if (!prefersReducedMotion()) e.currentTarget.style.transform = 'scale(1.08)'; }}
       onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
     >
       <UpIcon />

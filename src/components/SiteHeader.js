@@ -42,8 +42,8 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
     <>
     <header className={`${styles.header} ${scrolled ? styles.solid : ''}`}>
       <div className={styles.bar}>
-        <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} onClick={closeAll}>
-          <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'OUN GROUP' : 'مجموعة العون'} className={styles.logo} />
+        <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} onClick={closeAll}>
+          <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} className={styles.logo} />
           <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
         </Link>
 

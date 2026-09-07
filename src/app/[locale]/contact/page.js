@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import ContactIntentRouter from '@/components/ContactIntentRouter.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import MediaLoop from '@/components/MediaLoop.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
@@ -79,12 +80,12 @@ export default async function Contact({ params }) {
               </div>
             </div>
             <div className={s.routeCard}>
-              <video
+              <MediaLoop
                 className={s.routeVideo}
                 src="/media/al-oun-office-route.mp4"
                 poster="/media/al-oun-office-route-poster.jpg"
-                autoPlay muted loop playsInline preload="metadata"
-                aria-label={t('routeHeading')}
+                label={t('routeHeading')}
+                playLabel={t('videoPlay')} pauseLabel={t('videoPause')}
               />
               <div className={s.routeCaption}>
                 <span className={s.routeHeading}>{t('routeHeading')}</span>
@@ -99,15 +100,16 @@ export default async function Contact({ params }) {
         <div className="wrap">
           <div className={s.officeGrid}>
             <div className={s.officeMedia}>
-              <video
+              <MediaLoop
                 className={s.officeVideo}
                 poster="/media/office-interior-poster.jpg"
-                autoPlay muted loop playsInline preload="metadata"
-                aria-label={t('officeHead')}
-              >
-                <source src="/media/office-interior.webm" type="video/webm" />
-                <source src="/media/office-interior.mp4" type="video/mp4" />
-              </video>
+                sources={[
+                  { src: '/media/office-interior.webm', type: 'video/webm' },
+                  { src: '/media/office-interior.mp4', type: 'video/mp4' },
+                ]}
+                label={t('officeHead')}
+                playLabel={t('videoPlay')} pauseLabel={t('videoPause')}
+              />
             </div>
             <div className={s.officeText} data-reveal>
               <span className="eyebrow">{t('officeEye')}</span>

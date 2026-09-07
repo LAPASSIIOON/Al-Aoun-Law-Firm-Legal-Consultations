@@ -1,0 +1,22 @@
+/* Wave 1 — إطار اللقطة المتكرّرة وزرّ الإيقاف/التشغيل.
+   الإطار شفّاف بالكامل: لا يغيّر مقاس الفيديو ولا نسبته — يوفّر فقط سياق تموضع للزرّ. */
+.frame{position:relative;inline-size:100%;block-size:100%}
+
+/* الزرّ داخل حدود الفيديو، بسطح داكن مصمَت كي يقرأ فوق أي إطار — التباين لا يعتمد
+   على محتوى الفيديو المتغيّر. هدف اللمس ٤٤px تحت اللمس، و≥٢٤px دائمًا. */
+.toggle{position:absolute;inset-block-end:.6rem;inset-inline-end:.6rem;z-index:2;
+  display:inline-flex;align-items:center;gap:.45rem;
+  font-family:var(--f-ui);font-size:.8rem;font-weight:500;line-height:1;
+  color:#F3F5F7;background:rgba(6,10,16,.82);
+  border-radius:var(--r);padding:.5rem .75rem;min-block-size:28px;
+  box-shadow:inset 0 0 0 1px rgba(243,245,247,.28);
+  transition:background .25s var(--ease),box-shadow .25s var(--ease)}
+.toggle:hover,.toggle:focus-visible{background:rgba(6,10,16,.94);
+  box-shadow:inset 0 0 0 1px var(--clay-bright)}
+@media (pointer:coarse){.toggle{min-block-size:var(--tap-min);padding-inline:.9rem}}
+
+.glyph{font-size:.72rem;letter-spacing:.04em}
+
+@media (prefers-reduced-motion:reduce){
+  .toggle{transition:none}
+}

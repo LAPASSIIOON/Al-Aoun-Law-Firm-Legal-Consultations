@@ -14,7 +14,11 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 export async function generateMetadata({ params }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'practiceAreas' });
-  return { title: t('heading'), description: t('subhead'), alternates: altLangs(locale, '/services') };
+  /* Wave 1 — لا وصف Meta على مستوى الصفحة عمدًا: المفتاح practiceAreas.subhead ملاحظة
+     تسليم داخلية («القائمة المعتمدة … لم تُسلَّم بعد») وكان يُنشر في نتائج البحث وبطاقات
+     المشاركة. بحذف الحقل يرث Next وصف التخطيط (وصف المكتب المعتمد). لا يُعاد حقل
+     description هنا إلا بنصّ معتمد من المالك خاص بهذه الصفحة. */
+  return { title: t('heading'), alternates: altLangs(locale, '/services') };
 }
 
 async function fetchAreas(locale) {

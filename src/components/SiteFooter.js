@@ -28,7 +28,7 @@ export function SiteFooter({ locale, areas = [] }) {
           <div className={styles.darkLockup}>
             <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.darkMark} />
             <div>
-              <span className={styles.darkWordmark}>{locale === 'ar' ? 'مجموعة العون' : 'OUN GROUP'}</span>
+              <span className={styles.darkWordmark}>{locale === 'ar' ? 'مجموعة العون' : 'AL OUN'}</span>
               <span className={styles.darkSubline}>{locale === 'ar' ? 'محامون ومستشارون قانونيون' : 'Advocates & Legal Consultants'}</span>
             </div>
           </div>

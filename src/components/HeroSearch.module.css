@@ -14,3 +14,9 @@
 .resultSnippet{color:var(--platinum-3);font-size:.83rem;line-height:1.5}
 
 @media(max-width:640px){.wrap{max-inline-size:100%}.input{font-size:1rem}}
+
+/* Wave 1 — إغلاق تقليل الحركة: حالتا التركيز والتحويم تبقيان كما هما (تغذية راجعة
+   ضرورية للوحة المفاتيح)، ويسقط تدرّجهما الزمني وحده. */
+@media (prefers-reduced-motion:reduce){
+  .field,.result{transition:none}
+}

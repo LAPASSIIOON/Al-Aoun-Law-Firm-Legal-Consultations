@@ -3,7 +3,10 @@ import { altLangs } from '@/lib/i18n-meta.js';
 import s from '../shared.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'privacy' }); return { title: t('heading'), description: t('intro'), alternates: altLangs(locale, '/privacy') }; }
+/* Wave 1 — لا وصف Meta على مستوى الصفحة عمدًا: privacy.intro نصّ مسوّدة يعلن أن النسخة
+   النهائية لم تُعتمد بعد، وكان يُنشر كوصف الصفحة في نتائج البحث. النصّ المعروض في المتن
+   لم يُمسّ. يُعاد حقل description بعد اعتماد المالك للنصّ النهائي وحده. */
+export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'privacy' }); return { title: t('heading'), alternates: altLangs(locale, '/privacy') }; }
 
 export default async function Page({ params }) {
   const { locale } = await params; setRequestLocale(locale);

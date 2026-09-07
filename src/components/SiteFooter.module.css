@@ -15,16 +15,21 @@
 .col{display:flex;flex-direction:column;gap:.7rem}
 .head{font-family:var(--f-ui);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-glow);margin-block-end:.5rem}
 :global(html[lang=ar]) .head{letter-spacing:0;text-transform:none;font-size:.9rem;font-weight:600}
-.link{color:var(--muted-dark);font-size:.95rem;transition:color .3s;inline-size:fit-content}
-.link:hover{color:#fff}
-.linkMore{color:var(--blue-glow);font-size:.95rem;font-weight:500;margin-block-start:.2rem}
+/* Wave 1 — هدف النقر في التذييل: كانت روابط التذييل تُقاس ١٦px ارتفاعًا على سطح المكتب
+   و٢٢px على الجوال، دون الحدّ الأدنى ٢٤×٢٤ (WCAG 2.5.8 AA). الصندوق صار inline-flex
+   بارتفاع أدنى صريح: ٢٤px دائمًا، و٤٤px تحت اللمس وفق عرف الموقع (--tap-min في .btn-line).
+   المقاس البصري للنصّ لم يتغيّر — المنطقة القابلة للنقر وحدها هي التي كبرت. */
+.link{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.95rem;transition:color .3s var(--ease);inline-size:fit-content}
+.link:hover,.link:focus-visible{color:#fff}
+.linkMore{display:inline-flex;align-items:center;min-block-size:24px;color:var(--blue-glow);font-size:.95rem;font-weight:500;margin-block-start:.2rem;inline-size:fit-content}
+@media (pointer:coarse){.link,.linkMore,.legalLink{min-block-size:var(--tap-min)}}
 .hours{color:#fff;font-size:.9rem;margin-block-start:.6rem}
 .hoursVal{color:var(--muted-dark);font-size:.9rem}
 .bottom{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;padding-block:1.75rem}
 .rights{color:var(--muted-dark);font-size:.9rem}
 .legal{display:flex;gap:1.5rem}
-.legalLink{color:var(--muted-dark);font-size:.9rem}
-.legalLink:hover{color:#fff}
+.legalLink{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.9rem}
+.legalLink:hover,.legalLink:focus-visible{color:#fff}
 .discWrap{padding-block-start:.25rem}
 .disc{color:var(--muted-2);font-size:.82rem;line-height:1.7;max-width:80ch}
 
@@ -32,3 +37,9 @@
 .statement{padding-block:clamp(3rem,7vh,5rem) clamp(2.5rem,5vh,3.5rem);border-block-end:1px solid var(--hair-dark)}
 .statementText{font-family:var(--f-display);font-weight:600;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.35;color:#fff;letter-spacing:-.01em;max-inline-size:38ch}
 :global(html[lang=ar]) .statementText{line-height:1.6;letter-spacing:0}
+
+/* Wave 1 — إغلاق تقليل الحركة: انتقال لون روابط التذييل كان بلا حارس.
+   تغيير اللون نفسه يبقى (وهو تغذية راجعة ضرورية) — الذي يسقط هو تدرّجه الزمني وحده. */
+@media (prefers-reduced-motion:reduce){
+  .link{transition:none}
+}

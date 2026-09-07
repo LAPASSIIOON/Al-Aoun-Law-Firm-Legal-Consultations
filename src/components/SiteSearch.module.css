@@ -21,3 +21,10 @@
 :global(html[lang=ar]) .resultKind{letter-spacing:0;text-transform:none}
 .resultTitle{color:var(--platinum);font-family:var(--f-display);font-size:1.1rem}
 .resultSnippet{color:var(--platinum-3);font-size:.85rem;line-height:1.5}
+
+/* Wave 1 — إغلاق تقليل الحركة: لوحة البحث كانت تدخل بحركة rise بلا حارس.
+   بإلغاء الحركة تظهر اللوحة فورًا بحالتها النهائية (مرئية تمامًا) — لا اختفاء ولا تأخير. */
+@media (prefers-reduced-motion:reduce){
+  .panel{animation:none}
+  .trigger,.result{transition:none}
+}

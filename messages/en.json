@@ -99,11 +99,15 @@
   "insights": {
     "eyebrow": "Insights",
     "heading": "Articles & updates",
-    "subhead": "A space for the firm's articles and legal updates — later managed through an editorial dashboard.",
+    "subhead": "Legal alerts, commentary, and articles from AL OUN.",
     "flag": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
     "empty": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
     "note": "The legal-intelligence series is in preparation; the first pieces will appear soon.",
-    "forthcoming": "First edition forthcoming"
+    "forthcoming": "First edition forthcoming",
+    "emptyEyebrow": "Legal insights",
+    "emptyBody": "This section is reserved for legal alerts, commentary, and articles. Material is added when ready for publication. For a specific matter, explore our practice areas or contact the firm.",
+    "errorHeading": "Unable to load legal insights",
+    "errorBody": "This section is temporarily unavailable. Please try again later or contact the firm regarding a specific matter."
   },
   "consultCta": {
     "heading": "Ready for a clear first step?",

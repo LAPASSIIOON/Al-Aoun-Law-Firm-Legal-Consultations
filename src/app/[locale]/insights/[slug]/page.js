@@ -7,12 +7,16 @@ import Breadcrumbs from '@/components/Breadcrumbs.js';
 import PageUtilityIcons from '@/components/PageUtilityIcons.js';
 import s from '../../shared.module.css';
 
+/* عقد النشر ببوابتيه معًا: بوابة الترجمة (منشورة ومعتمَدة قانونيًا) + بوابة المقال الأب
+   (مفعَّل، وله تاريخ نشر فعلي في الماضي) — تخلّف أي شرط يعني 404، لا صفحة نصف منشورة. */
 async function getArticle(slug, locale) {
   try {
     const supabase = createAnonClient();
+    const nowIso = new Date().toISOString();
     const { data } = await supabase.from('article_translations')
-      .select('title, excerpt, body, meta_title, meta_description').eq('slug', slug).eq('locale', locale)
-      .eq('status', 'published').eq('legal_approved', true).maybeSingle();
+      .select('title, excerpt, body, meta_title, meta_description, articles!inner(id)').eq('slug', slug).eq('locale', locale)
+      .eq('status', 'published').eq('legal_approved', true)
+      .eq('articles.is_active', true).not('articles.published_at', 'is', null).lte('articles.published_at', nowIso).maybeSingle();
     return data;
   } catch (e) { return null; }
 }

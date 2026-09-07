@@ -83,9 +83,12 @@ async function fetchData(locale) {
       .select('slug, title, summary, practice_areas(sort_order)')
       .eq('locale', locale).eq('status', 'published').eq('legal_approved', true);
     areas = (a || []).sort((x, y) => (x.practice_areas?.sort_order || 0) - (y.practice_areas?.sort_order || 0));
+    /* عقد النشر ببوابتيه معًا: بوابة الترجمة + بوابة المقال الأب (مفعَّل ومنشور فعليًا في الماضي) */
+    const nowIso = new Date().toISOString();
     const { data: ar } = await supabase.from('article_translations')
-      .select('slug, title, excerpt, created_at')
+      .select('slug, title, excerpt, created_at, articles!inner(id)')
       .eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
+      .eq('articles.is_active', true).not('articles.published_at', 'is', null).lte('articles.published_at', nowIso)
       .order('created_at', { ascending: false }).limit(3);
     articles = ar || [];
     /* D3.1: قائمة حقل التنسيق — تغطية قاعدة البيانات + دول العلاقات الموثَّقة، بلا تكرار،

@@ -12,11 +12,15 @@ export default async function Insights({ params }) {
   const { locale } = await params; setRequestLocale(locale);
   const t = await getTranslations('insights');
   const tp = await getTranslations('insightsPage');
+  /* عقد النشر ببوابتيه معًا: بوابة الترجمة (منشورة ومعتمَدة قانونيًا) + بوابة المقال الأب
+     (مفعَّل، وله تاريخ نشر فعلي في الماضي) — الربط الداخلي يُسقط أي ترجمة أبوها غير منشور. */
   let rows = [];
   try {
     const supabase = createAnonClient();
+    const nowIso = new Date().toISOString();
     const { data } = await supabase.from('article_translations')
-      .select('slug, title, excerpt, created_at').eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
+      .select('slug, title, excerpt, created_at, articles!inner(id)').eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
+      .eq('articles.is_active', true).not('articles.published_at', 'is', null).lte('articles.published_at', nowIso)
       .order('created_at', { ascending: false });
     rows = data || [];
   } catch (e) { rows = []; }

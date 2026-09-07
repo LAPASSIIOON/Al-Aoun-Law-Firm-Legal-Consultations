@@ -32,14 +32,20 @@ async function fetchServiceSlugs() {
   } catch (e) { return []; }
 }
 
+/* عقد النشر ببوابتيه معًا: لا يُدرَج في خريطة الموقع إلا ما هو منشور فعلًا للزائر
+   (ترجمة معتمَدة + مقال أب مفعَّل ومنشور في الماضي) — بلا فلترة لغة عمدًا: اللغتان معًا. */
 async function fetchArticleSlugs() {
   try {
     const supabase = createAnonClient();
+    const nowIso = new Date().toISOString();
     const { data } = await supabase
       .from('article_translations')
-      .select('slug, locale, created_at')
+      .select('slug, locale, created_at, articles!inner(id)')
       .eq('status', 'published')
-      .eq('legal_approved', true);
+      .eq('legal_approved', true)
+      .eq('articles.is_active', true)
+      .not('articles.published_at', 'is', null)
+      .lte('articles.published_at', nowIso);
     return data || [];
   } catch (e) { return []; }
 }

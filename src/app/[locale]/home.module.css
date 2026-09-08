@@ -29,6 +29,15 @@
    (قصّ على الحافة بالتصميم) ليبقى خلوص منطقة اللمس — قياسات التحقق تحكم القيمة. */
 :global(html[dir="ltr"]) .heroMonument [data-monument="mobile"]{inset-block-end:clamp(-4.5rem,-14vw,-2.5rem)}
 
+/* ── D6 «حقل الصورة» — يحلّ محلّ «حقل النصب» ──
+   الرندر ثلاثي الأبعاد للعلامة الرسمية يسكن الحقل المقابل للنص نفسه (z:0 كالنصب)،
+   ويتلاشى نحو عمود القراءة عبر mask — فلا يمرّ خلف النصّ بكسل صورة واحد ويبقى تباين
+   الهيرو على الأرضية الكحلية كما هو بالضبط. ثابتة تمامًا: لا تكبير، لا حركة، لا تدرّج لوني.
+   طبقة .heroMonument أدناه معطَّلة (المكوّن لم يعد مستدعى) ومُبقاة لإعادة تصميم الهيرو. */
+.heroPhoto{display:none;position:absolute;z-index:0;pointer-events:none;overflow:hidden}
+/* الهدف مركز الشعار في الإطار المقصوص (الشعار عند ~٣١٪ من عرض الأصل) */
+.heroPhoto img{object-position:32% center}
+
 /* سطر التسجيل الوقائعي — هاتف فقط، مُسجَّل على جانب خطّ الأساس نفسه (+22px مثل الخطّ
    تمامًا): يبدأ عليه في LTR وينتهي عنده في RTL — جزء من نظام التسجيل لا تعليق عائم،
    وبعيدًا عن ركن زر واتساب العائم على الشاشات القصيرة. زخرفي: aria-hidden. */
@@ -110,7 +119,16 @@
      يدخل من الحافة العلوية ويخرج من السفلية داخل الحقل المقابل للنص — قصّ على حواف
      الهيرو فقط، بلا نهايات معلّقة. سطر التسجيل خاص بالهاتف. */
   .heroMonument [data-monument="mobile"]{display:none}
-  .heroMonument [data-monument="desktop"]{display:block;inset:0;inline-size:100%;block-size:100%}
+  /* D6: نصب سطح المكتب معطَّل — لوح الصورة أدناه يملك حقله. نصب الهاتف كما هو. */
+  .heroMonument [data-monument="desktop"]{display:none}
+  /* D6: الختم معطَّل على سطح المكتب — لوح الصورة يحمل العلامة كاملة فالختم تكرار.
+     يبقى على الهاتف: هناك لا صورة، والختم جزء من نظام التسجيل المقيس. */
+  .heroMark{display:none}
+
+  /* D6: لوح الصورة يملك الحقل المقابل للنص — عرضه ٤٨٪ ونصفه الداخلي تلاشٍ كامل،
+     فما يصل إلى حافة عمود النص لا يتجاوز ~١٠٪ شفافية — قيست تجريبيًا عند ١٠٢٤ و١٢٨٠ و١٤٤٠. */
+  .heroPhoto{display:block;inset-block:0;inset-inline-start:auto;inset-inline-end:0;
+    inline-size:min(48%,720px);block-size:auto}
   .heroRegLine{display:none}
   /* حشو علوي يفسح للهيدر الثابت، وسفلي يضمن ظهور الـCTA فوق الطيّة عند ارتفاع ٧٠٠px */
   .heroInner{padding-block:7.5rem 3rem}
@@ -121,6 +139,10 @@
   .heroDatum [data-datum="v"]{
     inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
     opacity:.7}
+  :global(html[dir="ltr"]) .heroPhoto{-webkit-mask-image:linear-gradient(to left,#000 50%,transparent 100%);
+    mask-image:linear-gradient(to left,#000 50%,transparent 100%)}
+  :global(html[dir="rtl"]) .heroPhoto{-webkit-mask-image:linear-gradient(to right,#000 50%,transparent 100%);
+    mask-image:linear-gradient(to right,#000 50%,transparent 100%)}
   .heroDatum [data-datum="h"]{display:block;animation:c2DatumHorizontal 480ms 90ms var(--ease) both}
   :global(html[dir="ltr"]) .heroDatum [data-datum="h"]{transform-origin:left center}
   :global(html[dir="rtl"]) .heroDatum [data-datum="h"]{transform-origin:right center}

@@ -1,9 +1,10 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
+import HeroMonument from '@/components/HeroMonument.js';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroDatum from '@/components/HeroDatum.js';
-import HeroMonument from '@/components/HeroMonument.js';
 import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import { getTeamMember } from '@/lib/team-data.js';
@@ -125,7 +126,16 @@ export default async function Home({ params }) {
       {/* HERO — تايبوغرافيا أولًا (الموجة C1): حقل كحلي، هندسة تسجيل ثابتة، بلا صورة ولا حركة.
           C2.5: «حقل النصب» — ذراع المهد الرسمية كطبقة معمارية ثابتة أسفل خطوط الأساس */}
       <section className={styles.hero}>
+        {/* D6: «حقل الصورة» — الرندر ثلاثي الأبعاد للعلامة الرسمية يحلّ محلّ النصب على
+            سطح المكتب وحده (z:0، الحقل المقابل للنص نفسه)، بتلاشٍ نحو عمود القراءة فلا
+            يمرّ خلف النصّ بكسل صورة ولا يتغيّر تباينه. ثابت بلا حركة، كما كان النصب.
+            الهاتف يحتفظ بالنصب المسطّح: تكوين الصورة أفقي ويحتاج عرضًا لا يوفّره الهاتف،
+            وإقحامه هناك يصطدم بصفّ الأزرار الإنجليزي (قياس مرصود). */}
         <HeroMonument className={styles.heroMonument} dir={locale === 'ar' ? 'rtl' : 'ltr'} />
+        <div className={styles.heroPhoto} aria-hidden="true">
+          <Image src="/brand/hero-mark-3d.webp" alt="" fill priority
+            sizes="(min-width:860px) 52vw, 100vw" style={{ objectFit: 'cover' }} />
+        </div>
         <HeroDatum className={styles.heroDatum} markClassName={styles.heroMark} />
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroContent}>

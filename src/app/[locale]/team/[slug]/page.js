@@ -8,6 +8,15 @@ import { TEAM, getTeamMember } from '@/lib/team-data.js';
 import s from '../../shared.module.css';
 import h from '../../home.module.css';
 
+/* ترتيب أقسام الملف المهني — واحد لكل الأعضاء، فلا يختلف قالب المؤسِّس عن قالب الشريك. */
+const SECTIONS = [
+  { key: 'education', heading: 'educationHeading' },
+  { key: 'experience', heading: 'experienceHeading' },
+  { key: 'leadership', heading: 'leadershipHeading' },
+  { key: 'registrations', heading: 'registrationsHeading' },
+  { key: 'works', heading: 'worksHeading' },
+];
+
 export function generateStaticParams() { return TEAM.flatMap((m) => [{ locale: 'ar', slug: m.slug }, { locale: 'en', slug: m.slug }]); }
 export async function generateMetadata({ params }) {
   const { slug, locale } = await params;
@@ -43,22 +52,18 @@ export default async function TeamMember({ params }) {
             </ul>
             <PageUtilityIcons title={f.name} locale={locale} />
 
-            {f.education && (
-              <>
-                <h2 className="display d-3" style={{ fontSize: '1.15rem', marginBlockStart: '2.25rem', marginBlockEnd: '.75rem' }}>{tp('educationHeading')}</h2>
-                <ul className={s.pointList}>
-                  {f.education.map((c, i) => (<li key={i} className={s.point}><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
-                </ul>
-              </>
-            )}
-            {f.experience && (
-              <>
-                <h2 className="display d-3" style={{ fontSize: '1.15rem', marginBlockStart: '2.25rem', marginBlockEnd: '.75rem' }}>{tp('experienceHeading')}</h2>
-                <ul className={s.pointList}>
-                  {f.experience.map((c, i) => (<li key={i} className={s.point}><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
-                </ul>
-              </>
-            )}
+            {/* D5-A: أقسام الملف المهني — تُعرض بالترتيب نفسه لكل عضو، ولا يظهر قسم بلا بيانات
+                معتمَدة. البنية والأنماط كما هي (h2 + s.pointList) — الجديد هو المحتوى وعدد الأقسام. */}
+            {SECTIONS.map(({ key, heading }) => (
+              Array.isArray(f[key]) && f[key].length > 0 ? (
+                <section key={key}>
+                  <h2 className="display d-3" style={{ fontSize: '1.15rem', marginBlockStart: '2.25rem', marginBlockEnd: '.75rem' }}>{tp(heading)}</h2>
+                  <ul className={s.pointList}>
+                    {f[key].map((c, i) => (<li key={i} className={s.point}><span className="body" style={{ color: 'var(--ink)' }}>{c}</span></li>))}
+                  </ul>
+                </section>
+              ) : null
+            ))}
 
             <a href="mailto:Aloun.Law@gmail.com" className="btn btn-solid" style={{ marginBlockStart: '2rem' }}>{locale === 'ar' ? 'تواصل مع المكتب' : 'Contact the firm'}<span className="arrow">→</span></a>
           </div>

@@ -6,7 +6,7 @@ export default function manifest() {
   return {
     name: 'مجموعة العون — محامون ومستشارون قانونيون',
     short_name: 'مجموعة العون',
-    description: 'مكتب محاماة واستشارات قانونية كويتي، تأسّس عام ٢٠٠٠.',
+    description: 'مكتب محاماة واستشارات قانونية كويتي، تستند خبرته إلى مسيرة مؤسسه في المحاماة منذ عام ٢٠٠٠.',
     start_url: '/ar',
     display: 'standalone',
     background_color: '#0E1826',

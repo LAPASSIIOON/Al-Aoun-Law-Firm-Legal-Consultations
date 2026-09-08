@@ -99,7 +99,8 @@ export default async function LocaleLayout({ children, params }) {
               logo: `https://al-aoun-law-firm-legal-consultation.vercel.app/brand/logo-full-${locale}-color.png`,
               telephone: '+96599010470',
               email: 'Aloun.Law@gmail.com',
-              foundingDate: '2000',
+              /* D5-A مراجعة: حُذف foundingDate — عام ٢٠٠٠ بداية ممارسة المؤسِّس لا تاريخ تأسيس
+                 الكيان، ولا تاريخ تأسيس معتمَد بديل. لا يُعاد الحقل إلا بتاريخ يعتمده المالك. */
               areaServed: { '@type': 'Country', name: 'Kuwait' },
               address: {
                 '@type': 'PostalAddress',
@@ -109,7 +110,7 @@ export default async function LocaleLayout({ children, params }) {
               geo: { '@type': 'GeoCoordinates', latitude: 29.3415005, longitude: 48.0259086 },
               founder: {
                 '@type': 'Person',
-                name: locale === 'ar' ? 'الدكتور هيثم أحمد العون' : 'Dr. Haitham Ahmed Al Oun',
+                name: locale === 'ar' ? 'الدكتور هيثم أحمد العون' : 'Dr. Haitham Ahmed Eissa Aloun',
                 jobTitle: locale === 'ar' ? 'المؤسّس ورئيس مجلس الإدارة' : 'Founder & Chairman',
               },
             }),

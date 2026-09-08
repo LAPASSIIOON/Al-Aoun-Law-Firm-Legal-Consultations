@@ -2,7 +2,7 @@
   "meta": {
     "title": "Al Oun Law Firm & Legal Consultations",
     "titleTemplate": "%s — Al Oun",
-    "description": "Al Oun Law Firm & Legal Consultations — a Kuwaiti firm established in 2000, serving individuals, companies, business owners and investors locally and internationally with transparency, confidentiality and professionalism.",
+    "description": "Al Oun Law Firm & Legal Consultations — a Kuwaiti firm whose expertise is built on its founder's practice of law since 2000, serving individuals, companies, business owners and investors locally and internationally with transparency, confidentiality and professionalism.",
     "keywords": "law firm, legal consultations, Kuwait, Al Oun, lawyer, attorney"
   },
   "brand": {
@@ -41,7 +41,7 @@
   "trust": {
     "eyebrow": "Who we are",
     "heading": "Established expertise since 2000",
-    "body": "Al Oun was founded in Kuwait in 2000 and provides a broad range of legal services to individuals, companies, business owners and investors — both locally and internationally. Our work rests on steady principles: transparency, confidentiality and security, credibility, professionalism, integrity, commitment and excellence.",
+    "body": "AL OUN's expertise is built on its founder's practice of law since 2000, and the firm provides a broad range of legal services to individuals, companies, business owners and investors — both locally and internationally. Our work rests on steady principles: transparency, confidentiality and security, credibility, professionalism, integrity, commitment and excellence.",
     "note": "Further detail on the firm’s history and scope will follow."
   },
   "differentiators": {
@@ -169,19 +169,19 @@
     ]
   },
   "history": {
-    "eyebrow": "Est. 2000",
+    "eyebrow": "Founder practising since 2000",
     "heading": "A quarter-century of practice",
-    "body": "Founded in Kuwait in 2000, Al Oun has practised law ever since — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
+    "body": "AL OUN's expertise is built on its founder's practice of law since 2000 — accompanying individuals, companies, business owners and investors through the moments that matter, in Kuwait and beyond."
   },
   "institution": {
-    "est": "Est. 2000",
+    "est": "Founder practising since 2000",
     "kuwait": "Kuwait",
     "wordmark": "Al Oun"
   },
   "sections": {
     "opening": "Opening",
     "identity": "Identity",
-    "history": "Est. 2000",
+    "history": "Since 2000",
     "philosophy": "Philosophy",
     "expertise": "Practice",
     "people": "People",
@@ -190,7 +190,7 @@
   },
   "about": {
     "eyebrow": "About Al Oun",
-    "heading": "A Kuwaiti legal institution, since 2000",
+    "heading": "A Kuwaiti legal institution, with expertise since 2000",
     "lead": "We build trust on clarity and discipline — not on promises.",
     "storyHeading": "The practice",
     "kuwaitHeading": "Present in Kuwait and the region",
@@ -353,6 +353,9 @@
     "teamHeading": "Team Members",
     "educationHeading": "Education",
     "experienceHeading": "Professional Experience",
+    "leadershipHeading": "Leadership & Training",
+    "registrationsHeading": "Arbitration Registrations",
+    "worksHeading": "Selected Works",
     "partnersHeading": "Partners",
     "closingHead": "Need to speak with our legal team?",
     "closingBody": "Start with a clear, confidential conversation with the firm.",
@@ -834,8 +837,8 @@
         "a": "The firm's website content and services are fully available in both Arabic and English."
       },
       {
-        "q": "When was AL OUN founded?",
-        "a": "The firm was founded in 2000 and is based in Kuwait."
+        "q": "How far back does AL OUN's experience go?",
+        "a": "The firm's expertise is built on its founder's practice of law since 2000, and the firm is based in Kuwait."
       },
       {
         "q": "Can a foreign law firm refer a matter to AL OUN in Kuwait?",

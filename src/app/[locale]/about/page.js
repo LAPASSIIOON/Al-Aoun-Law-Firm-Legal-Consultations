@@ -1,95 +1,96 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
-import s from '../shared.module.css';
-import SignatureUnderline from '@/components/SignatureUnderline.js';
 import PageHeroImage from '@/components/PageHeroImage.js';
+import { getTeamMember } from '@/lib/team-data.js';
+import styles from './about.module.css';
 
-export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
-export async function generateMetadata({ params }) { const { locale } = await params; const t = await getTranslations({ locale, namespace: 'about' }); return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/about') }; }
+export function generateStaticParams() {
+  return [{ locale: 'ar' }, { locale: 'en' }];
+}
+
+export async function generateMetadata({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'about' });
+  return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/about') };
+}
 
 export default async function About({ params }) {
-  const { locale } = await params; setRequestLocale(locale);
-  const t = await getTranslations('about');
-  const th = await getTranslations('history');
-  const tt = await getTranslations('trust');
-  const tph = await getTranslations('philosophy');
-  const values = tph.raw('items');
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const about = await getTranslations('about');
+  const history = await getTranslations('history');
+  const trust = await getTranslations('trust');
+  const philosophy = await getTranslations('philosophy');
+  const founder = getTeamMember('haitham-al-aoun');
+  const founderProfile = founder[locale] || founder.ar;
+  const values = philosophy.raw('items');
+
   return (
     <>
-      <section className={`on-espresso ${s.pageHead} section-tight`} style={{ position: 'relative', overflow: 'hidden' }}>
+      <section className={`on-navy ${styles.hero}`}>
         <PageHeroImage src="/kuwait/courthouse-columns.webp" />
-        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
-          <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
-          <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem', maxWidth: '18ch' }}>{t('heading')}</h1>
-          <p className="lead" data-reveal style={{ maxWidth: '48ch' }}>{t('lead')}</p>
+        <div className={`wrap ${styles.heroInner}`}>
+          <span className={styles.label} data-reveal>{about('eyebrow')}</span>
+          <h1 className={`display d-1 ${styles.heading}`} data-reveal>{about('heading')}</h1>
+          <p className={`lead ${styles.lead}`} data-reveal>{about('lead')}</p>
         </div>
       </section>
-      <section className="on-ivory section">
-        <div className="wrap-narrow wrap">
-          <span className="eyebrow" data-reveal>{th('eyebrow')}</span>
+
+      <section className={`on-ivory ${styles.story}`}>
+        <div className={`wrap ${styles.storyGrid}`}>
+          <header>
+            <span className={styles.label}>{history('eyebrow')}</span>
+            <h2 className="display d-2" data-reveal>{about('storyHeading')}</h2>
+          </header>
+          <div className={styles.storyBody} data-reveal="slow">
+            <p className={styles.statement}>{history('body')}</p>
+            <p className="body">{trust('body')}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className={`on-white ${styles.leadership}`}>
+        <div className={`wrap ${styles.leadershipGrid}`}>
+          <div className={styles.portrait} data-reveal>
+            <img src={founder.photoFull} alt={founderProfile.name} />
+          </div>
+          <div className={styles.leadershipCopy} data-reveal="slow">
+            <span className={styles.label}>{locale === 'ar' ? 'القيادة' : 'Leadership'}</span>
+            <h2 className="display d-2">{founderProfile.name}</h2>
+            <p className={styles.role}>{founderProfile.role} · {founderProfile.title}</p>
+            <p className="body">{founderProfile.bio}</p>
+            <Link href="/team/haitham-al-aoun" className="btn-line">
+              {locale === 'ar' ? 'استعرض الملف المهني' : 'View professional profile'}<span className="arrow">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className={`on-espresso ${styles.values}`}>
+        <div className={`wrap ${styles.valuesGrid}`}>
+          <header>
+            <span className={styles.label}>{philosophy('eyebrow')}</span>
+            <h2 className="display d-2" data-reveal>{about('valuesHeading')}</h2>
+            <p className="lead" data-reveal>{philosophy('lead')}</p>
+          </header>
+          <ul className={styles.valueList}>
+            {values.map((value) => <li key={value} data-reveal>{value}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <section className={`on-graphite ${styles.presence}`}>
+        <div className={`wrap ${styles.presenceGrid}`}>
+          <div>
+            <span className={styles.label} data-reveal>{trust('eyebrow')}</span>
+            <h2 className="display d-2" data-reveal>{about('kuwaitHeading')}</h2>
+          </div>
           <div data-reveal="slow">
-            <h2 className="display d-2" style={{ marginBlock: '1rem 1.5rem' }}>{t('storyHeading')}</h2>
-            <SignatureUnderline width={96} />
+            <p className="body">{about('kuwaitBody')}</p>
+            <p className={styles.affiliation}>{about('groupAffiliation')}</p>
+            <Link href="/contact" className="btn btn-solid">{about('cta')}<span className="arrow">→</span></Link>
           </div>
-          <div className="prose" data-reveal="slow" style={{ marginBlockStart: '1.5rem' }}>
-            <p className="body" style={{ fontSize: '1.1rem', maxWidth: '68ch' }}>{th('body')}</p>
-            <p className="body" style={{ marginBlockStart: '1.25rem', maxWidth: '68ch' }}>{tt('body')}</p>
-          </div>
-        </div>
-      </section>
-      <section className="on-ivory" style={{ paddingBlock: '0 3rem' }}>
-        <div className="wrap">
-          <div className="img-zoom-frame" data-reveal style={{ borderRadius: 'var(--r-lg)' }}>
-            <img src="/about/boardroom.webp" alt={t('boardroomCaption')}
-              style={{ width: '100%', height: 'auto', maxHeight: '480px', objectFit: 'cover', display: 'block' }} />
-          </div>
-          <p className="body" data-reveal style={{ marginBlockStart: '.9rem', color: 'var(--muted)', fontSize: '.9rem' }}>{t('boardroomCaption')}</p>
-        </div>
-      </section>
-      <section className="on-espresso section">
-        <div className="wrap">
-          <span className="eyebrow" data-reveal>{tph('eyebrow')}</span>
-          <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 0.9rem' }}>{t('valuesHeading')}</h2>
-          <p className="lead" data-reveal style={{ marginBlockEnd: '3rem', maxWidth: '52ch' }}>{tph('lead')}</p>
-          <div className="grid cols-3">
-            {values.map((v, i) => (
-              <div key={i} data-reveal="file" style={{ paddingBlockStart: '1.2rem', borderBlockStart: '1px solid var(--hair-dark)' }}>
-                <span className="idx">{String(i+1).padStart(2,'0')}</span>
-                <h3 className="d-3 display" style={{ marginBlockStart: '0.6rem' }}>{v}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="on-white section">
-        <div className="wrap">
-          <div className={s.officeGrid}>
-            <div className={s.officeMedia}>
-              <video
-                className={s.officeVideo}
-                poster="/media/office-interior-poster.jpg"
-                autoPlay muted loop playsInline preload="metadata"
-                aria-label={t('officeVideoHead')}
-              >
-                <source src="/media/office-interior.webm" type="video/webm" />
-                <source src="/media/office-interior.mp4" type="video/mp4" />
-              </video>
-            </div>
-            <div className={s.officeText} data-reveal>
-              <span className="eyebrow">{t('officeVideoEye')}</span>
-              <h2 className="display d-2" style={{ marginBlock: '1.2rem 1rem' }}>{t('officeVideoHead')}</h2>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="on-graphite section">
-        <div className="wrap-narrow wrap">
-          <span className="eyebrow" data-reveal>{tt('eyebrow')}</span>
-          <h2 className="display d-2" data-reveal="slow" style={{ marginBlock: '1rem 1.4rem' }}>{t('kuwaitHeading')}</h2>
-          <p className="body" data-reveal="slow" style={{ maxWidth: '60ch' }}>{t('kuwaitBody')}</p>
-          <p className="body" data-reveal style={{ maxWidth: '60ch', marginBlockStart: '.9rem', color: 'var(--muted)' }}>{t('groupAffiliation')}</p>
-          <Link href="/contact" className="btn btn-solid" data-reveal style={{ marginBlockStart: '2.25rem' }}>{t('cta')}<span className="arrow">→</span></Link>
         </div>
       </section>
     </>

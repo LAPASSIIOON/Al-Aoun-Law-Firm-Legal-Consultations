@@ -1,6 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
-import Image from 'next/image';
 import HeroMonument from '@/components/HeroMonument.js';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
@@ -132,10 +131,7 @@ export default async function Home({ params }) {
             الهاتف يحتفظ بالنصب المسطّح: تكوين الصورة أفقي ويحتاج عرضًا لا يوفّره الهاتف،
             وإقحامه هناك يصطدم بصفّ الأزرار الإنجليزي (قياس مرصود). */}
         <HeroMonument className={styles.heroMonument} dir={locale === 'ar' ? 'rtl' : 'ltr'} />
-        <div className={styles.heroPhoto} aria-hidden="true">
-          <Image src="/brand/hero-mark-3d.webp" alt="" fill priority
-            sizes="(min-width:860px) 52vw, 100vw" style={{ objectFit: 'cover' }} />
-        </div>
+        <div className={styles.heroPhoto} aria-hidden="true" />
         <HeroDatum className={styles.heroDatum} markClassName={styles.heroMark} />
         <div className={`wrap ${styles.heroInner}`}>
           <div className={styles.heroContent}>

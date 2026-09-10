@@ -3,8 +3,7 @@ import { altLangs } from '@/lib/i18n-meta.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { Link } from '@/i18n/navigation.js';
 import Breadcrumbs from '@/components/Breadcrumbs.js';
-import s from '../../shared.module.css';
-import hs from '../../home.module.css';
+import styles from '../for-law-firms.module.css';
 
 export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en' }]; }
 export async function generateMetadata({ params }) {
@@ -13,6 +12,7 @@ export async function generateMetadata({ params }) {
   return { title: t('heading'), description: t('lead'), alternates: altLangs(locale, '/international/for-law-firms') };
 }
 
+/* مجالات الممارسة المنشورة فعلًا — بلا صفوف بديلة عند غياب البيانات (قاعدة D3). */
 async function fetchAreas(locale) {
   try {
     const supabase = createAnonClient();
@@ -23,41 +23,46 @@ async function fetchAreas(locale) {
   } catch (e) { return []; }
 }
 
+const CREDS = [1, 2, 3, 4];
+const STEPS = [1, 2, 3, 4];
+
 /** @param {{ params: Promise<{ locale: string }> }} props */
 export default async function ForLawFirms({ params }) {
   const { locale } = await params; setRequestLocale(locale);
   const t = await getTranslations('forLawFirms');
-  const rows = await fetchAreas(locale);
-  const credIds = [1, 2, 3, 4];
-  const receiveIds = [1, 2, 3, 4];
+  const areas = await fetchAreas(locale);
+  const ar = locale === 'ar';
 
   return (
     <>
-      <section className={`on-navy ${s.pageHead} section-tight`}>
+      {/* رأس الصفحة — الوعد الأساسي: نقطة اتصال واحدة مسؤولة عن كل ملف مُحال */}
+      <section className={`on-navy ${styles.hero}`}>
         <div className="wrap">
           <Breadcrumbs locale={locale} items={[
-            { label: locale === 'ar' ? 'الرئيسية' : 'Home', href: '/' },
-            { label: locale === 'ar' ? 'دولي' : 'International', href: '/international' },
+            { label: ar ? 'الرئيسية' : 'Home', href: '/' },
+            { label: ar ? 'دولي' : 'International', href: '/international' },
             { label: t('heading') },
           ]} />
           <span className="eyebrow" data-reveal>{t('eyebrow')}</span>
-          <h1 className="display d-1" data-reveal style={{ marginBlock: '1.2rem 1.5rem' }}>{t('heading')}</h1>
-          <p className="lead" data-reveal style={{ maxWidth: '54ch' }}>{t('lead')}</p>
+          <h1 className={`display d-1 ${styles.heroHead}`} data-reveal>{t('heading')}</h1>
+          <p className={`lead ${styles.heroLead}`} data-reveal>{t('lead')}</p>
         </div>
       </section>
 
-      {/* المؤهلات — نفس فهرس العمق المؤسسي المستخدم في الصفحة الرئيسية */}
-      <section className="on-white section">
-        <div className="wrap">
-          <span className="eyebrow" data-reveal>{t('credEye')}</span>
-          <h2 className="display d-2" data-reveal style={{ marginBlock: '1rem 2rem', maxWidth: '20ch' }}>{t('credHead')}</h2>
-          <div className={hs.legacyList}>
-            {credIds.map((n) => (
-              <div key={n} className={hs.legacyRow} data-reveal>
-                <span className={hs.legacyIdx}>{String(n).padStart(2, '0')}</span>
-                <span className={hs.legacyBody}>
-                  <span className={hs.legacyTitle}>{t(`cred${n}T`)}</span>
-                  <span className={hs.legacyDesc}>{t(`cred${n}D`)}</span>
+      {/* لماذا AL OUN داخل الكويت — سجلّ مؤهلات بشعيرات، لا بطاقات */}
+      <section className={`on-ivory ${styles.section}`}>
+        <div className={`wrap ${styles.grid}`}>
+          <header className={styles.colHead}>
+            <span className="eyebrow" data-reveal>{t('credEye')}</span>
+            <h2 className="display d-2" data-reveal>{t('credHead')}</h2>
+          </header>
+          <div className={styles.ledger}>
+            {CREDS.map((n) => (
+              <div key={n} className={styles.ledgerRow} data-reveal="file">
+                <span className={styles.ledgerIdx}>{String(n).padStart(2, '0')}</span>
+                <span>
+                  <span className={styles.ledgerTitle}>{t(`cred${n}T`)}</span>
+                  <span className={styles.ledgerDesc}>{t(`cred${n}D`)}</span>
                 </span>
               </div>
             ))}
@@ -65,48 +70,53 @@ export default async function ForLawFirms({ params }) {
         </div>
       </section>
 
-      {/* كيف نستقبل الإحالات */}
-      <section className="on-navy section">
+      {/* ماذا يحدث عند الإحالة — مسار متّصل من أربع محطات، تشمل فحص تعارض المصالح */}
+      <section className={`on-navy ${styles.section}`}>
         <div className="wrap">
-          <h2 className="display d-2" data-reveal style={{ color: '#fff', marginBlockEnd: '2.25rem' }}>{t('receiveHeading')}</h2>
-          <div className="grid cols-2">
-            {receiveIds.map((n) => (
-              <div key={n} data-reveal style={{ marginBlockEnd: '1.5rem' }}>
-                <span className="idx">{String(n).padStart(2, '0')}</span>
-                <h3 className="display d-3" style={{ marginBlock: '.6rem .4rem', color: '#fff' }}>{t(`r${n}T`)}</h3>
-                <p className="body" style={{ fontSize: '.95rem' }}>{t(`r${n}D`)}</p>
-              </div>
+          <header className={styles.stackHead}>
+            <h2 className="display d-2" data-reveal style={{ color: '#fff' }}>{t('receiveHeading')}</h2>
+          </header>
+          <ol className={styles.flow}>
+            {STEPS.map((n) => (
+              <li key={n} className={styles.step} data-reveal>
+                <span className={styles.stepIdx}>{String(n).padStart(2, '0')}</span>
+                <h3 className={`display d-3 ${styles.stepTitle}`}>{t(`r${n}T`)}</h3>
+                <p className={styles.stepDesc}>{t(`r${n}D`)}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      {/* مجالات نغطّيها */}
-      <section className="on-white section">
-        <div className="wrap">
-          <h2 className="display d-2" data-reveal style={{ marginBlockEnd: '2rem' }}>{t('areasHeading')}</h2>
-          {/* D3 أمان وقائعي: لا صفوف placeholder مُختلَقة عند غياب البيانات — الصفوف الحقيقية فقط (نمط D1) */}
-          <div className={hs.paList}>
-            {rows.map((r, i) => (
-              <Link key={r.slug} href={`/services/${r.slug}`} className={hs.paRow} data-reveal>
-                <span className={hs.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-                <span className={hs.paBody}><span className={hs.paTitle}>{r.title}</span></span>
-                <span className={hs.paArrow} aria-hidden="true">→</span>
-              </Link>
-            ))}
+      {/* أنواع المسائل — البيانات المنشورة فعلًا، بكثافة قابلة للمسح */}
+      {areas.length > 0 && (
+        <section className={`on-ivory ${styles.section}`}>
+          <div className="wrap">
+            <header className={styles.stackHead}>
+              <h2 className="display d-2" data-reveal>{t('areasHeading')}</h2>
+            </header>
+            <div className={styles.areas}>
+              {areas.map((a, i) => (
+                <Link key={a.slug} href={`/services/${a.slug}`} className={styles.area} data-reveal="file">
+                  <span className={styles.areaIdx}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className={styles.areaTitle}>{a.title}</span>
+                  <span className={styles.areaArrow} aria-hidden="true">→</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* الاتصال */}
-      <section className="on-navy section">
+      {/* الخطوة التالية — المساران المعتمدان كما هما */}
+      <section className={`on-navy ${styles.section}`}>
         <div className="wrap">
-          <h2 className="display d-2" data-reveal style={{ color: '#fff', marginBlockEnd: '1rem', maxWidth: '20ch' }}>{t('ctaHead')}</h2>
-          <p className="body" data-reveal style={{ maxWidth: '52ch', marginBlockEnd: '1.75rem' }}>{t('ctaBody')}</p>
-          <p style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <h2 className={`display d-2 ${styles.ctaHead}`} data-reveal>{t('ctaHead')}</h2>
+          <p className={`body ${styles.ctaBody}`} data-reveal>{t('ctaBody')}</p>
+          <div className={styles.ctaRow} data-reveal>
             <Link href="/international/refer-a-matter" className="btn btn-solid">{t('ctaBtn')} <span className="arrow">→</span></Link>
-            <Link href="/international/partner-with-us" className="btn-line">{t('partnerCta')}</Link>
-          </p>
+            <Link href="/international/partner-with-us" className="btn-line">{t('partnerCta')} <span className="arrow">→</span></Link>
+          </div>
         </div>
       </section>
     </>

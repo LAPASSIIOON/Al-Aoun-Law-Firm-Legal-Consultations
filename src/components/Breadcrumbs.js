@@ -1,5 +1,6 @@
 import { Link } from '@/i18n/navigation.js';
 import { jsonLdScript } from '@/lib/json-ld.js';
+import styles from './Breadcrumbs.module.css';
 
 const BASE_URL = 'https://al-aoun-law-firm-legal-consultation.vercel.app';
 
@@ -22,14 +23,14 @@ export default function Breadcrumbs({ items, locale }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }} />
-      <nav aria-label="breadcrumb" style={{ marginBlockEnd: '1.75rem' }}>
-        <ol style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '.5rem', listStyle: 'none', padding: 0, margin: 0 }}>
+      <nav aria-label="breadcrumb" className={styles.nav}>
+        <ol className={styles.list}>
           {items.map((it, i) => (
-            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
+            <li key={i} className={styles.item}>
               {it.href
-                ? <Link href={it.href} className="muted" style={{ fontSize: '.85rem' }}>{it.label}</Link>
-                : <span className="muted" style={{ fontSize: '.85rem', color: 'var(--clay-bright)' }}>{it.label}</span>}
-              {i < items.length - 1 && <span aria-hidden="true" className="muted" style={{ fontSize: '.8rem' }}>/</span>}
+                ? <Link href={it.href} className={`${styles.link} muted`}>{it.label}</Link>
+                : <span className={`${styles.current} muted`}>{it.label}</span>}
+              {i < items.length - 1 && <span aria-hidden="true" className={`${styles.separator} muted`}>/</span>}
             </li>
           ))}
         </ol>

@@ -128,7 +128,7 @@
   .heroPhoto{display:block;inset-block:0;inset-inline-start:auto;inset-inline-end:0;
     inline-size:min(48%,720px);block-size:auto;
     background-image:url('/brand/hero-mark-3d.webp');
-    background-size:cover;background-position:32% center;background-repeat:no-repeat}
+    background-size:cover;background-position:12% center;background-repeat:no-repeat}
   .heroRegLine{display:none}
   /* حشو علوي يفسح للهيدر الثابت، وسفلي يضمن ظهور الـCTA فوق الطيّة عند ارتفاع ٧٠٠px */
   .heroInner{padding-block:7.5rem 3rem}

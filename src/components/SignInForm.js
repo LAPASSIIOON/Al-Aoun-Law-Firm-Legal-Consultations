@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from '@/i18n/navigation.js';
 import { signIn } from '@/app/actions/auth.js';
 import styles from './NetworkForm.module.css';
 
@@ -11,7 +10,6 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 export default function SignInForm() {
   const t = useTranslations('account');
   const locale = useLocale();
-  const router = useRouter();
   const [status, setStatus] = useState('idle');
   const [err, setErr] = useState('');
   const [turnstileToken, setTurnstileToken] = useState('');
@@ -38,7 +36,7 @@ export default function SignInForm() {
       password: (fd.get('password') || '').toString(),
       turnstileToken,
     });
-    if (res?.ok) { router.push('/admin'); router.refresh(); }
+    if (res?.ok) window.location.assign(`/${locale}/account`);
     else {
       setStatus('error'); setErr(t('errorInvalidCredentials'));
       if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);

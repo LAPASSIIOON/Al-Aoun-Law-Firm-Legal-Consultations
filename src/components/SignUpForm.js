@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from '@/i18n/navigation.js';
 import { signUp } from '@/app/actions/auth.js';
 import styles from './NetworkForm.module.css';
 
@@ -13,7 +12,6 @@ const CONSENT_VERSION = '2026-08-16';
 export default function SignUpForm() {
   const t = useTranslations('account');
   const locale = useLocale();
-  const router = useRouter();
   const [memberType, setMemberType] = useState('client');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('idle');
@@ -51,7 +49,7 @@ export default function SignUpForm() {
     });
     if (res?.ok) {
       if (res.needsConfirmation) { setNeedsConfirmation(true); setStatus('idle'); }
-      else { router.push('/admin'); }
+      else { window.location.assign(`/${locale}/account`); }
     } else {
       setStatus('error');
       const msg = res?.error === 'already_registered' ? t('errorAlreadyRegistered')

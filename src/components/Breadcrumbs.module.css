@@ -1,10 +1,6 @@
 .nav { margin-block-end: 1.75rem; }
 .list { display: flex; flex-wrap: wrap; gap: .15rem .5rem; align-items: center; margin: 0; padding: 0; list-style: none; }
-.item { display: flex; gap: .5rem; align-items: center; min-block-size: 24px; }
-.link { display: inline-flex; min-block-size: 24px; align-items: center; font-size: .85rem; }
+.item { display: flex; gap: .5rem; align-items: center; min-block-size: var(--tap-min); }
+.link { display: inline-flex; min-inline-size: var(--tap-min); min-block-size: var(--tap-min); padding-inline: .5rem; margin-inline: -.5rem; align-items: center; justify-content: center; font-size: .85rem; }
 .current { font-size: .85rem; color: var(--clay-bright); }
 .separator { font-size: .8rem; }
-
-@media (pointer: coarse) {
-  .item, .link { min-block-size: var(--tap-min); }
-}

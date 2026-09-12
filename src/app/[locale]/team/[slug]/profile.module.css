@@ -16,7 +16,7 @@
 .railLabel { color: var(--muted); }
 .railRule { inline-size: 3.2rem; block-size: 1px; margin-block: 1.25rem 1.75rem; background: var(--gold); }
 .content { min-inline-size: 0; }
-.credentials { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid rgba(16, 35, 56, .16); }
+.credentials { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: hidden; border-block: 1px solid rgba(16, 35, 56, .16); }
 .credential { min-block-size: 11rem; padding: 1.5rem clamp(1rem, 2.5vw, 2.25rem); border-inline-start: 1px solid rgba(16, 35, 56, .16); }
 .credential:first-child { border-inline-start: 0; }
 .credentialNumber { color: var(--gold); font-size: .7rem; font-weight: 700; letter-spacing: .1em; }

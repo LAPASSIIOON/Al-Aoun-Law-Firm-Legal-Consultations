@@ -10,6 +10,7 @@ const Chevron = () => (<svg width="11" height="11" viewBox="0 0 24 24" fill="non
 /** @param {{ locale: string, areas: {slug:string,title:string}[] }} props */
 export default function SiteHeader({ locale, areas = [], member = null }) {
   const t = useTranslations('nav');
+  const tf = useTranslations('footer');
   const pathname = usePathname();
   const other = locale === 'ar' ? 'en' : 'ar';
   const [scrolled, setScrolled] = useState(false);
@@ -96,11 +97,12 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
               </div>
             </div>
           </div>
-          <Link href="/contact" className={styles.navLink}>{t('contact')}</Link>
+          <a href={`/${locale}/account`} className={styles.navLink}>{tf('portal')}</a>
         </nav>
 
         <div className={styles.actions}>
           <SiteSearch locale={locale} />
+          <a href={`/${locale}/account`} className={styles.portalQuick}>{tf('portal')}</a>
           <Link href={pathname} locale={other} className={`${styles.lang} ${styles.barOnly}`}>{other === 'en' ? 'EN' : 'ع'}</Link>
           <Link href="/contact" className={`btn btn-solid ${styles.cta}`}>{t('consult')}</Link>
           <button className={styles.burger} aria-label={locale === 'ar' ? 'القائمة' : 'Menu'} aria-expanded={mobile} onClick={() => setMobile(true)}>
@@ -152,6 +154,7 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
             </div>
           )}
           <Link href="/contact" className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.18s' }}><span className={styles.oIdx}>06</span>{t('contact')}</Link>
+          <a href={`/${locale}/account`} className={styles.overlayLink} onClick={closeAll} style={{ animationDelay: '.20s' }}><span className={styles.oIdx}>07</span>{tf('portal')}</a>
         </nav>
         <div className={styles.overlayFoot}>
           <Link href={pathname} locale={other} className={styles.lang} onClick={closeAll}>{other === 'en' ? 'English' : 'العربية'}</Link>

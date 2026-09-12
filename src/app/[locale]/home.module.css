@@ -42,7 +42,7 @@
 .heroRegLine{position:absolute;z-index:2;inset-block-end:1.5rem;
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
   font-family:var(--f-ui);font-size:.72rem;font-weight:600;letter-spacing:.16em;
-  color:var(--platinum-3);white-space:nowrap;pointer-events:none}
+  color:var(--platinum-2);white-space:nowrap;pointer-events:none}
 :lang(ar) .heroRegLine{letter-spacing:0;font-size:.8rem}
 
 /* خطّ الأساس العمودي — الهاتف: مُزاح ٢٢px للداخل عن حافة القراءة كي لا يقرأ كإطار صفحة.

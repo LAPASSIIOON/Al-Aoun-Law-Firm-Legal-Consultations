@@ -1,3 +1,6 @@
+'use client';
+import { usePathname } from '@/i18n/navigation.js';
+
 /**
  * زر واتساب العائم — «الختم الهادئ» (تمريرة العناصر العائمة).
  *
@@ -6,12 +9,15 @@
  * واتساب الرسمي — هذا هو الاستخدام الوحيد المعتمد للأخضر #25D366 في الموقع كله،
  * استثناءٌ مقصود خارج نظام التوكِنز لأنه لون علامة طرف ثالث لا لون هويتنا.
  *
- * مكوّن خادم الآن: حالات التفاعل CSS خالصة (hover/focus-visible/active) بلا أي
- * JS للعميل — ما يضيف تلقائيًا حالة لوحة المفاتيح وتغذيةً راجعة للمس كانتا غائبتين.
+ * حالات التفاعل CSS خالصة (hover/focus-visible/active)، ويُقرأ المسار فقط
+ * لإخفاء الزر داخل خطوات الحساب حتى لا يغطي حقول النماذج على الهاتف.
  * لا نبض، لا ارتداد، لا شارات. الموضع والمقاس ٥٠×٥٠ والسلوك كما هما، مع دعم
  * المنطقة الآمنة: env(safe-area-inset-bottom) يُضاف للإزاحة السفلية على الآيفون.
  */
 export default function WhatsAppButton({ locale }) {
+  const pathname = usePathname();
+  if (pathname.startsWith('/account')) return null;
+
   const text = locale === 'ar'
     ? 'مرحبًا، أودّ الاستفسار عن استشارة قانونية مع مجموعة العون.'
     : "Hello, I'd like to inquire about a legal consultation with Al Oun.";

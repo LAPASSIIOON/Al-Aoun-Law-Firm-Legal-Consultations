@@ -19,6 +19,7 @@ import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
 import WhatsAppButton from '@/components/WhatsAppButton.js';
 import ScrollToTop from '@/components/ScrollToTop.js';
+import SiteLoader from '@/components/SiteLoader.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 
@@ -118,6 +119,7 @@ export default async function LocaleLayout({ children, params }) {
         />
         <NextIntlClientProvider locale={locale}>
           <a href="#main" className="skip">{locale === 'ar' ? 'تخطَّ إلى المحتوى' : 'Skip to content'}</a>
+          <SiteLoader locale={locale} />
           <SiteHeader locale={locale} areas={areas} />
           <main id="main" className="main">{children}</main>
           <SiteFooter locale={locale} areas={areas} />

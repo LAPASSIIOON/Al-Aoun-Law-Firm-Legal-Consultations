@@ -4,6 +4,7 @@ import {
   listConsultations, listReferrals, listPartnerships, listMembers, listAuditLog,
 } from '@/app/actions/admin.js';
 import { listPracticeAreas, listArticles } from '@/app/actions/content.js';
+import styles from './AdminOverview.module.css';
 
 const ACTION_KEYS = {
   stage_updated: 'actionLabelStageUpdated',
@@ -110,7 +111,7 @@ export default async function AdminOverview() {
       )}
 
       {/* مؤشرات الحجم الإجمالي — سياق، مش عاجل */}
-      <div className="grid cols-4" style={{ gap: '1.25rem', marginBlockStart: '2.5rem' }}>
+      <div className={styles.kpis}>
         <KpiCard href="/admin/consultations" n={consultations.length} label={t('kpiTotalConsultations')} />
         <KpiCard href="/admin/referrals" n={referrals.length} label={t('kpiTotalReferrals')} />
         <KpiCard href="/admin/partnerships" n={partnerships.length} label={t('kpiTotalPartnerships')} />

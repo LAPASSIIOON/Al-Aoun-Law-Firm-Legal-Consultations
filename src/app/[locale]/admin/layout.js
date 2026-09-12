@@ -4,6 +4,8 @@ import { getCurrentMember } from '@/lib/supabase-auth-server.js';
 import { signOutAction } from '@/app/actions/auth.js';
 import { listConsultations, listReferrals, listPartnerships } from '@/app/actions/admin.js';
 import AdminNav from '@/components/AdminNav.js';
+import { Link } from '@/i18n/navigation.js';
+import styles from './AdminLayout.module.css';
 
 // إجباري: كل صفحات لوحة الإدارة تتحقّق من الجلسة في كل طلب — أبدًا لا تُخزَّن ثابتة (SSG).
 export const dynamic = 'force-dynamic';
@@ -45,32 +47,33 @@ export default async function AdminLayout({ children, params }) {
   ];
 
   return (
-    <div style={{ minHeight: '80vh', background: 'var(--surface)', paddingBlockStart: '76px' }}>
-      <nav style={{ borderBlockEnd: '1px solid var(--hair-light-strong)', background: 'var(--ground)' }}>
-        <div className="wrap" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', columnGap: '1.25rem', rowGap: '.6rem', paddingBlock: '1.1rem' }}>
-          <strong style={{ fontFamily: 'var(--f-display)', color: 'var(--platinum)', whiteSpace: 'nowrap', flexShrink: 0 }}>{t('title')}</strong>
+    <div data-admin-shell className={styles.shell}>
+      <div className={styles.frame}>
+        <aside className={styles.sidebar}>
+          <Link href="/" className={styles.brand} aria-label={locale === 'ar' ? 'العودة إلى الموقع' : 'Back to website'}>
+            <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.mark} />
+            <span>
+              <strong>{t('title')}</strong>
+              <small>{locale === 'ar' ? 'إدارة الموقع' : 'Site administration'}</small>
+            </span>
+          </Link>
+
           <AdminNav groups={navGroups} />
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '.75rem', marginInlineStart: 'auto', flexShrink: 0,
-            padding: '.4rem .5rem .4rem .9rem', borderRadius: 'var(--r)', boxShadow: 'inset 0 0 0 1px var(--hair-light-strong)',
-          }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              width: '1.7rem', height: '1.7rem', borderRadius: '50%', flexShrink: 0,
-              background: 'var(--clay)', color: '#fff', fontSize: '.78rem', fontWeight: 700,
-            }}>
+
+          <div className={styles.account}>
+            <span className={styles.avatar}>
               {(member.display_name || '?').trim().charAt(0).toUpperCase()}
             </span>
-            <span className="body" style={{ fontSize: '.85rem', color: 'var(--platinum-2)', whiteSpace: 'nowrap' }}>{member.display_name}</span>
-            <span style={{ inlineSize: '1px', blockSize: '1.3rem', background: 'var(--hair-light-strong)', flexShrink: 0 }} />
+            <span className={styles.accountName}>{member.display_name}</span>
             <form action={async () => { 'use server'; await signOutAction(locale); }}>
-              <button type="submit" className="btn btn-ghost" style={{ fontSize: '.82rem', padding: '.4rem .85rem', whiteSpace: 'nowrap' }}>{t('signOut')}</button>
+              <button type="submit" className={styles.signOut}>{t('signOut')}</button>
             </form>
           </div>
-        </div>
-      </nav>
-      <div className="wrap" style={{ paddingBlock: '2.5rem' }}>
-        {children}
+
+        </aside>
+        <section className={styles.workspace}>
+          <div className={styles.content}>{children}</div>
+        </section>
       </div>
     </div>
   );

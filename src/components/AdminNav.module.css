@@ -1,0 +1,23 @@
+.nav{display:flex;flex:1 1 auto;min-block-size:0;flex-direction:column;gap:1.15rem;overflow-y:auto;scrollbar-width:thin}
+.group{display:flex;flex-direction:column;gap:.38rem}
+.groupLabel{padding-inline:.7rem;font-family:var(--f-en);font-size:.65rem;letter-spacing:.11em;text-transform:uppercase;color:var(--platinum-3)}
+:global(:lang(ar)) .groupLabel{font-family:var(--f-ui);letter-spacing:0}
+.links{display:flex;flex-direction:column;gap:.18rem}
+.link{display:flex;align-items:center;justify-content:space-between;gap:.55rem;min-block-size:42px;padding:.55rem .7rem;border-radius:var(--r);font-family:var(--f-ui);font-size:.88rem;color:var(--platinum-2);transition:background .2s var(--ease),color .2s var(--ease)}
+.link:hover{background:var(--surface-3);color:var(--platinum)}
+.active{background:var(--clay);color:#fff}
+.active:hover{background:var(--clay-600);color:#fff}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-inline-size:1.35rem;block-size:1.35rem;padding-inline:.34rem;border-radius:999px;background:var(--clay-bright);color:#fff;font-family:var(--f-en);font-size:.69rem;font-weight:700}
+.active .badge{background:rgba(255,255,255,.24)}
+
+@media(max-width:1099px){
+  .nav{flex-direction:row;gap:1.2rem;overflow-x:auto;overflow-y:hidden;padding-block:.7rem .15rem;scroll-snap-type:x proximity}
+  .group{flex:0 0 auto;gap:.28rem;scroll-snap-align:start}
+  .links{flex-direction:row}
+  .link{min-block-size:40px;padding:.48rem .7rem}
+}
+
+@media(max-width:599px){
+  .groupLabel{font-size:.6rem}
+  .link{font-size:.82rem}
+}

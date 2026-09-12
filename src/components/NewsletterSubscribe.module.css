@@ -1,0 +1,4 @@
+.input::placeholder {
+  color: var(--platinum-2);
+  opacity: 1;
+}

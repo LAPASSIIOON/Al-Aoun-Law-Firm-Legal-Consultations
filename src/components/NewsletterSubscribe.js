@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { subscribeNewsletter } from '@/app/actions/newsletter.js';
+import styles from './NewsletterSubscribe.module.css';
 
 /* Wave 1 — إغلاق وصولية الاشتراك:
    ١) تسمية حقيقية <label htmlFor> مرتبطة بالحقل (كانت placeholder وحده، وهو ليس تسمية).
@@ -40,6 +41,7 @@ export default function NewsletterSubscribe({ locale }) {
         <label htmlFor="newsletter-email" style={hidden}>{t('newsletterLabel')}</label>
         <input
           id="newsletter-email" name="email"
+          className={styles.input}
           type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
           placeholder={t('newsletterPlaceholder')} dir="ltr"
           autoComplete="email" inputMode="email"

@@ -13,13 +13,15 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const IMG_DIR = path.join(process.cwd(), 'public', 'practice-areas');
+const AREA_RETRY_DELAYS_MS = [0, 150, 500];
 function hasImage(slug) {
   try { return fs.existsSync(path.join(IMG_DIR, `${slug}.webp`)); } catch { return false; }
 }
 
 const getArea = cache(async function getArea(slug, locale) {
   let lastError = null;
-  for (let attempt = 0; attempt < 2; attempt += 1) {
+  for (const delayMs of AREA_RETRY_DELAYS_MS) {
+    if (delayMs) await new Promise((resolve) => setTimeout(resolve, delayMs));
     const supabase = createAnonClient();
     const { data, error } = await supabase.from('practice_area_translations')
       .select('title, summary, body').eq('slug', slug).eq('locale', locale)

@@ -1,10 +1,16 @@
+import { redirect } from 'next/navigation';
 import { getTranslations, getLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation.js';
 import { listMyMatters } from '@/app/actions/matters.js';
+import { getCurrentMember } from '@/lib/supabase-auth-server.js';
+
+export const dynamic = 'force-dynamic';
 
 export default async function MyMatters() {
   const t = await getTranslations('admin');
   const locale = await getLocale();
+  const member = await getCurrentMember();
+  if (!member) redirect(`/${locale}/account/sign-in`);
   const matters = await listMyMatters();
   const fmtDate = (v) => new Date(v).toLocaleDateString(locale === 'ar' ? 'ar-KW' : 'en-GB');
 

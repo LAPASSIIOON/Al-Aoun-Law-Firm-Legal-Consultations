@@ -72,32 +72,34 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
     <div className={styles.form}>
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <div className={styles.stepBar}>
-        <span className={styles.stepDot} data-active="true" />
-        <span className={`${styles.stepDot} ${step === 2 ? styles.stepDotActive : ''}`} data-active={step === 2} />
-        <span className={styles.stepLabel}>{t('stepOf').replace('{n}', String(step))}</span>
+        <span className={styles.stepDot} data-active="true" aria-hidden="true" />
+        <span className={`${styles.stepDot} ${step === 2 ? styles.stepDotActive : ''}`} data-active={step === 2} aria-hidden="true" />
+        <span className={styles.stepLabel} role="status">{t('stepOf').replace('{n}', String(step))}</span>
       </div>
 
       {step === 1 ? (
-        <form key="step1" onSubmit={goNext} noValidate>
+        <form key="step1" onSubmit={goNext} noValidate className={styles.fields}>
           <p className={styles.hint}>{t('startEasy')}</p>
           <label className={styles.field}>
             <span className={styles.label}>{t('nameLabel')}</span>
-            <input className={styles.input} autoComplete="name" autoFocus value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <input className={styles.input} autoComplete="name" autoFocus value={fullName} onChange={(e) => setFullName(e.target.value)} required
+              aria-invalid={status === 'error' || undefined} aria-describedby={status === 'error' ? 'contact-err' : undefined} />
           </label>
           <label className={styles.field}>
             <span className={styles.label}>{t('phoneLabel')}</span>
-            <input className={styles.input} type="tel" dir="ltr" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+            <input className={styles.input} type="tel" dir="ltr" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required
+              aria-invalid={status === 'error' || undefined} aria-describedby={status === 'error' ? 'contact-err' : undefined} />
           </label>
-          {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
+          {status === 'error' && <p id="contact-err" className={styles.err} role="alert">{err}</p>}
           <button type="submit" className="btn btn-solid">{t('nextStep')} <span className="arrow">→</span></button>
         </form>
       ) : (
-        <form key="step2" onSubmit={onSubmit} noValidate className={styles.stepIn}>
+        <form key="step2" onSubmit={onSubmit} noValidate className={`${styles.fields} ${styles.stepIn}`}>
           <fieldset className={styles.group}>
             <legend className={styles.label}>{t('clientTypeLabel')}</legend>
             <div className={styles.segs}>
               {['individual', 'company', 'investor'].map((v) => (
-                <button type="button" key={v} className={`${styles.seg} ${clientType === v ? styles.segOn : ''}`} onClick={() => setClientType(v)}>
+                <button type="button" key={v} aria-pressed={clientType === v} className={`${styles.seg} ${clientType === v ? styles.segOn : ''}`} onClick={() => setClientType(v)}>
                   {t(v === 'individual' ? 'clientIndividual' : v === 'company' ? 'clientCompany' : 'clientInvestor')}
                 </button>
               ))}
@@ -107,7 +109,7 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
             <legend className={styles.label}>{t('contactLabel')}</legend>
             <div className={styles.segs}>
               {['phone', 'email'].map((v) => (
-                <button type="button" key={v} className={`${styles.seg} ${preferredContact === v ? styles.segOn : ''}`} onClick={() => setPreferredContact(v)}>
+                <button type="button" key={v} aria-pressed={preferredContact === v} className={`${styles.seg} ${preferredContact === v ? styles.segOn : ''}`} onClick={() => setPreferredContact(v)}>
                   {t(v === 'phone' ? 'contactPhone' : 'contactEmail')}
                 </button>
               ))}
@@ -121,8 +123,8 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
             <span className={styles.label}>{t('noteLabel')}</span>
             <textarea name="note" className={styles.input} rows={3} placeholder={t('notePlaceholder')} />
           </label>
-          {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
-          <div ref={widgetRef} style={{ marginBlockEnd: '1.1rem' }} />
+          {status === 'error' && <p id="contact-err" className={styles.err} role="alert">{err}</p>}
+          <div ref={widgetRef} />
           <div className={styles.stepActions}>
             <button type="button" className="btn-line" onClick={() => setStep(1)}>{t('back')}</button>
             <button type="submit" className="btn btn-solid" disabled={status === 'sending'}>

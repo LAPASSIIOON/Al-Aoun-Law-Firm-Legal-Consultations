@@ -12,7 +12,16 @@ const SearchIcon = () => (
   </svg>
 );
 
-/** بحث موقعي — يستدعي دالة search_site (trigram على search_norm)، لا محرّك بحث خارجي ثقيل. */
+function normalizeSearchText(value) {
+  return String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f\u064B-\u065F\u0670\u0640]/g, '')
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .toLocaleLowerCase();
+}
+
+/** بحث في المحتوى العام المنشور، مع فهرس صغير يُحمَّل مرة واحدة عند أول استخدام. */
 export default function SiteSearch({ locale }) {
   const t = useTranslations('search');
   const [open, setOpen] = useState(false);
@@ -21,6 +30,7 @@ export default function SiteSearch({ locale }) {
   const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
   const debounceRef = useRef(null);
+  const indexRef = useRef(null);
 
   useEffect(() => {
     if (open) { document.body.style.overflow = 'hidden'; setTimeout(() => inputRef.current?.focus(), 50); }
@@ -38,13 +48,38 @@ export default function SiteSearch({ locale }) {
     clearTimeout(debounceRef.current);
     if (q.trim().length < 2) { setResults([]); return; }
     setLoading(true);
+    let cancelled = false;
     debounceRef.current = setTimeout(async () => {
-      const supabase = createSupabaseBrowserClient();
-      const { data, error } = await supabase.rpc('search_site', { p_query: q.trim(), p_locale: locale });
-      setResults(error ? [] : (data || []));
+      const needle = normalizeSearchText(q.trim());
+      if (!indexRef.current) {
+        const supabase = createSupabaseBrowserClient();
+        indexRef.current = Promise.all([
+          supabase.from('practice_area_translations')
+            .select('slug,title,summary')
+            .eq('locale', locale).eq('status', 'published').eq('legal_approved', true),
+          supabase.from('article_translations')
+            .select('slug,title,excerpt,articles!inner(is_active,published_at)')
+            .eq('locale', locale).eq('status', 'published').eq('legal_approved', true)
+            .eq('articles.is_active', true).not('articles.published_at', 'is', null)
+            .lte('articles.published_at', new Date().toISOString()),
+        ]).then(([areasResult, articlesResult]) => [
+          ...(areasResult.data || []).map((item) => ({
+            kind: 'practice_area', slug: item.slug, title: item.title, snippet: item.summary,
+          })),
+          ...(articlesResult.data || []).map((item) => ({
+            kind: 'article', slug: item.slug, title: item.title, snippet: item.excerpt,
+          })),
+        ]);
+      }
+      const index = await indexRef.current;
+      if (cancelled) return;
+      const matches = index
+        .filter((item) => normalizeSearchText(`${item.title} ${item.snippet || ''} ${item.slug}`).includes(needle))
+        .slice(0, 8)
+      setResults(matches);
       setLoading(false);
     }, 280);
-    return () => clearTimeout(debounceRef.current);
+    return () => { cancelled = true; clearTimeout(debounceRef.current); };
   }, [q, locale]);
 
   return (

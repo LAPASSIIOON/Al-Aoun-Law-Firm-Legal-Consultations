@@ -2,8 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from '@/i18n/navigation.js';
+import { useRouter, Link } from '@/i18n/navigation.js';
 import ContactForm from './ContactForm.js';
+import styles from './ContactIntentRouter.module.css';
 
 /**
  * عقد السلوك الثابت لكل نية — مستقل عن الترجمة، لا يُعاد بناؤه كل رندر.
@@ -55,50 +56,43 @@ export default function ContactIntentRouter() {
     ? rawFrom
     : `/${locale}/contact`; // احتياط معروف يقينًا — لا NULL، لا sessionStorage، لا referrer
 
-  const options = OPTION_ORDER.map((key) => ({
-    key,
-    label: t(`intent${key.charAt(0).toUpperCase()}${key.slice(1)}`),
-    ...INTENT_CONFIG[key],
-  }));
-
-  function choose(opt) {
-    if (opt.action === 'redirect') {
-      router.push(opt.href);
-      return;
-    }
-    setSelected(opt.key);
-  }
+  const label = (key) => t(`intent${key.charAt(0).toUpperCase()}${key.slice(1)}`);
+  const options = OPTION_ORDER.map((key) => ({ key, label: label(key), ...INTENT_CONFIG[key] }));
 
   if (redirecting) return null; // تفادي وميض القائمة القديمة أثناء التوجيه اللحظي
-  if (selected) return <ContactForm intent={selected} sourceRoute={sourceRoute} />;
+
+  /* بعد الاختيار: يبقى النوع المختار مرئيًا أعلى النموذج، مع "رجوع" يعيد فتح القائمة —
+     قبل هذا التعديل كان الاختيار نهائيًا بلا أي طريق للعودة أو لمعرفة ما اختير. */
+  if (selected) {
+    return (
+      <div>
+        <div className={styles.chosen}>
+          <span className={styles.chosenLabel}>{label(selected)}</span>
+          {/* الاسم المتاح يبدأ بنص الزر المرئي (WCAG 2.5.3) ثم يضيف الوجهة، تمييزًا له عن
+              زرّ "رجوع" داخل النموذج الذي يعود خطوةً واحدة لا إلى قائمة الأنواع. */}
+          <button type="button" className="btn-line" aria-label={`${t('back')} — ${t('intentPrompt')}`} onClick={() => setSelected(null)}>{t('back')}</button>
+        </div>
+        <ContactForm intent={selected} sourceRoute={sourceRoute} />
+      </div>
+    );
+  }
 
   return (
     <div>
-      <p className="body" style={{ marginBlockEnd: '1.25rem' }}>{t('intentPrompt')}</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '.75rem' }}>
-        {options.map((opt) => (
-          <button
-            key={opt.key}
-            type="button"
-            onClick={() => choose(opt)}
-            style={{
-              textAlign: locale === 'ar' ? 'right' : 'left',
-              padding: '.9rem 1.1rem',
-              borderRadius: 'var(--r)',
-              boxShadow: 'inset 0 0 0 1px var(--light-hair)',
-              background: 'var(--light-raised)',
-              color: 'var(--light-ink)',
-              fontFamily: 'var(--f-ui)',
-              fontSize: '.92rem',
-              cursor: 'pointer',
-              transition: 'box-shadow .2s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--clay-bright)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'inset 0 0 0 1px var(--light-hair)'; }}
-          >
-            {opt.label}
-          </button>
-        ))}
+      <p className={styles.prompt}>{t('intentPrompt')}</p>
+      <div className={styles.list}>
+        {options.map((opt, i) => {
+          const idx = <span className={styles.rowIdx}>{String(i + 1).padStart(2, '0')}</span>;
+          const text = <span className={styles.rowLabel}>{opt.label}</span>;
+          const arrow = <span className={styles.rowArrow} aria-hidden="true">→</span>;
+          /* وجهة خارج هذه الصفحة ⇒ رابط حقيقي: يحمل الدلالة للقارئ الآلي، ويسمح بفتحه
+             في تبويب جديد — بدل زرّ يُحاكي الانتقال برمجيًا. */
+          return opt.action === 'redirect' ? (
+            <Link key={opt.key} href={opt.href} className={`${styles.row} ${styles.rowLink}`}>{idx}{text}{arrow}</Link>
+          ) : (
+            <button key={opt.key} type="button" className={styles.row} onClick={() => setSelected(opt.key)}>{idx}{text}{arrow}</button>
+          );
+        })}
       </div>
     </div>
   );

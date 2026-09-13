@@ -1,0 +1,46 @@
+/* ═══ اختيار نوع الطلب — سجلّ مرقّم بشعيرات، لا بطاقات ═══
+   يستبدل ثماني كتل رمادية متطابقة بسجلّ قابل للمسح رأسيًا: رقم ترتيبي، عنوان، ثم سهم.
+   الخيارات التي تفتح النموذج هنا تُرسَم <button>، والتي تنتقل لصفحة أخرى تُرسَم <a>،
+   فيحمل العنصر نفسه دلالة الوجهة بلا نصّ جديد (السهم الظاهر دائمًا = انتقال).
+   كل الخصائص منطقية الاتجاه فتنقلب بين RTL وLTR بلا قاعدة مكرّرة. */
+
+.prompt{font-family:var(--f-ui);font-size:1rem;line-height:1.7;color:var(--ink);margin:0 0 .35rem}
+:global(html[lang=ar]) .prompt{line-height:1.9}
+
+.list{margin-block-start:1.1rem;border-block-start:1px solid var(--light-hair)}
+
+.row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:baseline;
+  gap:.85rem;inline-size:100%;padding-block:.95rem;padding-inline:.15rem;
+  border-block-end:1px solid var(--light-hair);background:none;
+  text-align:start;color:var(--ink);font-family:var(--f-ui);cursor:pointer;
+  transition:color .25s var(--ease),padding-inline .25s var(--ease)}
+
+.rowIdx{font-family:var(--f-en);font-size:.75rem;font-weight:600;letter-spacing:.06em;
+  color:var(--light-idx);font-variant-numeric:tabular-nums}
+.rowLabel{font-size:1rem;line-height:1.5}
+:global(html[lang=ar]) .rowLabel{line-height:1.75}
+
+/* السهم: ظاهر دائمًا على الروابط (تنتقل بك لصفحة أخرى)، ويظهر عند التفاعل على الأزرار */
+.rowArrow{font-size:.95rem;color:var(--light-idx);opacity:0;
+  transition:opacity .25s var(--ease),transform .3s var(--ease),color .25s var(--ease)}
+.rowLink .rowArrow{opacity:.75}
+
+.row:hover,.row:focus-visible{color:var(--clay-600)}
+.row:hover .rowArrow,.row:focus-visible .rowArrow{opacity:1;color:var(--clay-600)}
+:global(html[lang=en]) .row:hover .rowArrow,:global(html[lang=en]) .row:focus-visible .rowArrow{transform:translateX(3px)}
+:global(html[lang=ar]) .row:hover .rowArrow,:global(html[lang=ar]) .row:focus-visible .rowArrow{transform:translateX(-3px)}
+
+/* هدف لمس مريح على الأجهزة اللمسية — نفس اصطلاح المشروع في .btn-line */
+@media (pointer:coarse){.row{min-block-size:var(--tap-min);padding-block:1.05rem}}
+
+/* ── بعد الاختيار: يبقى الاختيار مرئيًا ويمكن تغييره ── */
+.chosen{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:.75rem 1.25rem;padding-block-end:1rem;margin-block-end:1.5rem;
+  border-block-end:1px solid var(--light-hair)}
+.chosenLabel{font-family:var(--f-ui);font-size:1rem;font-weight:600;color:var(--ink);line-height:1.5}
+:global(html[lang=ar]) .chosenLabel{line-height:1.75}
+
+@media (prefers-reduced-motion:reduce){
+  .row,.rowArrow{transition:none}
+  .row:hover .rowArrow,.row:focus-visible .rowArrow{transform:none}
+}

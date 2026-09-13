@@ -1,4 +1,5 @@
 import { createAnonClient } from '@/lib/supabase-server.js';
+import { TEAM } from '@/lib/team-data.js';
 
 const BASE_URL = 'https://al-aoun-law-firm-legal-consultation.vercel.app';
 const LOCALES = ['ar', 'en'];
@@ -12,9 +13,9 @@ const STATIC_PATHS = [
   { path: '/about', priority: 0.8, freq: 'monthly' },
   { path: '/services', priority: 0.9, freq: 'weekly' },
   { path: '/team', priority: 0.7, freq: 'monthly' },
-  { path: '/team/haitham-al-aoun', priority: 0.7, freq: 'monthly' },
   { path: '/insights', priority: 0.7, freq: 'weekly' },
   { path: '/contact', priority: 0.8, freq: 'yearly' },
+  { path: '/faq', priority: 0.6, freq: 'monthly' },
   { path: '/careers', priority: 0.5, freq: 'monthly' },
   { path: '/privacy', priority: 0.3, freq: 'yearly' },
   { path: '/terms', priority: 0.3, freq: 'yearly' },
@@ -61,6 +62,14 @@ export default async function sitemap() {
         lastModified: now,
         changeFrequency: freq,
         priority,
+      });
+    }
+    for (const member of TEAM) {
+      entries.push({
+        url: `${BASE_URL}/${locale}/team/${member.slug}`,
+        lastModified: now,
+        changeFrequency: 'monthly',
+        priority: 0.7,
       });
     }
   }

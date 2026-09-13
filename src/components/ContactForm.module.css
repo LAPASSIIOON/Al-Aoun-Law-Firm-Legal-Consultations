@@ -1,17 +1,26 @@
 .form { display: flex; flex-direction: column; gap: 1.4rem; }
+/* الإيقاع الرأسي كان معرَّفًا على الحاوية الخارجية فقط، وعناصر الحقول تعيش داخل <form>
+   الذي لا يملك أي تباعد — فكانت التسميات تلتصق بالحقل الذي يسبقها. */
+.fields { display: flex; flex-direction: column; gap: 1.4rem; }
 .field { display: flex; flex-direction: column; gap: 0.5rem; }
 .label { font-family: var(--f-ui); font-size: 0.85rem; color: var(--muted); letter-spacing: 0.02em; }
 :lang(ar) .label { letter-spacing: 0; }
 .input { font: inherit; color: var(--platinum); background: var(--surface-2); padding: 0.85rem 1rem; border-radius: var(--r); border: 1px solid var(--hair-light-strong); transition: border-color 0.3s var(--ease); width: 100%; }
 .input::placeholder { color: var(--platinum-3); }
 .input:focus { outline: none; border-color: var(--clay); }
+/* حلقة تركيز حقيقية للوحة المفاتيح — التصميم السابق ألغى outline واكتفى بتغيير لون الحدّ،
+   وحدّ النموذج نفسه كان غير مرئي على السطح الفاتح (انظر التصحيح أدناه). */
+.input:focus-visible { outline: 2px solid var(--clay-bright); outline-offset: 2px; }
 .row { display: grid; gap: 1.4rem; grid-template-columns: 1fr; }
 @media (min-width: 560px) { .row { grid-template-columns: 1fr 1fr; } }
 .group { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
 .segs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.seg { font-family: var(--f-ui); font-size: 0.9rem; color: var(--muted); padding: 0.6rem 1.1rem; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--hair-light-strong); transition: all 0.3s var(--ease); }
-.seg:hover { box-shadow: inset 0 0 0 1px var(--blue-strong); }
+.seg { font-family: var(--f-ui); font-size: 0.9rem; color: var(--muted); padding: 0.6rem 1.1rem; border-radius: var(--r); box-shadow: inset 0 0 0 1px var(--hair-light-strong); transition: box-shadow 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease); }
+/* --blue-strong اسم بديل مُعلَن على :root بقيمة var(--clay-bright)، فيُحسَب هناك بالقيمة
+   الفاتحة ويُورَّث كما هو؛ إعادة تعريف .on-ivory لـ--clay-bright لا تصله. نستعمل الأصل مباشرة. */
+.seg:hover { box-shadow: inset 0 0 0 1px var(--clay-bright); }
 .segOn { background: var(--clay); color: #fff; box-shadow: inset 0 0 0 1px var(--clay); }
+@media (pointer:coarse) { .seg { min-block-size: var(--tap-min); } }
 .err { color: #9B4A3A; font-size: 0.9rem; }
 .success { padding: clamp(2rem, 5vw, 3rem); border-radius: var(--r-lg); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--clay); }
 
@@ -26,3 +35,15 @@
 .stepIn{animation:stepFade .45s var(--ease) both}
 @keyframes stepFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.stepIn{animation:none}}
+
+/* ═══ تصحيح حدود عناصر التحكّم على السطح الفاتح ═══
+   --hair-light-strong هو rgba(243,245,247,0.17) — أبيض بشفافية، مصمَّم للأسطح الداكنة.
+   هذا النموذج يُعرَض على .on-ivory، فقياس الحدّ مقابل تعبئة الحقل كان 1.02:1: الحقول
+   والأزرار غير المحدَّدة بلا حدّ مرئي عمليًا. WCAG 2.2 معيار 1.4.11 يطلب 3:1 لحدود
+   عناصر التحكّم حين تكون هي الدليل الوحيد على وجودها. القيم أدناه مقيسة لا مقدَّرة. */
+:global(.on-light) .input,:global(.on-white) .input,:global(.on-ivory) .input{border-color:rgba(14,24,38,.50)}
+:global(.on-light) .seg,:global(.on-white) .seg,:global(.on-ivory) .seg{box-shadow:inset 0 0 0 1px rgba(14,24,38,.50)}
+:global(.on-light) .seg:hover,:global(.on-white) .seg:hover,:global(.on-ivory) .seg:hover{box-shadow:inset 0 0 0 1px var(--clay-600)}
+:global(.on-light) .segOn,:global(.on-white) .segOn,:global(.on-ivory) .segOn{box-shadow:inset 0 0 0 1px var(--clay)}
+:global(.on-light) .stepDot,:global(.on-white) .stepDot,:global(.on-ivory) .stepDot{background:rgba(14,24,38,.50)}
+:global(.on-light) .stepDot[data-active="true"],:global(.on-white) .stepDot[data-active="true"],:global(.on-ivory) .stepDot[data-active="true"]{background:var(--clay)}

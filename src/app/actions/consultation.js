@@ -4,6 +4,8 @@ import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { createServerClient } from '@/lib/supabase-server.js';
 import { verifyTurnstile } from '@/lib/turnstile.js';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 import { escapeHtml } from '@/lib/escape-html.js';
 
 /**
@@ -95,6 +97,13 @@ export async function submitConsultation(input) {
   if (!input.phone && !input.email) {
     return { ok: false, error: 'no_contact' };
   }
+  const email = String(input.email || '').trim();
+  if (input.preferredContact === 'email' && !email) {
+    return { ok: false, error: 'email_required' };
+  }
+  if (email && !EMAIL_PATTERN.test(email)) {
+    return { ok: false, error: 'invalid_email' };
+  }
 
   const captchaOk = await verifyTurnstile(input.turnstileToken, ip);
   if (!captchaOk) return { ok: false, error: 'captcha_failed' };
@@ -106,7 +115,7 @@ export async function submitConsultation(input) {
     p_preferred_contact: input.preferredContact,
     p_preferred_locale: input.preferredLocale || 'ar',
     p_phone: input.phone || null,
-    p_email: input.email || null,
+    p_email: email || null,
     p_practice_area_id: input.practiceAreaId || null,
     p_routing_note: input.routingNote || null,
     p_ip_hash: hashIp(ip),
@@ -126,7 +135,7 @@ export async function submitConsultation(input) {
       clientType: input.clientType,
       preferredContact: input.preferredContact,
       phone: input.phone,
-      email: input.email,
+      email,
       routingNote: input.routingNote,
       preferredLocale: input.preferredLocale,
     });

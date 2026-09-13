@@ -229,6 +229,8 @@
     "errorName": "Please enter your name.",
     "errorContact": "Enter a phone or email to reach you.",
     "errorPhoneFormat": "Please enter a valid phone number.",
+    "errorEmailRequired": "Enter your email address to use email as the preferred contact method.",
+    "errorEmailFormat": "Please enter a valid email address.",
     "hoursLabel": "Working hours",
     "hoursValue": "Sunday – Thursday, 9:00 AM – 5:00 PM",
     "addressLabel": "Address",

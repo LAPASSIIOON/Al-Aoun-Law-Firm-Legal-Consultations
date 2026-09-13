@@ -6,6 +6,7 @@ import { submitConsultation } from '@/app/actions/consultation.js';
 import styles from './ContactForm.module.css';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactForm({ intent = null, sourceRoute = null } = {}) {
   const t = useTranslations('contactPage');
@@ -51,12 +52,16 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
     const fd = new FormData(e.currentTarget);
     const email = (fd.get('email') || '').toString().trim();
     const note = (fd.get('note') || '').toString().trim();
+    if (preferredContact === 'email' && !email) { setStatus('error'); setErr(t('errorEmailRequired')); return; }
+    if (email && !EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorEmailFormat')); return; }
     if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     try {
       const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken, intent, sourceRoute });
       if (res && res.ok) { setStatus('success'); }
-      else if (res && res.error === 'captcha_failed') {
+      else if (res && (res.error === 'email_required' || res.error === 'invalid_email')) {
+        setStatus('error'); setErr(t(res.error === 'email_required' ? 'errorEmailRequired' : 'errorEmailFormat'));
+      } else if (res && res.error === 'captcha_failed') {
         setStatus('error'); setErr(t('errorCaptcha'));
         if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
         setTurnstileToken('');
@@ -117,7 +122,8 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
           </fieldset>
           <label className={styles.field}>
             <span className={styles.label}>{t('emailLabel')}</span>
-            <input name="email" className={styles.input} type="email" dir="ltr" autoComplete="email" />
+            <input name="email" className={styles.input} type="email" dir="ltr" autoComplete="email"
+              required={preferredContact === 'email'} aria-required={preferredContact === 'email'} />
           </label>
           <label className={styles.field}>
             <span className={styles.label}>{t('noteLabel')}</span>

@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { createAnonClient } from '@/lib/supabase-server.js';
@@ -16,15 +17,18 @@ function hasImage(slug) {
   try { return fs.existsSync(path.join(IMG_DIR, `${slug}.webp`)); } catch { return false; }
 }
 
-async function getArea(slug, locale) {
-  try {
+const getArea = cache(async function getArea(slug, locale) {
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
     const supabase = createAnonClient();
-    const { data } = await supabase.from('practice_area_translations')
+    const { data, error } = await supabase.from('practice_area_translations')
       .select('title, summary, body').eq('slug', slug).eq('locale', locale)
       .eq('status', 'published').eq('legal_approved', true).maybeSingle();
-    return data;
-  } catch (e) { return null; }
-}
+    if (!error) return data;
+    lastError = error;
+  }
+  throw new Error('Unable to load the requested practice area.', { cause: lastError });
+});
 
 async function getOthers(slug, locale) {
   try {

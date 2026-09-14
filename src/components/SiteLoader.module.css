@@ -1,24 +1,88 @@
-.loader{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;background:
-  radial-gradient(circle at 50% 44%,rgba(29,106,144,.12),transparent 34%),var(--ground);
-  color:var(--platinum);opacity:1;visibility:visible;pointer-events:auto}
-.lockup{display:flex;flex-direction:column;align-items:center;inline-size:min(15rem,64vw)}
-.mark{inline-size:clamp(3.6rem,7vw,4.8rem);block-size:auto;filter:brightness(0) invert(1);opacity:.94}
-.name{margin-block-start:.9rem;font-family:var(--f-display);font-size:clamp(1rem,2vw,1.2rem);font-weight:600;letter-spacing:.08em}
-:global(:lang(ar)) .name{letter-spacing:0}
-.rule{position:relative;display:block;inline-size:100%;block-size:1px;margin-block:1rem .65rem;background:var(--hair-light-strong);overflow:hidden}
-.rule span{position:absolute;inset-block:0;inline-size:42%;background:linear-gradient(90deg,transparent,var(--clay-bright),transparent);animation:travel 1.15s var(--ease) infinite}
-.label{font-family:var(--f-ui);font-size:.76rem;color:var(--platinum-2);letter-spacing:.12em}
-:global(:lang(ar)) .label{letter-spacing:0}
-.waiting .mark{animation:breathe 1.4s var(--ease) infinite alternate}
-.leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .34s var(--ease),visibility 0s linear .34s}
-.boot{animation:bootDismiss .34s var(--ease) .36s forwards}
+/* ═══ شاشة الافتتاح والانتقال — العلامة تتجمّع فوق خط مرجعي ثم يُرفع الستار ═══
+   الألوان من نظام الهوية القائم: حلقة بلون الأكسنت (كما في تصيير الهيرو الثلاثي المعتمد:
+   حلقة زرقاء وحروف فضية) والحروف بلون البلاتين. للعودة إلى اللون الواحد: غيّر --ring-ink.
+   كل الحركات transform/opacity/clip-path فقط — لا تخطيط، لا رسم متكرّر. */
 
-@keyframes travel{from{inset-inline-start:-44%}to{inset-inline-start:102%}}
-@keyframes breathe{from{opacity:.72;transform:scale(.98)}to{opacity:1;transform:scale(1.025)}}
-@keyframes bootDismiss{to{opacity:0;visibility:hidden;pointer-events:none}}
+.loader{
+  --ring-ink:var(--clay-bright);
+  --letter-ink:var(--platinum);
+  position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 46%,rgba(111,163,204,.10),transparent 70%),
+    var(--ground);
+  color:var(--platinum);
+  clip-path:inset(0 0 0 0);
+  will-change:clip-path;
+}
 
-@media(prefers-reduced-motion:reduce){
-  .rule span,.waiting .mark{animation:none}
-  .boot{animation:bootDismiss .01ms linear .2s forwards}
-  .leaving{transition-duration:.01ms}
+.lockup{position:relative;display:flex;flex-direction:column;align-items:center;
+  inline-size:min(20rem,74vw);padding-block:.5rem}
+
+/* ── العلامة ── */
+.mark{inline-size:clamp(5.6rem,9.5vw,7.6rem);block-size:auto;overflow:visible;display:block}
+.ring{fill:var(--ring-ink)}
+.letterA,.letterG{fill:var(--letter-ink)}
+
+/* ── الخط المرجعي: ينمو من المنتصف — لغة "نظام السجل المرجعي" نفسها في الموقع ── */
+.rule{position:relative;display:block;inline-size:100%;block-size:1px;margin-block:1.25rem .9rem;
+  background:var(--hair-light-strong);transform-origin:50% 50%}
+.rule::before,.rule::after{content:'';position:absolute;inset-block-start:-3px;inline-size:1px;block-size:7px;background:var(--platinum-3)}
+.rule::before{inset-inline-start:0}
+.rule::after{inset-inline-end:0}
+
+/* ── الاسم والسطر الفرعي ── */
+.name{font-family:var(--f-display);font-size:clamp(1.05rem,2.1vw,1.25rem);font-weight:600;
+  letter-spacing:.1em;line-height:1.3;color:#fff}
+:global(:lang(ar)) .name{letter-spacing:0;line-height:1.6}
+.sub{margin-block-start:.3rem;font-family:var(--f-ui);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--platinum-2)}
+:global(:lang(ar)) .sub{letter-spacing:0;text-transform:none;font-size:.78rem}
+.sr{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ═══ الافتتاح (أول زيارة في الجلسة): تجمّع متدرّج ═══ */
+.replay .ring,.replay .letterA,.replay .letterG{opacity:0;transform:translateY(12px);
+  animation:rise .62s var(--ease) forwards}
+.replay .ring{animation-delay:.05s}
+.replay .letterA{animation-delay:.18s}
+.replay .letterG{animation-delay:.30s}
+.replay .rule{transform:scaleX(0);animation:grow .65s var(--ease) .38s forwards}
+.replay .name{opacity:0;letter-spacing:.3em;animation:settle .65s var(--ease) .48s forwards}
+:global(:lang(ar)) .replay .name{letter-spacing:0;animation-name:fade}
+.replay .sub{opacity:0;animation:fade .55s var(--ease) .64s forwards}
+
+/* ═══ الانتقال بين الصفحات: العلامة مجمَّعة، وضوء هادئ يعبر أجزاءها فقط ═══
+   المستطيل المتدرّج مقصوص بمسارات العلامة (clipPath) — الإزاحة بوحدات viewBox:
+   عرض viewBox 2898، فالانتقال 5796 يُدخِله من اليسار ويُخرجه من اليمين. */
+.sheen{opacity:0}
+/* في الانتظار تُخفَّض الحروف إلى فضّي هادئ كي يُقرأ مرور الضوء عليها (كالمعدن في تصيير الهيرو) */
+.waiting .letterA,.waiting .letterG{fill:#C4CDD6}
+.waiting .ring{fill:var(--clay)}
+.waiting .sheen{opacity:1;animation:sheen 1.7s var(--ease) .1s infinite}
+:global([dir=rtl]) .waiting .sheen{animation-name:sheenRtl}
+
+/* ═══ الخروج: رفع الستار من الأسفل، والعلامة تسبق قليلًا ═══ */
+.leaving{animation:curtain .64s var(--ease) forwards;pointer-events:none}
+.leaving .lockup{animation:lift .42s var(--ease) forwards}
+/* زيارة متكرّرة في الجلسة: لا ستار — تلاشٍ قصير كي لا يؤخّر إعادة التحميل */
+.quick{animation:none;opacity:0;transition:opacity .2s linear}
+.quick .lockup{animation:none}
+
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes grow{to{transform:scaleX(1)}}
+@keyframes settle{to{opacity:1;letter-spacing:.1em}}
+@keyframes fade{to{opacity:1}}
+@keyframes sheen{from{transform:translateX(0)}to{transform:translateX(5796px)}}
+@keyframes sheenRtl{from{transform:translateX(5796px)}to{transform:translateX(0)}}
+@keyframes curtain{to{clip-path:inset(0 0 100% 0)}}
+@keyframes lift{to{opacity:0;transform:translateY(-14px)}}
+
+/* ═══ تقليل الحركة: لا تجمّع، لا وميض، لا ستار — ظهور فوري وتلاشٍ قصير ═══ */
+@media (prefers-reduced-motion:reduce){
+  .replay .ring,.replay .letterA,.replay .letterG,.replay .rule,.replay .name,.replay .sub{
+    animation:none;opacity:1;transform:none;letter-spacing:inherit}
+  .replay .name{letter-spacing:.1em}
+  :global(:lang(ar)) .replay .name{letter-spacing:0}
+  .waiting .sheen{animation:none;opacity:0}
+  .leaving{animation:none;opacity:0;transition:opacity .2s linear}
+  .leaving .lockup{animation:none}
 }

@@ -6,6 +6,7 @@ import { submitPartnershipApplication } from '@/app/actions/network.js';
 import styles from './NetworkForm.module.css';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const TYPES = ['law_firm', 'lawyer', 'legal_consultant', 'corporate_legal_team', 'professional_organization', 'other'];
 const INTERESTS = ['client_referrals', 'matter_referrals', 'local_counsel', 'cross_border_matters', 'strategic_partnership', 'knowledge_exchange'];
 const INTEREST_KEY = {
@@ -48,15 +49,23 @@ export default function PartnerApplicationForm({ countries, practiceAreas }) {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const firmName = (fd.get('firm') || '').toString().trim();
+    const contactName = (fd.get('contact') || '').toString().trim();
+    const email = (fd.get('email') || '').toString().trim();
+    const phone = (fd.get('phone') || '').toString().trim();
+    if (firmName.length < 2) { setStatus('error'); setErr(t('errorFirmName')); return; }
+    if (contactName.length < 2) { setStatus('error'); setErr(t('errorContactName')); return; }
+    if (!phone && !email) { setStatus('error'); setErr(t('errorContact')); return; }
+    if (email && !EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorEmailFormat')); return; }
     if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     try {
       const res = await submitPartnershipApplication({
         applicantType,
-        firmName: (fd.get('firm') || '').toString().trim(),
-        contactName: (fd.get('contact') || '').toString().trim(),
-        email: (fd.get('email') || '').toString().trim(),
-        phone: (fd.get('phone') || '').toString().trim(),
+        firmName,
+        contactName,
+        email,
+        phone,
         website: (fd.get('website') || '').toString().trim(),
         countryId: (fd.get('country') || '').toString() || undefined,
         city: (fd.get('city') || '').toString().trim(),
@@ -70,7 +79,11 @@ export default function PartnerApplicationForm({ countries, practiceAreas }) {
         setStatus('error'); setErr(t('errorCaptcha'));
         if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
         setTurnstileToken('');
-      } else { setStatus('error'); setErr(t('errorGeneric')); }
+      } else if (res?.error === 'invalid_firm_name') { setStatus('error'); setErr(t('errorFirmName')); }
+      else if (res?.error === 'invalid_contact_name') { setStatus('error'); setErr(t('errorContactName')); }
+      else if (res?.error === 'no_contact') { setStatus('error'); setErr(t('errorContact')); }
+      else if (res?.error === 'invalid_email') { setStatus('error'); setErr(t('errorEmailFormat')); }
+      else { setStatus('error'); setErr(t('errorGeneric')); }
     } catch (_) { setStatus('error'); setErr(t('errorGeneric')); }
   }
 

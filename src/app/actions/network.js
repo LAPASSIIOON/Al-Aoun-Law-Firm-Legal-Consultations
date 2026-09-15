@@ -6,6 +6,8 @@ import { createServerClient } from '@/lib/supabase-server.js';
 import { verifyTurnstile } from '@/lib/turnstile.js';
 import { escapeHtml } from '@/lib/escape-html.js';
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 function hashIp(ip) {
   const salt = process.env.IP_HASH_SALT;
   // مطلوب في كل البيئات — انظر التعليل نفسه في consultation.js. نفشل بوضوح
@@ -50,13 +52,16 @@ async function getClientMeta() {
  */
 export async function submitReferral(input) {
   const { ip, ipHash, userAgent } = await getClientMeta();
+  const email = input?.email?.trim() || '';
+  const phone = input?.phone?.trim() || '';
 
   if (!input?.contactName || input.contactName.trim().length < 2) {
     return { ok: false, error: 'invalid_name' };
   }
-  if (!input.phone && !input.email) {
+  if (!phone && !email) {
     return { ok: false, error: 'no_contact' };
   }
+  if (email && !EMAIL_PATTERN.test(email)) return { ok: false, error: 'invalid_email' };
 
   const captchaOk = await verifyTurnstile(input.turnstileToken, ip);
   if (!captchaOk) return { ok: false, error: 'captcha_failed' };
@@ -66,8 +71,8 @@ export async function submitReferral(input) {
     p_direction: 'inbound',
     p_referring_firm_name: input.referringFirmName || null,
     p_referring_contact_name: input.contactName,
-    p_referring_contact_email: input.email || null,
-    p_referring_contact_phone: input.phone || null,
+    p_referring_contact_email: email || null,
+    p_referring_contact_phone: phone || null,
     p_jurisdiction_id: input.jurisdictionId || null,
     p_practice_area_id: input.practiceAreaId || null,
     p_matter_summary: input.matterSummary || null,
@@ -88,8 +93,8 @@ export async function submitReferral(input) {
         <table style="border-collapse:collapse;width:100%;max-width:480px">
           <tr><td style="padding:6px 0;color:#666">المكتب المُحيل</td><td style="padding:6px 0;font-weight:bold">${input.referringFirmName ? escapeHtml(input.referringFirmName) : '—'}</td></tr>
           <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${escapeHtml(input.contactName)}</td></tr>
-          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.email)}</td></tr>` : ''}
-          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.phone)}</td></tr>` : ''}
+          ${email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(email)}</td></tr>` : ''}
+          ${phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(phone)}</td></tr>` : ''}
           ${input.matterSummary ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">موجز</td><td style="padding:6px 0">${escapeHtml(input.matterSummary)}</td></tr>` : ''}
         </table>
       </div>`
@@ -108,6 +113,8 @@ export async function submitReferral(input) {
  */
 export async function submitPartnershipApplication(input) {
   const { ip, ipHash, userAgent } = await getClientMeta();
+  const email = input?.email?.trim() || '';
+  const phone = input?.phone?.trim() || '';
 
   if (!input?.firmName || input.firmName.trim().length < 2) {
     return { ok: false, error: 'invalid_firm_name' };
@@ -115,9 +122,10 @@ export async function submitPartnershipApplication(input) {
   if (!input?.contactName || input.contactName.trim().length < 2) {
     return { ok: false, error: 'invalid_contact_name' };
   }
-  if (!input.phone && !input.email) {
+  if (!phone && !email) {
     return { ok: false, error: 'no_contact' };
   }
+  if (email && !EMAIL_PATTERN.test(email)) return { ok: false, error: 'invalid_email' };
 
   const captchaOk = await verifyTurnstile(input.turnstileToken, ip);
   if (!captchaOk) return { ok: false, error: 'captcha_failed' };
@@ -127,8 +135,8 @@ export async function submitPartnershipApplication(input) {
     p_applicant_type: input.applicantType,
     p_firm_name: input.firmName,
     p_contact_name: input.contactName,
-    p_email: input.email || null,
-    p_phone: input.phone || null,
+    p_email: email || null,
+    p_phone: phone || null,
     p_website: input.website || null,
     p_country_id: input.countryId || null,
     p_city: input.city || null,
@@ -151,8 +159,8 @@ export async function submitPartnershipApplication(input) {
           <tr><td style="padding:6px 0;color:#666">المكتب/الجهة</td><td style="padding:6px 0;font-weight:bold">${escapeHtml(input.firmName)}</td></tr>
           <tr><td style="padding:6px 0;color:#666">جهة الاتصال</td><td style="padding:6px 0">${escapeHtml(input.contactName)}</td></tr>
           <tr><td style="padding:6px 0;color:#666">الصفة</td><td style="padding:6px 0">${escapeHtml(input.applicantType)}</td></tr>
-          ${input.email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.email)}</td></tr>` : ''}
-          ${input.phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.phone)}</td></tr>` : ''}
+          ${email ? `<tr><td style="padding:6px 0;color:#666">البريد</td><td style="padding:6px 0" dir="ltr">${escapeHtml(email)}</td></tr>` : ''}
+          ${phone ? `<tr><td style="padding:6px 0;color:#666">الهاتف</td><td style="padding:6px 0" dir="ltr">${escapeHtml(phone)}</td></tr>` : ''}
           ${input.website ? `<tr><td style="padding:6px 0;color:#666">الموقع</td><td style="padding:6px 0" dir="ltr">${escapeHtml(input.website)}</td></tr>` : ''}
           ${input.message ? `<tr><td style="padding:6px 0;color:#666;vertical-align:top">رسالة</td><td style="padding:6px 0">${escapeHtml(input.message)}</td></tr>` : ''}
         </table>

@@ -471,6 +471,7 @@
     "errorGeneric": "Couldn't send, please try again.",
     "errorName": "Please enter your name.",
     "errorContact": "Enter a phone or email to reach you.",
+    "errorEmailFormat": "Enter a valid email address.",
     "errorCaptcha": "Security check failed, please try again."
   },
   "partnerApply": {
@@ -508,6 +509,7 @@
     "errorFirmName": "Please enter the firm or organisation name.",
     "errorContactName": "Please enter the contact person’s name.",
     "errorContact": "Enter a phone or email to reach you.",
+    "errorEmailFormat": "Enter a valid email address.",
     "errorCaptcha": "Security check failed, please try again.",
     "practiceAreaLabel": "Practice area"
   },

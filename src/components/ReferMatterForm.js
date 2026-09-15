@@ -6,6 +6,7 @@ import { submitReferral } from '@/app/actions/network.js';
 import styles from './NetworkForm.module.css';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** @param {{ jurisdictions: {id:string,name:string}[], practiceAreas: {id:string,title:string}[] }} props */
 export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
@@ -32,14 +33,20 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const contactName = (fd.get('contact') || '').toString().trim();
+    const email = (fd.get('email') || '').toString().trim();
+    const phone = (fd.get('phone') || '').toString().trim();
+    if (contactName.length < 2) { setStatus('error'); setErr(t('errorName')); return; }
+    if (!phone && !email) { setStatus('error'); setErr(t('errorContact')); return; }
+    if (email && !EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorEmailFormat')); return; }
     if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     try {
       const res = await submitReferral({
         referringFirmName: (fd.get('firm') || '').toString().trim(),
-        contactName: (fd.get('contact') || '').toString().trim(),
-        email: (fd.get('email') || '').toString().trim(),
-        phone: (fd.get('phone') || '').toString().trim(),
+        contactName,
+        email,
+        phone,
         jurisdictionId: (fd.get('jurisdiction') || '').toString() || undefined,
         practiceAreaId: (fd.get('practiceArea') || '').toString() || undefined,
         urgency,
@@ -51,7 +58,10 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
         setStatus('error'); setErr(t('errorCaptcha'));
         if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
         setTurnstileToken('');
-      } else { setStatus('error'); setErr(t('errorGeneric')); }
+      } else if (res?.error === 'invalid_name') { setStatus('error'); setErr(t('errorName')); }
+      else if (res?.error === 'no_contact') { setStatus('error'); setErr(t('errorContact')); }
+      else if (res?.error === 'invalid_email') { setStatus('error'); setErr(t('errorEmailFormat')); }
+      else { setStatus('error'); setErr(t('errorGeneric')); }
     } catch (_) { setStatus('error'); setErr(t('errorGeneric')); }
   }
 

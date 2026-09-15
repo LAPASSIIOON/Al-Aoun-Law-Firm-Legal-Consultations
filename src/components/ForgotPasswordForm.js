@@ -40,9 +40,13 @@ export default function ForgotPasswordForm() {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const email = (fd.get('email') || '').toString().trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setStatus('error'); setErr(t('errorInvalidEmail')); return;
+    }
     setStatus('sending'); setErr('');
     const res = await requestPasswordReset({
-      email: (fd.get('email') || '').toString().trim(),
+      email,
       locale,
       turnstileToken,
     });

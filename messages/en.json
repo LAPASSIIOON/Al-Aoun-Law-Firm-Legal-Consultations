@@ -555,6 +555,7 @@
     "forgotCta": "Forgot your password?",
     "forgotSubmit": "Send reset link",
     "forgotSent": "If your email is registered with us, a reset link is on its way — it should arrive within a few minutes. Check your inbox (and your spam folder).",
+    "errorInvalidEmail": "Please enter a valid email address.",
     "resetHeading": "Set a new password",
     "resetLead": "Choose a strong new password for your account.",
     "resetSubmit": "Save new password",

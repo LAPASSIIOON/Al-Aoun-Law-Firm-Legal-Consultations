@@ -148,6 +148,7 @@
     "newsletterSending": "Sending…",
     "newsletterSuccess": "Subscribed, thank you.",
     "newsletterDuplicate": "This email is already subscribed.",
+    "newsletterInvalidEmail": "Please enter a valid email address.",
     "newsletterError": "Couldn't subscribe, please try again."
   },
   "langSwitch": {

@@ -25,7 +25,13 @@ export default function NewsletterSubscribe({ locale }) {
       setStatus('success'); setMsg(t('newsletterSuccess')); setEmail('');
     } else {
       setStatus('error');
-      setMsg(res?.error === 'already_subscribed' ? t('newsletterDuplicate') : t('newsletterError'));
+      setMsg(
+        res?.error === 'already_subscribed'
+          ? t('newsletterDuplicate')
+          : res?.error === 'invalid_email'
+            ? t('newsletterInvalidEmail')
+            : t('newsletterError'),
+      );
     }
   }
 

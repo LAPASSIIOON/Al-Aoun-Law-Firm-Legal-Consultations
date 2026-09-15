@@ -148,6 +148,7 @@
     "newsletterSending": "جارٍ الإرسال…",
     "newsletterSuccess": "تم الاشتراك، شكرًا لك.",
     "newsletterDuplicate": "هذا البريد مُشترِك بالفعل.",
+    "newsletterInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
     "newsletterError": "تعذّر الاشتراك، حاول مرة أخرى."
   },
   "langSwitch": {

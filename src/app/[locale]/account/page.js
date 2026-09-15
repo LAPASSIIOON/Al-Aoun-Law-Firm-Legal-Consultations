@@ -48,7 +48,7 @@ export default async function AccountGateway({ params }) {
             </h1>
             <p className={`lead ${styles.lead}`}>
               {ar
-                ? 'ادخل لمتابعة طلباتك وبيانات عضويتك والقضايا التي يتيحها المكتب لحسابك.'
+                ? 'سجّل الدخول لمتابعة طلباتك وبيانات عضويتك والقضايا التي يتيحها المكتب لحسابك.'
                 : 'Sign in to follow your requests, membership details, and matters made available to your account.'}
             </p>
             <div className={styles.actions}>

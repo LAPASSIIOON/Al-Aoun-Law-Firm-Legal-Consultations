@@ -6,14 +6,14 @@
 
 export const GROUPS = [
   { key: 'disputes', ar: 'المنازعات والتحكيم', en: 'Disputes & Arbitration' },
-  { key: 'corporate', ar: 'الشركات والتجاري', en: 'Corporate & Commercial' },
+  { key: 'corporate', ar: 'الشركات والقانون التجاري', en: 'Corporate & Commercial' },
   { key: 'finance', ar: 'المالية والأسواق', en: 'Finance & Markets' },
-  { key: 'regulatory', ar: 'التنظيمي والعام', en: 'Regulatory & Public' },
+  { key: 'regulatory', ar: 'القانون العام والتنظيمي', en: 'Regulatory & Public' },
   { key: 'projects', ar: 'المشروعات والبنية التحتية', en: 'Projects & Infrastructure' },
   { key: 'tech', ar: 'التقنية والإعلام', en: 'Technology & Media' },
   { key: 'employment', ar: 'العمل', en: 'Employment' },
   { key: 'realestate', ar: 'العقارات', en: 'Real Estate' },
-  { key: 'international', ar: 'الدولي', en: 'International' },
+  { key: 'international', ar: 'القانون الدولي', en: 'International' },
   { key: 'private', ar: 'العملاء الخاصون', en: 'Private Clients' },
 ];
 

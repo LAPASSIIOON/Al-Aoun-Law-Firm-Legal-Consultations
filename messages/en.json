@@ -545,6 +545,7 @@
     "consentAnd": "and",
     "consentTermsLink": "Terms of Use",
     "errorConsent": "You must agree to the Privacy Policy and Terms of Use first.",
+    "errorFullName": "Please enter your full name.",
     "errorWeakPassword": "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, a number, and a special character (e.g. Ab12@xyz).",
     "errorRateLimited": "Too many attempts in a short time — please wait a few minutes and try again.",
     "passwordHint": "At least 8 characters, including an uppercase letter, lowercase letter, number, and special character.",

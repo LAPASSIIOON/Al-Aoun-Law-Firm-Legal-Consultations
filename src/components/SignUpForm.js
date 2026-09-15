@@ -8,6 +8,10 @@ import styles from './NetworkForm.module.css';
 const TYPES = ['lawyer', 'consultant', 'law_firm', 'company', 'institution', 'client'];
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 const CONSENT_VERSION = '2026-08-16';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const hasStrongPassword = (password) =>
+  password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) &&
+  /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
 
 export default function SignUpForm() {
   const t = useTranslations('account');
@@ -35,12 +39,19 @@ export default function SignUpForm() {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const fullName = (fd.get('fullName') || '').toString().trim();
+    const email = (fd.get('email') || '').toString().trim();
+    const password = (fd.get('password') || '').toString();
     if (!consent) { setStatus('error'); setErr(t('errorConsent')); return; }
+    if (fullName.length < 2) { setStatus('error'); setErr(t('errorFullName')); return; }
+    if (!EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorInvalidEmail')); return; }
+    if (!hasStrongPassword(password)) { setStatus('error'); setErr(t('errorWeakPassword')); return; }
+    if (!(fd.get('phone') || '').toString().trim()) { setStatus('error'); setErr(t('errorMissingField')); return; }
     setStatus('sending'); setErr('');
     const res = await signUp({
-      email: (fd.get('email') || '').toString().trim(),
-      password: (fd.get('password') || '').toString(),
-      fullName: (fd.get('fullName') || '').toString().trim(),
+      email,
+      password,
+      fullName,
       phone: (fd.get('phone') || '').toString().trim(),
       organizationName: (fd.get('organizationName') || '').toString().trim(),
       licenseNumber: (fd.get('licenseNumber') || '').toString().trim(),
@@ -54,6 +65,8 @@ export default function SignUpForm() {
       setStatus('error');
       const msg = res?.error === 'already_registered' ? t('errorAlreadyRegistered')
         : res?.error === 'consent_required' ? t('errorConsent')
+        : res?.error === 'invalid_name' ? t('errorFullName')
+        : res?.error === 'invalid_email' ? t('errorInvalidEmail')
         : res?.error === 'weak_password' ? t('errorWeakPassword')
         : res?.error === 'rate_limited' ? t('errorRateLimited')
         : res?.error === 'missing_required_field' ? t('errorMissingField')

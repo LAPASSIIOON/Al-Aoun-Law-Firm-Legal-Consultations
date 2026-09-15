@@ -4,13 +4,25 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const STRONG_PASSWORD = (password) =>
+  password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) &&
+  /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+const MEMBER_TYPES = new Set(['lawyer', 'consultant', 'law_firm', 'company', 'institution', 'client']);
+
 /**
  * تسجيل عضو جديد في البوابة — أفراد أو محامون أو جهات متعاونة.
  * الدور الافتراضي 'member' محدود دائمًا؛ الترقية لـ'admin' يدوية فقط (§أمان).
  * @param {{ email: string, password: string, fullName: string, memberType: string, locale: string }} input
  */
 export async function signUp(input) {
-  if (!input.email || !input.password || input.password.length < 8) {
+  const email = (input?.email || '').trim();
+  const fullName = (input?.fullName || '').trim();
+  const password = (input?.password || '').toString();
+  if (fullName.length < 2) return { ok: false, error: 'invalid_name' };
+  if (!EMAIL_PATTERN.test(email)) return { ok: false, error: 'invalid_email' };
+  if (!STRONG_PASSWORD(password)) return { ok: false, error: 'weak_password' };
+  if (!MEMBER_TYPES.has(input?.memberType)) {
     return { ok: false, error: 'invalid_input' };
   }
   if (!input.consent) {
@@ -27,12 +39,12 @@ export async function signUp(input) {
   const supabase = await createSupabaseServerClient();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://al-aoun-law-firm-legal-consultation.vercel.app';
   const { data, error } = await supabase.auth.signUp({
-    email: input.email,
-    password: input.password,
+    email,
+    password,
     options: {
       data: {
-        full_name: input.fullName || input.email,
-        member_type: input.memberType || 'client',
+        full_name: fullName,
+        member_type: input.memberType,
         phone: input.phone,
         organization_name: input.organizationName || '',
         license_number: input.licenseNumber || '',
@@ -111,11 +123,7 @@ export async function requestPasswordReset(input) {
  */
 export async function updatePassword(input) {
   const password = (input.password || '').toString();
-  const strong =
-    password.length >= 8 &&
-    /[A-Z]/.test(password) && /[a-z]/.test(password) &&
-    /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
-  if (!strong) return { ok: false, error: 'weak_password' };
+  if (!STRONG_PASSWORD(password)) return { ok: false, error: 'weak_password' };
 
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();

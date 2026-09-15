@@ -16,12 +16,26 @@ import styles from './MediaLoop.module.css';
  */
 export default function MediaLoop({ className, poster, src, sources, label, playLabel, pauseLabel }) {
   const ref = useRef(null);
+  const frameRef = useRef(null);
   const id = useId();
   const [playing, setPlaying] = useState(false);
+  const [mediaReady, setMediaReady] = useState(false);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return undefined;
+    if (!('IntersectionObserver' in window)) { setMediaReady(true); return undefined; }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setMediaReady(true); observer.disconnect(); }
+    }, { rootMargin: '300px 0px' });
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const v = ref.current;
-    if (!v) return;
+    if (!v || !mediaReady) return undefined;
+    v.load();
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const apply = () => {
       if (mq.matches) { v.pause(); }
@@ -30,23 +44,24 @@ export default function MediaLoop({ className, poster, src, sources, label, play
     apply();
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
-  }, []);
+  }, [mediaReady]);
 
   const toggle = () => {
     const v = ref.current;
     if (!v) return;
+    if (!mediaReady) { setMediaReady(true); return; }
     if (v.paused) { const p = v.play(); if (p && typeof p.catch === 'function') p.catch(() => {}); }
     else { v.pause(); }
   };
 
   return (
-    <div className={styles.frame}>
+    <div ref={frameRef} className={styles.frame}>
       <video
-        ref={ref} id={id} className={className} poster={poster} src={src}
-        muted loop playsInline preload="metadata" aria-label={label}
+        ref={ref} id={id} className={className} poster={poster} src={mediaReady ? src : undefined}
+        muted loop playsInline preload={mediaReady ? 'metadata' : 'none'} aria-label={label}
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
       >
-        {sources?.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
+        {mediaReady && sources?.map((s) => <source key={s.src} src={s.src} type={s.type} />)}
       </video>
       <button type="button" className={styles.toggle} onClick={toggle} aria-controls={id}>
         <span className={styles.glyph} aria-hidden="true">{playing ? '❚❚' : '▶'}</span>

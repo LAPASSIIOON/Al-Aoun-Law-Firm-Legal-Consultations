@@ -5,6 +5,11 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // جودة 85 مستخدمة في صور رؤوس الصفحات؛ إعلانها صراحةً يمنع تحذير Next.js
+  // ويحافظ على السلوك نفسه عند الترقية المستقبلية.
+  images: {
+    qualities: [75, 85],
+  },
   // إعادة توجيه الجذر للغة الافتراضية على مستوى Vercel edge —
   // ضمان قاطع ألا يعطي '/' الرمز 404 حتى لو تأخّر الـmiddleware.
   async redirects() {

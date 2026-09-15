@@ -61,6 +61,12 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
       if (res && res.ok) { setStatus('success'); }
       else if (res && (res.error === 'email_required' || res.error === 'invalid_email')) {
         setStatus('error'); setErr(t(res.error === 'email_required' ? 'errorEmailRequired' : 'errorEmailFormat'));
+      } else if (res && res.error === 'invalid_name') {
+        setStatus('error'); setErr(t('errorName'));
+      } else if (res && res.error === 'no_contact') {
+        setStatus('error'); setErr(t('errorContact'));
+      } else if (res && res.error === 'invalid_phone') {
+        setStatus('error'); setErr(t('errorPhoneFormat'));
       } else if (res && res.error === 'captcha_failed') {
         setStatus('error'); setErr(t('errorCaptcha'));
         if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);

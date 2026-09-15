@@ -6,6 +6,8 @@ import { createServerClient } from '@/lib/supabase-server.js';
 import { verifyTurnstile } from '@/lib/turnstile.js';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CLIENT_TYPES = new Set(['individual', 'company', 'investor']);
+const CONTACT_METHODS = new Set(['phone', 'email']);
 import { escapeHtml } from '@/lib/escape-html.js';
 
 /**
@@ -94,10 +96,17 @@ export async function submitConsultation(input) {
   if (!input?.fullName || input.fullName.trim().length < 2) {
     return { ok: false, error: 'invalid_name' };
   }
-  if (!input.phone && !input.email) {
+  const phone = String(input?.phone || '').trim();
+  const email = String(input?.email || '').trim();
+  if (!CLIENT_TYPES.has(input?.clientType) || !CONTACT_METHODS.has(input?.preferredContact)) {
+    return { ok: false, error: 'invalid_input' };
+  }
+  if (!phone && !email) {
     return { ok: false, error: 'no_contact' };
   }
-  const email = String(input.email || '').trim();
+  if (phone && phone.replace(/\D/g, '').length < 7) {
+    return { ok: false, error: 'invalid_phone' };
+  }
   if (input.preferredContact === 'email' && !email) {
     return { ok: false, error: 'email_required' };
   }
@@ -114,7 +123,7 @@ export async function submitConsultation(input) {
     p_client_type: input.clientType,
     p_preferred_contact: input.preferredContact,
     p_preferred_locale: input.preferredLocale || 'ar',
-    p_phone: input.phone || null,
+    p_phone: phone || null,
     p_email: email || null,
     p_practice_area_id: input.practiceAreaId || null,
     p_routing_note: input.routingNote || null,
@@ -134,7 +143,7 @@ export async function submitConsultation(input) {
       fullName: input.fullName,
       clientType: input.clientType,
       preferredContact: input.preferredContact,
-      phone: input.phone,
+      phone,
       email,
       routingNote: input.routingNote,
       preferredLocale: input.preferredLocale,

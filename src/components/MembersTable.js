@@ -7,6 +7,7 @@ import styles from './AdminTable.module.css';
 /** @param {{ rows: any[], emptyLabel: string }} props */
 export default function MembersTable({ rows, emptyLabel }) {
   const [data, setData] = useState(rows);
+  const [error, setError] = useState('');
   const [confirmId, setConfirmId] = useState(null);
   const [confirmAction, setConfirmAction] = useState(null);
   const [editingTypeId, setEditingTypeId] = useState(null);
@@ -16,11 +17,18 @@ export default function MembersTable({ rows, emptyLabel }) {
   const activeAdminCount = data.filter((m) => m.role === 'admin' && m.is_active).length;
 
   function apply(id, patch) {
-    setData((cur) => cur.map((m) => (m.id === id ? { ...m, ...patch } : m)));
     startTransition(async () => {
       const row = data.find((m) => m.id === id);
       const next = { ...row, ...patch };
-      await setMemberRole({ memberId: id, role: next.role, isActive: next.is_active });
+      const result = await setMemberRole({ memberId: id, role: next.role, isActive: next.is_active });
+      if (result?.ok) {
+        setData((cur) => cur.map((m) => (m.id === id ? { ...m, ...patch } : m)));
+        setError('');
+      } else if (result?.error === 'last_active_admin') {
+        setError('لا يمكن سحب صلاحية أو تعطيل آخر مشرف نشط.');
+      } else {
+        setError('تعذّر حفظ التغيير. حاول مرة أخرى.');
+      }
     });
     setConfirmId(null); setConfirmAction(null);
   }
@@ -41,6 +49,7 @@ export default function MembersTable({ rows, emptyLabel }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '.9rem' }}>
+      {error && <p className="body" role="alert" style={{ color: '#A7201B', margin: 0 }}>{error}</p>}
       {data.map((m) => {
         const isAdmin = m.role === 'admin';
         const isLastAdmin = isAdmin && m.is_active && activeAdminCount <= 1;

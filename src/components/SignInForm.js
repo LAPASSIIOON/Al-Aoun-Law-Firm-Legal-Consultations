@@ -6,6 +6,7 @@ import { signIn } from '@/app/actions/auth.js';
 import styles from './NetworkForm.module.css';
 
 const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function SignInForm() {
   const t = useTranslations('account');
@@ -30,10 +31,14 @@ export default function SignInForm() {
   async function onSubmit(e) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const email = (fd.get('email') || '').toString().trim();
+    const password = (fd.get('password') || '').toString();
+    if (!EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorInvalidEmail')); return; }
+    if (!password) { setStatus('error'); setErr(t('errorInvalidCredentials')); return; }
     setStatus('sending'); setErr('');
     const res = await signIn({
-      email: (fd.get('email') || '').toString().trim(),
-      password: (fd.get('password') || '').toString(),
+      email,
+      password,
       turnstileToken,
     });
     if (res?.ok) window.location.assign(`/${locale}/account`);

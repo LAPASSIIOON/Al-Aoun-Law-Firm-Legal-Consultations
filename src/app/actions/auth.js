@@ -76,7 +76,17 @@ export async function signIn(input) {
     password,
     options: { captchaToken: input.turnstileToken || undefined },
   });
-  if (error) return { ok: false, error: 'invalid_credentials' };
+  if (error) {
+    if (error.code === 'captcha_failed') return { ok: false, error: 'captcha_failed' };
+    if (error.status === 429 || error.code === 'over_request_rate_limit') {
+      return { ok: false, error: 'rate_limited' };
+    }
+    if (error.code === 'email_not_confirmed') return { ok: false, error: 'email_not_confirmed' };
+    if (error.code === 'invalid_credentials' || error.message === 'Invalid login credentials') {
+      return { ok: false, error: 'invalid_credentials' };
+    }
+    return { ok: false, error: 'server_error' };
+  }
   return { ok: true };
 }
 

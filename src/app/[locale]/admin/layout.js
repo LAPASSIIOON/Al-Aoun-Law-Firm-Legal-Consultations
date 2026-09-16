@@ -19,9 +19,22 @@ export default async function AdminLayout({ children, params }) {
   if (!member) redirect(`/${locale}/account/sign-in`);
   if (member.role !== 'admin' || !member.is_active) redirect(`/${locale}/account/my-requests`);
 
-  const [consultations, referrals, partnerships] = await Promise.all([
-    listConsultations(), listReferrals(), listPartnerships(),
-  ]);
+  let consultations, referrals, partnerships;
+  try {
+    [consultations, referrals, partnerships] = await Promise.all([
+      listConsultations(), listReferrals(), listPartnerships(),
+    ]);
+  } catch {
+    return (
+      <div data-admin-shell className={styles.shell}>
+        <div className={styles.content} role="alert">
+          <h1 className="display d-2" style={{ marginBlockEnd: '.75rem' }}>{t('dataErrorTitle')}</h1>
+          <p className="body" style={{ color: 'var(--muted)', marginBlockEnd: '1.5rem' }}>{t('dataErrorBody')}</p>
+          <a className="btn btn-solid" href={`/${locale}/admin`}>{t('dataErrorRetry')}</a>
+        </div>
+      </div>
+    );
+  }
   const newCount = (rows) => rows.filter((r) => r.stage === 'new').length;
 
   // مجموعات منطقية — لا تضاف مجموعة "المحتوى" هنا إلا لما تُبنى صفحاتها فعليًا (المرحلة D)،

@@ -24,9 +24,14 @@ export default function SignInForm() {
         sitekey: TURNSTILE_SITE_KEY, theme: 'dark', size: 'flexible', language: locale,
         callback: (token) => setTurnstileToken(token),
         'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => {
+          setTurnstileToken('');
+          setStatus('error');
+          setErr(t('errorCaptcha'));
+        },
       });
     }
-  }, [scriptReady, locale]);
+  }, [scriptReady, locale, t]);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -35,6 +40,7 @@ export default function SignInForm() {
     const password = (fd.get('password') || '').toString();
     if (!EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorInvalidEmail')); return; }
     if (!password) { setStatus('error'); setErr(t('errorInvalidCredentials')); return; }
+    if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
     setStatus('sending'); setErr('');
     const res = await signIn({
       email,
@@ -43,7 +49,13 @@ export default function SignInForm() {
     });
     if (res?.ok) window.location.assign(`/${locale}/account`);
     else {
-      setStatus('error'); setErr(t('errorInvalidCredentials'));
+      const errorKey = {
+        captcha_failed: 'errorCaptcha',
+        rate_limited: 'errorRateLimited',
+        email_not_confirmed: 'checkEmail',
+        invalid_credentials: 'errorInvalidCredentials',
+      }[res?.error] || 'errorGeneric';
+      setStatus('error'); setErr(t(errorKey));
       if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
       setTurnstileToken('');
     }

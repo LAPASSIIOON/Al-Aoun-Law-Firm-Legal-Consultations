@@ -5,7 +5,7 @@ import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 export async function listMembers() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_members');
-  if (error) return [];
+  if (error) throw new Error('admin_data_unavailable');
   return data || [];
 }
 
@@ -32,21 +32,21 @@ export async function setMemberType(input) {
 export async function listConsultations() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_consultations');
-  if (error) return [];
+  if (error) throw new Error('admin_data_unavailable');
   return data || [];
 }
 
 export async function listReferrals() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_referrals');
-  if (error) return [];
+  if (error) throw new Error('admin_data_unavailable');
   return data || [];
 }
 
 export async function listPartnerships() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_partnerships');
-  if (error) return [];
+  if (error) throw new Error('admin_data_unavailable');
   return data || [];
 }
 
@@ -74,6 +74,6 @@ export async function updateNotes(input) {
 export async function listAuditLog(limit = 150) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc('admin_list_audit_log', { p_limit: limit });
-  if (error) return [];
+  if (error) throw new Error('admin_data_unavailable');
   return data || [];
 }

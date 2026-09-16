@@ -1,11 +1,15 @@
 'use client';
 import { useState, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { setMemberRole, setMemberType } from '@/app/actions/admin.js';
-import { MEMBER_TYPE_LABELS as TYPE_LABELS } from '@/lib/member-types.js';
+import { MEMBER_TYPE_LABELS, MEMBER_TYPE_LABELS_EN, memberTypeLabel } from '@/lib/member-types.js';
 import styles from './AdminTable.module.css';
 
 /** @param {{ rows: any[], emptyLabel: string }} props */
 export default function MembersTable({ rows, emptyLabel }) {
+  const t = useTranslations('admin');
+  const locale = useLocale();
+  const typeLabels = locale === 'en' ? MEMBER_TYPE_LABELS_EN : MEMBER_TYPE_LABELS;
   const [data, setData] = useState(rows);
   const [error, setError] = useState('');
   const [confirmId, setConfirmId] = useState(null);
@@ -18,16 +22,20 @@ export default function MembersTable({ rows, emptyLabel }) {
 
   function apply(id, patch) {
     startTransition(async () => {
-      const row = data.find((m) => m.id === id);
-      const next = { ...row, ...patch };
-      const result = await setMemberRole({ memberId: id, role: next.role, isActive: next.is_active });
-      if (result?.ok) {
-        setData((cur) => cur.map((m) => (m.id === id ? { ...m, ...patch } : m)));
-        setError('');
-      } else if (result?.error === 'last_active_admin') {
-        setError('لا يمكن سحب صلاحية أو تعطيل آخر مشرف نشط.');
-      } else {
-        setError('تعذّر حفظ التغيير. حاول مرة أخرى.');
+      try {
+        const row = data.find((m) => m.id === id);
+        const next = { ...row, ...patch };
+        const result = await setMemberRole({ memberId: id, role: next.role, isActive: next.is_active });
+        if (result?.ok) {
+          setData((cur) => cur.map((m) => (m.id === id ? { ...m, ...patch } : m)));
+          setError('');
+        } else if (result?.error === 'last_active_admin') {
+          setError(t('memberLastAdminError'));
+        } else {
+          setError(t('tableSaveError'));
+        }
+      } catch {
+        setError(t('tableSaveError'));
       }
     });
     setConfirmId(null); setConfirmAction(null);
@@ -40,9 +48,17 @@ export default function MembersTable({ rows, emptyLabel }) {
   function cancelEditType() { setEditingTypeId(null); setTypeDraft(''); }
   function saveType(id) {
     const memberType = typeDraft;
-    setData((cur) => cur.map((m) => (m.id === id ? { ...m, member_type: memberType } : m)));
-    startTransition(async () => { await setMemberType({ memberId: id, memberType }); });
-    setEditingTypeId(null); setTypeDraft('');
+    setError('');
+    startTransition(async () => {
+      try {
+        const result = await setMemberType({ memberId: id, memberType });
+        if (!result?.ok) { setError(t('tableSaveError')); return; }
+        setData((cur) => cur.map((m) => (m.id === id ? { ...m, member_type: memberType } : m)));
+        setEditingTypeId(null); setTypeDraft('');
+      } catch {
+        setError(t('tableSaveError'));
+      }
+    });
   }
 
   if (!data.length) return <p className="body" style={{ color: 'var(--muted)' }}>{emptyLabel}</p>;
@@ -64,24 +80,24 @@ export default function MembersTable({ rows, emptyLabel }) {
             <div style={{ minWidth: '220px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem', marginBlockEnd: '.25rem' }}>
                 <strong style={{ fontFamily: 'var(--f-display)' }}>{m.display_name}</strong>
-                {isAdmin && <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#8D4A07', background: '#FCF1DE', padding: '.15rem .55rem', borderRadius: '999px' }}>Admin</span>}
-                {!m.is_active && <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#A7201B', background: '#FBEAE9', padding: '.15rem .55rem', borderRadius: '999px' }}>معطَّل</span>}
+                {isAdmin && <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#8D4A07', background: '#FCF1DE', padding: '.15rem .55rem', borderRadius: '999px' }}>{t('memberAdminBadge')}</span>}
+                {!m.is_active && <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#A7201B', background: '#FBEAE9', padding: '.15rem .55rem', borderRadius: '999px' }}>{t('memberDisabledBadge')}</span>}
               </div>
               <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.email}</div>
               {editingTypeId === m.id ? (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '.4rem', marginBlockStart: '.2rem', flexWrap: 'wrap' }}>
                   <select className={styles.select} value={typeDraft} onChange={(e) => setTypeDraft(e.target.value)}>
-                    {Object.entries(TYPE_LABELS).map(([val, label]) => (
+                    {Object.entries(typeLabels).map(([val, label]) => (
                       <option key={val} value={val}>{label}</option>
                     ))}
                   </select>
-                  <button className="btn btn-solid" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} disabled={pending} onClick={() => saveType(m.id)}>حفظ</button>
-                  <button className="btn-line" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} onClick={cancelEditType}>إلغاء</button>
+                  <button className="btn btn-solid" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} disabled={pending} onClick={() => saveType(m.id)}>{t('memberSave')}</button>
+                  <button className="btn-line" style={{ padding: '.25rem .7rem', fontSize: '.78rem' }} onClick={cancelEditType}>{t('memberCancel')}</button>
                 </div>
               ) : (
                 <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: '.4rem' }}>
-                  {TYPE_LABELS[m.member_type] || m.member_type}
-                  <button onClick={() => startEditType(m)} style={{ font: 'inherit', fontSize: '.78rem', background: 'none', border: 'none', color: 'var(--clay)', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>تعديل</button>
+                  {memberTypeLabel(locale, m.member_type)}
+                  <button onClick={() => startEditType(m)} style={{ font: 'inherit', fontSize: '.78rem', background: 'none', border: 'none', color: 'var(--clay)', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>{t('memberEdit')}</button>
                 </div>
               )}
               {m.phone && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }} dir="ltr">{m.phone}</div>}
@@ -92,10 +108,10 @@ export default function MembersTable({ rows, emptyLabel }) {
             {isConfirming ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
                 <span className="body" style={{ fontSize: '.85rem' }}>
-                  {confirmAction === 'grant' && `تأكيد منح "${m.display_name}" صلاحية المشرف؟`}
-                  {confirmAction === 'revoke' && `تأكيد سحب صلاحية المشرف من "${m.display_name}"؟`}
-                  {confirmAction === 'deactivate' && `تأكيد تعطيل حساب "${m.display_name}"؟`}
-                  {confirmAction === 'activate' && `تأكيد إعادة تفعيل حساب "${m.display_name}"؟`}
+                  {confirmAction === 'grant' && t('memberConfirmGrant', { name: m.display_name })}
+                  {confirmAction === 'revoke' && t('memberConfirmRevoke', { name: m.display_name })}
+                  {confirmAction === 'deactivate' && t('memberConfirmDeactivate', { name: m.display_name })}
+                  {confirmAction === 'activate' && t('memberConfirmActivate', { name: m.display_name })}
                 </span>
                 <button className="btn btn-solid" style={{ padding: '.4rem .9rem', fontSize: '.85rem' }} disabled={pending}
                   onClick={() => {
@@ -103,25 +119,25 @@ export default function MembersTable({ rows, emptyLabel }) {
                     if (confirmAction === 'revoke') apply(m.id, { role: 'member' });
                     if (confirmAction === 'deactivate') apply(m.id, { is_active: false });
                     if (confirmAction === 'activate') apply(m.id, { is_active: true });
-                  }}>تأكيد</button>
-                <button className="btn-line" style={{ padding: '.4rem .9rem', fontSize: '.85rem' }} onClick={cancel}>إلغاء</button>
+                  }}>{t('memberConfirm')}</button>
+                <button className="btn-line" style={{ padding: '.4rem .9rem', fontSize: '.85rem' }} onClick={cancel}>{t('memberCancel')}</button>
               </div>
             ) : (
               <div style={{ display: 'flex', gap: '.6rem', flexWrap: 'wrap' }}>
                 {!isAdmin && m.is_active && (
-                  <button className="btn btn-solid" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }} onClick={() => ask(m.id, 'grant')}>منح صلاحية المشرف</button>
+                  <button className="btn btn-solid" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }} onClick={() => ask(m.id, 'grant')}>{t('memberGrant')}</button>
                 )}
                 {isAdmin && (
                   <button className="btn-line" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }}
-                    disabled={isLastAdmin} title={isLastAdmin ? 'لا يمكن سحب صلاحية آخر مشرف نشط' : ''}
-                    onClick={() => ask(m.id, 'revoke')}>سحب صلاحية المشرف</button>
+                    disabled={isLastAdmin} title={isLastAdmin ? t('memberLastAdminRevoke') : ''}
+                    onClick={() => ask(m.id, 'revoke')}>{t('memberRevoke')}</button>
                 )}
                 {m.is_active ? (
                   <button className="btn-line" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }}
-                    disabled={isLastAdmin} title={isLastAdmin ? 'لا يمكن تعطيل آخر مشرف نشط' : ''}
-                    onClick={() => ask(m.id, 'deactivate')}>تعطيل الحساب</button>
+                    disabled={isLastAdmin} title={isLastAdmin ? t('memberLastAdminDeactivate') : ''}
+                    onClick={() => ask(m.id, 'deactivate')}>{t('memberDeactivate')}</button>
                 ) : (
-                  <button className="btn-line" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }} onClick={() => ask(m.id, 'activate')}>إعادة التفعيل</button>
+                  <button className="btn-line" style={{ padding: '.5rem 1rem', fontSize: '.85rem' }} onClick={() => ask(m.id, 'activate')}>{t('memberActivate')}</button>
                 )}
               </div>
             )}

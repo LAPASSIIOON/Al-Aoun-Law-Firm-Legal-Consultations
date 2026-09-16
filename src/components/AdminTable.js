@@ -4,9 +4,14 @@ import { useTranslations } from 'next-intl';
 import { updateStage, updateNotes } from '@/app/actions/admin.js';
 import styles from './AdminTable.module.css';
 
-function toCsv(rows, columns, stageLabel, cellValue) {
-  const header = [...columns.map((c) => c.label), 'Stage', 'Notes'].join(',');
-  const esc = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+function toCsv(rows, columns, stageLabel, cellValue, stageHeading, notesHeading) {
+  const header = [...columns.map((c) => c.label), stageHeading, notesHeading].join(',');
+  const esc = (v) => {
+    const value = String(v ?? '');
+    // Spreadsheet apps may evaluate user-supplied cells as formulas, even after leading spaces.
+    const safe = /^[\u0000-\u0020]*[=+@-]/u.test(value) ? `'${value}` : value;
+    return `"${safe.replace(/"/g, '""')}"`;
+  };
   const lines = rows.map((r) => [...columns.map((c) => esc(cellValue(r, c))), esc(stageLabel(r.stage)), esc(r.internal_notes)].join(','));
   return [header, ...lines].join('\r\n');
 }
@@ -41,6 +46,7 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   const [openRow, setOpenRow] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [savedFlash, setSavedFlash] = useState(null);
+  const [actionError, setActionError] = useState('');
 
   // تسمية بشرية لأي قيمة حالة خام؛ رجوع آمن للقيمة الخام نفسها لو ظهرت حالة جديدة لم تُترجَم بعد — لا يكسر الواجهة أبدًا.
   const stageLabel = (s) => (t.has(`stage_${s}`) ? t(`stage_${s}`) : s);
@@ -65,8 +71,16 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   }
 
   function onStageChange(id, stage) {
-    setData((cur) => cur.map((r) => (r.id === id ? { ...r, stage } : r)));
-    startTransition(async () => { await updateStage({ table: tableType, id, stage }); });
+    setActionError('');
+    startTransition(async () => {
+      try {
+        const result = await updateStage({ table: tableType, id, stage });
+        if (!result?.ok) { setActionError(t('tableSaveError')); return; }
+        setData((cur) => cur.map((r) => (r.id === id ? { ...r, stage } : r)));
+      } catch {
+        setActionError(t('tableSaveError'));
+      }
+    });
   }
 
   function toggleRow(row) {
@@ -76,11 +90,18 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   }
 
   function saveNotes(id) {
-    setData((cur) => cur.map((r) => (r.id === id ? { ...r, internal_notes: notesDraft } : r)));
+    setActionError('');
+    setSavedFlash(null);
     startTransition(async () => {
-      await updateNotes({ table: tableType, id, notes: notesDraft });
-      setSavedFlash(id);
-      setTimeout(() => setSavedFlash((f) => (f === id ? null : f)), 1800);
+      try {
+        const result = await updateNotes({ table: tableType, id, notes: notesDraft });
+        if (!result?.ok) { setActionError(t('tableSaveError')); return; }
+        setData((cur) => cur.map((r) => (r.id === id ? { ...r, internal_notes: notesDraft } : r)));
+        setSavedFlash(id);
+        setTimeout(() => setSavedFlash((f) => (f === id ? null : f)), 1800);
+      } catch {
+        setActionError(t('tableSaveError'));
+      }
     });
   }
 
@@ -102,7 +123,7 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
     <div>
       <div className={styles.toolbar}>
         <input
-          type="text" className={styles.search} placeholder={t('tableSearchPlaceholder')}
+          type="text" className={styles.search} placeholder={t('tableSearchPlaceholder')} aria-label={t('tableSearchPlaceholder')}
           value={query} onChange={(e) => setQuery(e.target.value)}
         />
         <select className={styles.select} value={stageFilter} onChange={(e) => setStageFilter(e.target.value)}>
@@ -116,10 +137,12 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
         )}
         <span className={styles.count}>{filtered.length} / {data.length}</span>
         <button type="button" className="btn-line" style={{ fontSize: '.82rem', marginInlineStart: 'auto' }}
-          onClick={() => downloadCsv(toCsv(filtered, columns, stageLabel, cellValue), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
+          onClick={() => downloadCsv(toCsv(filtered, columns, stageLabel, cellValue, t('tableColStage'), t('detailNotesHeading')), `${tableType}-${new Date().toISOString().slice(0, 10)}.csv`)}>
           {t('tableExportCsv')}
         </button>
       </div>
+
+      {actionError && <p className="body" role="alert" style={{ color: '#A7201B', marginBlock: '.75rem' }}>{actionError}</p>}
 
       {filtered.length === 0 ? (
         <p className="body" style={{ color: 'var(--muted)', padding: '1rem 0' }}>{t('tableNoResults')}</p>

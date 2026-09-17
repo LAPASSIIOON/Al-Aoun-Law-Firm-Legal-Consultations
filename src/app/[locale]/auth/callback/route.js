@@ -11,12 +11,20 @@ export async function GET(request) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
   const nextParam = url.searchParams.get('next') || '/';
-  // منع open-redirect: مسارات داخلية فقط.
-  const safeNext = nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : '/';
+  // URL normalizes backslashes too; validate the resolved origin, not just the input text.
+  let safeNext = new URL('/', url.origin);
+  if (nextParam.startsWith('/')) {
+    try {
+      const requestedNext = new URL(nextParam, url.origin);
+      if (requestedNext.origin === url.origin) safeNext = requestedNext;
+    } catch {
+      // Malformed destinations fall back to the home page.
+    }
+  }
 
   if (!code) return NextResponse.redirect(new URL('/', url.origin));
 
-  const response = NextResponse.redirect(new URL(safeNext, url.origin));
+  const response = NextResponse.redirect(safeNext);
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -31,6 +39,9 @@ export async function GET(request) {
   );
 
   const { error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error) return NextResponse.redirect(new URL(safeNext, url.origin));
+  if (error) {
+    const locale = url.pathname.startsWith('/en/') ? 'en' : 'ar';
+    return NextResponse.redirect(new URL(`/${locale}/account/sign-in`, url.origin));
+  }
   return response;
 }

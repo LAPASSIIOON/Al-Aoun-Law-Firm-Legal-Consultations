@@ -5,7 +5,7 @@
 /* الهاتف: svh يتجنّب افتراضات شريط المتصفّح؛ فراغ علوي أقلّ ليصل المحتوى أسرع.
    المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
 .hero{position:relative;background:var(--ground);color:var(--platinum);overflow:hidden;
-  min-block-size:min(80svh,700px);display:flex;align-items:flex-start}
+  min-block-size:min(74svh,620px);display:flex;align-items:flex-start}
 .heroInner{position:relative;z-index:2;width:100%;padding-block:6.5rem 3.5rem}
 
 /* المقاس التحريري: نسبة من عرض الحاوية لا وحدة ch (الأخيرة تنهار عند أحجام العرض الكبيرة).

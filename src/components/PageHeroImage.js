@@ -18,7 +18,7 @@ export default function PageHeroImage({ src, position = 'center' }) {
         aria-hidden="true"
         style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(180deg, rgba(9,14,22,.88) 0%, rgba(9,14,22,.72) 55%, rgba(9,14,22,.55) 100%)',
+          background: 'linear-gradient(180deg, rgba(9,14,22,.88) 0%, rgba(9,14,22,.76) 55%, rgba(9,14,22,.68) 100%)',
         }}
       />
     </>

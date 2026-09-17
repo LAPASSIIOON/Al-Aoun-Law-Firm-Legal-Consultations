@@ -50,6 +50,12 @@
 .barOnly{display:none}
 @media(min-width:960px){.barOnly{display:inline-flex}}
 .cta{display:none!important}
+/* يبقى زر الاستشارة ظاهرًا في التخطيط المختصر على شاشات اللابتوب الشائعة.
+   القائمة الكاملة لا تبدأ قبل 1440px، لكن الإجراء الرئيسي لا ينبغي أن يختفي معها. */
+@media(min-width:1024px) and (max-width:1439px){
+  .cta{display:inline-flex!important}
+  .portalQuick{display:none}
+}
 /* هدف لمس حقيقي ٤٤×٤٤ — نقيس العنصر التفاعلي نفسه (لا عنصرًا زائفًا متراكبًا).
    الأيقونة تبقى ٢٤px؛ المنطقة فقط هي التي تتّسع. */
 .burger{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;

@@ -30,7 +30,7 @@ export default function EditPartnerFirmForm({ firm, countries }) {
         id: firm.id, legalName, displayNameAr, displayNameEn, countryId, city, website,
         relationshipStatus, publicVisible, consentToDisplay, internalNotes,
       });
-      if (res?.error) { setError(res.error); return; }
+      if (res?.error) { setError(t('contentSaveFailed')); return; }
       setSaved(true);
     });
   }

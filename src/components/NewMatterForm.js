@@ -23,7 +23,7 @@ export default function NewMatterForm() {
     setError('');
     startTransition(async () => {
       const res = await createMatter({ clientId, title, reference });
-      if (res?.error) { setError(res.error); return; }
+      if (res?.error) { setError(t('contentSaveFailed')); return; }
       router.push(`/admin/matters/${res.id}`);
     });
   }

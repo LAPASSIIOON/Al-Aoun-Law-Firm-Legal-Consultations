@@ -146,9 +146,9 @@
     "newsletterLabel": "Email address",
     "newsletterSubmit": "Subscribe",
     "newsletterSending": "Sending…",
-    "newsletterSuccess": "Subscribed, thank you.",
-    "newsletterDuplicate": "This email is already subscribed.",
+    "newsletterSuccess": "We received your subscription request. Thank you.",
     "newsletterInvalidEmail": "Please enter a valid email address.",
+    "newsletterRateLimited": "Too many attempts. Please try again in an hour.",
     "newsletterError": "Couldn't subscribe, please try again."
   },
   "langSwitch": {
@@ -739,6 +739,7 @@
     "contentLocaleEn": "English",
     "contentBackToList": "Back to list →",
     "contentCreate": "Create",
+    "contentSaveFailed": "Could not save the changes. Please try again.",
     "contentCreateHint": "Create in one language first; add the other later — no machine translation.",
     "contentNoAccess": "You don't have content-management access to this section.",
     "contentLastUpdated": "Last updated",

@@ -19,7 +19,7 @@ export default function NewPracticeAreaForm() {
     setError('');
     startTransition(async () => {
       const res = await createPracticeArea({ locale, title, summary, body });
-      if (res?.error) { setError(res.error); return; }
+      if (res?.error) { setError(t('contentSaveFailed')); return; }
       router.push(`/admin/practice-areas/${res.id}`);
     });
   }

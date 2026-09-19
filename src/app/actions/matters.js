@@ -4,6 +4,11 @@ import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 // عميل الخدمة — خادم فقط، ويُستخدَم حصرًا في الحذف التعويضي بعد اكتمال التفويض.
 import { createServerClient } from '@/lib/supabase-server.js';
 
+function databaseWriteFailed(operation, error) {
+  console.error('ADMIN_WRITE_FAILED', operation, error?.code || 'unknown');
+  return { error: 'save_failed' };
+}
+
 /** قائمة القضايا للأدمن (عبر RPC تُرجِع اسم العميل مدموجًا؛ فاضية تلقائيًا لغير الأدمن). */
 export async function listMattersAdmin() {
   const supabase = await createSupabaseServerClient();
@@ -63,7 +68,7 @@ export async function createMatter({ clientId, title, reference }) {
   const { data, error } = await supabase.from('matters')
     .insert({ client_id: clientId, title, reference: reference || null, created_by: user?.id || null })
     .select('id').single();
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('matter_create', error);
   revalidatePath('/[locale]/admin/matters', 'page');
   return { id: data.id };
 }

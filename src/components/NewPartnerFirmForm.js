@@ -27,7 +27,7 @@ export default function NewPartnerFirmForm({ countries }) {
     setError('');
     startTransition(async () => {
       const res = await createPartnerFirm({ legalName, displayNameAr, displayNameEn, countryId, city, website, relationshipStatus, internalNotes });
-      if (res?.error) { setError(res.error); return; }
+      if (res?.error) { setError(t('contentSaveFailed')); return; }
       router.push(`/admin/partner-firms/${res.id}`);
     });
   }

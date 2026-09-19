@@ -2,6 +2,11 @@
 import { revalidatePath } from 'next/cache';
 import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 
+function databaseWriteFailed(operation, error) {
+  console.error('ADMIN_WRITE_FAILED', operation, error?.code || 'unknown');
+  return { error: 'save_failed' };
+}
+
 /** يبني slug من نص عربي/إنجليزي: يحوّل المسافات لشرطات، يشيل أي رمز غير آمن. */
 function slugify(text) {
   return String(text || '')
@@ -49,12 +54,12 @@ export async function getPracticeArea(id) {
 export async function createPracticeArea({ locale, title, summary, body }) {
   const supabase = await createSupabaseServerClient();
   const { data: area, error: e1 } = await supabase.from('practice_areas').insert({ sort_order: 999, is_active: false }).select('id').single();
-  if (e1) return { error: e1.message };
+  if (e1) return databaseWriteFailed('content_write', e1);
   const slug = slugify(title);
   const { error: e2 } = await supabase.from('practice_area_translations').insert({
     practice_area_id: area.id, locale, slug, title, summary, body, status: 'draft', legal_approved: false,
   });
-  if (e2) return { error: e2.message };
+  if (e2) return databaseWriteFailed('content_write', e2);
   revalidatePath('/[locale]/admin/practice-areas', 'page');
   return { id: area.id };
 }
@@ -66,7 +71,7 @@ export async function addPracticeAreaTranslation({ practiceAreaId, locale, title
   const { error } = await supabase.from('practice_area_translations').insert({
     practice_area_id: practiceAreaId, locale, slug, title, summary, body, status: 'draft', legal_approved: false,
   });
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas/[id]', 'page');
   return { ok: true };
 }
@@ -76,7 +81,7 @@ export async function updatePracticeAreaTranslation({ id, title, summary, body, 
   const patch = { title, summary, body };
   if (status) patch.status = status;
   const { error } = await supabase.from('practice_area_translations').update(patch).eq('id', id);
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas/[id]', 'page');
   return { ok: true };
 }
@@ -85,7 +90,7 @@ export async function updatePracticeAreaTranslation({ id, title, summary, body, 
 export async function approvePracticeAreaTranslation(id) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from('practice_area_translations').update({ legal_approved: true, status: 'published' }).eq('id', id);
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas/[id]', 'page');
   return { ok: true };
 }
@@ -93,7 +98,7 @@ export async function approvePracticeAreaTranslation(id) {
 export async function setPracticeAreaActive({ id, isActive }) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from('practice_areas').update({ is_active: isActive }).eq('id', id);
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas', 'page');
   return { ok: true };
 }
@@ -128,12 +133,12 @@ export async function createArticle({ locale, title, excerpt, body }) {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: article, error: e1 } = await supabase.from('articles').insert({ author_id: user?.id || null, is_active: false, published_at: null }).select('id').single();
-  if (e1) return { error: e1.message };
+  if (e1) return databaseWriteFailed('content_write', e1);
   const slug = slugify(title);
   const { error: e2 } = await supabase.from('article_translations').insert({
     article_id: article.id, locale, slug, title, excerpt, body, status: 'draft', legal_approved: false,
   });
-  if (e2) return { error: e2.message };
+  if (e2) return databaseWriteFailed('content_write', e2);
   revalidatePath('/[locale]/admin/insights', 'page');
   return { id: article.id };
 }
@@ -144,7 +149,7 @@ export async function addArticleTranslation({ articleId, locale, title, excerpt,
   const { error } = await supabase.from('article_translations').insert({
     article_id: articleId, locale, slug, title, excerpt, body, status: 'draft', legal_approved: false,
   });
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/insights/[id]', 'page');
   return { ok: true };
 }
@@ -154,7 +159,7 @@ export async function updateArticleTranslation({ id, title, excerpt, body, statu
   const patch = { title, excerpt, body };
   if (status) patch.status = status;
   const { error } = await supabase.from('article_translations').update(patch).eq('id', id);
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/insights/[id]', 'page');
   return { ok: true };
 }
@@ -163,9 +168,9 @@ export async function updateArticleTranslation({ id, title, excerpt, body, statu
 export async function approveArticleTranslation({ translationId, articleId }) {
   const supabase = await createSupabaseServerClient();
   const { error: e1 } = await supabase.from('article_translations').update({ legal_approved: true, status: 'published' }).eq('id', translationId);
-  if (e1) return { error: e1.message };
+  if (e1) return databaseWriteFailed('content_write', e1);
   const { error: e2 } = await supabase.from('articles').update({ is_active: true, published_at: new Date().toISOString() }).eq('id', articleId);
-  if (e2) return { error: e2.message };
+  if (e2) return databaseWriteFailed('content_write', e2);
   revalidatePath('/[locale]/admin/insights/[id]', 'page');
   return { ok: true };
 }
@@ -173,7 +178,7 @@ export async function approveArticleTranslation({ translationId, articleId }) {
 export async function setArticleActive({ id, isActive }) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.from('articles').update({ is_active: isActive }).eq('id', id);
-  if (error) return { error: error.message };
+  if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/insights', 'page');
   return { ok: true };
 }
@@ -216,8 +221,8 @@ export async function createPartnerFirm(fields) {
     p_relationship_status: fields.relationshipStatus || 'prospect',
     p_internal_notes: fields.internalNotes || '',
   });
-  if (error) return { error: error.message };
-  if (data && data.error) return { error: data.error };
+  if (error) return databaseWriteFailed('content_write', error);
+  if (data && data.error) return databaseWriteFailed('partner_firm_rpc', data.error);
   revalidatePath('/[locale]/admin/partner-firms', 'page');
   return { id: data.id };
 }
@@ -237,8 +242,8 @@ export async function updatePartnerFirm({ id, ...fields }) {
     p_consent_to_display: !!fields.consentToDisplay,
     p_internal_notes: fields.internalNotes || '',
   });
-  if (error) return { error: error.message };
-  if (data && data.error) return { error: data.error };
+  if (error) return databaseWriteFailed('content_write', error);
+  if (data && data.error) return databaseWriteFailed('partner_firm_rpc', data.error);
   revalidatePath('/[locale]/admin/partner-firms/[id]', 'page');
   revalidatePath('/[locale]/admin/partner-firms', 'page');
   return { ok: true };

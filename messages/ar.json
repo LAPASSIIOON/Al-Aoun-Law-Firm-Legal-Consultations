@@ -146,9 +146,9 @@
     "newsletterLabel": "البريد الإلكتروني",
     "newsletterSubmit": "اشتراك",
     "newsletterSending": "جارٍ الإرسال…",
-    "newsletterSuccess": "تم الاشتراك، شكرًا لك.",
-    "newsletterDuplicate": "هذا البريد مُشترِك بالفعل.",
+    "newsletterSuccess": "تلقّينا طلب الاشتراك، شكرًا لك.",
     "newsletterInvalidEmail": "يرجى إدخال بريد إلكتروني صحيح.",
+    "newsletterRateLimited": "محاولات كثيرة. حاول مجددًا بعد ساعة.",
     "newsletterError": "تعذّر الاشتراك، حاول مرة أخرى."
   },
   "langSwitch": {
@@ -739,6 +739,7 @@
     "contentLocaleEn": "الإنجليزية",
     "contentBackToList": "العودة للقائمة ←",
     "contentCreate": "إنشاء",
+    "contentSaveFailed": "تعذّر حفظ التغييرات. حاول مرة أخرى.",
     "contentCreateHint": "أنشئ بلغة واحدة أولًا؛ يمكن إضافة اللغة الأخرى لاحقًا — لا ترجمة آلية.",
     "contentNoAccess": "لا تملك صلاحية إدارة المحتوى في هذا القسم.",
     "contentLastUpdated": "آخر تحديث",

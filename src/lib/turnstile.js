@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * التحقّق من رمز Turnstile عبر واجهة Cloudflare siteverify — مشترك بين كل نماذج الموقع.
  * السرّ يُقرأ من متغيّر بيئة على الخادم فقط.

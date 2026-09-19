@@ -10,7 +10,7 @@ import styles from './NewsletterSubscribe.module.css';
    ٢) منطقة إعلان role="status" aria-live="polite" موجودة في DOM دائمًا (لا تُركَّب عند
       وصول الرسالة) كي يلتقطها قارئ الشاشة فعلًا.
    ٣) الحالة لم تعد باللون وحده: علامة نصّية (✓ / !) تسبق الرسالة، واللون مكمّل لا حامل.
-   لا تغيير في السلوك ولا في نصوص الاشتراك ولا في الإجراء الخادم. */
+   رسائل الاشتراك لا تكشف الآن ما إذا كان البريد مسجّلًا مسبقًا. */
 export default function NewsletterSubscribe({ locale }) {
   const t = useTranslations('footer');
   const [email, setEmail] = useState('');
@@ -26,10 +26,8 @@ export default function NewsletterSubscribe({ locale }) {
     } else {
       setStatus('error');
       setMsg(
-        res?.error === 'already_subscribed'
-          ? t('newsletterDuplicate')
-          : res?.error === 'invalid_email'
-            ? t('newsletterInvalidEmail')
+        res?.error === 'invalid_email' ? t('newsletterInvalidEmail')
+          : res?.error === 'rate_limited' ? t('newsletterRateLimited')
             : t('newsletterError'),
       );
     }

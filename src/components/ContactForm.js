@@ -1,15 +1,15 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import Script from 'next/script';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { submitConsultation } from '@/app/actions/consultation.js';
+import useTurnstile from '@/hooks/useTurnstile.js';
 import styles from './ContactForm.module.css';
 
-const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function ContactForm({ intent = null, sourceRoute = null } = {}) {
   const t = useTranslations('contactPage');
+  const tt = useTranslations('turnstile');
   const locale = useLocale();
   const [step, setStep] = useState(1);
   const [clientType, setClientType] = useState('individual');
@@ -18,25 +18,10 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
   const [err, setErr] = useState('');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
-  const widgetRef = useRef(null);
-  const widgetIdRef = useRef(null);
 
-  // رندر يدوي صريح — لأن حاوية الودجت تُضاف للـDOM في الخطوة ٢ بعد فحص
-  // سكريبت Cloudflare الأول للصفحة، فالاكتشاف التلقائي (auto-render) يفوّتها.
-  useEffect(() => {
-    if (step === 2 && scriptReady && window.turnstile && widgetRef.current && widgetIdRef.current === null) {
-      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: TURNSTILE_SITE_KEY,
-        theme: 'dark',
-        size: 'flexible',
-        language: locale,
-        callback: (token) => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-      });
-    }
-  }, [step, scriptReady, locale]);
+  // حاوية الودجت لا توجد في الـDOM إلا في الخطوة ٢، لذا active مربوطة بالخطوة:
+  // الخُطّاف يُنشئ الودجت عند الدخول ويُزيله نظيفًا عند الخروج، فالعودة تُنشئ ودجتًا جديدًا.
+  const turnstile = useTurnstile({ locale, active: step === 2 });
 
   function goNext(e) {
     e.preventDefault();
@@ -54,10 +39,14 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
     const note = (fd.get('note') || '').toString().trim();
     if (preferredContact === 'email' && !email) { setStatus('error'); setErr(t('errorEmailRequired')); return; }
     if (email && !EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorEmailFormat')); return; }
-    if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
+    if (!turnstile.token) {
+      setStatus('error');
+      setErr(turnstile.failed ? tt('loadFailed') : t('errorCaptcha'));
+      return;
+    }
     setStatus('sending'); setErr('');
     try {
-      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken, intent, sourceRoute });
+      const res = await submitConsultation({ fullName: fullName.trim(), clientType, preferredContact, preferredLocale: locale, phone: phone.trim(), email, routingNote: note, turnstileToken: turnstile.token, intent, sourceRoute });
       if (res && res.ok) { setStatus('success'); }
       else if (res && (res.error === 'email_required' || res.error === 'invalid_email')) {
         setStatus('error'); setErr(t(res.error === 'email_required' ? 'errorEmailRequired' : 'errorEmailFormat'));
@@ -69,8 +58,7 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
         setStatus('error'); setErr(t('errorPhoneFormat'));
       } else if (res && res.error === 'captcha_failed') {
         setStatus('error'); setErr(t('errorCaptcha'));
-        if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
-        setTurnstileToken('');
+        turnstile.reset();
       } else { setStatus('error'); setErr(t('errorGeneric')); }
     } catch (_) { setStatus('error'); setErr(t('errorGeneric')); }
   }
@@ -81,7 +69,6 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
 
   return (
     <div className={styles.form}>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <div className={styles.stepBar}>
         <span className={styles.stepDot} data-active="true" aria-hidden="true" />
         <span className={`${styles.stepDot} ${step === 2 ? styles.stepDotActive : ''}`} data-active={step === 2} aria-hidden="true" />
@@ -136,7 +123,10 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
             <textarea name="note" className={styles.input} rows={3} placeholder={t('notePlaceholder')} />
           </label>
           {status === 'error' && <p id="contact-err" className={styles.err} role="alert">{err}</p>}
-          <div ref={widgetRef} />
+          {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
+            <p className={styles.err} role="alert">{tt('loadFailed')}</p>
+          )}
+          <div ref={turnstile.containerRef} />
           <div className={styles.stepActions}>
             <button type="button" className="btn-line" onClick={() => setStep(1)}>{t('back')}</button>
             <button type="submit" className="btn btn-solid" disabled={status === 'sending'}>

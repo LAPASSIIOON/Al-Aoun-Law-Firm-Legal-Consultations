@@ -1,34 +1,21 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import Script from 'next/script';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { submitReferral } from '@/app/actions/network.js';
+import useTurnstile from '@/hooks/useTurnstile.js';
 import styles from './NetworkForm.module.css';
 
-const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** @param {{ jurisdictions: {id:string,name:string}[], practiceAreas: {id:string,title:string}[] }} props */
 export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
   const t = useTranslations('referMatter');
+  const tt = useTranslations('turnstile');
   const locale = useLocale();
   const [status, setStatus] = useState('idle');
   const [err, setErr] = useState('');
   const [urgency, setUrgency] = useState('standard');
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
-  const widgetRef = useRef(null);
-  const widgetIdRef = useRef(null);
-
-  useEffect(() => {
-    if (scriptReady && window.turnstile && widgetRef.current && widgetIdRef.current === null) {
-      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: TURNSTILE_SITE_KEY, theme: 'dark', size: 'flexible', language: locale,
-        callback: (token) => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-      });
-    }
-  }, [scriptReady, locale]);
+  const turnstile = useTurnstile({ locale });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -39,7 +26,11 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
     if (contactName.length < 2) { setStatus('error'); setErr(t('errorName')); return; }
     if (!phone && !email) { setStatus('error'); setErr(t('errorContact')); return; }
     if (email && !EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorEmailFormat')); return; }
-    if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
+    if (!turnstile.token) {
+      setStatus('error');
+      setErr(turnstile.failed ? tt('loadFailed') : t('errorCaptcha'));
+      return;
+    }
     setStatus('sending'); setErr('');
     try {
       const res = await submitReferral({
@@ -51,13 +42,12 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
         practiceAreaId: (fd.get('practiceArea') || '').toString() || undefined,
         urgency,
         matterSummary: (fd.get('summary') || '').toString().trim(),
-        turnstileToken,
+        turnstileToken: turnstile.token,
       });
       if (res?.ok) { setStatus('success'); }
       else if (res?.error === 'captcha_failed') {
         setStatus('error'); setErr(t('errorCaptcha'));
-        if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
-        setTurnstileToken('');
+        turnstile.reset();
       } else if (res?.error === 'invalid_name') { setStatus('error'); setErr(t('errorName')); }
       else if (res?.error === 'no_contact') { setStatus('error'); setErr(t('errorContact')); }
       else if (res?.error === 'invalid_email') { setStatus('error'); setErr(t('errorEmailFormat')); }
@@ -71,7 +61,6 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <div className={styles.row}>
         <label className={styles.field}><span className={styles.label}>{t('firmLabel')}</span><input name="firm" className={styles.input} /></label>
         <label className={styles.field}><span className={styles.label}>{t('contactLabel')}</span><input name="contact" className={styles.input} required /></label>
@@ -111,7 +100,10 @@ export default function ReferMatterForm({ jurisdictions, practiceAreas }) {
         <textarea name="summary" className={styles.input} rows={3} placeholder={t('summaryPlaceholder')} />
       </label>
       {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
-      <div ref={widgetRef} />
+      {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
+        <p className={styles.err} role="alert">{tt('loadFailed')}</p>
+      )}
+      <div ref={turnstile.containerRef} />
       <button type="submit" className="btn btn-solid" disabled={status === 'sending'} style={{ width: 'fit-content' }}>
         {status === 'sending' ? t('sending') : t('submit')}<span className="arrow">→</span>
       </button>

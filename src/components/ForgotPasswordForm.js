@@ -1,11 +1,9 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import Script from 'next/script';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { requestPasswordReset } from '@/app/actions/auth.js';
+import useTurnstile from '@/hooks/useTurnstile.js';
 import styles from './NetworkForm.module.css';
-
-const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 
 /**
  * نموذج طلب إعادة تعيين كلمة المرور.
@@ -14,28 +12,11 @@ const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
  */
 export default function ForgotPasswordForm() {
   const t = useTranslations('account');
+  const tt = useTranslations('turnstile');
   const locale = useLocale();
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
   const [err, setErr] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
-  const widgetRef = useRef(null);
-  const widgetIdRef = useRef(null);
-
-  useEffect(() => {
-    if (scriptReady && window.turnstile && widgetRef.current && widgetIdRef.current === null) {
-      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: TURNSTILE_SITE_KEY, theme: 'dark', size: 'flexible', language: locale,
-        callback: (token) => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-      });
-    }
-  }, [scriptReady, locale]);
-
-  function resetWidget() {
-    if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
-    setTurnstileToken('');
-  }
+  const turnstile = useTurnstile({ locale });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -44,11 +25,16 @@ export default function ForgotPasswordForm() {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       setStatus('error'); setErr(t('errorInvalidEmail')); return;
     }
+    if (!turnstile.token) {
+      setStatus('error');
+      setErr(turnstile.failed ? tt('loadFailed') : t('errorCaptcha'));
+      return;
+    }
     setStatus('sending'); setErr('');
     const res = await requestPasswordReset({
       email,
       locale,
-      turnstileToken,
+      turnstileToken: turnstile.token,
     });
     if (res?.ok) { setStatus('sent'); }
     else {
@@ -56,7 +42,7 @@ export default function ForgotPasswordForm() {
       if (res?.error === 'captcha_failed') setErr(t('errorCaptcha'));
       else if (res?.error === 'rate_limited') setErr(t('errorRateLimited'));
       else setErr(t('errorGeneric'));
-      resetWidget();
+      turnstile.reset();
     }
   }
 
@@ -66,13 +52,15 @@ export default function ForgotPasswordForm() {
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <label className={styles.field}>
         <span className={styles.label}>{t('emailLabel')}</span>
         <input name="email" type="email" dir="ltr" className={styles.input} required />
       </label>
       {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
-      <div ref={widgetRef} />
+      {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
+        <p className={styles.err} role="alert">{tt('loadFailed')}</p>
+      )}
+      <div ref={turnstile.containerRef} />
       <button type="submit" className="btn btn-solid" disabled={status === 'sending'} style={{ width: 'fit-content' }}>
         {status === 'sending' ? t('sending') : t('forgotSubmit')}<span className="arrow">→</span>
       </button>

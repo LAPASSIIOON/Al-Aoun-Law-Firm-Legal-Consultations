@@ -879,5 +879,8 @@
         "a": "Yes, through the dedicated \"Refer a Matter to Us\" form on the International page."
       }
     ]
+  },
+  "turnstile": {
+    "loadFailed": "The security check could not load. Check your connection or disable your ad blocker, then reload the page."
   }
 }

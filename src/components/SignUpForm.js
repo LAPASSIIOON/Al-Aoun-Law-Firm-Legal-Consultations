@@ -1,12 +1,11 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import Script from 'next/script';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { signUp } from '@/app/actions/auth.js';
+import useTurnstile from '@/hooks/useTurnstile.js';
 import styles from './NetworkForm.module.css';
 
 const TYPES = ['lawyer', 'consultant', 'law_firm', 'company', 'institution', 'client'];
-const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 const CONSENT_VERSION = '2026-08-16';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const hasStrongPassword = (password) =>
@@ -15,26 +14,14 @@ const hasStrongPassword = (password) =>
 
 export default function SignUpForm() {
   const t = useTranslations('account');
+  const tt = useTranslations('turnstile');
   const locale = useLocale();
   const [memberType, setMemberType] = useState('client');
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState('idle');
   const [err, setErr] = useState('');
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
-  const widgetRef = useRef(null);
-  const widgetIdRef = useRef(null);
-
-  useEffect(() => {
-    if (scriptReady && window.turnstile && widgetRef.current && widgetIdRef.current === null) {
-      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: TURNSTILE_SITE_KEY, theme: 'dark', size: 'flexible', language: locale,
-        callback: (token) => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-      });
-    }
-  }, [scriptReady, locale]);
+  const turnstile = useTurnstile({ locale });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -47,6 +34,11 @@ export default function SignUpForm() {
     if (!EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorInvalidEmail')); return; }
     if (!hasStrongPassword(password)) { setStatus('error'); setErr(t('errorWeakPassword')); return; }
     if (!(fd.get('phone') || '').toString().trim()) { setStatus('error'); setErr(t('errorMissingField')); return; }
+    if (!turnstile.token) {
+      setStatus('error');
+      setErr(turnstile.failed ? tt('loadFailed') : t('errorCaptcha'));
+      return;
+    }
     setStatus('sending'); setErr('');
     const res = await signUp({
       email,
@@ -55,7 +47,7 @@ export default function SignUpForm() {
       phone: (fd.get('phone') || '').toString().trim(),
       organizationName: (fd.get('organizationName') || '').toString().trim(),
       licenseNumber: (fd.get('licenseNumber') || '').toString().trim(),
-      memberType, locale, turnstileToken,
+      memberType, locale, turnstileToken: turnstile.token,
       consent: true, consentVersion: CONSENT_VERSION,
     });
     if (res?.ok) {
@@ -72,8 +64,7 @@ export default function SignUpForm() {
         : res?.error === 'missing_required_field' ? t('errorMissingField')
         : t('errorGeneric');
       setErr(msg);
-      if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
-      setTurnstileToken('');
+      turnstile.reset();
     }
   }
 
@@ -83,7 +74,6 @@ export default function SignUpForm() {
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <fieldset className={styles.group}>
         <legend className={styles.label}>{t('memberTypeLabel')}</legend>
         <div className={styles.segs}>
@@ -120,7 +110,10 @@ export default function SignUpForm() {
       </div>
 
       {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
-      <div ref={widgetRef} />
+      {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
+        <p className={styles.err} role="alert">{tt('loadFailed')}</p>
+      )}
+      <div ref={turnstile.containerRef} />
       <button type="submit" className="btn btn-solid" disabled={status === 'sending' || !consent} style={{ width: 'fit-content' }}>
         {status === 'sending' ? t('sending') : t('signUpCta')}<span className="arrow">→</span>
       </button>

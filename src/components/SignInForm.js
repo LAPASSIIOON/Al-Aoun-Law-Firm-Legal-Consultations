@@ -1,37 +1,22 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import Script from 'next/script';
+import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { signIn } from '@/app/actions/auth.js';
+import useTurnstile from '@/hooks/useTurnstile.js';
 import styles from './NetworkForm.module.css';
 
-const TURNSTILE_SITE_KEY = '0x4AAAAAAERZ7DR2SvSLSBJq';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function SignInForm() {
   const t = useTranslations('account');
+  const tt = useTranslations('turnstile');
   const locale = useLocale();
   const [status, setStatus] = useState('idle');
   const [err, setErr] = useState('');
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const [scriptReady, setScriptReady] = useState(false);
-  const widgetRef = useRef(null);
-  const widgetIdRef = useRef(null);
-
-  useEffect(() => {
-    if (scriptReady && window.turnstile && widgetRef.current && widgetIdRef.current === null) {
-      widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: TURNSTILE_SITE_KEY, theme: 'dark', size: 'flexible', language: locale,
-        callback: (token) => setTurnstileToken(token),
-        'expired-callback': () => setTurnstileToken(''),
-        'error-callback': () => {
-          setTurnstileToken('');
-          setStatus('error');
-          setErr(t('errorCaptcha'));
-        },
-      });
-    }
-  }, [scriptReady, locale, t]);
+  const turnstile = useTurnstile({
+    locale,
+    onError: () => { setStatus('error'); setErr(t('errorCaptcha')); },
+  });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -40,12 +25,16 @@ export default function SignInForm() {
     const password = (fd.get('password') || '').toString();
     if (!EMAIL_PATTERN.test(email)) { setStatus('error'); setErr(t('errorInvalidEmail')); return; }
     if (!password) { setStatus('error'); setErr(t('errorInvalidCredentials')); return; }
-    if (!turnstileToken) { setStatus('error'); setErr(t('errorCaptcha')); return; }
+    if (!turnstile.token) {
+      setStatus('error');
+      setErr(turnstile.failed ? tt('loadFailed') : t('errorCaptcha'));
+      return;
+    }
     setStatus('sending'); setErr('');
     const res = await signIn({
       email,
       password,
-      turnstileToken,
+      turnstileToken: turnstile.token,
     });
     if (res?.ok) window.location.assign(`/${locale}/account`);
     else {
@@ -56,18 +45,19 @@ export default function SignInForm() {
         invalid_credentials: 'errorInvalidCredentials',
       }[res?.error] || 'errorGeneric';
       setStatus('error'); setErr(t(errorKey));
-      if (window.turnstile && widgetIdRef.current !== null) window.turnstile.reset(widgetIdRef.current);
-      setTurnstileToken('');
+      turnstile.reset();
     }
   }
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" strategy="afterInteractive" onLoad={() => setScriptReady(true)} />
       <label className={styles.field}><span className={styles.label}>{t('emailLabel')}</span><input name="email" type="email" dir="ltr" className={styles.input} required /></label>
       <label className={styles.field}><span className={styles.label}>{t('passwordLabel')}</span><input name="password" type="password" dir="ltr" className={styles.input} required /></label>
       {status === 'error' && <p className={styles.err} role="alert">{err}</p>}
-      <div ref={widgetRef} />
+      {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
+        <p className={styles.err} role="alert">{tt('loadFailed')}</p>
+      )}
+      <div ref={turnstile.containerRef} />
       <button type="submit" className="btn btn-solid" disabled={status === 'sending'} style={{ width: 'fit-content' }}>
         {status === 'sending' ? t('sending') : t('signInCta')}<span className="arrow">→</span>
       </button>

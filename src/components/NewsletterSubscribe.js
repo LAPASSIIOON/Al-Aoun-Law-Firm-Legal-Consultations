@@ -41,7 +41,11 @@ export default function NewsletterSubscribe({ locale }) {
   return (
     <div>
       <p style={{ fontSize: '.85rem', color: 'var(--platinum-2)', marginBlockEnd: '.75rem' }}>{t('newsletterLead')}</p>
-      <form onSubmit={onSubmit} style={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap' }}>
+      {/* noValidate: بدونه يوقف المتصفّح الإرسال بتلميحه الأصلي بلغة المتصفّح لا بلغة الموقع،
+          فلا تظهر رسالة newsletterInvalidEmail المترجَمة أبدًا. التحقّق يبقى قائمًا —
+          في الإجراء الخادم ثم في دالّة قاعدة البيانات — و type/required يبقيان
+          للدلالة ولوحة المفاتيح المناسبة على الهاتف. */}
+      <form onSubmit={onSubmit} noValidate style={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap' }}>
         <label htmlFor="newsletter-email" style={hidden}>{t('newsletterLabel')}</label>
         <input
           id="newsletter-email" name="email"

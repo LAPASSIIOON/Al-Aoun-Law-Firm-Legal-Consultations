@@ -1,6 +1,8 @@
 import Image from 'next/image';
 
-/** خلفية صورة حقيقية لرأس صفحة داخلية + طبقة تعتيم لوضوح النص فوقها + حركة بطيئة واحدة. */
+/** خلفية صورة حقيقية لرأس صفحة داخلية + طبقة تعتيم لوضوح النص فوقها + حركة بطيئة واحدة.
+ *  priority: هذه الصورة تملأ رأس الصفحة فهي دائمًا فوق الطيّة ومرشّح LCP المباشر.
+ *  بدونها يضع next/image loading="lazy" فيتأخّر طلبها حتى بعد تقييم التخطيط. */
 export default function PageHeroImage({ src, position = 'center' }) {
   return (
     <>
@@ -10,6 +12,7 @@ export default function PageHeroImage({ src, position = 'center' }) {
           alt=""
           aria-hidden="true"
           fill
+          priority
           sizes="100vw"
           style={{ objectFit: 'cover', objectPosition: position }}
         />

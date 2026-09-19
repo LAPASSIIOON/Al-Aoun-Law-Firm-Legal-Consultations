@@ -882,5 +882,12 @@
   },
   "turnstile": {
     "loadFailed": "The security check could not load. Check your connection or disable your ad blocker, then reload the page."
+  },
+  "errorPage": {
+    "heading": "This page could not be displayed",
+    "body": "A temporary technical fault occurred while loading the content. Please try again, and contact us directly if it persists.",
+    "retry": "Try again",
+    "back": "Back to home",
+    "reference": "Fault reference:"
   }
 }

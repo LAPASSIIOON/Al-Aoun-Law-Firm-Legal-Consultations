@@ -55,8 +55,7 @@ export default function SignUpForm() {
       else { window.location.assign(`/${locale}/account`); }
     } else {
       setStatus('error');
-      const msg = res?.error === 'already_registered' ? t('errorAlreadyRegistered')
-        : res?.error === 'consent_required' ? t('errorConsent')
+      const msg = res?.error === 'consent_required' ? t('errorConsent')
         : res?.error === 'invalid_name' ? t('errorFullName')
         : res?.error === 'invalid_email' ? t('errorInvalidEmail')
         : res?.error === 'weak_password' ? t('errorWeakPassword')

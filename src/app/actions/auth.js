@@ -57,7 +57,10 @@ export async function signUp(input) {
   });
   if (error) {
     let code = 'server_error';
-    if (error.message === 'User already registered' || error.code === 'user_already_exists') code = 'already_registered';
+    if (error.message === 'User already registered' || error.code === 'user_already_exists' || error.code === 'email_exists') {
+      // Keep registration results indistinguishable so an address cannot be enumerated.
+      return { ok: true, needsConfirmation: true };
+    }
     else if (error.code === 'weak_password' || /password should contain/i.test(error.message || '')) code = 'weak_password';
     else if (error.code === 'over_email_send_rate_limit' || error.status === 429) code = 'rate_limited';
     return { ok: false, error: code };
@@ -81,7 +84,6 @@ export async function signIn(input) {
     if (error.status === 429 || error.code === 'over_request_rate_limit') {
       return { ok: false, error: 'rate_limited' };
     }
-    if (error.code === 'email_not_confirmed') return { ok: false, error: 'email_not_confirmed' };
     if (error.code === 'invalid_credentials' || error.message === 'Invalid login credentials') {
       return { ok: false, error: 'invalid_credentials' };
     }

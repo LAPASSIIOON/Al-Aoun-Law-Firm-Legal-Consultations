@@ -41,7 +41,6 @@ export default function SignInForm() {
       const errorKey = {
         captcha_failed: 'errorCaptcha',
         rate_limited: 'errorRateLimited',
-        email_not_confirmed: 'checkEmail',
         invalid_credentials: 'errorInvalidCredentials',
       }[res?.error] || 'errorGeneric';
       setStatus('error'); setErr(t(errorKey));

@@ -30,10 +30,9 @@ async function notify(subject, html) {
         html,
       }),
     });
-    const body = await res.text();
-    if (!res.ok) { console.error('RESEND_SEND_FAILED', res.status, body); }
-    else { console.log('RESEND_SEND_OK', body); }
-  } catch (e) { console.error('RESEND_SEND_EXCEPTION', String(e)); }
+    // Keep production logs free of provider response bodies and any incidental data.
+    if (!res.ok) console.error('RESEND_SEND_FAILED', res.status);
+  } catch (e) { console.error('RESEND_SEND_EXCEPTION', e instanceof Error ? e.name : 'unknown'); }
 }
 
 async function getClientMeta() {

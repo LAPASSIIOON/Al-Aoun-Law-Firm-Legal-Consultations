@@ -45,7 +45,7 @@ const nextConfig = {
               "form-action 'self'",
               "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
               "style-src 'self' 'unsafe-inline'",
-              "img-src 'self'",
+              "img-src 'self' data:",
               "font-src 'self'",
               "connect-src 'self' https://ngyhplcnmedafjzotgho.supabase.co",
               "frame-src https://challenges.cloudflare.com https://www.google.com",

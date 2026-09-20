@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { getCurrentMember } from '@/lib/supabase-auth-server.js';
+import { createSupabaseServerClient, getCurrentMember } from '@/lib/supabase-auth-server.js';
 import { signOutAction } from '@/app/actions/auth.js';
 import { listConsultations, listReferrals, listPartnerships } from '@/app/actions/admin.js';
 import AdminNav from '@/components/AdminNav.js';
@@ -18,6 +18,14 @@ export default async function AdminLayout({ children, params }) {
 
   if (!member) redirect(`/${locale}/account/sign-in`);
   if (member.role !== 'admin' || !member.is_active) redirect(`/${locale}/account/my-requests`);
+
+  // لا نمنع مسؤولًا لم يسجّل MFA بعد، حتى لا يُقفل الوصول أثناء الانتقال.
+  // لكن أي مسؤول سجّل عاملًا ثانيًا يجب أن يثبته في الجلسة الحالية قبل عرض الإدارة.
+  const auth = await createSupabaseServerClient();
+  const { data: assurance, error: assuranceError } = await auth.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (assuranceError || (assurance?.nextLevel === 'aal2' && assurance.currentLevel !== 'aal2')) {
+    redirect(`/${locale}/account/security?next=/admin`);
+  }
 
   let consultations, referrals, partnerships;
   try {
@@ -56,7 +64,10 @@ export default async function AdminLayout({ children, params }) {
         { href: '/admin/insights', label: t('navInsights') },
     ] },
     { label: t('navGroupClientPortal'), links: [{ href: '/admin/matters', label: t('navMatters') }] },
-    { label: t('navGroupSystem'), links: [{ href: '/admin/audit', label: t('navAudit') }] },
+    { label: t('navGroupSystem'), links: [
+      { href: '/admin/audit', label: t('navAudit') },
+      { href: '/account/security', label: t('navSecurity') },
+    ] },
   ];
 
   return (

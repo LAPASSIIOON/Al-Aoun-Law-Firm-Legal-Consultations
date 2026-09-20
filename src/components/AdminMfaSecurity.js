@@ -79,6 +79,15 @@ export default function AdminMfaSecurity({ locale, nextPath, copy }) {
     router.refresh();
   }
 
+  async function cancelEnrollment() {
+    if (!pending?.id) return;
+    setStatus('working');
+    await supabase.auth.mfa.unenroll({ factorId: pending.id });
+    setPending(null);
+    setCode('');
+    setStatus('setup');
+  }
+
   if (status === 'loading') return <p className="body">{copy.loading}</p>;
   if (status === 'error') return <p className={styles.err} role="alert">{error}</p>;
 
@@ -107,7 +116,11 @@ export default function AdminMfaSecurity({ locale, nextPath, copy }) {
   const heading = isEnrollment ? copy.setupHeading : copy.challengeHeading;
   const body = isEnrollment ? copy.setupBody : copy.challengeBody;
   const action = isEnrollment ? copy.enableCta : copy.verifyCta;
-  const qr = pending?.qr ? `data:image/svg+xml;utf8,${encodeURIComponent(pending.qr)}` : '';
+  // الإصدارات الحالية من Auth تعيد أحيانًا data URL جاهزًا وأحيانًا SVG خامًا.
+  // ترميز data URL مرة ثانية يكسره؛ نحافظ عليه كما هو ونرمّز SVG الخام فقط.
+  const qr = pending?.qr
+    ? (pending.qr.startsWith('data:image/') ? pending.qr : `data:image/svg+xml;utf8,${encodeURIComponent(pending.qr)}`)
+    : '';
 
   return (
     <form className={styles.form} onSubmit={(event) => { event.preventDefault(); if (factorId) verify(factorId, isEnrollment ? 'enroll' : 'challenge'); }} noValidate>
@@ -131,7 +144,11 @@ export default function AdminMfaSecurity({ locale, nextPath, copy }) {
       {error && <p className={styles.err} role="alert">{error}</p>}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
         <button type="submit" className="btn btn-solid" disabled={status === 'working'}>{action}</button>
-        <a className="btn btn-ghost" href={`/${locale}`}>{copy.cancelCta}</a>
+        {isEnrollment ? (
+          <button type="button" className="btn btn-ghost" onClick={cancelEnrollment} disabled={status === 'working'}>{copy.cancelSetupCta}</button>
+        ) : (
+          <a className="btn btn-ghost" href={`/${locale}`}>{copy.cancelCta}</a>
+        )}
       </div>
     </form>
   );

@@ -588,7 +588,8 @@
     "continueCta": "Continue to administration",
     "codeInvalid": "Enter a valid six-digit code.",
     "errorGeneric": "We could not complete verification. Check the code and try again.",
-    "cancelCta": "Back to the site"
+    "cancelCta": "Back to the site",
+    "cancelSetupCta": "Cancel this setup"
   },
   "admin": {
     "title": "Al Oun Desk",

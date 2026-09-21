@@ -146,5 +146,13 @@ export async function updatePassword(input) {
 
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { ok: false, error: 'server_error' };
+
+  // أبطِل رموز التجديد في الجلسات الأخرى بعد تغيير كلمة المرور. نُبقي جلسة
+  // الاستعادة الحالية كي يصل المستخدم إلى رسالة النجاح ثم يسجل دخوله بكلمته الجديدة.
+  const { error: revokeError } = await supabase.auth.signOut({ scope: 'others' });
+  if (revokeError) {
+    console.error('AUTH_SESSION_REVOKE_FAILED', revokeError.code || 'unknown');
+    return { ok: false, error: 'server_error' };
+  }
   return { ok: true };
 }

@@ -5,6 +5,13 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // الرفع القانوني المعلن مسموح حتى 25MB. حد إجراءات الخادم الافتراضي 1MB،
+  // لذا نترك هامشًا ضيقًا لتغليف multipart من دون فتح حد غير محدود.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '26mb',
+    },
+  },
   // جودة 85 مستخدمة في صور رؤوس الصفحات؛ إعلانها صراحةً يمنع تحذير Next.js
   // ويحافظ على السلوك نفسه عند الترقية المستقبلية.
   images: {

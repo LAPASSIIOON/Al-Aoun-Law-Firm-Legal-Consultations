@@ -26,6 +26,27 @@ export async function createSupabaseServerClient() {
 }
 
 /**
+ * عميل الإدارة المقيّد بتحقّق خطوتين فعّال في الجلسة الحالية.
+ * لا يكفي إخفاء واجهة لوحة الإدارة: كل إجراء خادمي إداري يستدعي هذا الحارس
+ * أيضًا، حتى لا يستطيع طلب مباشر لإجراء الخادم تجاوز صفحة التحقق.
+ */
+export async function createSupabaseAdminMfaClient() {
+  const supabase = await createSupabaseServerClient();
+  const [{ data: { user } }, { data: assurance, error: assuranceError }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+  ]);
+  if (!user || assuranceError || assurance?.currentLevel !== 'aal2') {
+    throw new Error('admin_mfa_required');
+  }
+  const { data: member, error: memberError } = await supabase.rpc('get_my_member');
+  if (memberError || !member || member.role !== 'admin' || !member.is_active) {
+    throw new Error('admin_access_required');
+  }
+  return supabase;
+}
+
+/**
  * يعيد بيانات عضو portal.members الحالي (أو null) بعد التحقّق من الجلسة.
  */
 export async function getCurrentMember() {

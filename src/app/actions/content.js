@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
+import { createSupabaseAdminMfaClient, createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 
 function databaseWriteFailed(operation, error) {
   console.error('ADMIN_WRITE_FAILED', operation, error?.code || 'unknown');
@@ -32,7 +32,7 @@ export async function getMyContentRole() {
 // ===== مجالات الممارسة =====
 
 export async function listPracticeAreas() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data: areas, error } = await supabase
     .from('practice_areas')
     .select('id, sort_order, is_active, practice_area_translations(id, locale, title, status, legal_approved, updated_at)')
@@ -42,7 +42,7 @@ export async function listPracticeAreas() {
 }
 
 export async function getPracticeArea(id) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase
     .from('practice_areas')
     .select('id, sort_order, is_active, practice_area_translations(*)')
@@ -52,7 +52,7 @@ export async function getPracticeArea(id) {
 }
 
 export async function createPracticeArea({ locale, title, summary, body }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data: area, error: e1 } = await supabase.from('practice_areas').insert({ sort_order: 999, is_active: false }).select('id').single();
   if (e1) return databaseWriteFailed('content_write', e1);
   const slug = slugify(title);
@@ -66,7 +66,7 @@ export async function createPracticeArea({ locale, title, summary, body }) {
 
 /** إضافة ترجمة اللغة الناقصة لمجال ممارسة موجود (لا يوجد ترجمة آلية — يُكتب يدويًا). */
 export async function addPracticeAreaTranslation({ practiceAreaId, locale, title, summary, body }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const slug = slugify(title);
   const { error } = await supabase.from('practice_area_translations').insert({
     practice_area_id: practiceAreaId, locale, slug, title, summary, body, status: 'draft', legal_approved: false,
@@ -77,7 +77,7 @@ export async function addPracticeAreaTranslation({ practiceAreaId, locale, title
 }
 
 export async function updatePracticeAreaTranslation({ id, title, summary, body, status }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const patch = { title, summary, body };
   if (status) patch.status = status;
   const { error } = await supabase.from('practice_area_translations').update(patch).eq('id', id);
@@ -88,7 +88,7 @@ export async function updatePracticeAreaTranslation({ id, title, summary, body, 
 
 /** اعتماد قانوني ونشر — القاعدة نفسها (trigger) ترفض هذا الإجراء لو المنفِّذ لا يملك صفة legal/admin فعليًا. */
 export async function approvePracticeAreaTranslation(id) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { error } = await supabase.from('practice_area_translations').update({ legal_approved: true, status: 'published' }).eq('id', id);
   if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas/[id]', 'page');
@@ -96,7 +96,7 @@ export async function approvePracticeAreaTranslation(id) {
 }
 
 export async function setPracticeAreaActive({ id, isActive }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { error } = await supabase.from('practice_areas').update({ is_active: isActive }).eq('id', id);
   if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/practice-areas', 'page');
@@ -110,7 +110,7 @@ export async function setPracticeAreaActive({ id, isActive }) {
 // الاعتماد (approveArticleTranslation) يفتح البوابتين معًا في خطوة واحدة، بدل ما يترك المقال معتمَدًا لكن مخفيًا فعليًا لأن أحد الشرطين ناقص.
 
 export async function listArticles() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase
     .from('articles')
     .select('id, is_active, published_at, article_translations(id, locale, title, status, legal_approved, updated_at)')
@@ -120,7 +120,7 @@ export async function listArticles() {
 }
 
 export async function getArticle(id) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase
     .from('articles')
     .select('id, is_active, published_at, article_translations(*)')
@@ -130,7 +130,7 @@ export async function getArticle(id) {
 }
 
 export async function createArticle({ locale, title, excerpt, body }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data: article, error: e1 } = await supabase.from('articles').insert({ author_id: user?.id || null, is_active: false, published_at: null }).select('id').single();
   if (e1) return databaseWriteFailed('content_write', e1);
@@ -144,7 +144,7 @@ export async function createArticle({ locale, title, excerpt, body }) {
 }
 
 export async function addArticleTranslation({ articleId, locale, title, excerpt, body }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const slug = slugify(title);
   const { error } = await supabase.from('article_translations').insert({
     article_id: articleId, locale, slug, title, excerpt, body, status: 'draft', legal_approved: false,
@@ -155,7 +155,7 @@ export async function addArticleTranslation({ articleId, locale, title, excerpt,
 }
 
 export async function updateArticleTranslation({ id, title, excerpt, body, status }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const patch = { title, excerpt, body };
   if (status) patch.status = status;
   const { error } = await supabase.from('article_translations').update(patch).eq('id', id);
@@ -166,7 +166,7 @@ export async function updateArticleTranslation({ id, title, excerpt, body, statu
 
 /** اعتماد + فتح بوابتَي النشر معًا (الترجمة والجدول الأب) — القاعدة نفسها ترفض الاعتماد بلا صفة legal/admin فعليًا. */
 export async function approveArticleTranslation({ translationId, articleId }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { error: e1 } = await supabase.from('article_translations').update({ legal_approved: true, status: 'published' }).eq('id', translationId);
   if (e1) return databaseWriteFailed('content_write', e1);
   const { error: e2 } = await supabase.from('articles').update({ is_active: true, published_at: new Date().toISOString() }).eq('id', articleId);
@@ -176,7 +176,7 @@ export async function approveArticleTranslation({ translationId, articleId }) {
 }
 
 export async function setArticleActive({ id, isActive }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { error } = await supabase.from('articles').update({ is_active: isActive }).eq('id', id);
   if (error) return databaseWriteFailed('content_write', error);
   revalidatePath('/[locale]/admin/insights', 'page');
@@ -189,14 +189,14 @@ export async function setArticleActive({ id, isActive }) {
 // صف الشريك لا يظهر علنًا إلا بـ public_visible=true AND consent_to_display=true معًا — موافقة صريحة، لا افتراض.
 
 export async function listPartnerFirms() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_list_partner_firms');
   if (error) return [];
   return data || [];
 }
 
 export async function getPartnerFirm(id) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_get_partner_firm', { p_id: id });
   if (error) return null;
   return data;
@@ -210,7 +210,7 @@ export async function listActiveCountries() {
 }
 
 export async function createPartnerFirm(fields) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_create_partner_firm', {
     p_legal_name: fields.legalName,
     p_display_name_ar: fields.displayNameAr || '',
@@ -228,7 +228,7 @@ export async function createPartnerFirm(fields) {
 }
 
 export async function updatePartnerFirm({ id, ...fields }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_update_partner_firm', {
     p_id: id,
     p_legal_name: fields.legalName,

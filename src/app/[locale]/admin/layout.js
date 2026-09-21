@@ -19,11 +19,11 @@ export default async function AdminLayout({ children, params }) {
   if (!member) redirect(`/${locale}/account/sign-in`);
   if (member.role !== 'admin' || !member.is_active) redirect(`/${locale}/account/my-requests`);
 
-  // لا نمنع مسؤولًا لم يسجّل MFA بعد، حتى لا يُقفل الوصول أثناء الانتقال.
-  // لكن أي مسؤول سجّل عاملًا ثانيًا يجب أن يثبته في الجلسة الحالية قبل عرض الإدارة.
+  // التحقق بخطوتين إلزامي لكل مسؤول: من لا يملك AAL2 يُنقل إلى الإعداد أو التحدي
+  // بدل عرض أي جزء من بيانات الإدارة.
   const auth = await createSupabaseServerClient();
   const { data: assurance, error: assuranceError } = await auth.auth.mfa.getAuthenticatorAssuranceLevel();
-  if (assuranceError || (assurance?.nextLevel === 'aal2' && assurance.currentLevel !== 'aal2')) {
+  if (assuranceError || assurance?.currentLevel !== 'aal2') {
     redirect(`/${locale}/account/security?next=/admin`);
   }
 

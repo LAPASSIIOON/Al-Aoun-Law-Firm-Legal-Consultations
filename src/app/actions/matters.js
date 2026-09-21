@@ -1,6 +1,6 @@
 'use server';
 import { revalidatePath } from 'next/cache';
-import { createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
+import { createSupabaseAdminMfaClient, createSupabaseServerClient } from '@/lib/supabase-auth-server.js';
 // عميل الخدمة — خادم فقط، ويُستخدَم حصرًا في الحذف التعويضي بعد اكتمال التفويض.
 import { createServerClient } from '@/lib/supabase-server.js';
 
@@ -11,7 +11,7 @@ function databaseWriteFailed(operation, error) {
 
 /** قائمة القضايا للأدمن (عبر RPC تُرجِع اسم العميل مدموجًا؛ فاضية تلقائيًا لغير الأدمن). */
 export async function listMattersAdmin() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_list_matters');
   if (error) return [];
   return data || [];
@@ -36,7 +36,7 @@ async function getMatterFilesRaw(supabase, matterId) {
 }
 
 export async function getMatterAdmin(id) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data: rows } = await supabase.rpc('admin_list_matters');
   const matter = (rows || []).find((m) => m.id === id);
   if (!matter) return null;
@@ -56,14 +56,14 @@ export async function getMyMatter(id) {
 }
 
 export async function listClientMembers() {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data, error } = await supabase.rpc('admin_list_client_members');
   if (error) return [];
   return data || [];
 }
 
 export async function createMatter({ clientId, title, reference }) {
-  const supabase = await createSupabaseServerClient();
+  const supabase = await createSupabaseAdminMfaClient();
   const { data: { user } } = await supabase.auth.getUser();
   const { data, error } = await supabase.from('matters')
     .insert({ client_id: clientId, title, reference: reference || null, created_by: user?.id || null })

@@ -13,9 +13,10 @@ export async function generateMetadata({ params }) {
   return { title: t('resetHeading'), robots: { index: false }, alternates: altLangs(locale, '/account/reset-password') };
 }
 
-/** @param {{ params: Promise<{ locale: string }> }} props */
-export default async function ResetPassword({ params }) {
+/** @param {{ params: Promise<{ locale: string }>, searchParams: Promise<{ expired?: string }> }} props */
+export default async function ResetPassword({ params, searchParams }) {
   const { locale } = await params; setRequestLocale(locale);
+  const { expired } = await searchParams;
   const t = await getTranslations('account');
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -28,7 +29,7 @@ export default async function ResetPassword({ params }) {
       </section>
       <section className="on-ivory section">
         <div className="wrap" style={{ maxWidth: '36rem' }}>
-          {user ? (
+          {user && expired !== '1' ? (
             <>
               <p className="body" style={{ marginBlockEnd: '1.5rem' }}>{t('resetLead')}</p>
               <ResetPasswordForm />

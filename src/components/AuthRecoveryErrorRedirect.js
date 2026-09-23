@@ -16,7 +16,7 @@ export default function AuthRecoveryErrorRedirect({ locale }) {
     const expired = code === 'otp_expired'
       || (params.get('error') === 'access_denied' && /invalid|expired/i.test(description));
 
-    if (expired) window.location.replace(`/${locale}/account/reset-password`);
+    if (expired) window.location.replace(`/${locale}/account/reset-password?expired=1`);
   }, [locale]);
 
   return null;

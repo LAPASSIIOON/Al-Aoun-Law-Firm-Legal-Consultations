@@ -2,6 +2,7 @@ import { getTranslations, getLocale } from 'next-intl/server';
 import { listReferrals } from '@/app/actions/admin.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import AdminTable from '@/components/AdminTable.js';
+import { withAttentionFlag } from '@/lib/request-attention.js';
 
 const STAGES = ['new','triaged','conflict_check','cleared','conflict_found','partner_matching','partner_contacted','client_introduced','handled_internally','no_coverage','active','completed','closed'];
 
@@ -39,7 +40,7 @@ export default async function AdminReferrals() {
   const locale = await getLocale();
   const [rawRows, paNames] = await Promise.all([listReferrals(), fetchPracticeAreaNames(locale)]);
   const fmtDate = (v) => (v ? new Date(v).toLocaleString(locale === 'ar' ? 'ar-KW' : 'en-GB') : null);
-  const rows = rawRows.map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _conflict_checked_fmt: fmtDate(r.conflict_checked_at) }));
+  const rows = withAttentionFlag(rawRows).map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _conflict_checked_fmt: fmtDate(r.conflict_checked_at) }));
 
   return (
     <>

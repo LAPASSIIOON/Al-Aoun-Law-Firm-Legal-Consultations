@@ -1,0 +1,27 @@
+.requestSection { margin-block-end: 2.5rem; }
+.requestList { display: grid; gap: .85rem; }
+.requestCard {
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--hair-light-strong);
+}
+.requestHead { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start; justify-content: space-between; }
+.requestTitle { font-family: var(--f-display); font-size: 1.05rem; }
+.requestMeta { margin-block-start: .2rem; color: var(--muted); font-family: var(--f-ui); font-size: .8rem; }
+.status {
+  flex: 0 0 auto;
+  padding: .32rem .72rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--clay-bright);
+  font-family: var(--f-ui);
+  font-size: .78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .requestCard { padding: 1rem; }
+  .requestHead { align-items: center; }
+}

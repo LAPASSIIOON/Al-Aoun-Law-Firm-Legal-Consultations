@@ -1,6 +1,7 @@
 import { getTranslations, getLocale } from 'next-intl/server';
 import { listPartnerships } from '@/app/actions/admin.js';
 import AdminTable from '@/components/AdminTable.js';
+import { withAttentionFlag } from '@/lib/request-attention.js';
 
 const STAGES = ['new','under_review','contacted','declined','active'];
 
@@ -29,7 +30,7 @@ export default async function AdminPartnerships() {
   const locale = await getLocale();
   const rawRows = await listPartnerships();
   const fmtDate = (v) => (v ? new Date(v).toLocaleString(locale === 'ar' ? 'ar-KW' : 'en-GB') : null);
-  const rows = rawRows.map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _reviewed_fmt: fmtDate(r.reviewed_at) }));
+  const rows = withAttentionFlag(rawRows).map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _reviewed_fmt: fmtDate(r.reviewed_at) }));
 
   return (
     <>

@@ -5,12 +5,12 @@ import { getCurrentMember, createSupabaseServerClient } from '@/lib/supabase-aut
 import { signOutAction } from '@/app/actions/auth.js';
 import { memberTypeLabel } from '@/lib/member-types.js';
 import MemberProfileCard from '@/components/MemberProfileCard.js';
+import RequestStatusTimeline from '@/components/RequestStatusTimeline.js';
 import { listMyMatters } from '@/app/actions/matters.js';
+import { requestPhaseIndex } from '@/lib/request-status.js';
+import styles from './my-requests.module.css';
 
 export const dynamic = 'force-dynamic';
-
-const STAGE_LABELS_AR = { new: 'جديد', triaged: 'قيد الفرز', conflict_check: 'فحص تعارض', assigned: 'مُسنَد', in_progress: 'قيد المتابعة', closed: 'مُغلَق', declined: 'مرفوض' };
-const STAGE_LABELS_EN = { new: 'New', triaged: 'Triaged', conflict_check: 'Conflict Check', assigned: 'Assigned', in_progress: 'In Progress', closed: 'Closed', declined: 'Declined' };
 
 // Which audience group each member type belongs to (drives ordering + primary action).
 const GROUP_BY_TYPE = {
@@ -43,7 +43,6 @@ export default async function MyRequests({ params }) {
 
   const { consultations, referrals, partnerships } = await fetchAll();
   const myMatters = await listMyMatters();
-  const STAGE = locale === 'ar' ? STAGE_LABELS_AR : STAGE_LABELS_EN;
   const group = GROUP_BY_TYPE[member.member_type] || 'client';
   const cfg = GROUP_CONFIG[group];
   const typeLabel = memberTypeLabel(locale, member.member_type);
@@ -52,6 +51,17 @@ export default async function MyRequests({ params }) {
     consultations: { heading: t('consultationsHeading'), label: t('consultationLabel'), empty: t('emptyConsultations'), items: consultations },
     referrals: { heading: t('referralsHeading'), label: t('referralLabel'), empty: t('emptyReferrals'), items: referrals },
     partnerships: { heading: t('partnershipsHeading'), label: t('partnershipLabel'), empty: t('emptyPartnerships'), items: partnerships },
+  };
+
+  const timelineLabels = {
+    timelineLabel: t('timelineLabel'),
+    nextLabel: t('nextLabel'),
+    phases: {
+      consultations: [t('phaseReceived'), t('phaseReview'), t('phaseContact'), t('phaseComplete')],
+      referrals: [t('phaseReceived'), t('phaseReview'), t('phaseCoordination'), t('phaseComplete')],
+      partnerships: [t('phaseReceived'), t('phaseReview'), t('phaseContact'), t('phaseDecision')],
+    },
+    help: [t('helpReceived'), t('helpReview'), t('helpProgress'), t('helpComplete')],
   };
 
   // Quick actions per group. First is the primary CTA.
@@ -73,30 +83,37 @@ export default async function MyRequests({ params }) {
     fieldOrg: t('fieldOrg'), fieldLicense: t('fieldLicense'), emailLockedNote: t('emailLockedNote'),
   };
 
-  const Row = ({ title, sub, stage, date }) => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 0', borderBlockEnd: '1px solid var(--hair-light-strong)' }}>
-      <div>
-        <div style={{ fontFamily: 'var(--f-display)', fontSize: '1.05rem' }}>{title}</div>
-        {sub && <div className="body" style={{ fontSize: '.85rem', color: 'var(--muted)' }}>{sub}</div>}
-        <div className="body" style={{ fontSize: '.78rem', color: 'var(--muted)' }}>{new Date(date).toLocaleDateString(locale === 'ar' ? 'ar-KW' : 'en-GB')}</div>
-      </div>
-      <span style={{ fontSize: '.8rem', fontWeight: 700, padding: '.3rem .75rem', borderRadius: '999px', background: 'var(--surface-2)', color: 'var(--clay-bright)', whiteSpace: 'nowrap' }}>
-        {STAGE[stage] || stage}
-      </span>
-    </div>
-  );
+  const Row = ({ type, title, sub, stage, date }) => {
+    const phases = timelineLabels.phases[type] || timelineLabels.phases.consultations;
+    const safeStatus = phases[requestPhaseIndex(type, stage)];
+    return (
+      <article className={styles.requestCard}>
+        <div className={styles.requestHead}>
+          <div>
+            <div className={styles.requestTitle}>{title}</div>
+            {sub && <div className={styles.requestMeta}>{sub}</div>}
+            <div className={styles.requestMeta}>{t('submittedLabel')} {new Date(date).toLocaleDateString(locale === 'ar' ? 'ar-KW' : 'en-GB')}</div>
+          </div>
+          <span className={styles.status}>{safeStatus}</span>
+        </div>
+        <RequestStatusTimeline type={type} stage={stage} labels={timelineLabels} />
+      </article>
+    );
+  };
 
   function renderSection(key) {
     const s = sections[key];
     const isPrimary = key === cfg.primary;
     if (!s.items.length && !isPrimary) return null; // hide empty secondary sections
     return (
-      <div key={key} style={{ marginBlockEnd: '2.5rem' }}>
+      <div key={key} className={styles.requestSection}>
         <h2 className="display d-3" style={{ marginBlockEnd: '.75rem', fontSize: '1.3rem' }}>{s.heading}</h2>
         {s.items.length ? (
-          s.items.map((it) => (
-            <Row key={it.id} title={it.reference || s.label} sub={it.referring_firm_name || it.email} stage={it.stage} date={it.created_at} />
-          ))
+          <div className={styles.requestList}>
+            {s.items.map((it) => (
+              <Row key={it.id} type={key} title={it.reference || s.label} sub={it.referring_firm_name || it.email} stage={it.stage} date={it.created_at} />
+            ))}
+          </div>
         ) : (
           <p className="body" style={{ color: 'var(--muted)' }}>{s.empty}</p>
         )}

@@ -4,6 +4,7 @@ import {
   listConsultations, listReferrals, listPartnerships, listMembers, listAuditLog,
 } from '@/app/actions/admin.js';
 import { listPracticeAreas, listArticles } from '@/app/actions/content.js';
+import { needsNewRequestAttention } from '@/lib/request-attention.js';
 import styles from './AdminOverview.module.css';
 
 const ACTION_KEYS = {
@@ -31,14 +32,15 @@ const ENTITY_KEYS = {
 };
 
 /** صف واحد في نطاق "يحتاج انتباهك" — عنصر عملي قابل للنقر مباشرةً لمكان التنفيذ، لا رقم زخرفي. */
-function AttentionRow({ href, count, label }) {
+function AttentionRow({ href, count, label, urgent = false }) {
+  const accent = urgent ? '#9f2f28' : '#A0630D';
   return (
     <Link href={href} style={{
       display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem 1.1rem',
       borderRadius: 'var(--r)', boxShadow: 'inset 0 0 0 1px var(--hair-light-strong)',
-      borderInlineStart: '3px solid #A0630D', transition: 'background .2s ease',
+      borderInlineStart: `3px solid ${accent}`, transition: 'background .2s ease',
     }}>
-      <span style={{ fontFamily: 'var(--f-display)', fontSize: '1.6rem', color: '#A0630D', flexShrink: 0, minWidth: '2ch' }}>{count}</span>
+      <span style={{ fontFamily: 'var(--f-display)', fontSize: '1.6rem', color: accent, flexShrink: 0, minWidth: '2ch' }}>{count}</span>
       <span className="body" style={{ color: 'var(--ink)', fontSize: '.95rem', flex: 1 }}>{label}</span>
       <span style={{ color: 'var(--clay-bright)', fontSize: '.85rem', whiteSpace: 'nowrap' }}>→</span>
     </Link>
@@ -69,6 +71,13 @@ export default async function AdminOverview() {
   const newConsultations = consultations.filter((r) => r.stage === 'new').length;
   const newReferrals = referrals.filter((r) => r.stage === 'new').length;
   const newPartnerships = partnerships.filter((r) => r.stage === 'new').length;
+  const now = Date.now();
+  const agedConsultations = consultations.filter((r) => needsNewRequestAttention(r, now)).length;
+  const agedReferrals = referrals.filter((r) => needsNewRequestAttention(r, now)).length;
+  const agedPartnerships = partnerships.filter((r) => needsNewRequestAttention(r, now)).length;
+  const freshConsultations = newConsultations - agedConsultations;
+  const freshReferrals = newReferrals - agedReferrals;
+  const freshPartnerships = newPartnerships - agedPartnerships;
   const totalAttention = newConsultations + newReferrals + newPartnerships;
 
   const paReview = practiceAreas.filter((a) => a.practice_area_translations.some((tr) => tr.status === 'legal_review')).length;
@@ -92,14 +101,23 @@ export default async function AdminOverview() {
         </p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
-          {newConsultations > 0 && (
-            <AttentionRow href="/admin/consultations" count={newConsultations} label={t('needsAttentionConsultations', { count: newConsultations })} />
+          {agedConsultations > 0 && (
+            <AttentionRow urgent href="/admin/consultations" count={agedConsultations} label={t('needsAttentionAgedConsultations', { count: agedConsultations })} />
           )}
-          {newReferrals > 0 && (
-            <AttentionRow href="/admin/referrals" count={newReferrals} label={t('needsAttentionReferrals', { count: newReferrals })} />
+          {agedReferrals > 0 && (
+            <AttentionRow urgent href="/admin/referrals" count={agedReferrals} label={t('needsAttentionAgedReferrals', { count: agedReferrals })} />
           )}
-          {newPartnerships > 0 && (
-            <AttentionRow href="/admin/partnerships" count={newPartnerships} label={t('needsAttentionPartnerships', { count: newPartnerships })} />
+          {agedPartnerships > 0 && (
+            <AttentionRow urgent href="/admin/partnerships" count={agedPartnerships} label={t('needsAttentionAgedPartnerships', { count: agedPartnerships })} />
+          )}
+          {freshConsultations > 0 && (
+            <AttentionRow href="/admin/consultations" count={freshConsultations} label={t('needsAttentionConsultations', { count: freshConsultations })} />
+          )}
+          {freshReferrals > 0 && (
+            <AttentionRow href="/admin/referrals" count={freshReferrals} label={t('needsAttentionReferrals', { count: freshReferrals })} />
+          )}
+          {freshPartnerships > 0 && (
+            <AttentionRow href="/admin/partnerships" count={freshPartnerships} label={t('needsAttentionPartnerships', { count: freshPartnerships })} />
           )}
           {paReview > 0 && (
             <AttentionRow href="/admin/practice-areas" count={paReview} label={t('needsAttentionPracticeAreasReview', { count: paReview })} />

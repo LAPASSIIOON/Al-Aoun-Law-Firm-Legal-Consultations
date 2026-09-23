@@ -2,6 +2,7 @@
 import { useState, useTransition, useMemo, Fragment } from 'react';
 import { useTranslations } from 'next-intl';
 import { updateStage, updateNotes } from '@/app/actions/admin.js';
+import { needsNewRequestAttention } from '@/lib/request-attention.js';
 import styles from './AdminTable.module.css';
 
 function toCsv(rows, columns, stageLabel, cellValue, stageHeading, notesHeading) {
@@ -43,6 +44,7 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
   const [stageFilter, setStageFilter] = useState('all');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [attentionOnly, setAttentionOnly] = useState(false);
   const [openRow, setOpenRow] = useState(null);
   const [notesDraft, setNotesDraft] = useState('');
   const [savedFlash, setSavedFlash] = useState(null);
@@ -76,7 +78,11 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
       try {
         const result = await updateStage({ table: tableType, id, stage });
         if (!result?.ok) { setActionError(t('tableSaveError')); return; }
-        setData((cur) => cur.map((r) => (r.id === id ? { ...r, stage } : r)));
+        setData((cur) => cur.map((r) => {
+          if (r.id !== id) return r;
+          const updated = { ...r, stage };
+          return { ...updated, _needs_attention: needsNewRequestAttention(updated) };
+        }));
       } catch {
         setActionError(t('tableSaveError'));
       }
@@ -107,6 +113,7 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
 
   const filtered = useMemo(() => {
     return data.filter((r) => {
+      if (attentionOnly && !r._needs_attention) return false;
       if (stageFilter !== 'all' && r.stage !== stageFilter) return false;
       if (dateFrom && r.created_at && r.created_at.slice(0, 10) < dateFrom) return false;
       if (dateTo && r.created_at && r.created_at.slice(0, 10) > dateTo) return false;
@@ -115,7 +122,9 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
       return columns.some((c) => String(r[c.key] ?? '').toLowerCase().includes(q))
         || String(r.internal_notes ?? '').toLowerCase().includes(q);
     });
-  }, [data, query, stageFilter, dateFrom, dateTo, columns]);
+  }, [data, query, stageFilter, dateFrom, dateTo, attentionOnly, columns]);
+
+  const attentionCount = useMemo(() => data.filter((r) => r._needs_attention).length, [data]);
 
   if (!data.length) return <p className="body" style={{ color: 'var(--muted)' }}>{emptyLabel}</p>;
 
@@ -134,6 +143,16 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
         <input type="date" className={styles.select} value={dateTo} onChange={(e) => setDateTo(e.target.value)} aria-label={t('tableDateTo')} title={t('tableDateTo')} />
         {(dateFrom || dateTo) && (
           <button type="button" className={styles.notesBtn} onClick={() => { setDateFrom(''); setDateTo(''); }}>{t('tableClearDates')}</button>
+        )}
+        {(attentionCount > 0 || attentionOnly) && (
+          <button
+            type="button"
+            className={`${styles.attentionToggle} ${attentionOnly ? styles.attentionToggleActive : ''}`}
+            aria-pressed={attentionOnly}
+            onClick={() => setAttentionOnly((value) => !value)}
+          >
+            {t('attentionFilter', { count: attentionCount })}
+          </button>
         )}
         <span className={styles.count}>{filtered.length} / {data.length}</span>
         <button type="button" className="btn-line" style={{ fontSize: '.82rem', marginInlineStart: 'auto' }}
@@ -161,8 +180,13 @@ export default function AdminTable({ rows, tableType, stageOptions, columns, emp
                 const isOpen = openRow === r.id;
                 return (
                   <Fragment key={r.id}>
-                    <tr className={styles.rowClickable} onClick={() => toggleRow(r)}>
-                      {columns.map((c) => <td key={c.key} data-label={c.label}>{cellValue(r, c)}</td>)}
+                    <tr className={`${styles.rowClickable} ${r._needs_attention ? styles.rowAttention : ''}`} onClick={() => toggleRow(r)}>
+                      {columns.map((c, index) => (
+                        <td key={c.key} data-label={c.label}>
+                          {cellValue(r, c)}
+                          {index === 0 && r._needs_attention && <span className={styles.attentionBadge}>{t('attentionBadge')}</span>}
+                        </td>
+                      ))}
                       <td data-label={t('tableColStage')} onClick={(e) => e.stopPropagation()}>
                         <select className={styles.select} value={r.stage} disabled={pending} onChange={(e) => onStageChange(r.id, e.target.value)}>
                           {stageOptions.map((s) => <option key={s} value={s}>{stageLabel(s)}</option>)}

@@ -2,6 +2,7 @@ import { getTranslations, getLocale } from 'next-intl/server';
 import { listConsultations } from '@/app/actions/admin.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import AdminTable from '@/components/AdminTable.js';
+import { withAttentionFlag } from '@/lib/request-attention.js';
 
 const STAGES = ['new', 'triage', 'conflict_check', 'cleared', 'conflict_found', 'contacted', 'closed'];
 
@@ -38,7 +39,7 @@ export default async function AdminConsultations() {
   const [rawRows, paNames] = await Promise.all([listConsultations(), fetchPracticeAreaNames(locale)]);
   const fmtDate = (v) => (v ? new Date(v).toLocaleString(locale === 'ar' ? 'ar-KW' : 'en-GB') : null);
   // تنسيق التواريخ من جانب الخادم (لضمان اتساق اللغة) وإرفاقها كحقول إضافية بيانات صرفة — بلا أي دوال تُمرَّر لمكوّن العميل
-  const rows = rawRows.map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _conflict_checked_fmt: fmtDate(r.conflict_checked_at) }));
+  const rows = withAttentionFlag(rawRows).map((r) => ({ ...r, _created_fmt: fmtDate(r.created_at), _conflict_checked_fmt: fmtDate(r.conflict_checked_at) }));
 
   return (
     <>

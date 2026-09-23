@@ -5,7 +5,7 @@
 .header{position:fixed;inset-block-start:0;inset-inline:0;z-index:100;
   background:transparent;box-shadow:none;
   transition:background .4s var(--ease),box-shadow .4s var(--ease),backdrop-filter .4s var(--ease)}
-.solid{background:rgba(14,24,38,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+.solid,.grounded{background:rgba(14,24,38,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   box-shadow:0 1px 0 var(--hair-light)}
 .bar{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter);block-size:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
   transition:block-size .4s var(--ease)}

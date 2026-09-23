@@ -12,6 +12,9 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
   const t = useTranslations('nav');
   const tf = useTranslations('footer');
   const pathname = usePathname();
+  // The member dashboard starts on a light section, unlike the site's hero-led pages.
+  // Give it a dark header at the top so the platinum navigation remains readable.
+  const lightTop = pathname.endsWith('/account/my-requests');
   const other = locale === 'ar' ? 'en' : 'ar';
   const [scrolled, setScrolled] = useState(false);
   const [mobile, setMobile] = useState(false);
@@ -41,7 +44,7 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
 
   return (
     <>
-    <header className={`${styles.header} ${scrolled ? styles.solid : ''}`}>
+    <header className={`${styles.header} ${scrolled ? styles.solid : lightTop ? styles.grounded : ''}`}>
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} onClick={closeAll}>
           <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} className={styles.logo} />

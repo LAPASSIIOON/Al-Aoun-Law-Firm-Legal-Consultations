@@ -47,8 +47,9 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
     <header className={`${styles.header} ${scrolled ? styles.solid : lightTop ? styles.grounded : ''}`}>
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} onClick={closeAll}>
-          <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} className={styles.logo} />
-          <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
+          <span className={styles.logoPlinth}>
+            <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} className={styles.logo} />
+          </span>
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
@@ -118,8 +119,9 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
     {mobile && (
       <div className={styles.overlay}>
         <div className={styles.overlayTop}>
-          <img src={`/brand/logo-full-${locale}-color.webp`} alt="" className={styles.logo} />
-          <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
+          <span className={styles.logoPlinth}>
+            <img src={`/brand/logo-full-${locale}-color.webp`} alt="" className={styles.logo} />
+          </span>
           <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={closeAll}>×</button>
         </div>
         <nav className={styles.overlayNav}>

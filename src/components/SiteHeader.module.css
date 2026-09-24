@@ -12,28 +12,20 @@
 /* تقليص عند التمرير — ٧٦px ← ٦٨px (٨px) */
 .solid .bar{block-size:var(--header-h-scrolled)}
 .brand{display:inline-flex;align-items:center;flex:0 0 auto}
-.logo{height:72px;width:auto;display:block;transition:height .4s var(--ease)}
-/* العلامة المتجهية الرسمية — مخفية افتراضيًا؛ تظهر على الهاتف الضيق فقط.
-   filter: brightness(0) invert(1) هو المعالجة المعتمَدة في المشروع لهذا الملف تحديدًا
-   (نفسها في SiteFooter.module.css و HeroMarkWatermark) لأن fill="currentColor"
-   لا يورَّث عبر <img>. لا يُطبَّق أي فلتر على الشعار النقطي الكامل. */
-.logoMark{display:none;block-size:40px;inline-size:auto;filter:brightness(0) invert(1);flex:0 0 auto}
-/* هاتف ضيق (مقيس فعليًا: طفح أفقي 27px عند 375px بسبب تصادم اللوجو + أزرار الإجراءات) — تضييق الفراغ وتصغير اللوجو تناسبيًا (width:auto فيحافظ على النسبة) بلا أي أثر على سطح مكتب/تابلت. لازم يجي بعد قاعدة .logo الأساسية (ترتيب المصدر) وإلا اتلغى. */
+.logo{height:68px;width:auto;display:block;transition:height .4s var(--ease)}
+/* هاتف ضيق: يُبقى الشعار الكامل ظاهرًا داخل اللوحة الفاتحة، مع مقاس مضغوط للهيدر. */
 @media(max-width:479px){
   .bar{gap:.6rem}
-  /* تبديل الشعار الكامل بالعلامة الرسمية — في شريط الهيدر ورأس الدرج معًا */
-  .logo{display:none}
-  .logoMark{display:block}
+  .logo{height:52px}
+  .solid .logo{height:52px}
 }
-/* تقليص الشعار الكامل عند التمرير — من ٤٨٠px فأعلى فقط.
-   تحت ٤٨٠px لا ينطبق: الشعار الكامل مخفي، وتُعرض العلامة المتجهية الرسمية (.logoMark) بارتفاع ٤٠px بدلًا منه.
-   يأتي بعد قاعدة الهاتف عمدًا (ترتيب المصدر) حتى لا يُلغى أيٌّ منهما. */
+/* تقليص الشعار عند التمرير على الشاشات المتوسطة والكبيرة. */
 @media(min-width:480px){.solid .logo{height:56px}}
-.logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--white,#fff);border-radius:var(--r-lg);padding:.55rem 1.05rem;box-shadow:0 3px 12px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.08);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
-.brand:hover .logoPlinth{box-shadow:0 6px 20px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.14);transform:translateY(-1px)}
-.nav{display:none;align-items:center;gap:clamp(1rem,1.8vw,2rem)}
+.logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--light-ground,#F4F6F8);border-radius:var(--r);padding:.2rem .3rem;box-shadow:0 1px 5px rgba(0,0,0,.18);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
+.brand:hover .logoPlinth{box-shadow:0 3px 9px rgba(0,0,0,.22);transform:translateY(-1px)}
+.nav{display:none;align-items:center;gap:clamp(.6rem,.8vw,.9rem)}
 .navItem{position:relative}
-.navLink{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--f-ui);font-size:.95rem;color:var(--platinum);opacity:.82;transition:opacity .35s,color .35s;padding-block:.4rem}
+.navLink{display:inline-flex;align-items:center;gap:.25rem;font-family:var(--f-ui);font-size:.88rem;color:var(--platinum);opacity:.82;transition:opacity .35s,color .35s;padding-block:.35rem;white-space:nowrap}
 .navLink:hover{opacity:1;color:var(--clay-bright)}
 /* الشيفرون على هيدر داكن — كان rgba(10,15,26,.5) (حبر للشريط الفاتح القديم). */
 .chev{display:inline-flex;transition:transform .35s var(--ease);color:var(--platinum-2)}
@@ -61,8 +53,7 @@
 .burger{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
   min-inline-size:var(--tap-min);min-block-size:var(--tap-min);padding:0}
 .burger span{display:block;inline-size:24px;block-size:1.6px;background:var(--platinum);border-radius:2px}
-/* التخطيط المكتبي الكامل يحتاج عرضه الحقيقي، خصوصًا مع النص الإنجليزي وزر الاستشارة.
-   ما دون 1440px يستخدم الدرج الكامل بدل قصّ الشعار أو الإجراء الرئيسي عند حافة الشاشة. */
+/* التخطيط المكتبي الكامل يعرض كل رابط في سطر واحد؛ تحته يبقى الدرج الكامل ظاهرًا. */
 @media(min-width:1440px){.nav{display:flex}.cta{display:inline-flex!important}.burger{display:none}}
 
 /* mega */

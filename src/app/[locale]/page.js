@@ -16,11 +16,11 @@ export function generateStaticParams() { return [{ locale: 'ar' }, { locale: 'en
 
 const T = {
   ar: {
-    eyebrow: 'مكتب محاماة كويتي · منذ ٢٠٠٠',
-    head: 'قوّةٌ قانونية كويتية،\nبمعايير عالمية.',
+    eyebrow: 'مكتب محاماة كويتي منذ ٢٠٠٠',
+    head: 'قوة قانونية كويتية\nبمعايير عالمية',
     sub: 'نرافق الأفراد والشركات والمستثمرين في الكويت وخارجها بمشورة دقيقة وسرّية تامة — من أول سؤالٍ إلى القرار.',
     heroCta1: 'أحتاج مساعدة قانونية', heroCta2: 'ابحث عن مجال',
-    regLine: 'مجموعة العون · الكويت · منذ ٢٠٠٠',
+    regLine: 'مجموعة العون في الكويت منذ ٢٠٠٠',
     counters: [
       { v: 2000, l: 'بداية ممارسة المؤسِّس' }, { v: 25, s: '+', l: 'سنة خبرة' },
       { v: 48, l: 'مجال ممارسة' }, { v: 4, l: 'مراكز تحكيم معتمدة' },
@@ -32,24 +32,23 @@ const T = {
       { n: '03', t: 'رئاسة المجلس العلمي بجمعية المحامين', d: 'قيادة أكاديمية داخل الهيئة المهنية للمحامين في الكويت.' },
       { n: '04', t: '+٢٥ عامًا من الممارسة', d: 'خبرةٌ تمتد لأكثر من عقدين في القضايا الدستورية والطعون بالتمييز والتحكيم التجاري الدولي.' },
     ],
-    posEye: 'لماذا مجموعة العون', posHead: 'خبرةٌ قانونية عميقة، في خدمة قرارٍ واضح.',
-    posBody: 'مجموعة العون مكتب محاماةٍ واستشاراتٍ وتحكيمٍ كويتي، تستند خبرته إلى مسيرة مؤسسه في المحاماة منذ عام ٢٠٠٠، يقوده الدكتور هيثم العون بخلفيةٍ أكاديمية وعملية في القانون الدستوري والتمييز والتحكيم التجاري الدولي. نجمع بين العمق النظري والممارسة الدقيقة لنقدّم مشورةً يُعتمد عليها.',
+    posEye: 'لماذا مجموعة العون', posHead: 'خبرة قانونية لقرار أوضح',
+    posBody: 'نقدّم خدمات المحاماة والاستشارات والتحكيم للأفراد والشركات والمستثمرين في الكويت وخارجها. مشورة واضحة وسرّية تراعي طبيعة كل مسألة.',
     posLink: 'المزيد عن المكتب',
     paEye: 'مجالات الممارسة', paHead: 'خبرةٌ تُغطّي ما يهمّك', paAll: 'استعراض كل المجالات', paMore: 'استعراض',
     fEye: 'المؤسِّس', fName: 'الدكتور هيثم أحمد العون',
-    fRole: 'المؤسِّس ورئيس مجلس الإدارة · محامٍ بالتمييز والدستورية',
-    /* D2: الجملة الأولى الكاملة فقط من النص المعتمد — بلا إعادة صياغة (بقية السيرة في الملف الشخصي) */
-    fBio: 'دكتوراه في القانون الدستوري من جامعة القاهرة بتقدير امتياز، ورئيس المجلس العلمي الاستشاري بجمعية المحامين الكويتية، ومحكّم معتمد لدى أبرز مراكز التحكيم في المنطقة.',
+    fRole: 'المؤسِّس ورئيس مجلس الإدارة',
+    fBio: 'يقود المجموعة في تقديم مشورة قانونية واضحة للأفراد والشركات.',
     fLink: 'الملف الكامل',
     inEye: 'رؤى قانونية', inHead: 'رؤى ومقالات', inAll: 'كل الرؤى', inEmpty: 'نُثري هذا القسم بتحليلاتٍ قانونية تباعًا.',
     bandHead: 'جاهزٌ لخطوةٍ أولى واضحة؟', bandBody: 'ابدأ بخطوةٍ سهلة — اسمك ورقمك فقط، والباقي نتولّاه بسرّيةٍ تامة.', bandPhone: 'أو اتصل بنا',
   },
   en: {
-    eyebrow: 'Kuwaiti Law Firm · Since 2000',
-    head: 'Kuwaiti legal strength,\nto a global standard.',
+    eyebrow: 'Kuwaiti Law Firm Since 2000',
+    head: 'Kuwaiti legal strength\nto a global standard',
     sub: 'We stand with individuals, companies and investors in Kuwait and beyond — precise, fully confidential counsel from the first question to the decision.',
     heroCta1: 'I need legal help', heroCta2: 'Find a practice area',
-    regLine: 'AL OUN · KUWAIT · SINCE 2000',
+    regLine: 'AL OUN IN KUWAIT SINCE 2000',
     counters: [
       { v: 2000, l: 'Founder practising since' }, { v: 25, s: '+', l: 'Years of experience' },
       { v: 48, l: 'Practice areas' }, { v: 4, l: 'Arbitration centres' },
@@ -61,14 +60,13 @@ const T = {
       { n: '03', t: 'Chair, Scientific Advisory Council', d: "Academic leadership within Kuwait's professional lawyers' association." },
       { n: '04', t: '25+ years in practice', d: 'Over two decades across constitutional matters, cassation appeals and international commercial arbitration.' },
     ],
-    posEye: 'Why AL OUN', posHead: 'Deep legal expertise, in service of a clear decision.',
-    posBody: "AL OUN is a Kuwaiti law, consultancy and arbitration firm whose expertise is built on its founder's practice of law since 2000, led by Dr. Haitham Aloun with academic and practical grounding in constitutional law, cassation and international commercial arbitration. We pair theoretical depth with precise practice to deliver counsel you can rely on.",
+    posEye: 'Why AL OUN', posHead: 'Legal insight for clearer decisions',
+    posBody: 'We provide legal representation, consultation and arbitration for individuals, companies and investors in Kuwait and beyond. Our counsel is clear, confidential and attentive to the matter at hand.',
     posLink: 'More about the firm',
     paEye: 'Practice Areas', paHead: 'Expertise across what matters to you', paAll: 'View all practice areas', paMore: 'Explore',
     fEye: 'The Founder', fName: 'Dr. Haitham Ahmed Al Oun',
-    fRole: 'Founder & Chairman · Cassation & Constitutional Lawyer',
-    /* D2: first complete sentence of the approved bio only — no paraphrase (rest lives on the profile page) */
-    fBio: 'PhD in constitutional law from Cairo University (Excellent), Chair of the Scientific Advisory Council at the Kuwait Lawyers Association, and a registered arbitrator at the region’s leading arbitration centres.',
+    fRole: 'Founder & Chairman',
+    fBio: 'He leads the firm in providing clear legal counsel to individuals and businesses.',
     fLink: 'Full profile',
     inEye: 'Insights', inHead: 'Insights & articles', inAll: 'All insights', inEmpty: 'We’re adding legal analysis to this section shortly.',
     bandHead: 'Ready for a clear first step?', bandBody: 'Start with one easy step — just your name and number. We’ll handle the rest, in full confidence.', bandPhone: 'Or call us',
@@ -204,46 +202,37 @@ export default async function Home({ params }) {
           </div>
           <p className="lead" data-reveal style={{ maxWidth: '52rem' }}>{c.posBody}</p>
 
-          {/* D2 «سجلّ المستشارين»: قائمة الإرث حُذفت من الرئيسية (كانت تكرارًا لاعتماديات المؤسِّس
-              الظاهرة في عدّادات الهيرو وسيرته أدناه وملفه الشخصي) — المؤسسة تتحدث مرة واحدة أعلاه،
-              ثم يقف خلفها البشر: المؤسِّس كتقديم تحريري أوّل، والشريك كصفّ سجلٍّ تابع. */}
-          <div className={styles.founder} style={{ marginBlockStart: 'clamp(2.5rem,5vh,4rem)' }}>
-            <div className={`${styles.founderMedia} img-zoom-frame`} data-reveal="slow">
-              <img src="/media/founder-haitham.jpg" alt={c.fName} width="1000" height="1042" loading="lazy" decoding="async" />
-            </div>
-            <div data-reveal="slow">
-              <span className="eyebrow">{c.fEye}</span>
-              <h2 className={styles.founderName}>{c.fName}</h2>
-              <p className={styles.founderRole}>{c.fRole}</p>
-              <p className="body" style={{ fontSize: '1.08rem', maxWidth: '46rem' }}>{c.fBio}</p>
-              {/* D2: الوجهة تطابق الوعد أخيرًا — الملف الشخصي الكامل للمؤسِّس لا فهرس الفريق */}
-              <p style={{ marginBlockStart: '1.75rem' }}><Link href="/team/haitham-al-aoun" className="btn-line">{c.fLink} <span className="arrow">→</span></Link></p>
-            </div>
-          </div>
-
-          {/* صفّ الشريك: هوية كاملة دائمة الظهور (لا معلومات خلف التحويم)، الصفّ كله رابط لملفه */}
-          <div className={styles.proList}>
+          <div className={styles.leaderCards} style={{ marginBlockStart: 'clamp(2.5rem,5vh,4rem)' }}>
+            <Link href="/team/haitham-al-aoun" className={styles.leaderCard} data-reveal="slow">
+              <span className={styles.leaderPortrait}>
+                <img src="/media/founder-haitham.jpg" alt="" width="1000" height="1042" loading="lazy" decoding="async" />
+              </span>
+              <span className={styles.leaderCopy}>
+                <span className={styles.leaderEyebrow}>{c.fEye}</span>
+                <span className={styles.leaderName}>{c.fName}</span>
+                <span className={styles.leaderRole}>{c.fRole}</span>
+                <span className={styles.leaderBio}>{c.fBio}</span>
+                <span className={styles.leaderLink}>{c.fLink}<span className="arrow" aria-hidden="true">→</span></span>
+              </span>
+            </Link>
             {pf && (
-              <Link href={`/team/${partner.slug}`} className={styles.proRow} data-reveal="file">
-                {/* إغلاق الوصولية (D2): الصورة زخرفية داخل رابطٍ نصُّه المرئي يحمل الاسم كاملًا —
-                    alt فارغ يمنع تكرار الاسم في الاسم الوصولي للصف */}
-                <span className={styles.proPortrait}>
-                  <img src={partner.photoThumb} alt="" width="1000" height="1042" loading="lazy" decoding="async" />
+              <Link href={`/team/${partner.slug}`} className={styles.leaderCard} data-reveal="slow">
+                <span className={styles.leaderPortrait}>
+                  <img src={partner.photoFull} alt="" width="1000" height="1042" loading="lazy" decoding="async" />
                 </span>
-                <span className={styles.proId}>
-                  <span className={styles.proName}>{pf.name}</span>
-                  <span className={styles.proRole}>{pf.role} · {pf.title}</span>
+                <span className={styles.leaderCopy}>
+                  <span className={styles.leaderEyebrow}>{locale === 'ar' ? 'الشريك' : 'The Partner'}</span>
+                  <span className={styles.leaderName}>{pf.name}</span>
+                  <span className={styles.leaderRole}>{pf.role} · {pf.title}</span>
+                  <span className={styles.leaderBio}>{pf.bio}</span>
+                  <span className={styles.leaderLink}>{c.fLink}<span className="arrow" aria-hidden="true">→</span></span>
                 </span>
-                {pf.creds?.[0] && <span className={styles.proProof}>{pf.creds[0]}</span>}
-                <span className="arrow" aria-hidden="true">→</span>
               </Link>
             )}
-            {/* الصفّ الختامي: نصّ الملاحة المعتمد وحده («المحترفون» / Professionals) — بلا عدّاد ولا نصّ جديد */}
-            <Link href="/team" className={styles.proAllRow} data-reveal="file">
-              <span className={styles.proAllT}>{n('professionals')}</span>
-              <span className="arrow" aria-hidden="true">→</span>
-            </Link>
           </div>
+          <p className={styles.leaderAll}>
+            <Link href="/team" className="btn-line">{n('professionals')} <span className="arrow">→</span></Link>
+          </p>
         </div>
       </section>
 

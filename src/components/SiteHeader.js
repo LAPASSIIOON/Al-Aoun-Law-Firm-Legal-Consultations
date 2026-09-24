@@ -41,15 +41,26 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
   ];
 
   const closeAll = () => { setMobile(false); setOpenMenu(null); };
+  const brandSignature = (
+    <span className={styles.logoSignature}>
+      <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
+      <span className={styles.logoText}>
+        <span className={styles.logoName} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+          {locale === 'en' ? <><span className={styles.logoAccent}>AL OUN</span><span>GROUP</span></> : 'مجموعة العون'}
+        </span>
+        <span className={styles.logoTagline} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+          {locale === 'en' ? 'Advocates & Legal Consultants' : 'محامون ومستشارون قانونيون'}
+        </span>
+      </span>
+    </span>
+  );
 
   return (
     <>
     <header className={`${styles.header} ${scrolled ? styles.solid : lightTop ? styles.grounded : ''}`}>
       <div className={styles.bar}>
         <Link href="/" className={styles.brand} aria-label={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} onClick={closeAll}>
-          <span className={styles.logoPlinth}>
-            <img src={`/brand/logo-full-${locale}-color.webp`} alt={locale === 'en' ? 'AL OUN' : 'مجموعة العون'} className={styles.logo} />
-          </span>
+          {brandSignature}
         </Link>
 
         <nav className={styles.nav} aria-label={locale === 'en' ? 'Primary' : 'رئيسية'}>
@@ -119,9 +130,7 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
     {mobile && (
       <div className={styles.overlay}>
         <div className={styles.overlayTop}>
-          <span className={styles.logoPlinth}>
-            <img src={`/brand/logo-full-${locale}-color.webp`} alt="" className={styles.logo} />
-          </span>
+          <span aria-hidden="true">{brandSignature}</span>
           <button className={styles.close} aria-label={locale === 'ar' ? 'إغلاق' : 'Close'} onClick={closeAll}>×</button>
         </div>
         <nav className={styles.overlayNav}>

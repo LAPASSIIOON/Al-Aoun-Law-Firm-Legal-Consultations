@@ -12,17 +12,21 @@
 /* تقليص عند التمرير — ٧٦px ← ٦٨px (٨px) */
 .solid .bar{block-size:var(--header-h-scrolled)}
 .brand{display:inline-flex;align-items:center;flex:0 0 auto}
-.logo{height:68px;width:auto;display:block;transition:height .4s var(--ease)}
+.logoSignature{display:inline-flex;align-items:center;gap:.45rem;flex:0 0 auto}
+.logoMark{display:block;height:64px;width:auto;filter:brightness(0) invert(1);flex:0 0 auto;transition:height .4s var(--ease)}
+.logoText{display:flex;flex-direction:column;align-items:flex-start;gap:.12rem;white-space:nowrap}
+.logoName{display:flex;align-items:baseline;gap:.28em;font-family:var(--f-en);font-size:1.08rem;font-weight:750;letter-spacing:-.035em;line-height:1.05;color:var(--platinum)}
+.logoAccent{color:var(--clay-bright)}
+.logoTagline{font-family:var(--f-ui);font-size:.55rem;letter-spacing:.035em;line-height:1.2;color:var(--platinum-2)}
 /* هاتف ضيق: يُبقى الشعار الكامل ظاهرًا داخل اللوحة الفاتحة، مع مقاس مضغوط للهيدر. */
 @media(max-width:479px){
   .bar{gap:.6rem}
-  .logo{height:52px}
-  .solid .logo{height:52px}
+  .logoMark{height:56px}
+  .solid .logoMark{height:54px}
 }
 /* تقليص الشعار عند التمرير على الشاشات المتوسطة والكبيرة. */
-@media(min-width:480px){.solid .logo{height:56px}}
-.logoPlinth{display:inline-flex;align-items:center;width:fit-content;max-width:fit-content;flex:0 0 auto;background:var(--light-ground,#F4F6F8);border-radius:var(--r);padding:.2rem .3rem;box-shadow:0 1px 5px rgba(0,0,0,.18);transition:box-shadow .4s var(--ease),transform .4s var(--ease)}
-.brand:hover .logoPlinth{box-shadow:0 3px 9px rgba(0,0,0,.22);transform:translateY(-1px)}
+@media(min-width:480px){.solid .logoMark{height:58px}}
+.brand:hover .logoSignature{transform:translateY(-1px)}
 .nav{display:none;align-items:center;gap:clamp(.6rem,.8vw,.9rem)}
 .navItem{position:relative}
 .navLink{display:inline-flex;align-items:center;gap:.25rem;font-family:var(--f-ui);font-size:.88rem;color:var(--platinum);opacity:.82;transition:opacity .35s,color .35s;padding-block:.35rem;white-space:nowrap}

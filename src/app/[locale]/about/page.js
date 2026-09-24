@@ -58,8 +58,8 @@ export default async function About({ params }) {
           <div className={styles.leadershipCopy} data-reveal="slow">
             <span className={styles.label}>{locale === 'ar' ? 'القيادة' : 'Leadership'}</span>
             <h2 className="display d-2">{founderProfile.name}</h2>
-            <p className={styles.role}>{founderProfile.role} · {founderProfile.title}</p>
-            <p className="body">{founderProfile.bio}</p>
+            <p className={styles.role}>{founderProfile.role}</p>
+            <p className="body">{about('leadershipLead')}</p>
             <Link href="/team/haitham-al-aoun" className="btn-line">
               {locale === 'ar' ? 'استعرض الملف المهني' : 'View professional profile'}<span className="arrow">→</span>
             </Link>

@@ -237,6 +237,30 @@
 .teamCardBio{margin-block-start:1rem;max-inline-size:52ch;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .teamCardCta{margin-block-start:auto;padding-block-start:1.5rem}
 
+/* Featured leadership — matched portrait cards make both leaders equally visible. */
+.leaderCards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1rem,2.5vw,2rem)}
+.leaderCard{display:flex;flex-direction:column;min-width:0;overflow:hidden;
+  border:1px solid var(--light-hair);border-radius:var(--r-card);background:var(--light-ground);
+  color:inherit;transition:border-color .3s ease,box-shadow .3s ease}
+.leaderCard:hover,.leaderCard:focus-visible{border-color:var(--light-idx);box-shadow:0 12px 32px rgba(20,33,58,.09)}
+.leaderCard:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.leaderPortrait{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--paper-2)}
+.leaderPortrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .45s ease}
+.leaderCard:hover .leaderPortrait img,.leaderCard:focus-visible .leaderPortrait img{transform:scale(1.025)}
+.leaderCopy{display:flex;flex:1;flex-direction:column;align-items:flex-start;min-width:0;padding:clamp(1rem,2vw,1.5rem)}
+.leaderEyebrow{font-family:var(--f-ui);font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--light-idx)}
+.leaderName{margin-block-start:.7rem;font-family:var(--f-display);font-size:clamp(1.15rem,1.7vw,1.55rem);font-weight:600;line-height:1.35;color:var(--ink)}
+.leaderRole{margin-block-start:.4rem;color:var(--blue);font-size:.92rem;line-height:1.55}
+.leaderBio{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;margin-block-start:.7rem;color:var(--muted);font-size:.9rem;line-height:1.65}
+.leaderLink{display:inline-flex;align-items:center;gap:.55rem;margin-block-start:auto;padding-block-start:.9rem;color:var(--blue);font-size:.9rem;font-weight:600}
+.leaderLink :global(.arrow){transition:transform .3s ease}
+:global(html[lang=en]) .leaderCard:hover .leaderLink :global(.arrow),:global(html[lang=en]) .leaderCard:focus-visible .leaderLink :global(.arrow){transform:translateX(4px)}
+:global(html[lang=ar]) .leaderCard:hover .leaderLink :global(.arrow),:global(html[lang=ar]) .leaderCard:focus-visible .leaderLink :global(.arrow){transform:translateX(-4px)}
+.leaderAll{display:flex;justify-content:flex-end;margin-block-start:1.25rem}
+@media(max-width:859px){.leaderCards{grid-template-columns:1fr;gap:1rem}}
+@media(max-width:420px){.leaderPortrait{aspect-ratio:5/3}.leaderCopy{padding:1rem}.leaderName{font-size:1.12rem}.leaderRole,.leaderBio,.leaderLink{font-size:.86rem}.leaderBio{-webkit-line-clamp:3}}
+@media(prefers-reduced-motion:reduce){.leaderCard,.leaderPortrait img,.leaderLink :global(.arrow){transition:none}}
+
 /* سطور اعتماد تحريرية موجزة — تمايز مقصود عن القائمة النقطية بصفحة الملف التفصيلي */
 .proofLines{display:flex;flex-direction:column;margin-block-start:1.5rem}
 .proofLine{font-family:var(--f-ui);font-size:.92rem;color:var(--ink);line-height:1.6;padding-block:.6rem;border-block-start:1px solid var(--hair-light)}

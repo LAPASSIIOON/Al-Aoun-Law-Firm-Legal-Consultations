@@ -105,6 +105,13 @@ async function fetchData(locale) {
   return { areas, articles, fieldCountries };
 }
 
+function getFeaturedAreas(areas) {
+  const criminal = areas.find((area) => area.slug === 'criminal-law');
+  if (!criminal) return areas.slice(0, 8);
+  const others = areas.filter((area) => area.slug !== 'criminal-law');
+  return [...others.slice(0, 4), criminal, ...others.slice(4, 7)];
+}
+
 /** @param {{ params: Promise<{ locale: string }> }} props */
 export default async function Home({ params }) {
   const { locale } = await params;
@@ -113,6 +120,7 @@ export default async function Home({ params }) {
   const ti = await getTranslations({ locale, namespace: 'international' });
   const c = T[locale] || T.ar;
   const { areas, articles, fieldCountries } = await fetchData(locale);
+  const featuredAreas = getFeaturedAreas(areas);
   /* D2 «سجلّ المستشارين»: هوية الشريك من مصدر بيانات الفريق المعتمد حصرًا — لا إعادة كتابة */
   const partner = getTeamMember('bader-saif-al-rashidi');
   const pf = partner ? (partner[locale] || partner.ar) : null;
@@ -177,7 +185,7 @@ export default async function Home({ params }) {
           </div>
           <div className={`${styles.paList} ${styles.paIndex}`}>
             {/* أمان وقائعي: لا صفوف مُختلَقة عند غياب البيانات — العنوان والصفّ الختامي فقط */}
-            {areas.slice(0, 8).map((a, i) => (
+            {featuredAreas.map((a, i) => (
               <ReferenceRow key={a.slug} index={i + 1} variant="annotated"
                 title={a.title} href={`/services/${a.slug}`} summary={a.summary} />
             ))}

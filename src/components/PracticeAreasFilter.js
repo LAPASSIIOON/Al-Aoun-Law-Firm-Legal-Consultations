@@ -1,90 +1,93 @@
 'use client';
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import { Link } from '@/i18n/navigation.js';
 import styles from '../app/[locale]/home.module.css';
 import { GROUPS, SLUG_TO_GROUP } from '@/lib/practice-area-groups.js';
 
-/** فلتر فوري لقائمة مجالات الممارسة — بحث نصّي + رقائق تصنيف (تصنيف عرضي، لا قاعدة بيانات)، يتضافران (AND). */
-export default function PracticeAreasFilter({ items, locale, placeholder, noResults, notSureText, consultLabel }) {
-  const [q, setQ] = useState('');
-  const [group, setGroup] = useState('all');
+/** فهرس مجالات الممارسة: مجموعات قابلة للفتح وبحث يفتح النتائج المطابقة. */
+export default function PracticeAreasFilter({ items, locale, placeholder, noResults }) {
+  const [query, setQuery] = useState('');
+  const [openGroups, setOpenGroups] = useState([]);
+  const isArabic = locale === 'ar';
 
-  const filtered = useMemo(() => {
-    const query = q.trim().toLowerCase();
-    return items.filter((r) => {
-      const matchesQuery = !query || r.title?.toLowerCase().includes(query) || r.summary?.toLowerCase().includes(query);
-      const matchesGroup = group === 'all' || SLUG_TO_GROUP[r.slug] === group;
-      return matchesQuery && matchesGroup;
-    });
-  }, [items, q, group]);
+  const categories = useMemo(() => [...GROUPS, { key: 'other', ar: 'مجالات أخرى', en: 'Other Practice Areas' }], []);
+  const groups = useMemo(() => {
+    const text = query.trim().toLocaleLowerCase(locale);
+    return categories.map((category) => {
+      const members = items.filter((item) => (SLUG_TO_GROUP[item.slug] || 'other') === category.key);
+      const categoryMatches = category[locale].toLocaleLowerCase(locale).includes(text);
+      return {
+        ...category,
+        members: text && !categoryMatches
+          ? members.filter((item) => `${item.title || ''} ${item.summary || ''}`.toLocaleLowerCase(locale).includes(text))
+          : members,
+      };
+    }).filter((category) => category.members.length > 0);
+  }, [categories, items, locale, query]);
 
-  const clearFilters = () => { setQ(''); setGroup('all'); };
-  const hasActiveFilters = q.trim() !== '' || group !== 'all';
+  function search(value) {
+    setQuery(value);
+    const text = value.trim().toLocaleLowerCase(locale);
+    if (!text) { setOpenGroups([]); return; }
+    setOpenGroups(categories.filter((category) => {
+      const members = items.filter((item) => (SLUG_TO_GROUP[item.slug] || 'other') === category.key);
+      return members.length && (category[locale].toLocaleLowerCase(locale).includes(text)
+        || members.some((item) => `${item.title || ''} ${item.summary || ''}`.toLocaleLowerCase(locale).includes(text)));
+    }).map((category) => category.key));
+  }
+
+  function toggle(key) {
+    setOpenGroups((current) => current.includes(key)
+      ? current.filter((item) => item !== key)
+      : [...current, key]);
+  }
 
   return (
     <>
-      <div className={styles.paFilterRow} data-reveal>
-        <input
-          type="text"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder={placeholder}
-          className={styles.paFilterInput}
-          aria-label={placeholder}
-        />
+      <div className={styles.paFilterRow}>
+        <input type="search" value={query} onChange={(event) => search(event.target.value)}
+          placeholder={placeholder} className={styles.paFilterInput} aria-label={placeholder} />
       </div>
 
-      <div className={styles.paChipRow} data-reveal role="group" aria-label={locale === 'ar' ? 'تصنيف مجالات الممارسة' : 'Practice area categories'}>
-        <button
-          type="button"
-          className={`${styles.paChip} ${group === 'all' ? styles.paChipActive : ''}`}
-          onClick={() => setGroup('all')}
-          aria-pressed={group === 'all'}
-        >
-          {locale === 'ar' ? 'الكل' : 'All'}
-        </button>
-        {GROUPS.map((g) => (
-          <button
-            key={g.key}
-            type="button"
-            className={`${styles.paChip} ${group === g.key ? styles.paChipActive : ''}`}
-            onClick={() => setGroup(g.key)}
-            aria-pressed={group === g.key}
-          >
-            {locale === 'ar' ? g.ar : g.en}
+      {groups.length === 0 ? (
+        <div className={styles.paNoResults} role="status">
+          <p className="muted">{noResults}</p>
+          <button type="button" onClick={() => search('')} className="btn-line">
+            {isArabic ? 'مسح البحث' : 'Clear search'}
           </button>
-        ))}
-      </div>
-
-      {filtered.length === 0 ? (
-        <div style={{ padding: '2.5rem 0', textAlign: 'center' }}>
-          <p className="muted" style={{ marginBlockEnd: '1rem' }}>{noResults}</p>
-          {hasActiveFilters && (
-            <button type="button" onClick={clearFilters} className="btn-line" style={{ marginInlineEnd: '.75rem' }}>
-              {locale === 'ar' ? 'مسح الفلاتر' : 'Clear filters'}
-            </button>
-          )}
-          <Link href="/contact" className="btn-line">
-            {locale === 'ar' ? 'لم تجد ما تبحث عنه؟ تواصل معنا مباشرة' : "Didn't find what you need? Contact us directly"} <span className="arrow">→</span>
-          </Link>
         </div>
       ) : (
-        <div className={styles.paList}>
-          {filtered.map((r, i) => (
-            <Link key={r.slug} href={`/services/${r.slug}`} className={styles.paRow} data-reveal="file">
-              <span className={styles.paIdx}>{String(i + 1).padStart(2, '0')}</span>
-              <span className={styles.paBody}>
-                <span className={styles.paTitle} style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
-                  {r.hasIcon && (
-                    <img src={`/practice-areas/icons/${r.slug}.png`} alt="" width={30} height={30} style={{ flex: '0 0 auto', opacity: .92 }} />
-                  )}
-                  {r.title}
-                </span>
-                {r.summary && <span className={styles.paSum}>{r.summary}</span>}
-              </span>
-              <span className={styles.paArrow} aria-hidden="true">→</span>
-            </Link>
-          ))}
+        <div className={styles.paGroups}>
+          {groups.map((category, index) => {
+            const isOpen = openGroups.includes(category.key);
+            const panelId = `practice-group-${category.key}`;
+            return (
+              <section key={category.key} className={styles.paGroup}>
+                <h2 className={styles.paGroupHeading}>
+                  <button type="button" className={styles.paGroupButton} aria-expanded={isOpen}
+                    aria-controls={panelId} onClick={() => toggle(category.key)}>
+                    <span className={styles.paGroupNumber}>{String(index + 1).padStart(2, '0')}</span>
+                    <span className={styles.paGroupTitle}>{category[locale]}</span>
+                    <span className={styles.paGroupCount}>{category.members.length}</span>
+                    <span className={styles.paGroupChevron} aria-hidden="true">⌄</span>
+                  </button>
+                </h2>
+                <div id={panelId} className={styles.paGroupPanel} hidden={!isOpen}>
+                    {category.members.map((item) => (
+                      <Link key={item.slug} href={`/services/${item.slug}`} className={styles.paGroupLink}>
+                        <span className={styles.paGroupItemTitle}>
+                          {item.hasIcon && <Image src={`/practice-areas/icons/${item.slug}.png`} alt="" width={30} height={30} />}
+                          {item.title}
+                        </span>
+                        {item.summary && <span className={styles.paGroupItemSummary}>{item.summary}</span>}
+                        <span className={styles.paGroupArrow} aria-hidden="true">→</span>
+                      </Link>
+                    ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       )}
     </>

@@ -1,11 +1,11 @@
 /**
- * تصنيف عرضي (UX) للـ٤٨ مجال ممارسة الحقيقية — صفر تغيير قاعدة بيانات.
- * مبدئي ومنطقي، يحتاج مراجعة د. هيثم للدقّة القانونية قبل الاعتماد النهائي.
+ * تصنيف عرضي لمجالات الممارسة — لا يغيّر بيانات المجالات أو روابطها.
  * تعديل التصنيف = تعديل هذا الملف فقط، بلا أي أثر على القاعدة.
  */
 
 export const GROUPS = [
   { key: 'disputes', ar: 'المنازعات والتحكيم', en: 'Disputes & Arbitration' },
+  { key: 'criminal', ar: 'الجنايات', en: 'Felony Cases' },
   { key: 'corporate', ar: 'الشركات والقانون التجاري', en: 'Corporate & Commercial' },
   { key: 'finance', ar: 'المالية والأسواق', en: 'Finance & Markets' },
   { key: 'regulatory', ar: 'القانون العام والتنظيمي', en: 'Regulatory & Public' },
@@ -17,7 +17,7 @@ export const GROUPS = [
   { key: 'private', ar: 'العملاء الخاصون', en: 'Private Clients' },
 ];
 
-/** خريطة: سلوج المجال الحقيقي ← مفتاح المجموعة. كل الـ٤٨ سلوج الحقيقية مُغطّاة. */
+/** خريطة: رابط المجال ← مفتاح المجموعة. */
 export const SLUG_TO_GROUP = {
   'constitutional-law': 'regulatory',
   'cassation-appeals': 'disputes',
@@ -29,6 +29,7 @@ export const SLUG_TO_GROUP = {
   'corporate-commercial': 'corporate',
   'contracts-civil': 'corporate',
   'litigation': 'disputes',
+  'criminal-law': 'criminal',
   'labour-employment': 'employment',
   'real-estate': 'realestate',
   'banking-finance': 'finance',

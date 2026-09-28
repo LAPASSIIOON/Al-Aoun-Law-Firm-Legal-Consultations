@@ -7,25 +7,46 @@
   transition:background .4s var(--ease),box-shadow .4s var(--ease),backdrop-filter .4s var(--ease)}
 .solid,.grounded{background:rgba(14,24,38,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   box-shadow:0 1px 0 var(--hair-light)}
-.bar{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter);block-size:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+.bar{max-width:1600px;margin-inline:auto;padding-inline:clamp(1.25rem,2vw,2.5rem);block-size:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:clamp(.75rem,1vw,1.25rem);
   transition:block-size .4s var(--ease)}
-/* تقليص عند التمرير — ٧٦px ← ٦٨px (٨px) */
+/* إبقاء التوقيع واضحًا عند التمرير مع تقليص معتدل للهيدر. */
 .solid .bar{block-size:var(--header-h-scrolled)}
 .brand{display:inline-flex;align-items:center;flex:0 0 auto}
-.logoSignature{display:inline-flex;align-items:center;gap:.45rem;flex:0 0 auto}
-.logoMark{display:block;height:64px;width:auto;filter:brightness(0) invert(1);flex:0 0 auto;transition:height .4s var(--ease)}
-.logoText{display:flex;flex-direction:column;align-items:flex-start;gap:.12rem;white-space:nowrap}
-.logoName{display:flex;align-items:baseline;gap:.28em;font-family:var(--f-en);font-size:1.08rem;font-weight:750;letter-spacing:-.035em;line-height:1.05;color:var(--platinum)}
+.logoSignature{display:inline-flex;align-items:center;gap:.7rem;flex:0 0 auto}
+.logoMark{display:block;height:92px;width:auto;filter:brightness(0) invert(1);flex:0 0 auto;transition:height .4s var(--ease)}
+.logoText{display:flex;flex-direction:column;align-items:flex-start;gap:.2rem;white-space:nowrap}
+.logoName{display:flex;align-items:baseline;gap:.28em;font-family:var(--f-en);font-size:1.55rem;font-weight:750;letter-spacing:-.035em;line-height:1.05;color:var(--platinum)}
 .logoAccent{color:var(--clay-bright)}
-.logoTagline{font-family:var(--f-ui);font-size:.55rem;letter-spacing:.035em;line-height:1.2;color:var(--platinum-2)}
-/* هاتف ضيق: يُبقى الشعار الكامل ظاهرًا داخل اللوحة الفاتحة، مع مقاس مضغوط للهيدر. */
+.logoTagline{font-family:var(--f-ui);font-size:.75rem;letter-spacing:.02em;line-height:1.2;color:var(--platinum-2)}
+/* على الهاتف يبقى الاسم ظاهرًا بجوار العلامة، مع توفير مساحة للبحث والقائمة. */
 @media(max-width:479px){
-  .bar{gap:.6rem}
-  .logoMark{height:56px}
-  .solid .logoMark{height:54px}
+  .bar{gap:.35rem;padding-inline:clamp(.75rem,3vw,1.25rem)}
+  .logoSignature{gap:.3rem}
+  .logoMark{height:60px}
+  .logoName{font-size:1.18rem}
+  .logoTagline{font-size:.58rem}
+  :global(html[lang=en]) .logoName{font-size:1.04rem}
+  .solid .logoMark{height:58px}
 }
-/* تقليص الشعار عند التمرير على الشاشات المتوسطة والكبيرة. */
-@media(min-width:480px){.solid .logoMark{height:58px}}
+@media(max-width:380px){.logoTagline{display:none}}
+@media(max-width:350px){
+  .logoMark,.solid .logoMark{height:50px}
+  .logoName{font-size:.95rem}
+  :global(html[lang=en]) .logoName{font-size:.86rem}
+}
+/* مقاس متوسط للتابلت؛ القائمة هنا مختصرة لتستوعب التوقيع. */
+@media(min-width:480px) and (max-width:1023px){
+  .logoMark{height:74px}
+  .logoName{font-size:1.3rem}
+  .logoTagline{font-size:.66rem}
+}
+@media(min-width:480px){.solid .logoMark{height:76px}}
+@media(min-width:1600px){
+  .logoMark{height:104px}
+  .logoName{font-size:1.78rem}
+  .logoTagline{font-size:.82rem}
+  .solid .logoMark{height:88px}
+}
 .brand:hover .logoSignature{transform:translateY(-1px)}
 .nav{display:none;align-items:center;gap:clamp(.6rem,.8vw,.9rem)}
 .navItem{position:relative}
@@ -74,7 +95,7 @@
 
 /* mobile overlay */
 .overlay{position:fixed;inset:0;z-index:120;background:var(--ground);display:flex;flex-direction:column;padding-inline:var(--gutter);overflow-y:auto}
-.overlayTop{block-size:76px;display:flex;align-items:center;justify-content:space-between;flex:0 0 auto}
+.overlayTop{block-size:var(--header-h);display:flex;align-items:center;justify-content:space-between;flex:0 0 auto}
 .close{font-size:2.2rem;line-height:1;color:var(--platinum);padding:.4rem}
 .overlayNav{display:flex;flex-direction:column;gap:.35rem;padding-block:1.5rem;flex:1 1 auto}
 /* الروابط المفردة: الرقم والعنوان على حافة القراءة نفسها (لا انقسام على طرفين).

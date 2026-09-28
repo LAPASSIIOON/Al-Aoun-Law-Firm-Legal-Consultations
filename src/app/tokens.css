@@ -71,10 +71,12 @@
   /* مقاس النص — نفس 62ch المستخدَمة سابقًا مضمَّنة في .body */
   --measure:62ch;
 
-  /* ═══ الموجة ب — ارتفاع الهيدر ═══
-     ٧٦px ← ٦٨px عند التمرير؛ الشعار الكامل داخل اللوحة الفاتحة يلائم الارتفاعين. */
-  --header-h:76px;
-  --header-h-scrolled:68px;
+  /* توقيع المجموعة المكبّر: مساحة كافية للعلامة والاسم من دون قص. */
+  --header-h:108px;
+  --header-h-scrolled:92px;
 }
+@media(max-width:479px){:root{--header-h:84px;--header-h-scrolled:76px}}
+@media(min-width:480px) and (max-width:1023px){:root{--header-h:92px;--header-h-scrolled:84px}}
+@media(min-width:1600px){:root{--header-h:120px;--header-h-scrolled:100px}}
 html[lang="ar"]{ --f-display:var(--f-serif-ar); --f-ui:var(--f-ui-ar); }
 html[lang="en"]{ --f-display:var(--f-serif-en); --f-ui:var(--f-ui-en); }

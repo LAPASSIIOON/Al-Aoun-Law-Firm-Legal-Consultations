@@ -6,7 +6,7 @@
    المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
 .hero{position:relative;background:var(--ground);color:var(--platinum);overflow:hidden;
   min-block-size:min(74svh,620px);display:flex;align-items:flex-start}
-.heroInner{position:relative;z-index:2;width:100%;padding-block:6.5rem 3.5rem}
+.heroInner{position:relative;z-index:2;width:100%;padding-block:calc(var(--header-h) + .75rem) 3.5rem}
 
 /* المقاس التحريري: نسبة من عرض الحاوية لا وحدة ch (الأخيرة تنهار عند أحجام العرض الكبيرة).
    الهاتف: العرض كاملًا. سطح المكتب: ~٥٦٪ من الحاوية عبر استعلام أدناه. */
@@ -131,7 +131,7 @@
     background-size:cover;background-position:12% center;background-repeat:no-repeat}
   .heroRegLine{display:none}
   /* حشو علوي يفسح للهيدر الثابت، وسفلي يضمن ظهور الـCTA فوق الطيّة عند ارتفاع ٧٠٠px */
-  .heroInner{padding-block:7.5rem 3rem}
+  .heroInner{padding-block:calc(var(--header-h) + 1rem) 3rem}
 
   /* المقاس التحريري: ~٥٦٪ من الحاوية — يحلّ EN في ٣ أسطر قوية بلا كلمات يتيمة */
   .heroContent{max-inline-size:min(56%,640px)}

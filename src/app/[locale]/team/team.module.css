@@ -29,7 +29,7 @@
 .closing p { max-inline-size: 54ch; margin: 0; }
 @media (max-width: 760px) {
   .heroInner, .closingInner { grid-template-columns: 1fr; }
-  .hero { padding-block-start: 6rem; }
+  .hero { padding-block-start: calc(var(--header-h) + 1rem); }
   .heroMark { inset-block-start: -2rem; }
   .directoryHead { display: grid; }
   .grid { grid-template-columns: 1fr; }

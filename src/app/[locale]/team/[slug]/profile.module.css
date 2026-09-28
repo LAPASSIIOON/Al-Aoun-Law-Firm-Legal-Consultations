@@ -36,7 +36,7 @@
 .contactCard p { max-inline-size: 52ch; margin: 0 0 1.7rem; color: var(--platinum-2); line-height: 1.75; }
 @media (max-width: 800px) {
   .heroWrap, .profileWrap, .section { grid-template-columns: 1fr; }
-  .hero { padding-block-start: 4.75rem; }
+  .hero { padding-block-start: calc(var(--header-h) + 1rem); }
   .portraitFrame { min-block-size: 0; block-size: clamp(22rem, 108vw, 31rem); max-inline-size: 32rem; }
   .kicker { margin-block-start: 2rem; }
   .rail { position: static; display: flex; align-items: center; gap: 1rem; }

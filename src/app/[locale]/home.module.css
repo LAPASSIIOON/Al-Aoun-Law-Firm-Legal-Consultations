@@ -1,6 +1,6 @@
 /* ── Hero — تايبوغرافيا أولًا (الموجة C2) ──
    يحافظ على تركيب C1 المقبول، ويضيف توقيع التسجيل: قياس ← محاذاة ← استقرار.
-   العنوان والنص الداعم ثابتان من أول طلاء؛ الحركة للخطوط والعلامة والتفاصيل الثانوية فقط. */
+   العنوان والنص الداعم ثابتان من أول طلاء؛ الحركة للخطّ الأفقي والعلامة والتفاصيل الثانوية فقط. */
 
 /* الهاتف: svh يتجنّب افتراضات شريط المتصفّح؛ فراغ علوي أقلّ ليصل المحتوى أسرع.
    المحتوى في الأعلى لا في المنتصف الحسابي — موضع مقصود لا توسيط رياضي. */
@@ -16,7 +16,7 @@
 .heroDatum{position:absolute;inset:0;z-index:1;pointer-events:none}
 
 /* ── C2.5 «حقل النصب» (D2.1) — ذراع المهد الرسمية عبر كاميرات viewBox مقصوصة ──
-   طبقة معمارية ثابتة تمامًا (صفر حركة) تحت خطوط الأساس (z:0 < z:1) وفوق الأرضية.
+   طبقة معمارية ثابتة تمامًا (صفر حركة) تحت الخطّ الأفقي (z:0 < z:1) وفوق الأرضية.
    مسطّح لوني واحد: سطح مرتفع على الأرضية — بلا حدود ولا تدرّج ولا ظلّ ولا مرشّحات. */
 .heroMonument{position:absolute;inset:0;z-index:0;pointer-events:none;color:var(--surface-2)}
 .heroMonument [data-monument]{position:absolute;display:none}
@@ -36,21 +36,12 @@
    طبقة .heroMonument أدناه معطَّلة (المكوّن لم يعد مستدعى) ومُبقاة لإعادة تصميم الهيرو. */
 .heroPhoto{display:none;position:absolute;z-index:0;pointer-events:none;overflow:hidden}
 
-/* سطر التسجيل الوقائعي — هاتف فقط، مُسجَّل على جانب خطّ الأساس نفسه (+22px مثل الخطّ
-   تمامًا): يبدأ عليه في LTR وينتهي عنده في RTL — جزء من نظام التسجيل لا تعليق عائم،
-   وبعيدًا عن ركن زر واتساب العائم على الشاشات القصيرة. زخرفي: aria-hidden. */
+/* سطر وقائعي للهاتف، مُزاح عن الحافة ليبقى بعيدًا عن زر واتساب العائم. زخرفي: aria-hidden. */
 .heroRegLine{position:absolute;z-index:2;inset-block-end:1.5rem;
   inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
   font-family:var(--f-ui);font-size:.72rem;font-weight:600;letter-spacing:.16em;
   color:var(--platinum-2);white-space:nowrap;pointer-events:none}
 :lang(ar) .heroRegLine{letter-spacing:0;font-size:.8rem}
-
-/* خطّ الأساس العمودي — الهاتف: مُزاح ٢٢px للداخل عن حافة القراءة كي لا يقرأ كإطار صفحة.
-   inset-inline-start يُقاس من حافة القراءة، فالجمع (+) يبعده عن الحافة نحو الداخل. */
-.heroDatum [data-datum="v"]{position:absolute;inset-block:0;
-  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
-  inline-size:1px;background:var(--hair-light-strong);opacity:.55;
-  transform-origin:top center;animation:c2DatumVertical 360ms var(--ease) both}
 
 /* خطّ الأساس الأفقي — سطح المكتب فقط، من حافة القراءة إلى حافة العرض. */
 .heroDatum [data-datum="h"]{position:absolute;inset-block-start:52%;
@@ -89,7 +80,6 @@
 .heroCtas{display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.75rem;
   animation:c2CtaSettle 360ms 260ms var(--ease) both}
 
-@keyframes c2DatumVertical{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes c2DatumHorizontal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @keyframes c2MarkRegister{from{transform:translateX(var(--c2-mark-offset))}to{transform:translateX(0)}}
 @keyframes c2EyebrowSettle{from{transform:translateY(5px)}to{transform:translateY(0)}}
@@ -136,9 +126,6 @@
   /* المقاس التحريري: ~٥٦٪ من الحاوية — يحلّ EN في ٣ أسطر قوية بلا كلمات يتيمة */
   .heroContent{max-inline-size:min(56%,640px)}
 
-  .heroDatum [data-datum="v"]{
-    inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)));
-    opacity:.7}
   :global(html[dir="ltr"]) .heroPhoto{-webkit-mask-image:linear-gradient(to left,#000 50%,transparent 100%);
     mask-image:linear-gradient(to left,#000 50%,transparent 100%)}
   :global(html[dir="rtl"]) .heroPhoto{-webkit-mask-image:linear-gradient(to right,#000 50%,transparent 100%);
@@ -147,7 +134,7 @@
   :global(html[dir="ltr"]) .heroDatum [data-datum="h"]{transform-origin:left center}
   :global(html[dir="rtl"]) .heroDatum [data-datum="h"]{transform-origin:right center}
 
-  /* العلامة: مجاورة لتقاطع الخطّين داخل الحقل الفارغ — مسجَّلة، لا علامة مائية عشوائية.
+  /* العلامة: مجاورة للخطّ الأفقي داخل الحقل الفارغ — مسجَّلة، لا علامة مائية عشوائية.
      inset-inline-start يضعها بعد عمود النص مباشرةً لا في الطرف المقابل للشاشة. */
   .heroMark{inset-block-end:auto;inset-block-start:52%;
     inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + min(56%,640px) + clamp(3rem,7vw,7rem));
@@ -172,31 +159,19 @@
    و0 على سطح المكتب أيضًا (منذ C2.5 الختم مراسمُ حركةٍ زخرفية، فيغيب كليًا هنا —
    النصب الساكن يحمل الهوية). */
 @media(prefers-reduced-motion:reduce){
-  .heroDatum [data-datum="v"],
   .heroDatum [data-datum="h"],
   .heroMark,
   .heroMark [data-mark],
   .heroContent :global(.eyebrow),
   .heroCtas{animation:none}
-  .heroDatum [data-datum="v"],
   .heroDatum [data-datum="h"],
   .heroMark [data-mark],
   .heroContent :global(.eyebrow),
   .heroCtas{transform:none}
 }
 
-/* C3 (السجل D1.1): خطّ الأساس صار قضيب التسجيل البنيوي للقسم كله — يهبط من حافة
-   الهيرو ويحمل صفّي المسارات، ثم يتوقف قبل حشوة القسم السفلية فلا يلمس «مجالات
-   الممارسة». الموضع يطابق خطّ أساس الهيرو تمامًا: الهاتف +22px، وسطح المكتب الأساسي. */
+/* مسارا العميل والمكاتب يبدآن بعد الهيرو من دون خطّ عمودي فاصل. */
 .heroHandoff{position:relative}
-.heroHandoff::before{content:'';position:absolute;inset-block-start:0;
-  inset-inline-start:calc(max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter))) + 22px);
-  inline-size:1px;inset-block-end:var(--section-tight);
-  background:var(--light-hair);opacity:.9;pointer-events:none}
-@media(min-width:860px){
-  .heroHandoff::before{
-    inset-inline-start:max(var(--gutter),calc((100% - var(--wrap)) / 2 + var(--gutter)))}
-}
 
 /* ── Authority strip ── */
 .authority{display:flex;flex-wrap:wrap;gap:1rem 2.25rem;align-items:center;justify-content:center}
@@ -379,7 +354,7 @@
 
 /* ── شريط الازدواج (عميل / مكتب دولي) — تحت الهيرو مباشرة ── */
 /* C3 — «السجل» D1.1: عتبة قرارٍ تحريرية سريعة، لا قسم محتوى ثالث.
-   صفّان مكدّسان معلّقان على قضيب التسجيل؛ سؤالان بسلطة تحريرية يبدآن من عمودٍ
+   صفّان مكدّسان؛ سؤالان بسلطة تحريرية يبدآن من عمودٍ
    بصري ثابت (عمود التسمية عرضه محدد فلا تعتمد المحاذاة على طول التسمية).
    لا بطاقات، لا أنصاف أقطار، لا ظلال — شعيرات فاصلة فقط. الصفّ كله رابط. */
 .dualBar{display:block}
@@ -402,19 +377,14 @@
 .dualItem:hover :global(.arrow){color:var(--clay-bright)}
 :global(html[lang=en]) .dualItem:hover :global(.arrow){transform:translateX(4px)}
 :global(html[lang=ar]) .dualItem:hover :global(.arrow){transform:translateX(-4px)}
-/* الهاتف: تركيب مستقل — التسمية فوق السؤال (لا بجانبه أبدًا)، السهم عند نهاية
-   القراءة بمحاذاة كتلة السؤال؛ الصفّ كاملًا هدف لمس ~110–130px، والنص مُزاح
-   عن قضيب التسجيل (+22px) فلا يقطعه القضيب. */
+/* الهاتف: التسمية فوق السؤال والسهم عند نهاية القراءة؛ الصفّ كاملًا هدف لمس واضح. */
 @media(max-width:859px){
-  /* ضبط الكثافة (D1.1 النهائي): القسم عتبةُ قرارٍ سريعة لا فصلًا مستقلًا —
-     حشوة القسم وحشوة الصفوف تُخفَّض على الهاتف فقط؛ القضيب يُنهى عند الحشوة
-     الجديدة نفسها ليظل متصلًا بالهيرو ومتوقفًا قبل «مجالات الممارسة». */
+  /* ضبط الكثافة: حشوة القسم والصفوف تُخفَّض على الهاتف فقط. */
   .heroHandoff.heroHandoff{padding-block:clamp(2rem,4.5vh,2.75rem)}
-  .heroHandoff.heroHandoff::before{inset-block-end:clamp(2rem,4.5vh,2.75rem)}
   .dualItem{grid-template-columns:1fr auto;grid-template-areas:'eye eye' 't arrow';
     align-items:center;gap:.5rem 1.25rem;
     padding-block:clamp(1.15rem,2.4vh,1.5rem);
-    padding-inline:calc(22px + 1rem) .25rem}
+    padding-inline:1.25rem .25rem}
   .dualEye{grid-area:eye}
   .dualT{grid-area:t;font-size:clamp(1.25rem,5.5vw,1.45rem)}
   .dualItem :global(.arrow){grid-area:arrow}

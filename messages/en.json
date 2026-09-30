@@ -113,7 +113,7 @@
     "heading": "Ready for a clear first step?",
     "body": "Request a consultation and we'll route you to the right path.",
     "cta": "Request a Consultation",
-    "disclaimer": "Submitting a request does not create an attorney–client relationship, nor does it in itself constitute legal advice.",
+    "disclaimer": "Submitting this form is only a request for contact, not a legal consultation. The firm defines the consultation scope and fees and informs the client before it is confirmed or begins.",
     "eyebrow": "Consultation"
   },
   "practiceAreaPage": {
@@ -250,6 +250,7 @@
     "nextStep": "Next",
     "back": "Back",
     "startEasy": "Start with one easy step — just your name and number.",
+    "feeNotice": "Submitting this form is only a request for contact, not a legal consultation. The firm will define the consultation scope and fees and inform you before it is confirmed or begins.",
     "processHeading": "How a consultation works",
     "processStep1T": "Submit your request",
     "processStep1D": "Share basic contact details — no sensitive case specifics.",
@@ -903,6 +904,10 @@
       {
         "q": "How do I request a legal consultation?",
         "a": "Through the consultation request form on the site. The first step only asks for your name and preferred contact method — no case details — and the firm follows up after an initial conflict check."
+      },
+      {
+        "q": "Is the legal consultation free?",
+        "a": "No. Submitting the form is only a request for contact and is not a legal consultation. The firm defines the consultation scope and fees and informs the client before it is confirmed or begins."
       },
       {
         "q": "Does the firm check for conflicts of interest before accepting a consultation?",

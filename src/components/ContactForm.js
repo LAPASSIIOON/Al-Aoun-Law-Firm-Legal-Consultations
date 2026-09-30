@@ -122,6 +122,7 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
             <span className={styles.label}>{t('noteLabel')}</span>
             <textarea name="note" className={styles.input} rows={3} placeholder={t('notePlaceholder')} />
           </label>
+          <p className={styles.feeNotice}>{t('feeNotice')}</p>
           {status === 'error' && <p id="contact-err" className={styles.err} role="alert">{err}</p>}
           {turnstile.failed && !(status === 'error' && err === tt('loadFailed')) && (
             <p className={styles.err} role="alert">{tt('loadFailed')}</p>

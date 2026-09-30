@@ -22,6 +22,7 @@
 .segOn { background: var(--clay); color: #fff; box-shadow: inset 0 0 0 1px var(--clay); }
 @media (pointer:coarse) { .seg { min-block-size: var(--tap-min); } }
 .err { color: #9B4A3A; font-size: 0.9rem; }
+.feeNotice { margin: 0; padding: 0.9rem 1rem; border-inline-start: 3px solid var(--clay); background: rgba(65, 117, 157, 0.08); color: var(--muted); font-size: 0.88rem; line-height: 1.75; }
 .success { padding: clamp(2rem, 5vw, 3rem); border-radius: var(--r-lg); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--clay); }
 
 /* ── مؤشر الخطوتين + انتقال سلس (تأثير التدرّج نحو الهدف) ── */

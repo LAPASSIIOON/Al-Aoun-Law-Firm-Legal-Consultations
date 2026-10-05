@@ -21,6 +21,7 @@
    المقاس البصري للنصّ لم يتغيّر — المنطقة القابلة للنقر وحدها هي التي كبرت. */
 .link{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.95rem;transition:color .3s var(--ease);inline-size:fit-content}
 .link:hover,.link:focus-visible{color:#fff}
+.mobileWhatsApp{display:none}
 .linkMore{display:inline-flex;align-items:center;min-block-size:24px;color:var(--blue-glow);font-size:.95rem;font-weight:500;margin-block-start:.2rem;inline-size:fit-content}
 .hours{color:#fff;font-size:.9rem;margin-block-start:.6rem}
 .hoursVal{color:var(--muted-dark);font-size:.9rem}
@@ -48,4 +49,9 @@
    تغيير اللون نفسه يبقى (وهو تغذية راجعة ضرورية) — الذي يسقط هو تدرّجه الزمني وحده. */
 @media (prefers-reduced-motion:reduce){
   .link{transition:none}
+}
+
+@media (max-width:767px){
+  .mobileWhatsApp{display:inline-flex}
+  .footer{padding-block-end:calc(2rem + env(safe-area-inset-bottom, 0px))}
 }

@@ -72,7 +72,7 @@ export default function ContactForm({ intent = null, sourceRoute = null } = {}) 
       <div className={styles.stepBar}>
         <span className={styles.stepDot} data-active="true" aria-hidden="true" />
         <span className={`${styles.stepDot} ${step === 2 ? styles.stepDotActive : ''}`} data-active={step === 2} aria-hidden="true" />
-        <span className={styles.stepLabel} role="status">{t('stepOf').replace('{n}', String(step))}</span>
+        <span className={styles.stepLabel} role="status">{t('stepOf', { n: step })}</span>
       </div>
 
       {step === 1 ? (

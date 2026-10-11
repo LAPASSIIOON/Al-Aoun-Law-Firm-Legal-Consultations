@@ -8,6 +8,7 @@ import MemberProfileCard from '@/components/MemberProfileCard.js';
 import RequestStatusTimeline from '@/components/RequestStatusTimeline.js';
 import { listMyMatters } from '@/app/actions/matters.js';
 import { requestPhaseIndex } from '@/lib/request-status.js';
+import { customerRequests } from '@/lib/customer-request.js';
 import styles from './my-requests.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -31,7 +32,11 @@ async function fetchAll() {
   const [c, r, p] = await Promise.all([
     supabase.rpc('my_consultations'), supabase.rpc('my_referrals'), supabase.rpc('my_partnerships'),
   ]);
-  return { consultations: c.data || [], referrals: r.data || [], partnerships: p.data || [] };
+  return {
+    consultations: customerRequests('consultations', c.data),
+    referrals: customerRequests('referrals', r.data),
+    partnerships: customerRequests('partnerships', p.data),
+  };
 }
 
 /** @param {{ params: Promise<{ locale: string }> }} props */

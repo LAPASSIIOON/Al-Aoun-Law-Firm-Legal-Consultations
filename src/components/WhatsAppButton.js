@@ -37,7 +37,7 @@ export default function WhatsAppButton({ locale }) {
           .waQuietSeal{transition:none}
           .waQuietSeal:hover,.waQuietSeal:focus-visible{transform:none}
         }
-        @media (max-width:767px){
+        @media (max-width:767px), (max-height:500px) and (pointer:coarse){
           .waQuietSeal{display:none}
         }
       `}</style>

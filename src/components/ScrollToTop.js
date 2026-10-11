@@ -29,7 +29,7 @@ export default function ScrollToTop({ locale }) {
 
   return (
     <>
-      <style>{'@media (max-width:767px){.scrollToTopButton{display:none!important}}'}</style>
+      <style>{'@media (max-width:767px), (max-height:500px) and (pointer:coarse){.scrollToTopButton{display:none!important}}'}</style>
       <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })}

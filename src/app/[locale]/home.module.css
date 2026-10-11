@@ -267,7 +267,7 @@
 .paChip{padding:.5rem 1rem;border:1px solid var(--light-hair);border-radius:999px;background:var(--light-raised);color:var(--light-muted);font-family:var(--f-ui);font-size:.86rem;cursor:pointer;transition:border-color .2s ease,color .2s ease,background .2s ease;white-space:nowrap}
 .paChip:hover{border-color:var(--clay-bright)}
 .paChipActive{background:var(--clay-bright);border-color:var(--clay-bright);color:#fff}
-.paFilterInput{inline-size:100%;max-inline-size:420px;padding:.85rem 1.1rem;border:1px solid var(--light-hair);border-radius:var(--r);background:var(--light-raised);color:var(--light-ink);font-family:var(--f-ui);font-size:.98rem;transition:border-color .2s ease}
+.paFilterInput{inline-size:100%;max-inline-size:420px;padding:.85rem 1.1rem;border:1px solid var(--light-hair);border-radius:var(--r);background:var(--light-raised);color:var(--light-ink);font-family:var(--f-ui);font-size:max(1rem,16px);transition:border-color .2s ease}
 .paFilterInput::placeholder{color:var(--light-muted)}
 .paFilterInput:focus{outline:0;border-color:var(--clay-bright)}
 .paList{display:flex;flex-direction:column;border-block-start:1px solid var(--hair-light)}

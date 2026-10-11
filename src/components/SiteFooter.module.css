@@ -51,7 +51,7 @@
   .link{transition:none}
 }
 
-@media (max-width:767px){
+@media (max-width:767px), (max-height:500px) and (pointer:coarse){
   .mobileWhatsApp{display:inline-flex}
   .footer{padding-block-end:calc(2rem + env(safe-area-inset-bottom, 0px))}
 }

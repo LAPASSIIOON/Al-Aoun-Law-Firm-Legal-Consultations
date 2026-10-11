@@ -137,6 +137,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 [data-reveal="file"].reveal-init{opacity:0;transform:translateX(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
 html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 [data-reveal="file"].reveal-init.in{opacity:1;transform:none}
+html[dir="rtl"] [data-reveal="file"].reveal-init.in{transform:none}
 
 @media (prefers-reduced-motion:reduce){
   [data-reveal].reveal-init,[data-reveal="slow"].reveal-init,[data-reveal="stamp"].reveal-init,[data-reveal="file"].reveal-init{opacity:1!important;transform:none!important;transition:none}

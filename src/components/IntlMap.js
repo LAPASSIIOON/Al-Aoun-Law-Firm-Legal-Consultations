@@ -181,6 +181,29 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, anch
     taken.push(box(kwP[0], kwP[1], 14, 14));
     placed.forEach((it) => { const p = px(it.place.xy); taken.push(box(p[0], p[1], 9, 9)); });
 
+    /* كل النقاط بالبكسل — كي لا يُنسب اسم إلى نقطة جارة: الاسم أقرب إلى نقطته من أي نقطة أخرى،
+       وخطّ الإشارة لا يمرّ بنقطة غيرها */
+    const allPts = [kwP, ...placed.map((it) => px(it.place.xy))];
+    const nearest = (b, x, y) => Math.hypot(Math.min(Math.max(x, b.x0), b.x1) - x, Math.min(Math.max(y, b.y0), b.y1) - y);
+    const segDist = (q, a, c) => {
+      const vx = c[0] - a[0]; const vy = c[1] - a[1];
+      const t = Math.max(0, Math.min(1, ((q[0] - a[0]) * vx + (q[1] - a[1]) * vy) / (vx * vx + vy * vy || 1)));
+      return Math.hypot(a[0] + vx * t - q[0], a[1] + vy * t - q[1]);
+    };
+    const ambiguity = (p, b, gi) => {
+      const own = nearest(b, p[0], p[1]);
+      let pen = 0;
+      allPts.forEach((q) => {
+        if (q === p || (q[0] === p[0] && q[1] === p[1])) return;
+        if (nearest(b, q[0], q[1]) < own * 0.95) pen += 30;
+        if (gi >= LEADER_FROM) {
+          const end = [Math.min(Math.max(p[0], b.x0), b.x1), Math.min(Math.max(p[1], b.y0), b.y1)];
+          if (segDist(q, p, end) < 5) pen += 40;
+        }
+      });
+      return pen;
+    };
+
     /* أفضل موضع حول نقطة: الجهة الأقرب إلى «بعيدًا عن الكويت» أولًا، ثم مسافات أبعد */
     const best = (p, w, h, prefer) => {
       let win = null;
@@ -191,7 +214,7 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, anch
           const cy = p[1] + uy * (gap * diag + h / 2);
           const b = box(cx, cy, w, h);
           const ang = Math.acos(Math.max(-1, Math.min(1, (ux * prefer[0] + uy * prefer[1]) / Math.hypot(ux, uy))));
-          const score = overlap(b) * 1.5 + outside(b) * 40 + gi * 9 + ang * 3 + (uy === 0 ? 0 : 0.5);
+          const score = overlap(b) * 1.5 + outside(b) * 40 + gi * 9 + ang * 3 + (uy === 0 ? 0 : 0.5) + ambiguity(p, b, gi);
           if (!win || score < win.score) win = { score, b, cx, cy, gi };
         });
       });

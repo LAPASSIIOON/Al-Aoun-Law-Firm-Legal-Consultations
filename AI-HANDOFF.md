@@ -2,7 +2,7 @@
 
 > **Shared operational context between Claude and ChatGPT.**
 > Every factual claim below was verified against the repository, Supabase, or live deployment at the time of writing. Anything not verifiable is explicitly marked.
-> **Last updated by:** Claude · **Against commit:** `b5a2933` (15 Oct 2026; sections 3, 6 (International row), 19 and 22 refreshed — other sections not re-verified in this pass)
+> **Last updated by:** Claude · **Against commit:** `0935cd3` (15 Oct 2026; sections 3, 6 (International row), 19 and 22 refreshed — other sections not re-verified in this pass)
 
 ---
 
@@ -43,9 +43,9 @@ Explicitly **not** part of the vision: fabricated international presence, invent
 
 | Field | Value | Status |
 |---|---|---|
-| Current main commit | `b5a2933a880790a07f2fc3f59e16202352cf814c` (`b5a2933`) | VERIFIED |
-| Commit subject | `Merge pull request #3 from LAPASSIIOON/ui/intl-map` | VERIFIED |
-| Production deployment | `dpl_4AjC3ufd5Q5WRYqRoAzyDy5Zf69J` — READY | VERIFIED |
+| Current main commit | `0935cd361d312975b476fa0655477185466a4ad7` (`0935cd3`) | VERIFIED |
+| Commit subject | `Merge pull request #5 from LAPASSIIOON/ui/mobile-action-bar` | VERIFIED |
+| Production deployment | `dpl_ByyAUBK5MF8rkuPfGreCJqnDnZxe` — READY | VERIFIED |
 | Production URL | `https://al-aoun-law-firm-legal-consultation.vercel.app` | LIVE VERIFIED |
 | Repository | `github.com/LAPASSIIOON/Al-Aoun-Law-Firm-Legal-Consultations` (branch `main`) | VERIFIED |
 | Framework | Next.js 15.5.23 (App Router), React 19 | VERIFIED |
@@ -346,6 +346,17 @@ Known trap: local `git status` can show phantom differences due to index artifac
 
 ## 22. Last Claude Technical State
 
+**15 Oct 2026 — PR #5 merged by the owner, production deployment `dpl_ByyAUBK5MF8rkuPfGreCJqnDnZxe` READY (main `0935cd3`; tree identical to the tested Preview commit `45d36fa`).**
+
+- **Mobile bottom action bar** (`src/components/MobileActionBar.js` + `.module.css`, mounted in `src/app/[locale]/layout.js`). It holds WhatsApp (same `wa.me` link; green on press only) and «اطلب استشارة» → `/contact?from=<current path>`.
+  - **Where:** phones only, ≤767 px — the same breakpoint that hides the floating WhatsApp and scroll-to-top buttons.
+  - **When:** appears after ~160 px of scroll.
+  - **Hidden on:** account, admin and auth pages; `/contact`, `/international/refer-a-matter`, `/international/partner-with-us`; during the homepage intro; while any field is focused.
+  - **Footer:** sets `html[data-actionbar="on"]`, which gives the footer extra bottom padding (`globals.css`).
+- **Verification:**
+  - BROWSER VERIFIED on Preview `byc95jame` (390×844, Arabic): hidden during the intro and at the top of the page, shown after scrolling, footer not covered, hidden while typing, consultation link carries `from`, absent on the form pages and on desktop.
+  - LIVE VERIFIED at HTML level: the bar markup is present on `/ar/services/constitutional-law`, with no runtime errors.
+
 **15 Oct 2026 — PR #3 merged on the owner's explicit go-ahead ("ارفع"), production deployment `dpl_4AjC3ufd5Q5WRYqRoAzyDy5Zf69J` READY (main `b5a2933`; tree identical to the tested Preview commit `86e4616`).**
 
 - **International map** (`src/components/IntlMap.js` + `.module.css`, used on `/[locale]/international` as the hero and on the homepage as `variant="preview"`):
@@ -366,7 +377,7 @@ Known trap: local `git status` can show phantom differences due to index artifac
 - **Homepage cinematic intro** (`HomeIntro`, `src/lib/intro-gate.js`): first visit per session on `/ar` and `/en`; gate script sets `html[data-intro="play"]` before first paint; reduced motion / repeat visit / in-site navigation → no intro; SiteLoader steps aside on that visit. Desktop: the mark lands on the 3D emblem in the hero photo; mobile: the signature lands on the header signature. Live check (desktop 1440×900, mobile 390×844, Arabic): intro played, ~3.6–3.9 s, name landing error 0.0 px, no console errors.
 - **Intro backdrop media** are not in the repo: `scripts/fetch-intro-media.mjs` (npm `prebuild`) downloads them into `public/media/intro/` from the Higgsfield CDN with pinned SHA-256; failures skip without breaking the build (gradient fallback). Live: all four files served 200.
 - **Readability**: public reading text 16–17 px (`--fs-read`), fine print 15 px (`--fs-fine`), Arabic `.body` line-height 1.85.
-- **Mobile fixes** from `codex/hydration-418-local` are now in production — including the floating WhatsApp button hidden on phones (WhatsApp link in the footer instead). A mobile bottom bar (WhatsApp + consultation) was proposed in the service-page mockup; not implemented.
+- **Mobile fixes** from `codex/hydration-418-local` are now in production — including the floating WhatsApp button hidden on phones (WhatsApp link in the footer instead). The mobile bottom bar (WhatsApp + consultation) proposed in the service-page mockup shipped later the same day (PR #5, above).
 
 Earlier state (kept for reference):
 

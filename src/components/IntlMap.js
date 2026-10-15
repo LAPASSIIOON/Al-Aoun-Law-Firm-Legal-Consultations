@@ -61,6 +61,12 @@ function fit(points, aspect, pad = 0.18, minW = 60) {
   return { x, y, w, h };
 }
 
+/* اسم الكويت يمتد شرقها: نوسّع الإطار كي لا يُقصّ (عرض الاسم ≈ ثلث عرض المسرح الضيّق) */
+function withLabelRoom(points, aspect, pad, minW) {
+  const first = fit(points, aspect, pad, minW);
+  return fit([...points, [KW[0] + first.w * 0.34, KW[1]]], aspect, pad, minW);
+}
+
 function readSeen(key) { try { return window.sessionStorage.getItem(key) === '1'; } catch (_) { return false; } }
 function markSeen(key) { try { window.sessionStorage.setItem(key, '1'); } catch (_) { /* اختياري */ } }
 const reducedMotion = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) { return false; } };
@@ -141,7 +147,7 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
       kuwait: fit([KW], aspect, 0, narrow ? 120 : 150),
       g1: fit([KW, ...pts(1)], aspect, narrow ? 0.35 : 0.6),
       g2: fit([KW, ...pts(2)], aspect, narrow ? 0.2 : 0.35),
-      final: narrow ? fit(regional, aspect, 0.08) : fit(all, aspect, 0.06),
+      final: narrow ? withLabelRoom(regional, aspect, 0.06) : fit(all, aspect, 0.06),
     };
     views.current = v;
     return v;
@@ -306,7 +312,7 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
     if (!v.narrow) return;
     if (pinned) {
       const it = placed.find((p) => p.key === pinned);
-      if (it) moveCam(fit([KW, it.place.xy], v.aspect, 0.45, 110), 0.8);
+      if (it) moveCam(withLabelRoom([KW, it.place.xy], v.aspect, 0.3, 110), 0.8);
       /* الخريطة يجب أن تُرى وهي تتحرك: إن خرجت من الشاشة نعيدها إليها */
       const r = stageRef.current && stageRef.current.getBoundingClientRect();
       if (r && (r.top < 0 || r.bottom > window.innerHeight)) stageRef.current.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });

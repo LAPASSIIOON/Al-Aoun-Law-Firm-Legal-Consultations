@@ -2,7 +2,7 @@
 
 > **Shared operational context between Claude and ChatGPT.**
 > Every factual claim below was verified against the repository, Supabase, or live deployment at the time of writing. Anything not verifiable is explicitly marked.
-> **Last updated by:** Claude · **Against commit:** `af96c03`
+> **Last updated by:** Claude · **Against commit:** `286a8e5` (15 Oct 2026; sections 3 and 22 refreshed — other sections not re-verified in this pass)
 
 ---
 
@@ -43,8 +43,8 @@ Explicitly **not** part of the vision: fabricated international presence, invent
 
 | Field | Value | Status |
 |---|---|---|
-| Current main commit | `af96c03c76f968bd1a42c4cfe1af90c32ead87dd` (`af96c03`) | VERIFIED |
-| Commit subject | `security: clean up failed matter uploads` | VERIFIED |
+| Current main commit | `286a8e5391c24fcfcb6a7181c1c5c5421537fd70` (`286a8e5`) | VERIFIED |
+| Commit subject | `Merge pull request #1 from LAPASSIIOON/ui/home-intro` | VERIFIED |
 | Production URL | `https://al-aoun-law-firm-legal-consultation.vercel.app` | LIVE VERIFIED |
 | Repository | `github.com/LAPASSIIOON/Al-Aoun-Law-Firm-Legal-Consultations` (branch `main`) | VERIFIED |
 | Framework | Next.js 15.5.23 (App Router), React 19 | VERIFIED |
@@ -343,6 +343,15 @@ Do not accidentally reverse:
 Known trap: local `git status` can show phantom differences due to index artifacts from file-tool-created files. Always confirm with a direct content diff against `origin/main` before concluding anything changed.
 
 ## 22. Last Claude Technical State
+
+**15 Oct 2026 — PR #1 merged by the owner, production deployment `dpl_BcZwC7fHytbotGDyN7zzE3ZhF1aB` READY (main `286a8e5`). LIVE VERIFIED:**
+
+- **Homepage cinematic intro** (`HomeIntro`, `src/lib/intro-gate.js`): first visit per session on `/ar` and `/en`; gate script sets `html[data-intro="play"]` before first paint; reduced motion / repeat visit / in-site navigation → no intro; SiteLoader steps aside on that visit. Desktop: the mark lands on the 3D emblem in the hero photo; mobile: the signature lands on the header signature. Live check (desktop 1440×900, mobile 390×844, Arabic): intro played, ~3.6–3.9 s, name landing error 0.0 px, no console errors.
+- **Intro backdrop media** are not in the repo: `scripts/fetch-intro-media.mjs` (npm `prebuild`) downloads them into `public/media/intro/` from the Higgsfield CDN with pinned SHA-256; failures skip without breaking the build (gradient fallback). Live: all four files served 200.
+- **Readability**: public reading text 16–17 px (`--fs-read`), fine print 15 px (`--fs-fine`), Arabic `.body` line-height 1.85.
+- **Mobile fixes** from `codex/hydration-418-local` are now in production — including the floating WhatsApp button hidden on phones (WhatsApp link in the footer instead). A mobile bottom bar (WhatsApp + consultation) was proposed in the service-page mockup; not implemented.
+
+Earlier state (kept for reference):
 
 **Production main:** `af96c03c76f968bd1a42c4cfe1af90c32ead87dd` (`af96c03` — `security: clean up failed matter uploads`).
 

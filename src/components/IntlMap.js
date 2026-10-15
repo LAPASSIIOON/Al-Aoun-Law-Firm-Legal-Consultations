@@ -243,13 +243,47 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, anch
       if (kwNote) next.set('kw-note', { ox: win.cx - kwP[0], oy: win.b.y0 + h1 + h2 / 2 - kwP[1] });
     }
 
-    /* الأكثر ازدحامًا يختار أولًا */
     const pts = placed.map((it) => ({ it, p: px(it.place.xy) }));
+    const labelEl = (key) => svg.querySelector(`[data-label][data-key="${CSS.escape(key)}"]`);
+    const onStage = (p) => p[0] >= 0 && p[0] <= sw && p[1] >= 0 && p[1] <= sh;
+
+    /* الخليج: خمس عواصم في بضع عشرات من البكسل — لا تتسع أسماؤها حول نقاطها، فتُصفّ في سطر واحد
+       جنوبها (حيث لا مسارات؛ المسارات تنحني شمالًا) بترتيب النقاط نفسه من الغرب إلى الشرق،
+       وخطوط إشارة لا تتقاطع. */
+    const fanned = new Set();
+    const g1 = pts.filter((e) => e.it.place.group === 1 && onStage(e.p));
+    if (g1.length >= 3) {
+      const xs = g1.map((e) => e.p[0]);
+      const ys = g1.map((e) => e.p[1]);
+      const dims = g1.map((e) => { const el = labelEl(e.it.key); return el ? measure(el) : [40, 16]; });
+      const FAN_GAP = 10;
+      const total = dims.reduce((a, d) => a + d[0], 0) + FAN_GAP * (g1.length - 1);
+      if (total > (Math.max(...xs) - Math.min(...xs)) * 1.15) {
+        const order = g1.map((e, i) => ({ e, d: dims[i] })).sort((a, b) => a.e.p[0] - b.e.p[0]);
+        const rh = Math.max(...dims.map((d) => d[1]));
+        const mid = xs.reduce((a, x) => a + x, 0) / xs.length;
+        let left = Math.min(Math.max(mid - total / 2, safe.x0), safe.x1 - total);
+        const rowY = Math.min(Math.max(...ys) + 24 + rh / 2, safe.y1 - rh / 2);
+        order.forEach(({ e, d }) => {
+          const cx = left + d[0] / 2;
+          left += d[0] + FAN_GAP;
+          taken.push(box(cx, rowY, d[0], rh));
+          const ex = cx - e.p[0];
+          const ey = rowY - rh / 2 + 1 - e.p[1];
+          const len = Math.hypot(ex, ey) || 1;
+          next.set(e.it.key, { ox: cx - e.p[0], oy: rowY - e.p[1], leader: [ex / len * 4.5, ey / len * 4.5, ex, ey] });
+          fanned.add(e.it.key);
+        });
+      }
+    }
+
+    /* البقية: الأكثر ازدحامًا يختار أولًا */
     const crowd = (a) => pts.filter((o) => o !== a && Math.hypot(o.p[0] - a.p[0], o.p[1] - a.p[1]) < 70).length;
     pts.sort((a, b) => crowd(b) - crowd(a));
     pts.forEach((entry) => {
       const { it, p } = entry;
-      const el = svg.querySelector(`[data-label][data-key="${CSS.escape(it.key)}"]`);
+      if (fanned.has(it.key)) return;
+      const el = labelEl(it.key);
       if (!el) return;
       const [w, h] = measure(el);
       const offstage = p[0] < 0 || p[0] > sw || p[1] < 0 || p[1] > sh;

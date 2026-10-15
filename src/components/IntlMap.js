@@ -105,10 +105,13 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
       el.setAttribute('text-anchor', dx >= 0 ? 'start' : 'end');
       el.setAttribute('font-size', (13 * k).toFixed(3));
     });
+    /* اسم الكويت إلى الشمال الشرقي منها — الجهة الأقلّ ازدحامًا بالمسارات — ويمتدّ شرقًا في الاتجاهين */
     const kwLabel = svg.querySelector('[data-kw-label]');
     if (kwLabel) {
-      kwLabel.setAttribute('x', (KW[0]).toFixed(2));
-      kwLabel.setAttribute('y', (KW[1] + 22 * k).toFixed(2));
+      const rtl = window.getComputedStyle(svg).direction === 'rtl';
+      kwLabel.setAttribute('x', (KW[0] + 12 * k).toFixed(2));
+      kwLabel.setAttribute('y', (KW[1] - 10 * k).toFixed(2));
+      kwLabel.setAttribute('text-anchor', rtl ? 'end' : 'start');
       kwLabel.setAttribute('font-size', (13.5 * k).toFixed(3));
     }
   }, []);
@@ -304,6 +307,9 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
     if (pinned) {
       const it = placed.find((p) => p.key === pinned);
       if (it) moveCam(fit([KW, it.place.xy], v.aspect, 0.45, 110), 0.8);
+      /* الخريطة يجب أن تُرى وهي تتحرك: إن خرجت من الشاشة نعيدها إليها */
+      const r = stageRef.current && stageRef.current.getBoundingClientRect();
+      if (r && (r.top < 0 || r.bottom > window.innerHeight)) stageRef.current.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
     } else {
       moveCam(v.final, 0.8);
     }

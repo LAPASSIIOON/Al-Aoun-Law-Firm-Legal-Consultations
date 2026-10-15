@@ -19,6 +19,8 @@
 
 /* أول زيارة للرئيسية: المقدمة السينمائية تغطّي الصفحة بدلًا من شاشة الافتتاح (يُحسم قبل أول رسم). */
 :global(html[data-intro="play"]) .loader{display:none}
+/* وكذلك أول زيارة للصفحة الدولية: مشهد الخريطة يملك الافتتاح. */
+:global(html[data-intl="play"]) .loader{display:none}
 
 .lockup{position:relative;inline-size:100%;block-size:100%}
 .halo{position:absolute;left:50%;top:50%;inline-size:var(--mark-size);aspect-ratio:1;

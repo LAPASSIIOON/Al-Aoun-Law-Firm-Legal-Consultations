@@ -10,4 +10,8 @@
  */
 export const INTRO_SESSION_KEY = 'aloun-intro-seen';
 
-export const INTRO_GATE_SCRIPT = `(function(){try{var d=document.documentElement;if(!/^\\/(ar|en)\\/?$/.test(location.pathname))return;if(window.sessionStorage.getItem('${INTRO_SESSION_KEY}')==='1')return;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.setAttribute('data-intro','play');}catch(e){}})();`;
+export const INTL_SESSION_KEY = 'aloun-intl-seen';
+
+/* الصفحة الدولية تستعمل البوابة نفسها: data-intl="play" يطوي مسارات الخريطة قبل أول رسم
+   كي يرسمها المشهد بدل أن تظهر مرسومة ثم تختفي (IntlMap.module.css). */
+export const INTRO_GATE_SCRIPT = `(function(){try{var d=document.documentElement,p=location.pathname,s=window.sessionStorage;if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(/^\\/(ar|en)\\/?$/.test(p)){if(s.getItem('${INTRO_SESSION_KEY}')!=='1')d.setAttribute('data-intro','play');return;}if(/^\\/(ar|en)\\/international\\/?$/.test(p)&&s.getItem('${INTL_SESSION_KEY}')!=='1')d.setAttribute('data-intl','play');}catch(e){}})();`;

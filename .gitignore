@@ -22,3 +22,4 @@ theleaders-nextjs-v2-complete/
 
 # المقدمة: أصول تُنزَّل وقت البناء (scripts/fetch-intro-media.mjs)
 /public/media/intro/
+/public/media/intl/

@@ -9,7 +9,7 @@ import SignatureUnderline from '@/components/SignatureUnderline.js';
 import ReferenceRow from '@/components/ReferenceRow.js';
 import { getTeamMember } from '@/lib/team-data.js';
 import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
-import CoordinationField from '@/components/CoordinationField.js';
+import IntlMap from '@/components/IntlMap.js';
 import styles from './home.module.css';
 
 export const revalidate = 60;
@@ -257,10 +257,13 @@ export default async function Home({ params }) {
           {/* الشريط مشروط ببيانات تغطية حقيقية — لا شريط أحادي الدولة عند تعذّرها */}
           {fieldCountries.length > 0 && (
             <div style={{ marginBlockStart: 'clamp(1.75rem,3.5vh,2.5rem)' }}>
-              <CoordinationField
-                variant="strip"
-                dir={locale === 'ar' ? 'rtl' : 'ltr'}
-                countries={fieldCountries.map((c2) => (locale === 'ar' ? c2.ar : c2.en))}
+              {/* معاينة موجزة للخريطة الدولية نفسها: الكويت ثم المسارات، مرة واحدة عند دخول القسم الشاشة */}
+              <IntlMap
+                variant="preview"
+                countries={fieldCountries.map((c2) => ({ key: c2.en, label: locale === 'ar' ? c2.ar : c2.en }))}
+                anchorLabel={`${INTERNATIONAL_ANCHOR.ar} | ${INTERNATIONAL_ANCHOR.en.toUpperCase()}`}
+                anchorNote={ti('mapAnchorNote')}
+                mapLabel={ti('mapAria')}
               />
             </div>
           )}

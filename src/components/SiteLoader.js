@@ -72,6 +72,12 @@ export default function SiteLoader({ locale }) {
         setState({ visible: false, phase: 'idle', replay: false, quick: false });
         return () => clearTimers();
       }
+      /* الصفحة الدولية في أول زيارة: مشهد الخريطة هو الافتتاح (IntlMap) — والجلسة تُعدّ قد رأت الافتتاح. */
+      if (document.documentElement.getAttribute('data-intl') === 'play') {
+        markSeen();
+        setState({ visible: false, phase: 'idle', replay: false, quick: false });
+        return () => clearTimers();
+      }
       const seen = seenThisSession();
       const reduced = prefersReducedMotion();
       markSeen();

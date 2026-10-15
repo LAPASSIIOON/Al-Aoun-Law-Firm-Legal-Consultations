@@ -176,3 +176,15 @@ html[dir="rtl"] [data-reveal="file"].reveal-init.in{transform:none}
 .jn-hub-label{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--platinum);letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){.jn-node{opacity:1!important;transition:none}}
 
+
+/* ═══ المقدمة السينمائية للرئيسية (HomeIntro) ═══
+   سكربت البوابة يضع data-intro="play" على <html> قبل أول رسم. أهداف الشعار في الهيدر وعناصر الهيرو
+   تبقى مخفية حتى تصلها المقدمة؛ شبكة أمان تُظهرها وحدها بعد 9 ثوانٍ إن تعطّل JavaScript.
+   بعد الانتهاء ("done") تُلغى حركات الهيرو الأصلية كي لا تُعاد بعد أن ظهر المحتوى. */
+html[data-intro="play"] [data-intro-target="mark"],
+html[data-intro="play"] [data-intro-target="name"],
+html[data-intro="play"] [data-intro-target="tagline"],
+html[data-intro="play"] [data-intro-stagger] > :not(h1),
+html[data-intro="play"] [data-intro-stagger] > h1 > span{opacity:0;animation:introGateFailsafe .6s ease 9s forwards}
+html[data-intro="done"] [data-intro-stagger] > *{animation:none}
+@keyframes introGateFailsafe{to{opacity:1}}

@@ -67,6 +67,11 @@ export default function SiteLoader({ locale }) {
   useEffect(() => {
     if (firstPath.current) {
       firstPath.current = false;
+      /* الرئيسية في أول زيارة: المقدمة السينمائية (HomeIntro) تملك الافتتاح — لا شاشتان متتاليتان. */
+      if (document.documentElement.getAttribute('data-intro') === 'play') {
+        setState({ visible: false, phase: 'idle', replay: false, quick: false });
+        return () => clearTimers();
+      }
       const seen = seenThisSession();
       const reduced = prefersReducedMotion();
       markSeen();

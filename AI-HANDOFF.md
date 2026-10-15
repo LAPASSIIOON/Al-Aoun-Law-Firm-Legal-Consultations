@@ -2,7 +2,7 @@
 
 > **Shared operational context between Claude and ChatGPT.**
 > Every factual claim below was verified against the repository, Supabase, or live deployment at the time of writing. Anything not verifiable is explicitly marked.
-> **Last updated by:** Claude · **Against commit:** `286a8e5` (15 Oct 2026; sections 3 and 22 refreshed — other sections not re-verified in this pass)
+> **Last updated by:** Claude · **Against commit:** `b5a2933` (15 Oct 2026; sections 3, 6 (International row), 19 and 22 refreshed — other sections not re-verified in this pass)
 
 ---
 
@@ -43,8 +43,9 @@ Explicitly **not** part of the vision: fabricated international presence, invent
 
 | Field | Value | Status |
 |---|---|---|
-| Current main commit | `286a8e5391c24fcfcb6a7181c1c5c5421537fd70` (`286a8e5`) | VERIFIED |
-| Commit subject | `Merge pull request #1 from LAPASSIIOON/ui/home-intro` | VERIFIED |
+| Current main commit | `b5a2933a880790a07f2fc3f59e16202352cf814c` (`b5a2933`) | VERIFIED |
+| Commit subject | `Merge pull request #3 from LAPASSIIOON/ui/intl-map` | VERIFIED |
+| Production deployment | `dpl_4AjC3ufd5Q5WRYqRoAzyDy5Zf69J` — READY | VERIFIED |
 | Production URL | `https://al-aoun-law-firm-legal-consultation.vercel.app` | LIVE VERIFIED |
 | Repository | `github.com/LAPASSIIOON/Al-Aoun-Law-Firm-Legal-Consultations` (branch `main`) | VERIFIED |
 | Framework | Next.js 15.5.23 (App Router), React 19 | VERIFIED |
@@ -98,7 +99,7 @@ VERIFIED unless marked otherwise.
 | Expertise / services | 48 real areas, 10 UX category chips + search combining as AND, no-results state with clear-filters and soft contact CTA. LIVE VERIFIED |
 | Practice detail | Content, visual breadcrumb + BreadcrumbList JSON-LD, LegalService schema, related areas, consultation CTA carrying `intent` + `from`. LIVE VERIFIED (4 sample areas) |
 | Professionals | Unified background, equal weight, editorial divider, proof lines from real credentials only, closing CTA. LIVE VERIFIED |
-| International | 3 distinct paths (Kuwait counsel / matter abroad / work with AL OUN), jurisdictions network with real data, 3 sub-pages. LIVE VERIFIED |
+| International | Hero is now the Kuwait-anchored coordination map (`IntlMap`, 15 Oct 2026) — routes to the 11 current jurisdictions (live coverage + China), names always visible, chip list for touch/keyboard; homepage carries a compact preview in place of the old coordination strip. 3 distinct paths (Kuwait counsel / matter abroad / work with AL OUN), 3 sub-pages. LIVE VERIFIED (HTML + assets) · BROWSER VERIFIED on the identical Preview — see §22 |
 | Contact / intake | 8 intents: 5 open the form (`legalConsultation`, `corporate`, `kuwaitCounsel`, `internationalMatter`, `general`), 3 redirect (`foreignFirm`, `professionalCoop`, `career`). Invalid/missing intent → default selector, no crash. Two-step form, conflict-check messaging, Turnstile. LIVE VERIFIED |
 | Insights | Infrastructure complete, **0 content**. Section hidden site-wide where empty. |
 | Search | `search_site` RPC with Arabic trigram support — **covers practice areas only**. Professionals, FAQ, insights, international pages are not searchable. |
@@ -306,6 +307,7 @@ Design constraints already agreed: never presents itself as legal advice; never 
 Do not accidentally reverse:
 - **Institution over founder personality.**
 - **No fabricated international network** — coordination only; `partner_firms` stays empty until a real partnership is approved.
+- **Kuwait is the visual anchor of the international map** (owner brief, 15 Oct 2026). This supersedes D3.1's "Kuwait matters by position only — no size, colour or weight" for the map: Kuwait has the bright point, the larger bilingual label and the "المقرّ / Headquarters" note. Every other jurisdiction, **China included**, keeps identical treatment (same line, node, label style). Routes mean coordination and referral scope — never offices or branches; the hint under the map says so.
 - **No invented professionals, credentials, articles, testimonials, awards, or rankings.**
 - **No fake directory UX** — no filters/search/pagination for 2 professionals.
 - **Equal professional weight** — founder identity stays clear without making the other professional look secondary.
@@ -343,6 +345,21 @@ Do not accidentally reverse:
 Known trap: local `git status` can show phantom differences due to index artifacts from file-tool-created files. Always confirm with a direct content diff against `origin/main` before concluding anything changed.
 
 ## 22. Last Claude Technical State
+
+**15 Oct 2026 — PR #3 merged on the owner's explicit go-ahead ("ارفع"), production deployment `dpl_4AjC3ufd5Q5WRYqRoAzyDy5Zf69J` READY (main `b5a2933`; tree identical to the tested Preview commit `86e4616`).**
+
+- **International map** (`src/components/IntlMap.js` + `.module.css`, used on `/[locale]/international` as the hero and on the homepage as `variant="preview"`):
+  - land is a static SVG (`public/maps/intl-world.svg`, ~120 KB / 47 KB gzipped) and capitals/shapes come from `src/lib/intl-map-data.js`, both generated by `scripts/build-intl-map.mjs` (Natural Earth via world-atlas, Equal Earth projection; generation tools installed with `npm i --no-save d3-geo@3 topojson-client@3 world-atlas@2 topojson-simplify@3`, not dependencies);
+  - jurisdictions = `v_active_jurisdictions` + `RELATIONSHIP_COUNTRIES` (China), endpoints at capitals; a country with no projected place is listed but gets no route;
+  - first visit per session (gate `html[data-intl="play"]` in `src/lib/intro-gate.js`, 9 s CSS failsafe): one slow camera pull-back while routes draw in three groups (Gulf → Jordan/Egypt/Turkey → UK/US/China), ~5 s; any interaction ends it; repeat visit / reduced motion → final state; no pulses, glints, sweeps or scroll effects (removed after the owner's first review);
+  - names always visible, laid out in pixels without overlaps; the Gulf names sit in one row under the cluster with leader lines; on phones, off-frame routes (US, China) are named at the frame edge;
+  - SiteLoader steps aside on a first landing on `/international`.
+- **Backdrop**: one Higgsfield still (landscape + portrait), fetched at build time into `public/media/intl/` by `scripts/fetch-intro-media.mjs` with pinned SHA-256; it sits behind the heading only and fades out before the map.
+- **Verification:**
+  - BROWSER VERIFIED on Preview `9z0bk0krv` (desktop 1440×900 and 390×844 mobile, AR + EN): gate play → done, 11 routes drawn, 11 labels on stage with 0 overlaps, hover/tap focus, mobile pinned framing, homepage preview draws on scroll, no console errors, no horizontal overflow.
+  - LIVE VERIFIED on production at HTML/asset level: `/ar/international` 200 with 11 routes, 11 labels + Kuwait name/note, 11 chips and the gate script; `/media/intl/backdrop-portrait.webp` served (24,526 B); no runtime errors in the last hour.
+  - A rendered browser run against the production URL was not performed from this session (blocked by session permissions) — TOOL INCONCLUSIVE, not a defect.
+- **Known limits:** on phones, selecting the US or China zooms out to frame both ends, so the map renders small; `src/components/CoordinationField.*` is no longer used (kept, can be removed).
 
 **15 Oct 2026 — PR #1 merged by the owner, production deployment `dpl_BcZwC7fHytbotGDyN7zzE3ZhF1aB` READY (main `286a8e5`). LIVE VERIFIED:**
 

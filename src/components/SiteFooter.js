@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation.js';
 import NewsletterSubscribe from './NewsletterSubscribe.js';
 import styles from './SiteFooter.module.css';
+import { whatsappHref } from '@/lib/whatsapp.js';
 
 /** @param {{ locale: string, areas: {slug:string,title:string}[] }} props */
 export function SiteFooter({ locale, areas = [] }) {
@@ -52,6 +53,14 @@ export function SiteFooter({ locale, areas = [] }) {
         <div className={styles.col}>
           <span className={styles.head}>{t('contactHeading')}</span>
           <a href="tel:+96599010470" className={styles.link} dir="ltr">+965 99010470</a>
+          <a
+            href={whatsappHref(locale)}
+            className={`${styles.link} ${styles.mobileWhatsApp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {locale === 'ar' ? 'تواصل عبر واتساب' : 'Chat on WhatsApp'}
+          </a>
           <a href="mailto:Aloun.Law@gmail.com" className={styles.link}>Aloun.Law@gmail.com</a>
           <span className={styles.hours}>{t('hoursHeading')}</span>
           <span className={styles.hoursVal}>{t('hoursValue')}</span>

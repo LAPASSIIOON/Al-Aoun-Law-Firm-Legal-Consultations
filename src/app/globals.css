@@ -82,7 +82,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .d-3{font-size:clamp(1.3rem,2.1vw,1.75rem)}
 .lead{font-size:clamp(1.15rem,1.7vw,1.4rem);line-height:1.6;color:var(--platinum-2);font-weight:400}
 :lang(ar) .lead{line-height:1.9}
-.body{font-size:clamp(1rem,1.1vw,1.0625rem);color:var(--platinum-2);max-width:var(--measure)}
+.body{font-size:var(--fs-read);color:var(--platinum-2);max-width:var(--measure)}
+:lang(ar) .body{line-height:var(--lh-read-ar)}
 .muted{color:var(--platinum-2)}
 .idx{font-family:var(--f-en);font-size:.8rem;letter-spacing:.08em;color:var(--platinum-3);font-variant-numeric:tabular-nums}
 .hair{block-size:1px;background:var(--hair-light);border:0}
@@ -137,6 +138,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 [data-reveal="file"].reveal-init{opacity:0;transform:translateX(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
 html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 [data-reveal="file"].reveal-init.in{opacity:1;transform:none}
+html[dir="rtl"] [data-reveal="file"].reveal-init.in{transform:none}
 
 @media (prefers-reduced-motion:reduce){
   [data-reveal].reveal-init,[data-reveal="slow"].reveal-init,[data-reveal="stamp"].reveal-init,[data-reveal="file"].reveal-init{opacity:1!important;transform:none!important;transition:none}
@@ -174,3 +176,15 @@ html[dir="rtl"] [data-reveal="file"].reveal-init{transform:translateX(-20px)}
 .jn-hub-label{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--platinum);letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){.jn-node{opacity:1!important;transition:none}}
 
+
+/* ═══ المقدمة السينمائية للرئيسية (HomeIntro) ═══
+   سكربت البوابة يضع data-intro="play" على <html> قبل أول رسم. أهداف الشعار في الهيدر وعناصر الهيرو
+   تبقى مخفية حتى تصلها المقدمة؛ شبكة أمان تُظهرها وحدها بعد 9 ثوانٍ إن تعطّل JavaScript.
+   بعد الانتهاء ("done") تُلغى حركات الهيرو الأصلية كي لا تُعاد بعد أن ظهر المحتوى. */
+html[data-intro="play"] [data-intro-target="mark"],
+html[data-intro="play"] [data-intro-target="name"],
+html[data-intro="play"] [data-intro-target="tagline"],
+html[data-intro="play"] [data-intro-stagger] > :not(h1),
+html[data-intro="play"] [data-intro-stagger] > h1 > span{opacity:0;animation:introGateFailsafe .6s ease 9s forwards}
+html[data-intro="done"] [data-intro-stagger] > *{animation:none}
+@keyframes introGateFailsafe{to{opacity:1}}

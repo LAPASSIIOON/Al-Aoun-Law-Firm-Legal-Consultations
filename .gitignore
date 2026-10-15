@@ -19,3 +19,6 @@ npm-debug.log*
 
 # accidentally-committed sibling project - keep out of this repo
 theleaders-nextjs-v2-complete/
+
+# المقدمة: أصول تُنزَّل وقت البناء (scripts/fetch-intro-media.mjs)
+/public/media/intro/

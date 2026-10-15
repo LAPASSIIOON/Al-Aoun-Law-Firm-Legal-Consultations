@@ -40,7 +40,7 @@ export default function NewsletterSubscribe({ locale }) {
 
   return (
     <div>
-      <p style={{ fontSize: '.85rem', color: 'var(--platinum-2)', marginBlockEnd: '.75rem' }}>{t('newsletterLead')}</p>
+      <p style={{ fontSize: 'var(--fs-fine)', color: 'var(--platinum-2)', marginBlockEnd: '.75rem' }}>{t('newsletterLead')}</p>
       {/* noValidate: بدونه يوقف المتصفّح الإرسال بتلميحه الأصلي بلغة المتصفّح لا بلغة الموقع،
           فلا تظهر رسالة newsletterInvalidEmail المترجَمة أبدًا. التحقّق يبقى قائمًا —
           في الإجراء الخادم ثم في دالّة قاعدة البيانات — و type/required يبقيان
@@ -56,7 +56,7 @@ export default function NewsletterSubscribe({ locale }) {
           style={{
             flex: '1 1 180px', minInlineSize: '160px', padding: '.6rem .85rem', borderRadius: 'var(--r)',
             background: 'var(--surface-2)', color: 'var(--platinum)', boxShadow: 'inset 0 0 0 1px var(--hair-dark-strong)',
-            fontSize: '.88rem',
+            fontSize: 'max(1rem, 16px)',
           }}
         />
         <button type="submit" disabled={status === 'sending'} className="btn-line" style={{ fontSize: '.85rem' }}>

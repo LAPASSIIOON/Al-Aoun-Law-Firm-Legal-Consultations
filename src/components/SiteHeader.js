@@ -43,12 +43,12 @@ export default function SiteHeader({ locale, areas = [], member = null }) {
   const closeAll = () => { setMobile(false); setOpenMenu(null); };
   const brandSignature = (
     <span className={styles.logoSignature}>
-      <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} />
+      <img src="/brand/al-aoun-mark.svg" alt="" aria-hidden="true" className={styles.logoMark} data-intro-target="mark" />
       <span className={styles.logoText}>
-        <span className={styles.logoName} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <span className={styles.logoName} dir={locale === 'ar' ? 'rtl' : 'ltr'} data-intro-target="name">
           {locale === 'en' ? <><span className={styles.logoAccent}>AL OUN</span><span>GROUP</span></> : 'مجموعة العون'}
         </span>
-        <span className={styles.logoTagline} dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+        <span className={styles.logoTagline} dir={locale === 'ar' ? 'rtl' : 'ltr'} data-intro-target="tagline">
           {locale === 'en' ? 'Advocates & Legal Consultants' : 'محامون ومستشارون قانونيون'}
         </span>
       </span>

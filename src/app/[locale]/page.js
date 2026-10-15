@@ -1,6 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import HeroMonument from '@/components/HeroMonument.js';
+import HomeIntro from '@/components/HomeIntro.js';
 import { Link } from '@/i18n/navigation.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import HeroDatum from '@/components/HeroDatum.js';
@@ -127,6 +128,8 @@ export default async function Home({ params }) {
 
   return (
     <>
+      {/* المقدمة السينمائية — أول زيارة في الجلسة فقط؛ الشعار يهبط في مكانه الحقيقي ثم تنفتح الصفحة حوله */}
+      <HomeIntro />
       {/* HERO */}
       {/* HERO — تايبوغرافيا أولًا (الموجة C1): حقل كحلي، هندسة تسجيل ثابتة، بلا صورة ولا حركة.
           C2.5: «حقل النصب» — ذراع المهد الرسمية كطبقة معمارية ثابتة أسفل خطوط الأساس */}
@@ -137,10 +140,10 @@ export default async function Home({ params }) {
             الهاتف يحتفظ بالنصب المسطّح: تكوين الصورة أفقي ويحتاج عرضًا لا يوفّره الهاتف،
             وإقحامه هناك يصطدم بصفّ الأزرار الإنجليزي (قياس مرصود). */}
         <HeroMonument className={styles.heroMonument} dir={locale === 'ar' ? 'rtl' : 'ltr'} />
-        <div className={styles.heroPhoto} aria-hidden="true" />
+        <div className={styles.heroPhoto} aria-hidden="true" data-intro-target="emblem" />
         <HeroDatum className={styles.heroDatum} markClassName={styles.heroMark} />
         <div className={`wrap ${styles.heroInner}`}>
-          <div className={styles.heroContent}>
+          <div className={styles.heroContent} data-intro-stagger>
             <span className="eyebrow">{c.eyebrow}</span>
             <h1 className={styles.heroHead}>{c.head.split('\n').map((l, i) => <span key={i} style={{ display: 'block' }}>{l}</span>)}</h1>
             <p className={styles.heroSub}>{c.sub}</p>

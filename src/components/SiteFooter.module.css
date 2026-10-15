@@ -21,11 +21,12 @@
    المقاس البصري للنصّ لم يتغيّر — المنطقة القابلة للنقر وحدها هي التي كبرت. */
 .link{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.95rem;transition:color .3s var(--ease);inline-size:fit-content}
 .link:hover,.link:focus-visible{color:#fff}
+.mobileWhatsApp{display:none}
 .linkMore{display:inline-flex;align-items:center;min-block-size:24px;color:var(--blue-glow);font-size:.95rem;font-weight:500;margin-block-start:.2rem;inline-size:fit-content}
 .hours{color:#fff;font-size:.9rem;margin-block-start:.6rem}
 .hoursVal{color:var(--muted-dark);font-size:.9rem}
 .bottom{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;padding-block:1.75rem}
-.rights{color:var(--muted-dark);font-size:.9rem}
+.rights{color:var(--muted-dark);font-size:var(--fs-fine)}
 .legal{display:flex;gap:1.5rem}
 .legalLink{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.9rem}
 .legalLink:hover,.legalLink:focus-visible{color:#fff}
@@ -37,7 +38,7 @@
    لا يتغيّر. المقاس البصري للنصّ كما هو — المنطقة القابلة للنقر وحدها هي التي كبرت. */
 @media (pointer:coarse){.link,.linkMore,.legalLink{min-block-size:var(--tap-min)}}
 .discWrap{padding-block-start:.25rem}
-.disc{color:var(--muted-2);font-size:.82rem;line-height:1.7;max-width:80ch}
+.disc{color:var(--muted-2);font-size:var(--fs-fine);line-height:1.8;max-width:80ch}
 
 /* بيان الختام المؤسسي (§6) */
 .statement{padding-block:clamp(3rem,7vh,5rem) clamp(2.5rem,5vh,3.5rem);border-block-end:1px solid var(--hair-dark)}
@@ -48,4 +49,9 @@
    تغيير اللون نفسه يبقى (وهو تغذية راجعة ضرورية) — الذي يسقط هو تدرّجه الزمني وحده. */
 @media (prefers-reduced-motion:reduce){
   .link{transition:none}
+}
+
+@media (max-width:767px), (max-height:500px) and (pointer:coarse){
+  .mobileWhatsApp{display:inline-flex}
+  .footer{padding-block-end:calc(2rem + env(safe-area-inset-bottom, 0px))}
 }

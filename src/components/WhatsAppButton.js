@@ -1,5 +1,6 @@
 'use client';
 import { usePathname } from '@/i18n/navigation.js';
+import { whatsappHref } from '@/lib/whatsapp.js';
 
 /**
  * زر واتساب العائم — «الختم الهادئ» (تمريرة العناصر العائمة).
@@ -18,10 +19,7 @@ export default function WhatsAppButton({ locale }) {
   const pathname = usePathname();
   if (pathname.startsWith('/account')) return null;
 
-  const text = locale === 'ar'
-    ? 'مرحبًا، أودّ الاستفسار عن استشارة قانونية مع مجموعة العون.'
-    : "Hello, I'd like to inquire about a legal consultation with Al Oun.";
-  const href = `https://wa.me/96599010470?text=${encodeURIComponent(text)}`;
+  const href = whatsappHref(locale);
   return (
     <>
       <style>{`
@@ -38,6 +36,9 @@ export default function WhatsAppButton({ locale }) {
         @media (prefers-reduced-motion:reduce){
           .waQuietSeal{transition:none}
           .waQuietSeal:hover,.waQuietSeal:focus-visible{transform:none}
+        }
+        @media (max-width:767px), (max-height:500px) and (pointer:coarse){
+          .waQuietSeal{display:none}
         }
       `}</style>
       <a

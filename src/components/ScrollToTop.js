@@ -28,11 +28,13 @@ export default function ScrollToTop({ locale }) {
   if (!visible) return null;
 
   return (
-    <button
+    <>
+      <style>{'@media (max-width:767px), (max-height:500px) and (pointer:coarse){.scrollToTopButton{display:none!important}}'}</style>
+      <button
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' })}
       aria-label={locale === 'ar' ? 'التمرير لأعلى' : 'Scroll to top'}
-      className="no-print"
+      className="no-print scrollToTopButton"
       style={{
         position: 'fixed', insetBlockEnd: '1.25rem', insetInlineStart: '1.25rem', zIndex: 60,
         width: '44px', height: '44px', borderRadius: '50%', background: 'var(--surface-2)',
@@ -42,8 +44,9 @@ export default function ScrollToTop({ locale }) {
       }}
       onMouseEnter={(e) => { if (!prefersReducedMotion()) e.currentTarget.style.transform = 'scale(1.08)'; }}
       onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-    >
-      <UpIcon />
-    </button>
+      >
+        <UpIcon />
+      </button>
+    </>
   );
 }

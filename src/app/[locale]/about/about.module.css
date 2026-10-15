@@ -29,7 +29,7 @@
 .presenceGrid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(18rem, .65fr); gap: clamp(3rem, 9vw, 10rem); }
 .presence h2 { max-inline-size: 15ch; margin: 1rem 0 0; color: #fff; }
 .presence .body { margin: 0; color: var(--platinum-2); line-height: 1.85; }
-.affiliation { margin: 1.2rem 0 2rem; color: var(--platinum-3); font-size: .9rem; }
+.affiliation { margin: 1.2rem 0 2rem; color: var(--platinum-3); font-size: var(--fs-read); }
 @media (max-width: 820px) {
   .storyGrid, .leadershipGrid, .valuesGrid, .presenceGrid { grid-template-columns: 1fr; }
   .portrait { max-inline-size: 31rem; }

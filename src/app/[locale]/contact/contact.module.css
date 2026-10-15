@@ -10,11 +10,11 @@
 @media (min-width:860px){.duo{grid-template-columns:1.1fr .9fr;align-items:start}}
 
 .colBody{margin-block-start:1.5rem}
-.disclaimer{margin-block-start:2rem;font-size:.85rem;max-inline-size:40ch}
+.disclaimer{margin-block-start:2rem;font-size:var(--fs-fine);max-inline-size:40ch}
 .lead{max-inline-size:48ch}
 .headTitle{margin-block:1.2rem 1.5rem}
 .processHead{color:#fff;margin-block-end:2.25rem}
 .stepTitle{margin-block:.6rem .4rem;color:#fff}
-.stepBody{font-size:.95rem}
+.stepBody{font-size:var(--fs-read)}
 .mapTitle{margin-block:1rem 2rem;color:#fff}
 .officeTitle{margin-block:1.2rem 1rem}

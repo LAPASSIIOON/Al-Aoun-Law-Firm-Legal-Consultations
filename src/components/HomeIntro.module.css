@@ -1,0 +1,56 @@
+/* ═══ المقدمة السينمائية للرئيسية ═══
+   لا تظهر إلا حين يضع سكربت البوابة data-intro="play" على <html> قبل أول رسم (src/lib/intro-gate.js).
+   شبكة أمان: إن لم يصل JavaScript تختفي المقدمة وحدها بعد 9 ثوانٍ ويظهر المحتوى (globals.css). */
+
+.intro{display:none}
+:global(html[data-intro="play"]) .intro{
+  display:block;position:fixed;inset:0;z-index:1100;overflow:hidden;
+  pointer-events:auto;cursor:default;
+  animation:introFailsafe .6s ease 9s forwards;
+}
+
+/* الخلفية: لون الأرضية ← ملصق الفيديو ← الفيديو ← تظليل. كلها داخل طبقة واحدة يُثقَب قناعها
+   دائريًا من نقطة وصول الشعار (--mx/--my) بنصف قطر --mr يحرّكه JavaScript. */
+.backdrop{
+  --mx:50%;--my:50%;--mr:0px;--feather:160px;
+  position:absolute;inset:0;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 46%,rgba(111,163,204,.10),transparent 72%),
+    url('/media/intro/atmosphere-poster.jpg') 30% center/cover no-repeat,
+    var(--ground);
+  -webkit-mask-image:radial-gradient(circle at var(--mx) var(--my),transparent calc(var(--mr) - var(--feather)),#000 var(--mr));
+  mask-image:radial-gradient(circle at var(--mx) var(--my),transparent calc(var(--mr) - var(--feather)),#000 var(--mr));
+}
+@media (max-aspect-ratio:1/1){
+  .backdrop{
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 46%,rgba(111,163,204,.10),transparent 72%),
+      url('/media/intro/atmosphere-portrait-poster.jpg') center/cover no-repeat,
+      var(--ground);
+  }
+}
+
+.video{position:absolute;inset:0;inline-size:100%;block-size:100%;object-fit:cover;object-position:30% center;opacity:0;pointer-events:none}
+@media (max-aspect-ratio:1/1){.video{object-position:center}}
+
+/* تظليل يعيد المشهد إلى كحلي الهوية ويُبقي التوقيع مقروءًا في المركز */
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 62% 56% at 50% 47%,rgba(14,24,38,.30),rgba(14,24,38,.72) 100%),
+    linear-gradient(180deg,rgba(14,24,38,.35),rgba(14,24,38,.15) 45%,rgba(14,24,38,.55))}
+
+.halo{position:absolute;inline-size:min(72vw,900px);aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,rgba(111,163,204,.20),rgba(111,163,204,.05) 44%,transparent 70%)}
+
+/* وميض خافت فوق العلامة الثلاثية لحظة الوصول — ضوء لا توهّج */
+.glint{position:absolute;left:0;top:0;inline-size:0;block-size:0;border-radius:50%;pointer-events:none;opacity:0;
+  background:radial-gradient(circle,rgba(190,215,240,.22),rgba(111,163,204,.08) 38%,transparent 66%);
+  mix-blend-mode:screen}
+
+.layer{position:absolute;inset:0;pointer-events:none}
+.fly{position:absolute;margin:0;opacity:0;box-sizing:border-box}
+.mark{overflow:visible;display:block}
+.ring{fill:var(--clay-bright)}
+.letter{fill:var(--platinum)}
+
+@keyframes introFailsafe{to{opacity:0;visibility:hidden}}

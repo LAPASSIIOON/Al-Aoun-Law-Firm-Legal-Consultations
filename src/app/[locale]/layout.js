@@ -23,6 +23,7 @@ import SiteLoader from '@/components/SiteLoader.js';
 import AuthRecoveryErrorRedirect from '@/components/AuthRecoveryErrorRedirect.js';
 import { SiteFooter } from '@/components/SiteFooter.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
+import { INTRO_GATE_SCRIPT } from '@/lib/intro-gate.js';
 
 /** @type {Record<'ar'|'en', 'rtl'|'ltr'>} */
 const DIR_BY_LOCALE = { ar: 'rtl', en: 'ltr' };
@@ -88,8 +89,10 @@ export default async function LocaleLayout({ children, params }) {
   const areas = await fetchAreas(locale);
 
   return (
-    <html lang={locale} dir={DIR_BY_LOCALE[locale]}>
+    <html lang={locale} dir={DIR_BY_LOCALE[locale]} suppressHydrationWarning>
       <body>
+        {/* بوابة المقدمة: تُحسم قبل أول رسم (src/lib/intro-gate.js) */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_GATE_SCRIPT }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

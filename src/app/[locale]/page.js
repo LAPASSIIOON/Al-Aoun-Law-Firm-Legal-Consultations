@@ -262,6 +262,7 @@ export default async function Home({ params }) {
                 variant="preview"
                 countries={fieldCountries.map((c2) => ({ key: c2.en, label: locale === 'ar' ? c2.ar : c2.en }))}
                 anchorLabel={`${INTERNATIONAL_ANCHOR.ar} | ${INTERNATIONAL_ANCHOR.en.toUpperCase()}`}
+                anchorNote={ti('mapAnchorNote')}
                 mapLabel={ti('mapAria')}
               />
             </div>

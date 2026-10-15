@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MAP, ANCHOR, PLACES, ALIASES } from '@/lib/intl-map-data.js';
 import s from './IntlMap.module.css';
 
@@ -13,23 +12,35 @@ import s from './IntlMap.module.css';
  * الحقيقية — تمثّل نطاق التنسيق والإحالة، لا مكاتب ولا فروعًا. كل الدول بمعاملة بصرية واحدة؛
  * الكويت وحدها المرتكز.
  *
- * المشهد (variant="full"): العالم يظهر ← الكاميرا تقترب من الكويت ← المسارات تمتد بمجموعات
- * جغرافية (الخليج، ثم المشرق وتركيا، ثم البعيد) والكاميرا تتراجع معها ← حالة تفاعلية.
- * المعاينة (variant="preview"): العالم ثابت، والمسارات تُرسم مرة واحدة حين يدخل القسم الشاشة.
+ * المشهد (variant="full"): حركة كاميرا واحدة هادئة — تبدأ أقرب قليلًا إلى الكويت وتتراجع ببطء إلى
+ * الإطار الكامل، والمسارات تمتد خلالها بمجموعات جغرافية (الخليج، ثم المشرق وتركيا، ثم البعيد).
+ * لا وميض ولا نبض ولا عبور ضوء: حركة الموقع كلها ظهور هادئ، والخريطة على إيقاعه.
+ * المعاينة (variant="preview"): بلا كاميرا، والمسارات تُرسم مرة واحدة حين يدخل القسم الشاشة.
  * مرة واحدة في الجلسة؛ مع «تقليل الحركة» تُعرض الحالة النهائية مباشرة.
+ *
+ * أسماء الدول ظاهرة دائمًا. تُوزَّع بالبكسل على الإطار النهائي كي لا تتراكب (الخليج متقارب جدًا):
+ * كل اسم يجرّب جهات حول نقطته — الأبعد عن الكويت أولًا — ثم مسافات أبعد بخطّ إشارة رفيع.
+ * الدولة الواقعة خارج الإطار (أمريكا والصين على الهاتف) يُكتب اسمها عند حافة الإطار حيث يخرج مسارها.
  */
-
-if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger);
 
 const SEEN_KEY = { full: 'aloun-intl-seen', preview: 'aloun-intl-preview-seen' };
 const W = MAP.width;
 const H = MAP.height;
 const KW = ANCHOR.xy;
 
+/* حواف المسرح تتلاشى (قناع CSS) — الأسماء تبقى داخل المنطقة الآمنة */
+const SAFE = { x: 0.05, y: 0.07 };
+const LABEL_PX = 12;
+const KW_NAME_PX = 13;
+const KW_NOTE_PX = 10.5;
+const GAPS = [6, 14, 26, 40, 56, 74];
+const LEADER_FROM = 2; /* من هذه المسافة فأبعد يُرسم خطّ إشارة */
+const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]];
+
 const placeFor = (key) => PLACES.find((p) => p.key === (ALIASES[key] || key)) || null;
 
 /* منحنى رباعي بين نقطتين مسقطتين، ينحني دائمًا نحو الشمال (أعلى الخريطة) بقدر يتناسب مع المسافة. */
-function arcD(a, b) {
+function arcGeom(a, b) {
   const dx = b[0] - a[0];
   const dy = b[1] - a[1];
   const len = Math.hypot(dx, dy) || 1;
@@ -37,17 +48,20 @@ function arcD(a, b) {
   let ny = dx / len;
   if (ny > 0) { nx = -nx; ny = -ny; }
   const lift = Math.max(5, len * 0.22);
-  const cx = (a[0] + b[0]) / 2 + nx * lift;
-  const cy = (a[1] + b[1]) / 2 + ny * lift;
-  return `M${a[0]},${a[1]} Q${cx.toFixed(1)},${cy.toFixed(1)} ${b[0]},${b[1]}`;
+  const c = [(a[0] + b[0]) / 2 + nx * lift, (a[1] + b[1]) / 2 + ny * lift];
+  return { c, d: `M${a[0]},${a[1]} Q${c[0].toFixed(1)},${c[1].toFixed(1)} ${b[0]},${b[1]}` };
 }
+const bez = (a, c, b, t) => [
+  (1 - t) * (1 - t) * a[0] + 2 * (1 - t) * t * c[0] + t * t * b[0],
+  (1 - t) * (1 - t) * a[1] + 2 * (1 - t) * t * c[1] + t * t * b[1],
+];
 
 /* صندوق كاميرا يضمّ النقاط بهامش، بنسبة أبعاد المسرح. */
 function fit(points, aspect, pad = 0.18, minW = 60) {
   const xs = points.map((p) => p[0]);
   const ys = points.map((p) => p[1]);
-  let x0 = Math.min(...xs); let x1 = Math.max(...xs);
-  let y0 = Math.min(...ys); let y1 = Math.max(...ys);
+  const x0 = Math.min(...xs); const x1 = Math.max(...xs);
+  const y0 = Math.min(...ys); const y1 = Math.max(...ys);
   let w = Math.max(x1 - x0, minW);
   let h = Math.max(y1 - y0, minW / aspect);
   w *= 1 + pad * 2; h *= 1 + pad * 2;
@@ -61,32 +75,48 @@ function fit(points, aspect, pad = 0.18, minW = 60) {
   return { x, y, w, h };
 }
 
-/* اسم الكويت يمتد شرقها: نوسّع الإطار كي لا يُقصّ (عرض الاسم ≈ ثلث عرض المسرح الضيّق) */
+/* اسم الكويت يحتاج مساحة شرقها: نوسّع الإطار الضيّق كي لا يُقصّ */
 function withLabelRoom(points, aspect, pad, minW) {
   const first = fit(points, aspect, pad, minW);
   return fit([...points, [KW[0] + first.w * 0.34, KW[1]]], aspect, pad, minW);
+}
+
+/* بداية الحركة: الإطار النهائي نفسه مقرَّبًا قليلًا نحو الكويت، ومحصورًا داخله — فالحركة تراجع خالص */
+function closer(view, zoom) {
+  const w = view.w / zoom;
+  const h = view.h / zoom;
+  const fx = view.x + view.w / 2;
+  const fy = view.y + view.h / 2;
+  const cx = fx + (KW[0] - fx) * 0.6;
+  const cy = fy + (KW[1] - fy) * 0.6;
+  return {
+    x: Math.min(Math.max(cx - w / 2, view.x), view.x + view.w - w),
+    y: Math.min(Math.max(cy - h / 2, view.y), view.y + view.h - h),
+    w,
+    h,
+  };
 }
 
 function readSeen(key) { try { return window.sessionStorage.getItem(key) === '1'; } catch (_) { return false; } }
 function markSeen(key) { try { window.sessionStorage.setItem(key, '1'); } catch (_) { /* اختياري */ } }
 const reducedMotion = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (_) { return false; } };
 
-export default function IntlMap({ countries, variant = 'full', anchorLabel, mapLabel, listLabel, hint }) {
+export default function IntlMap({ countries, variant = 'full', anchorLabel, anchorNote, mapLabel, listLabel, hint }) {
   const rootRef = useRef(null);
   const stageRef = useRef(null);
   const svgRef = useRef(null);
-  const sweepRef = useRef(null);
   const cam = useRef({ x: 0, y: 0, w: W, h: H });
   const views = useRef(null);
   const tlRef = useRef(null);
   const camTween = useRef(null);
+  const spots = useRef(new Map());
   const [active, setActive] = useState(null);
   const [pinned, setPinned] = useState(null);
   const [ready, setReady] = useState(false);
 
   const items = useMemo(() => countries.map((c) => {
     const place = placeFor(c.key);
-    return { key: c.key, label: c.label, place, d: place ? arcD(KW, place.xy) : null };
+    return { key: c.key, label: c.label, place, arc: place ? arcGeom(KW, place.xy) : null };
   }), [countries]);
   const placed = useMemo(() => items.filter((it) => it.place), [items]);
   const current = pinned || active;
@@ -101,36 +131,143 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
     const k = c.w / Math.max(1, stage.clientWidth);
     svg.style.setProperty('--k', k.toFixed(4));
     svg.querySelectorAll('[data-r]').forEach((el) => el.setAttribute('r', (Number(el.dataset.r) * k).toFixed(3)));
+    const at = (el) => el.dataset.at.split(',').map(Number);
     svg.querySelectorAll('[data-label]').forEach((el) => {
-      const [px, py] = el.dataset.at.split(',').map(Number);
-      const dx = px - KW[0]; const dy = py - KW[1];
-      const len = Math.hypot(dx, dy) || 1;
-      const off = 9 * k;
-      el.setAttribute('x', (px + (dx / len) * off).toFixed(2));
-      el.setAttribute('y', (py + (dy / len) * off + 4 * k).toFixed(2));
-      el.setAttribute('text-anchor', dx >= 0 ? 'start' : 'end');
-      el.setAttribute('font-size', (13 * k).toFixed(3));
+      const sp = spots.current.get(el.dataset.slot);
+      if (!sp) return;
+      const [px, py] = at(el);
+      const x = sp.edge ? c.x + sp.ax * k : px + sp.ox * k;
+      const y = sp.edge ? c.y + sp.ay * k : py + sp.oy * k;
+      el.setAttribute('x', x.toFixed(2));
+      el.setAttribute('y', y.toFixed(2));
+      el.setAttribute('font-size', (Number(el.dataset.px) * k).toFixed(3));
     });
-    /* اسم الكويت إلى الشمال الشرقي منها — الجهة الأقلّ ازدحامًا بالمسارات — ويمتدّ شرقًا في الاتجاهين */
-    const kwLabel = svg.querySelector('[data-kw-label]');
-    if (kwLabel) {
-      const rtl = window.getComputedStyle(svg).direction === 'rtl';
-      kwLabel.setAttribute('x', (KW[0] + 12 * k).toFixed(2));
-      kwLabel.setAttribute('y', (KW[1] - 10 * k).toFixed(2));
-      kwLabel.setAttribute('text-anchor', rtl ? 'end' : 'start');
-      kwLabel.setAttribute('font-size', (13.5 * k).toFixed(3));
-    }
+    svg.querySelectorAll('[data-leader]').forEach((el) => {
+      const sp = spots.current.get(el.dataset.key);
+      const [px, py] = at(el);
+      if (!sp || !sp.leader) { el.setAttribute('visibility', 'hidden'); return; }
+      el.setAttribute('visibility', 'visible');
+      el.setAttribute('x1', (px + sp.leader[0] * k).toFixed(2));
+      el.setAttribute('y1', (py + sp.leader[1] * k).toFixed(2));
+      el.setAttribute('x2', (px + sp.leader[2] * k).toFixed(2));
+      el.setAttribute('y2', (py + sp.leader[3] * k).toFixed(2));
+    });
   }, []);
 
-  const moveCam = useCallback((to, duration = 0.8, ease = 'power2.inOut') => {
+  /* ── توزيع الأسماء بالبكسل على إطار معيّن ── */
+  const layout = useCallback((view) => {
+    const svg = svgRef.current;
+    const stage = stageRef.current;
+    if (!svg || !stage || !view) return;
+    const sw = stage.clientWidth;
+    const sh = stage.clientHeight;
+    if (!sw || !sh) return;
+    const k = view.w / sw;
+    const px = (p) => [(p[0] - view.x) / k, (p[1] - view.y) / k];
+    const safe = { x0: sw * SAFE.x, x1: sw * (1 - SAFE.x), y0: sh * SAFE.y, y1: sh * (1 - SAFE.y) };
+    const taken = [];
+    const box = (cx, cy, w, h) => ({ x0: cx - w / 2, x1: cx + w / 2, y0: cy - h / 2, y1: cy + h / 2 });
+    const overlap = (b) => taken.reduce((sum, o) => {
+      const ix = Math.min(b.x1, o.x1) - Math.max(b.x0, o.x0);
+      const iy = Math.min(b.y1, o.y1) - Math.max(b.y0, o.y0);
+      return ix > 0 && iy > 0 ? sum + ix * iy : sum;
+    }, 0);
+    const outside = (b) => Math.max(0, safe.x0 - b.x0) + Math.max(0, b.x1 - safe.x1) + Math.max(0, safe.y0 - b.y0) + Math.max(0, b.y1 - safe.y1);
+    const measure = (el) => {
+      el.setAttribute('font-size', (Number(el.dataset.px) * k).toFixed(3));
+      try { const bb = el.getBBox(); return [bb.width / k + 4, Math.max(bb.height / k, Number(el.dataset.px) * 1.25)]; } catch (_) { return [60, 16]; }
+    };
+    const kwP = px(KW);
+    taken.push(box(kwP[0], kwP[1], 14, 14));
+    placed.forEach((it) => { const p = px(it.place.xy); taken.push(box(p[0], p[1], 9, 9)); });
+
+    /* أفضل موضع حول نقطة: الجهة الأقرب إلى «بعيدًا عن الكويت» أولًا، ثم مسافات أبعد */
+    const best = (p, w, h, prefer) => {
+      let win = null;
+      GAPS.forEach((gap, gi) => {
+        DIRS.forEach(([ux, uy]) => {
+          const diag = ux && uy ? 0.7 : 1;
+          const cx = p[0] + ux * (gap * diag + w / 2);
+          const cy = p[1] + uy * (gap * diag + h / 2);
+          const b = box(cx, cy, w, h);
+          const ang = Math.acos(Math.max(-1, Math.min(1, (ux * prefer[0] + uy * prefer[1]) / Math.hypot(ux, uy))));
+          const score = overlap(b) * 1.5 + outside(b) * 40 + gi * 9 + ang * 3 + (uy === 0 ? 0 : 0.5);
+          if (!win || score < win.score) win = { score, b, cx, cy, gi };
+        });
+      });
+      return win;
+    };
+    const leaderFor = (p, b) => {
+      const qx = Math.min(Math.max(p[0], b.x0), b.x1);
+      const qy = Math.min(Math.max(p[1], b.y0), b.y1);
+      const dx = qx - p[0]; const dy = qy - p[1];
+      const len = Math.hypot(dx, dy) || 1;
+      return [dx / len * 4.5, dy / len * 4.5, dx - dx / len * 2, dy - dy / len * 2];
+    };
+
+    const next = new Map();
+    /* الكويت أولًا: الاسم والملاحظة كتلة واحدة، شمالًا شرقيًا ما أمكن (الجهة الأقل ازدحامًا بالمسارات) */
+    const kwName = svg.querySelector('[data-slot="kw-name"]');
+    const kwNote = svg.querySelector('[data-slot="kw-note"]');
+    if (kwName) {
+      const [w1, h1] = measure(kwName);
+      const [w2, h2] = kwNote ? measure(kwNote) : [0, 0];
+      const w = Math.max(w1, w2);
+      const h = h1 + h2;
+      const win = best(kwP, w, h, [0.75, -0.66]);
+      taken.push(win.b);
+      next.set('kw-name', { ox: win.cx - kwP[0], oy: win.b.y0 + h1 / 2 - kwP[1] });
+      if (kwNote) next.set('kw-note', { ox: win.cx - kwP[0], oy: win.b.y0 + h1 + h2 / 2 - kwP[1] });
+    }
+
+    /* الأكثر ازدحامًا يختار أولًا */
+    const pts = placed.map((it) => ({ it, p: px(it.place.xy) }));
+    const crowd = (a) => pts.filter((o) => o !== a && Math.hypot(o.p[0] - a.p[0], o.p[1] - a.p[1]) < 70).length;
+    pts.sort((a, b) => crowd(b) - crowd(a));
+    pts.forEach((entry) => {
+      const { it, p } = entry;
+      const el = svg.querySelector(`[data-label][data-key="${CSS.escape(it.key)}"]`);
+      if (!el) return;
+      const [w, h] = measure(el);
+      const offstage = p[0] < 0 || p[0] > sw || p[1] < 0 || p[1] > sh;
+      if (offstage) {
+        /* خارج الإطار: الاسم عند الحافة حيث يخرج المسار */
+        let last = kwP;
+        for (let i = 1; i <= 60; i += 1) {
+          const q = px(bez(KW, it.arc.c, it.place.xy, i / 60));
+          if (q[0] < safe.x0 || q[0] > safe.x1 || q[1] < safe.y0 || q[1] > safe.y1) break;
+          last = q;
+        }
+        const cx = Math.min(Math.max(last[0], safe.x0 + w / 2), safe.x1 - w / 2);
+        let cy = Math.min(Math.max(last[1] - h * 0.9, safe.y0 + h / 2), safe.y1 - h / 2);
+        if (overlap(box(cx, cy, w, h)) > 0) cy = Math.min(cy + h * 1.8, safe.y1 - h / 2);
+        const b = box(cx, cy, w, h);
+        taken.push(b);
+        next.set(it.key, { edge: true, ax: cx, ay: cy });
+        return;
+      }
+      const dx = p[0] - kwP[0]; const dy = p[1] - kwP[1];
+      const len = Math.hypot(dx, dy) || 1;
+      const win = best(p, w, h, [dx / len, dy / len]);
+      taken.push(win.b);
+      next.set(it.key, { ox: win.cx - p[0], oy: win.cy - p[1], leader: win.gi >= LEADER_FROM ? leaderFor(p, win.b) : null });
+    });
+    spots.current = next;
+    svg.querySelectorAll('[data-label]').forEach((el) => {
+      const sp = next.get(el.dataset.slot);
+      el.classList.toggle(s.edgeLabel, Boolean(sp && sp.edge));
+    });
+  }, [placed]);
+
+  const moveCam = useCallback((to, duration = 0.8, ease = 'power2.inOut', onComplete) => {
     if (camTween.current) camTween.current.kill();
-    if (!duration) { Object.assign(cam.current, to); applyCam(); return null; }
-    camTween.current = gsap.to(cam.current, { ...to, duration, ease, onUpdate: applyCam });
+    if (!duration) { Object.assign(cam.current, to); applyCam(); if (onComplete) onComplete(); return null; }
+    camTween.current = gsap.to(cam.current, { ...to, duration, ease, onUpdate: applyCam, onComplete });
     return camTween.current;
   }, [applyCam]);
 
   /* حركة كاميرا تُضاف إلى خط زمني (لا تُلغي غيرها، بخلاف moveCam التفاعلية) */
-  const camTo = useCallback((to, duration, ease = 'power2.inOut') => gsap.to(cam.current, { ...to, duration, ease, onUpdate: applyCam }), [applyCam]);
+  const camTo = useCallback((to, duration, ease = 'power1.inOut') => gsap.to(cam.current, { ...to, duration, ease, onUpdate: applyCam }), [applyCam]);
 
   /* ── حساب المشاهد حسب نسبة المسرح ── */
   const computeViews = useCallback(() => {
@@ -138,17 +275,10 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
     if (!stage) return null;
     const aspect = stage.clientWidth / Math.max(1, stage.clientHeight);
     const narrow = aspect < 1.35;
-    const pts = (g) => placed.filter((it) => it.place.group <= g).map((it) => it.place.xy);
     const all = [KW, ...placed.map((it) => it.place.xy)];
-    const regional = [KW, ...pts(2), ...placed.filter((it) => it.key === 'United Kingdom').map((it) => it.place.xy)];
-    const v = {
-      narrow,
-      aspect,
-      kuwait: fit([KW], aspect, 0, narrow ? 120 : 150),
-      g1: fit([KW, ...pts(1)], aspect, narrow ? 0.35 : 0.6),
-      g2: fit([KW, ...pts(2)], aspect, narrow ? 0.2 : 0.35),
-      final: narrow ? withLabelRoom(regional, aspect, 0.06) : fit(all, aspect, 0.06),
-    };
+    const regional = [KW, ...placed.filter((it) => it.place.group <= 2 || it.key === 'United Kingdom').map((it) => it.place.xy)];
+    const final = narrow ? withLabelRoom(regional, aspect, 0.1) : fit(all, aspect, 0.12);
+    const v = { narrow, aspect, final, start: closer(final, narrow ? 1.3 : 1.45) };
     views.current = v;
     return v;
   }, [placed]);
@@ -164,86 +294,66 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
 
     const q = (sel) => Array.from(svg.querySelectorAll(sel));
     const arcs = q('[data-arc]');
-    const glints = q('[data-glint]');
     const nodes = q('[data-node]');
-    const labels = q('[data-label]');
+    const labels = q('[data-label]:not([data-kw])');
+    const leaders = q('[data-leader]');
     const kwParts = q('[data-kw]');
     const land = q('[data-land]');
     const byKey = (list, key) => list.filter((el) => el.dataset.key === key);
     const group = (g) => placed.filter((it) => it.place.group === g).map((it) => it.key);
+    const handBack = () => gsap.set([...arcs, ...nodes, ...labels, ...leaders, ...kwParts, ...land], { clearProps: 'opacity' });
 
     const seen = readSeen(SEEN_KEY[variant]);
     const reduced = reducedMotion();
-    const finalState = () => {
-      gsap.set(arcs, { strokeDasharray: 1, strokeDashoffset: 0, opacity: '' });
-      gsap.set([...nodes, ...kwParts, ...land], { opacity: 1 });
-      gsap.set(glints, { opacity: 0 });
-      gsap.set(labels, { opacity: '' });
-      moveCam(v.final, 0);
+    const done = () => {
       if (html.getAttribute('data-intl') === 'play') html.setAttribute('data-intl', 'done');
+      handBack();
       setReady(true);
+    };
+    const finalState = () => {
+      layout(v.final);
+      gsap.set(arcs, { strokeDasharray: 1, strokeDashoffset: 0 });
+      moveCam(v.final, 0);
+      done();
     };
 
     let io = null;
-    let ro = null;
     const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) || (navigator.connection && navigator.connection.saveData);
-    const simple = variant === 'preview' || v.narrow || lowPower;
+    const camera = variant === 'full' && !lowPower;
 
     const play = () => {
       markSeen(SEEN_KEY[variant]);
+      layout(v.final);
       gsap.set(arcs, { strokeDasharray: 1, strokeDashoffset: 1 });
-      gsap.set(glints, { strokeDasharray: '0.07 1.2', strokeDashoffset: 0.07, opacity: 0 });
-      gsap.set([...nodes, ...kwParts], { opacity: 0 });
-      gsap.set(labels, { opacity: 0 });
-      gsap.set(land, { opacity: 0 });
-      moveCam(v.final, 0);
+      gsap.set([...nodes, ...labels, ...leaders, ...kwParts, ...land], { opacity: 0 });
+      moveCam(camera ? v.start : v.final, 0);
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          if (html.getAttribute('data-intl') === 'play') html.setAttribute('data-intl', 'done');
-          gsap.set(labels, { opacity: '' });
-          setReady(true);
-        },
-      });
+      const tl = gsap.timeline({ onComplete: done });
       tlRef.current = tl;
 
-      /* ١ — العالم يظهر، ويعبره ضوء دافئ واحد */
-      tl.to(land, { opacity: 1, duration: simple ? 0.6 : 1.0, ease: 'power1.out' }, 0);
-      if (sweepRef.current) tl.fromTo(sweepRef.current, { xPercent: -120, opacity: 0 }, { xPercent: 120, opacity: 1, duration: 1.8, ease: 'power1.inOut' }, 0.15)
-        .to(sweepRef.current, { opacity: 0, duration: 0.4 }, 1.6);
+      /* ١ — الخريطة تظهر، والكاميرا تبدأ تراجعها البطيء (حركة واحدة طوال المشهد) */
+      tl.to(land, { opacity: 1, duration: 1.2, ease: 'power1.out' }, 0);
+      if (camera) tl.add(camTo(v.final, 4.9, 'power1.inOut'), 0.1);
 
-      /* ٢ — الكويت */
-      if (!simple) tl.add(camTo(v.kuwait, 1.15), 0.55);
-      tl.to(kwParts, { opacity: 1, duration: 0.7, ease: 'power2.out', stagger: 0.08 }, simple ? 0.35 : 1.15);
+      /* ٢ — الكويت واسمها */
+      tl.to(kwParts, { opacity: 1, duration: 0.9, ease: 'power2.out', stagger: 0.05 }, 0.35);
 
-      /* ٣ — المسارات بمجموعات جغرافية */
-      const drawGroup = (keys, at, dur, flashLabels) => {
+      /* ٣ — المسارات بمجموعات جغرافية؛ النقطة واسمها يظهران حين يبلغها المسار */
+      const drawGroup = (keys, at, dur) => {
         keys.forEach((key, i) => {
-          const t = at + i * (simple ? 0.08 : 0.15);
+          const t = at + i * 0.14;
           tl.to(byKey(arcs, key), { strokeDashoffset: 0, duration: dur, ease: 'power2.inOut' }, t)
-            .to(byKey(nodes, key), { opacity: 1, duration: 0.35, ease: 'power1.out' }, t + dur * 0.85);
-          if (!simple) {
-            tl.to(byKey(glints, key), { opacity: 1, duration: 0.1 }, t + dur * 0.3)
-              .to(byKey(glints, key), { strokeDashoffset: -1, duration: dur * 1.1, ease: 'power1.inOut' }, t + dur * 0.3)
-              .to(byKey(glints, key), { opacity: 0, duration: 0.25 }, t + dur * 1.3);
-          }
-          if (flashLabels) {
-            tl.to(byKey(labels, key), { opacity: 1, duration: 0.3 }, t + dur * 0.8)
-              .to(byKey(labels, key), { opacity: 0, duration: 0.4 }, t + dur * 0.8 + 1.1);
-          }
+            .to([...byKey(nodes, key), ...byKey(labels, key), ...byKey(leaders, key)], { opacity: 1, duration: 0.55, ease: 'power1.out' }, t + dur * 0.8);
         });
       };
-      if (simple) {
-        drawGroup(group(1), 0.7, 0.6, false);
-        drawGroup(group(2), 1.05, 0.65, false);
-        drawGroup(group(3), 1.35, 0.8, false);
+      if (camera) {
+        drawGroup(group(1), 1.0, 0.9);
+        drawGroup(group(2), 2.05, 1.0);
+        drawGroup(group(3), 3.0, 1.3);
       } else {
-        tl.add(camTo(v.g1, 0.85), 1.75);
-        drawGroup(group(1), 2.0, 0.7, true);
-        tl.add(camTo(v.g2, 0.9), 3.05);
-        drawGroup(group(2), 3.3, 0.75, true);
-        tl.add(camTo(v.final, 1.1), 4.15);
-        drawGroup(group(3), 4.4, 0.95, false);
+        drawGroup(group(1), 0.6, 0.7);
+        drawGroup(group(2), 1.1, 0.75);
+        drawGroup(group(3), 1.55, 0.9);
       }
     };
 
@@ -252,8 +362,9 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
       if (seen && !reduced) gsap.fromTo(root, { opacity: 0.4 }, { opacity: 1, duration: 0.5, ease: 'power1.out' });
     } else if (variant === 'preview') {
       /* المعاينة: الحالة النهائية مخفية حتى يدخل القسم الشاشة (يكون عادةً خارجها عند التحميل) */
+      layout(v.final);
       gsap.set(arcs, { strokeDasharray: 1, strokeDashoffset: 1 });
-      gsap.set([...nodes, ...kwParts], { opacity: 0 });
+      gsap.set([...nodes, ...labels, ...leaders, ...kwParts], { opacity: 0 });
       moveCam(v.final, 0);
       io = new IntersectionObserver(([e]) => {
         if (e.isIntersecting) { io.disconnect(); io = null; play(); }
@@ -263,63 +374,68 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
       play();
     }
 
-    /* ٥ — مع التمرير تنحسر الخريطة قليلًا وتفسح للمحتوى (سطح المكتب، بلا «تقليل الحركة») */
-    let scroll = null;
-    if (variant === 'full' && !reduced && !v.narrow) {
-      scroll = gsap.to(stageRef.current, {
-        yPercent: -7, opacity: 0.7, ease: 'none',
-        scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: 0.6 },
-      });
-    }
-
-    /* الحركة الخافتة للكويت تتوقف خارج الشاشة */
-    const pulse = new IntersectionObserver(([e]) => { root.dataset.offscreen = e.isIntersecting ? 'false' : 'true'; });
-    pulse.observe(root);
-
     let lastW = stageRef.current.clientWidth;
     let lastH = stageRef.current.clientHeight;
-    ro = new ResizeObserver(() => {
+    const ro = new ResizeObserver(() => {
       const st = stageRef.current;
       if (!st || (Math.abs(st.clientWidth - lastW) < 2 && Math.abs(st.clientHeight - lastH) < 2)) return;
       lastW = st.clientWidth; lastH = st.clientHeight;
       const nv = computeViews();
       if (!nv) return;
       if (tlRef.current && tlRef.current.isActive()) tlRef.current.progress(1);
+      layout(nv.final);
       moveCam(nv.final, 0);
     });
     ro.observe(stageRef.current);
 
+    /* الخطوط تُقاس بعد تحميل الخط العربي؛ نعيد التوزيع حين يجهز */
+    let alive = true;
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (!alive || !views.current) return;
+        layout(views.current.final);
+        applyCam();
+      });
+    }
+
     return () => {
+      alive = false;
       if (io) io.disconnect();
-      if (scroll) { if (scroll.scrollTrigger) scroll.scrollTrigger.kill(); scroll.kill(); }
-      pulse.disconnect();
-      if (ro) ro.disconnect();
+      ro.disconnect();
       if (tlRef.current) tlRef.current.kill();
       if (camTween.current) camTween.current.kill();
       if (html.getAttribute('data-intl') === 'play') html.setAttribute('data-intl', 'done');
     };
-  }, [variant, placed, computeViews, moveCam, camTo]);
+  }, [variant, placed, computeViews, moveCam, camTo, layout, applyCam]);
 
   /* التفاعل أثناء المشهد يُنهيه فورًا */
   useEffect(() => {
     if (current && tlRef.current && tlRef.current.isActive()) tlRef.current.progress(1);
   }, [current]);
 
-  /* على المسرح الضيّق: الدولة المثبّتة تُؤطَّر مع الكويت */
+  /* على المسرح الضيّق: الدولة المثبّتة تُؤطَّر مع الكويت، والأسماء تُعاد توزيعها على الإطار الجديد */
+  const lastPin = useRef(null);
   useEffect(() => {
     const v = views.current;
-    if (!v || !ready) return;
-    if (!v.narrow) return;
-    if (pinned) {
-      const it = placed.find((p) => p.key === pinned);
-      if (it) moveCam(withLabelRoom([KW, it.place.xy], v.aspect, 0.3, 110), 0.8);
+    const svg = svgRef.current;
+    if (!v || !ready || !v.narrow || !svg) return;
+    if (lastPin.current === pinned) return;
+    lastPin.current = pinned;
+    const it = pinned ? placed.find((p) => p.key === pinned) : null;
+    const to = it ? withLabelRoom([KW, it.place.xy], v.aspect, 0.3, 110) : v.final;
+    const names = Array.from(svg.querySelectorAll('[data-names]'));
+    gsap.to(names, { opacity: 0, duration: 0.2, ease: 'power1.out' });
+    moveCam(to, 0.8, 'power2.inOut', () => {
+      layout(to);
+      applyCam();
+      gsap.to(names, { opacity: 1, duration: 0.35, ease: 'power1.out' });
+    });
+    if (it) {
       /* الخريطة يجب أن تُرى وهي تتحرك: إن خرجت من الشاشة نعيدها إليها */
       const r = stageRef.current && stageRef.current.getBoundingClientRect();
       if (r && (r.top < 0 || r.bottom > window.innerHeight)) stageRef.current.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
-    } else {
-      moveCam(v.final, 0.8);
     }
-  }, [pinned, ready, placed, moveCam]);
+  }, [pinned, ready, placed, moveCam, layout, applyCam]);
 
   const hoverable = () => { try { return window.matchMedia('(hover: hover)').matches; } catch (_) { return false; } };
   const enter = (key) => () => { if (hoverable()) setActive(key); };
@@ -338,8 +454,8 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
         <svg ref={svgRef} className={s.svg} viewBox={viewBox0} preserveAspectRatio="xMidYMid meet" role="img" aria-label={mapLabel}>
           <defs>
             <radialGradient id={`kw-glow-${variant}`}>
-              <stop offset="0" stopColor="#F1D9A4" stopOpacity="0.55" />
-              <stop offset="0.35" stopColor="#C9A86A" stopOpacity="0.18" />
+              <stop offset="0" stopColor="#E9CF98" stopOpacity="0.32" />
+              <stop offset="0.45" stopColor="#C9A86A" stopOpacity="0.08" />
               <stop offset="1" stopColor="#C9A86A" stopOpacity="0" />
             </radialGradient>
           </defs>
@@ -350,38 +466,43 @@ export default function IntlMap({ countries, variant = 'full', anchorLabel, mapL
                 onPointerEnter={enter(it.key)} onPointerLeave={leave} />
             ))}
             <path data-kw className={s.kwShape} d={ANCHOR.shape} />
-            <circle data-kw className={s.kwGlow} cx={KW[0]} cy={KW[1]} data-r="38" r="38" fill={`url(#kw-glow-${variant})`} />
+            <circle data-kw className={s.kwGlow} cx={KW[0]} cy={KW[1]} data-r="22" r="22" fill={`url(#kw-glow-${variant})`} />
           </g>
           <g aria-hidden="true">
             {placed.map((it) => (
               <g key={`a-${it.key}`}>
-                <path data-arc data-key={it.key} className={`${s.arc} ${ok(it.key)}`} d={it.d} pathLength="1" />
-                <path data-glint data-key={it.key} className={s.glint} d={it.d} pathLength="1" />
-                <path className={s.hit} d={it.d} onPointerEnter={enter(it.key)} onPointerLeave={leave} />
+                <path data-arc data-key={it.key} className={`${s.arc} ${ok(it.key)}`} d={it.arc.d} pathLength="1" />
+                <path className={s.hit} d={it.arc.d} onPointerEnter={enter(it.key)} onPointerLeave={leave} />
               </g>
             ))}
           </g>
           <g aria-hidden="true">
             {placed.map((it) => (
               <circle key={`n-${it.key}`} data-node data-key={it.key} className={`${s.node} ${ok(it.key)}`}
-                cx={it.place.xy[0]} cy={it.place.xy[1]} data-r="3.4" r="3.4"
+                cx={it.place.xy[0]} cy={it.place.xy[1]} data-r="3" r="3"
                 onPointerEnter={enter(it.key)} onPointerLeave={leave} />
             ))}
-            <g data-kw>
-              <circle className={s.kwRing} cx={KW[0]} cy={KW[1]} data-r="6" r="6" />
-              <circle className={`${s.kwRing} ${s.kwRing2}`} cx={KW[0]} cy={KW[1]} data-r="6" r="6" />
-              <circle className={s.kwCore} cx={KW[0]} cy={KW[1]} data-r="4.6" r="4.6" />
-            </g>
+            <circle data-kw className={s.kwCore} cx={KW[0]} cy={KW[1]} data-r="4.2" r="4.2" />
           </g>
-          <g aria-hidden="true">
+          <g aria-hidden="true" data-names>
             {placed.map((it) => (
-              <text key={`l-${it.key}`} data-label data-key={it.key} data-at={`${it.place.xy[0]},${it.place.xy[1]}`}
-                className={`${s.label} ${ok(it.key)}`} x={it.place.xy[0]} y={it.place.xy[1]} fontSize="13">{it.label}</text>
+              <line key={`ld-${it.key}`} data-leader data-key={it.key} data-at={`${it.place.xy[0]},${it.place.xy[1]}`}
+                className={`${s.leader} ${ok(it.key)}`} x1={it.place.xy[0]} y1={it.place.xy[1]} x2={it.place.xy[0]} y2={it.place.xy[1]} visibility="hidden" />
             ))}
-            <text data-kw data-kw-label className={s.kwLabel} x={KW[0]} y={KW[1] + 22} textAnchor="middle" fontSize="13.5">{anchorLabel}</text>
+            {placed.map((it) => (
+              <text key={`l-${it.key}`} data-label data-slot={it.key} data-key={it.key} data-px={LABEL_PX}
+                data-at={`${it.place.xy[0]},${it.place.xy[1]}`}
+                className={`${s.label} ${ok(it.key)}`} x={it.place.xy[0]} y={it.place.xy[1]}
+                textAnchor="middle" dominantBaseline="central" fontSize={LABEL_PX}>{it.label}</text>
+            ))}
+            <text data-kw data-label data-slot="kw-name" data-px={KW_NAME_PX} data-at={`${KW[0]},${KW[1]}`}
+              className={s.kwLabel} x={KW[0]} y={KW[1]} textAnchor="middle" dominantBaseline="central" fontSize={KW_NAME_PX}>{anchorLabel}</text>
+            {anchorNote && (
+              <text data-kw data-label data-slot="kw-note" data-px={KW_NOTE_PX} data-at={`${KW[0]},${KW[1]}`}
+                className={s.kwNote} x={KW[0]} y={KW[1]} textAnchor="middle" dominantBaseline="central" fontSize={KW_NOTE_PX}>{anchorNote}</text>
+            )}
           </g>
         </svg>
-        <span ref={sweepRef} className={s.sweep} aria-hidden="true" />
       </div>
 
       <div className={s.listWrap}>

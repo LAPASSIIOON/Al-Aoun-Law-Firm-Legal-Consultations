@@ -421,7 +421,8 @@
     "homeStatement": "Matters that cross borders stay under one Kuwaiti point of coordination.",
     "fieldCaption": "Our international coordination framework currently covers these jurisdictions. The mechanism varies by jurisdiction — through established professional relationships or our referral and coordination process.",
     "mapAria": "Map showing Kuwait as the anchor for coordinating matter referrals with the jurisdictions listed below.",
-    "mapHint": "Select a jurisdiction to highlight its coordination path. Lines show the scope of coordination and referral — not offices or branches."
+    "mapHint": "Select a jurisdiction to highlight its coordination path. Lines show the scope of coordination and referral — not offices or branches.",
+    "mapAnchorNote": "Headquarters"
   },
   "forLawFirms": {
     "eyebrow": "For Law Firms & Lawyers",

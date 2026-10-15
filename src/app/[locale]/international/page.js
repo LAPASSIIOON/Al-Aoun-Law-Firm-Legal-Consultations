@@ -97,6 +97,7 @@ export default async function International({ params }) {
               variant="full"
               countries={mapCountries}
               anchorLabel={anchorBilingual}
+              anchorNote={t('mapAnchorNote')}
               mapLabel={t('mapAria')}
               listLabel={t('jurisdictionsHead')}
               hint={t('mapHint')}

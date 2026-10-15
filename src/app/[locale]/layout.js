@@ -18,6 +18,7 @@ import '../globals.css';
 import RevealController from '@/components/RevealController.js';
 import SiteHeader from '@/components/SiteHeader.js';
 import WhatsAppButton from '@/components/WhatsAppButton.js';
+import MobileActionBar from '@/components/MobileActionBar.js';
 import ScrollToTop from '@/components/ScrollToTop.js';
 import SiteLoader from '@/components/SiteLoader.js';
 import AuthRecoveryErrorRedirect from '@/components/AuthRecoveryErrorRedirect.js';
@@ -129,6 +130,7 @@ export default async function LocaleLayout({ children, params }) {
           <main id="main" className="main">{children}</main>
           <SiteFooter locale={locale} areas={areas} />
           <WhatsAppButton locale={locale} />
+          <MobileActionBar locale={locale} />
           <ScrollToTop locale={locale} />
           <RevealController />
         </NextIntlClientProvider>

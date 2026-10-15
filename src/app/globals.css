@@ -188,3 +188,8 @@ html[data-intro="play"] [data-intro-stagger] > :not(h1),
 html[data-intro="play"] [data-intro-stagger] > h1 > span{opacity:0;animation:introGateFailsafe .6s ease 9s forwards}
 html[data-intro="done"] [data-intro-stagger] > *{animation:none}
 @keyframes introGateFailsafe{to{opacity:1}}
+
+/* شريط الهاتف السفلي (MobileActionBar): مساحة له في آخر التذييل كي لا يغطي محتواه */
+@media (max-width:767px), (max-height:500px) and (pointer:coarse){
+  html[data-actionbar="on"] footer.on-navy{padding-block-end:calc(2rem + 74px + env(safe-area-inset-bottom, 0px))}
+}

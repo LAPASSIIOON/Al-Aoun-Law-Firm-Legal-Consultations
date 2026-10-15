@@ -40,7 +40,7 @@ export default function NewsletterSubscribe({ locale }) {
 
   return (
     <div>
-      <p style={{ fontSize: '.85rem', color: 'var(--platinum-2)', marginBlockEnd: '.75rem' }}>{t('newsletterLead')}</p>
+      <p style={{ fontSize: 'var(--fs-fine)', color: 'var(--platinum-2)', marginBlockEnd: '.75rem' }}>{t('newsletterLead')}</p>
       {/* noValidate: بدونه يوقف المتصفّح الإرسال بتلميحه الأصلي بلغة المتصفّح لا بلغة الموقع،
           فلا تظهر رسالة newsletterInvalidEmail المترجَمة أبدًا. التحقّق يبقى قائمًا —
           في الإجراء الخادم ثم في دالّة قاعدة البيانات — و type/required يبقيان

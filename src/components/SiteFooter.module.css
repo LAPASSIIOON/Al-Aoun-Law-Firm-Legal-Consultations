@@ -26,7 +26,7 @@
 .hours{color:#fff;font-size:.9rem;margin-block-start:.6rem}
 .hoursVal{color:var(--muted-dark);font-size:.9rem}
 .bottom{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;padding-block:1.75rem}
-.rights{color:var(--muted-dark);font-size:.9rem}
+.rights{color:var(--muted-dark);font-size:var(--fs-fine)}
 .legal{display:flex;gap:1.5rem}
 .legalLink{display:inline-flex;align-items:center;min-block-size:24px;color:var(--muted-dark);font-size:.9rem}
 .legalLink:hover,.legalLink:focus-visible{color:#fff}
@@ -38,7 +38,7 @@
    لا يتغيّر. المقاس البصري للنصّ كما هو — المنطقة القابلة للنقر وحدها هي التي كبرت. */
 @media (pointer:coarse){.link,.linkMore,.legalLink{min-block-size:var(--tap-min)}}
 .discWrap{padding-block-start:.25rem}
-.disc{color:var(--muted-2);font-size:.82rem;line-height:1.7;max-width:80ch}
+.disc{color:var(--muted-2);font-size:var(--fs-fine);line-height:1.8;max-width:80ch}
 
 /* بيان الختام المؤسسي (§6) */
 .statement{padding-block:clamp(3rem,7vh,5rem) clamp(2.5rem,5vh,3.5rem);border-block-end:1px solid var(--hair-dark)}

@@ -82,7 +82,8 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
 .d-3{font-size:clamp(1.3rem,2.1vw,1.75rem)}
 .lead{font-size:clamp(1.15rem,1.7vw,1.4rem);line-height:1.6;color:var(--platinum-2);font-weight:400}
 :lang(ar) .lead{line-height:1.9}
-.body{font-size:clamp(1rem,1.1vw,1.0625rem);color:var(--platinum-2);max-width:var(--measure)}
+.body{font-size:var(--fs-read);color:var(--platinum-2);max-width:var(--measure)}
+:lang(ar) .body{line-height:var(--lh-read-ar)}
 .muted{color:var(--platinum-2)}
 .idx{font-family:var(--f-en);font-size:.8rem;letter-spacing:.08em;color:var(--platinum-3);font-variant-numeric:tabular-nums}
 .hair{block-size:1px;background:var(--hair-light);border:0}

@@ -35,7 +35,7 @@
 .steps li:first-child::before { inset-inline-start: 0; }
 .stepNumber { color: var(--gold); font-size: .68rem; font-weight: 700; letter-spacing: .12em; }
 .steps h3 { margin: 1.1rem 0 .7rem; color: #fff; font-size: clamp(1.15rem, 1.65vw, 1.5rem); }
-.steps p { margin: 0; color: var(--platinum-3); font-size: .88rem; line-height: 1.7; }
+.steps p { margin: 0; color: var(--platinum-3); font-size: var(--fs-read); line-height: 1.75; }
 
 .anchor { padding-block: clamp(5rem, 11vw, 10rem); }
 .anchorGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, .65fr); gap: clamp(3rem, 10vw, 10rem); align-items: center; }
@@ -45,7 +45,7 @@
 .proof div { padding: 2rem 1.5rem; border-inline-end: 1px solid rgba(16, 35, 56, .18); }
 .proof div:last-child { border-inline-end: 0; }
 .proof strong { display: block; color: var(--ink); font-family: var(--f-display); font-size: clamp(3.4rem, 7vw, 6.2rem); font-weight: 600; line-height: 1; }
-.proof span { display: block; margin-block-start: 1rem; color: var(--muted); font-size: .82rem; font-weight: 700; line-height: 1.55; }
+.proof span { display: block; margin-block-start: 1rem; color: var(--muted); font-size: var(--fs-fine); font-weight: 700; line-height: 1.6; }
 
 .field { padding-block: clamp(5rem, 10vw, 9rem); overflow: hidden; }
 .fieldHead { display: grid; grid-template-columns: minmax(12rem, .35fr) minmax(0, 1fr); gap: clamp(2rem, 8vw, 8rem); align-items: start; }

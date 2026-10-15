@@ -20,7 +20,7 @@
 .title { margin: .65rem 0 0; color: var(--muted); font-weight: 600; }
 .cardBio { display: -webkit-box; overflow: hidden; margin: 1.3rem 0 0; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
 .proofLines { display: grid; gap: .6rem; margin-block-start: 1.5rem; padding-block: 1.15rem; border-block: 1px solid rgba(16, 35, 56, .14); }
-.proofLines p { position: relative; margin: 0; padding-inline-start: 1rem; color: var(--muted); font-size: .85rem; line-height: 1.55; }
+.proofLines p { position: relative; margin: 0; padding-inline-start: 1rem; color: var(--muted); font-size: 1rem; line-height: 1.65; }
 .proofLines p::before { position: absolute; inset-inline-start: 0; inset-block-start: .65em; inline-size: .3rem; block-size: .3rem; content: ''; background: var(--gold); border-radius: 50%; }
 .cardCta { margin-block-start: 1.35rem; }
 .closing { padding-block: clamp(4rem, 9vw, 7rem); }

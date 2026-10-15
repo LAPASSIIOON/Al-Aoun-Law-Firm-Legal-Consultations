@@ -261,11 +261,16 @@ export default function HomeIntro() {
       if (useEmblem) {
         /* سطح المكتب: العلامة والاسم يفترقان في اتجاهين متعاكسين. الاسم يرتفع أولًا ثم يعبر أفقيًا،
            فيمرّ فوق العلامة لا عبرها. */
+        /* الارتفاع والتصغير معًا (كي لا يتراكب الاسم والسطر وهما كبيران)، والعبور الأفقي بعدهما. */
         [[name, 0.05], [tag, 0.08]].forEach(([el, at]) => {
           if (!el) return;
-          tl.to(el, { y: 0, duration: 0.8, ease: 'power4.out' }, `fly+=${at}`)
-            .to(el, { x: 0, scale: 1, duration: 1.0, ease: 'power3.inOut' }, `fly+=${at + 0.06}`);
+          tl.to(el, { y: 0, scale: 1, duration: 0.8, ease: 'power4.out' }, `fly+=${at}`)
+            .to(el, { x: 0, duration: 1.0, ease: 'power3.inOut' }, `fly+=${at + 0.06}`);
         });
+        /* قبيل الوصول تأخذ العلامة المسطّحة درجات العلامة الثلاثية (فضّي هادئ وأزرق أعمق)، فيكون الذوبان
+           بين صورتين متقاربتين لا بين أبيض ومعدن. */
+        tl.to(mark.querySelector('[data-part="ring"]'), { fill: '#3D6B92', duration: 0.5, ease: 'power1.inOut' }, 'fly+=0.45')
+          .to(mark.querySelectorAll('[data-part="a"], [data-part="g"]'), { fill: '#C4CDD6', duration: 0.5, ease: 'power1.inOut' }, 'fly+=0.45');
       } else {
         tl.to(name, fly, 'fly+=0.05');
         if (tag) tl.to(tag, fly, 'fly+=0.08');
@@ -273,13 +278,13 @@ export default function HomeIntro() {
       if (!useEmblem) tl.to(ringAndLetters, { fill: '#FFFFFF', duration: 0.6, ease: 'power1.inOut' }, 'fly+=0.25');
 
       /* ٤ — الصفحة تنفتح حول نقطة الوصول */
-      tl.fromTo(backdrop, { '--mr': '0px' }, { '--mr': `${maxR}px`, duration: 1.0, ease: 'power2.in' }, 'fly+=0.4');
+      tl.fromTo(backdrop, { '--mr': '0px' }, { '--mr': `${maxR}px`, duration: 1.0, ease: 'power2.in' }, 'fly+=0.5');
 
       if (useEmblem) {
         /* العلامة المسطّحة تذوب في العلامة الثلاثية تحتها، بضوء خافت لحظة الوصول. */
         tl.fromTo(glint, { opacity: 0, scale: 0.8 }, { opacity: 0.55, scale: 1, duration: 0.45, ease: 'power2.out' }, 'fly+=0.85')
           .to(glint, { opacity: 0, duration: 0.7, ease: 'power1.in' }, 'fly+=1.3')
-          .to(mark, { opacity: 0, duration: 0.55, ease: 'power1.inOut' }, 'fly+=0.95')
+          .to(mark, { opacity: 0, duration: 0.45, ease: 'power1.inOut' }, 'fly+=0.93')
           .to(headMarkEl, { opacity: 1, duration: 0.5, ease: 'power1.out' }, 'fly+=0.9');
       }
 
@@ -290,7 +295,7 @@ export default function HomeIntro() {
         gsap.set(name, { opacity: 0 });
         if (headTagEl && tag) { gsap.set(headTagEl, { opacity: 1 }); gsap.set(tag, { opacity: 0 }); }
         if (!useEmblem) { gsap.set(headMarkEl, { opacity: 1 }); gsap.set(mark, { opacity: 0 }); }
-      }, null, 'fly+=1.44');
+      }, null, 'fly+=1.52');
 
       if (heroItems.length) {
         tl.fromTo(heroItems, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.75, stagger: 0.07, ease: 'power3.out', force3D: false }, 'fly+=0.7');

@@ -91,3 +91,25 @@
 @media (prefers-reduced-motion: reduce) {
   .routeLink span { transition: none; }
 }
+
+/* ═══ هيرو الخريطة — «الكويت مرتكزًا» ═══ */
+.mapHero { position: relative; overflow: hidden; padding-block: calc(var(--header-h) + clamp(1.5rem, 4vh, 3rem)) clamp(3rem, 7vw, 5.5rem); }
+.mapBackdrop { position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(14, 24, 38, .62) 0%, rgba(14, 24, 38, .22) 34%, rgba(14, 24, 38, .38) 70%, var(--ground) 100%),
+    url('/media/intl/backdrop.webp') center 28% / cover no-repeat,
+    var(--ground); }
+@media (max-aspect-ratio: 1/1) {
+  .mapBackdrop { background:
+    linear-gradient(180deg, rgba(14, 24, 38, .66) 0%, rgba(14, 24, 38, .3) 40%, var(--ground) 100%),
+    url('/media/intl/backdrop-portrait.webp') center top / cover no-repeat,
+    var(--ground); }
+}
+.mapHeroCopy { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .8fr); gap: clamp(1.5rem, 6vw, 6rem); align-items: end; }
+.mapHeroHeading { max-inline-size: 14ch; margin: 1rem 0 0; color: #fff; font-size: clamp(2.5rem, 5.2vw, 4.6rem); }
+.mapHeroLead { max-inline-size: 46ch; margin: 0; color: var(--platinum-2); }
+.mapBlock { position: relative; z-index: 1; margin-block-start: clamp(1rem, 3vw, 2.25rem); }
+.mapBlock .fieldFoot { margin-block-start: clamp(1.5rem, 3vw, 2.25rem); }
+@media (max-width: 860px) {
+  .mapHeroCopy { grid-template-columns: 1fr; gap: 1rem; }
+}

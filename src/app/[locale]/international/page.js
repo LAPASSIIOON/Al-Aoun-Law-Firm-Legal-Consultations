@@ -1,8 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { altLangs } from '@/lib/i18n-meta.js';
 import { Link } from '@/i18n/navigation.js';
-import PageHeroImage from '@/components/PageHeroImage.js';
-import CoordinationField from '@/components/CoordinationField.js';
+import IntlMap from '@/components/IntlMap.js';
 import { createAnonClient } from '@/lib/supabase-server.js';
 import { INTERNATIONAL_ANCHOR, RELATIONSHIP_COUNTRIES } from '@/lib/international-relations.js';
 import styles from './international.module.css';
@@ -46,7 +45,9 @@ export default async function International({ params }) {
     fieldCountries = [];
   }
 
-  const fieldNames = fieldCountries.map((country) => (locale === 'ar' ? country.ar : country.en));
+  /* المفتاح = الاسم الإنجليزي كما يرد من قاعدة البيانات؛ يربطه IntlMap بإحداثيات العاصمة */
+  const mapCountries = fieldCountries.map((country) => ({ key: country.en, label: locale === 'ar' ? country.ar : country.en }));
+  const anchorBilingual = `${INTERNATIONAL_ANCHOR.ar} | ${INTERNATIONAL_ANCHOR.en.toUpperCase()}`;
   const routes = [
     {
       eye: t('forkClientEye'),
@@ -78,20 +79,36 @@ export default async function International({ params }) {
 
   return (
     <>
-      <section className={`on-navy ${styles.hero}`}>
-        <PageHeroImage src="/kuwait/skyline-water-reflection.webp" position="center 62%" />
-        <div className={`wrap ${styles.heroGrid}`}>
-          <div className={styles.heroCopy}>
-            <span className={styles.kicker} data-reveal>{t('eyebrow')}</span>
-            <h1 className={`display d-1 ${styles.heroHeading}`} data-reveal>{t('heading')}</h1>
-            <p className={`lead ${styles.heroLead}`} data-reveal="slow">{t('lead')}</p>
+      {/* «الكويت مرتكزًا»: الخريطة هي الهيرو — العالم، ثم الكويت، ثم مسارات التنسيق.
+          نطاق التنسيق نفسه الذي كان في قسم «حقل التنسيق» (التغطية الحية + علاقات المالك الموثّقة)،
+          بنصّه وتوضيحه ورابط الإحالة. */}
+      <section className={`on-navy ${styles.mapHero}`}>
+        <div className={styles.mapBackdrop} aria-hidden="true" />
+        <div className={`wrap ${styles.mapHeroCopy}`}>
+          <div>
+            <span className={styles.kicker}>{t('eyebrow')}</span>
+            <h1 className={`display d-1 ${styles.mapHeroHeading}`}>{t('heading')}</h1>
           </div>
-          <div className={styles.coordinate} aria-hidden="true" data-reveal="slow">
-            <span>{locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}</span>
-            <i />
-            <span>{t('eyebrow')}</span>
-          </div>
+          <p className={`lead ${styles.mapHeroLead}`}>{t('lead')}</p>
         </div>
+        {mapCountries.length > 0 && (
+          <div className={styles.mapBlock}>
+            <IntlMap
+              variant="full"
+              countries={mapCountries}
+              anchorLabel={anchorBilingual}
+              mapLabel={t('mapAria')}
+              listLabel={t('jurisdictionsHead')}
+              hint={t('mapHint')}
+            />
+            <div className={`wrap ${styles.fieldFoot}`}>
+              <p className="body">{t('fieldCaption')}</p>
+              <Link href="/international/refer-a-matter" className="btn btn-solid">
+                {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
+              </Link>
+            </div>
+          </div>
+        )}
         <div className={styles.heroRule} aria-hidden="true" />
       </section>
 
@@ -157,31 +174,6 @@ export default async function International({ params }) {
               <span>{t('proofCentres')}</span>
             </div>
           </aside>
-        </div>
-      </section>
-
-      <section className={`on-navy ${styles.field}`}>
-        <div className="wrap">
-          <header className={styles.fieldHead}>
-            <span className={styles.kicker}>{t('jurisdictionsEye')}</span>
-            <h2 className="display d-2" data-reveal>{t('jurisdictionsHead')}</h2>
-          </header>
-          {fieldNames.length > 0 && (
-            <>
-              <CoordinationField
-                variant="full"
-                dir={locale === 'ar' ? 'rtl' : 'ltr'}
-                countries={fieldNames}
-                anchorLabel={locale === 'ar' ? INTERNATIONAL_ANCHOR.ar : INTERNATIONAL_ANCHOR.en}
-              />
-              <div className={styles.fieldFoot} data-reveal>
-                <p className="body">{t('fieldCaption')}</p>
-                <Link href="/international/refer-a-matter" className="btn btn-solid">
-                  {locale === 'ar' ? 'أحِل ملفًا إلينا' : 'Refer a matter to us'} <span className="arrow">→</span>
-                </Link>
-              </div>
-            </>
-          )}
         </div>
       </section>
 

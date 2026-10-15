@@ -419,7 +419,9 @@
     "relChinaDesc": "Cross-border coordination through an established professional relationship in China.",
     "relDiscretion": "We disclose the country, not the identity of the professional relationship.",
     "homeStatement": "Matters that cross borders stay under one Kuwaiti point of coordination.",
-    "fieldCaption": "Our international coordination framework currently covers these jurisdictions. The mechanism varies by jurisdiction — through established professional relationships or our referral and coordination process."
+    "fieldCaption": "Our international coordination framework currently covers these jurisdictions. The mechanism varies by jurisdiction — through established professional relationships or our referral and coordination process.",
+    "mapAria": "Map showing Kuwait as the anchor for coordinating matter referrals with the jurisdictions listed below.",
+    "mapHint": "Select a jurisdiction to highlight its coordination path. Lines show the scope of coordination and referral — not offices or branches."
   },
   "forLawFirms": {
     "eyebrow": "For Law Firms & Lawyers",

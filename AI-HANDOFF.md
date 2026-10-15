@@ -2,7 +2,7 @@
 
 > **Shared operational context between Claude and ChatGPT.**
 > Every factual claim below was verified against the repository, Supabase, or live deployment at the time of writing. Anything not verifiable is explicitly marked.
-> **Last updated by:** Claude · **Against commit:** `0935cd3` (15 Oct 2026; sections 3, 6 (International row), 19 and 22 refreshed — other sections not re-verified in this pass)
+> **Last updated by:** Claude · **Against commit:** `8f64634` (15 Oct 2026; sections 3, 6 (International and Practice detail rows), 19 and 22 refreshed — other sections not re-verified in this pass)
 
 ---
 
@@ -43,9 +43,9 @@ Explicitly **not** part of the vision: fabricated international presence, invent
 
 | Field | Value | Status |
 |---|---|---|
-| Current main commit | `0935cd361d312975b476fa0655477185466a4ad7` (`0935cd3`) | VERIFIED |
-| Commit subject | `Merge pull request #5 from LAPASSIIOON/ui/mobile-action-bar` | VERIFIED |
-| Production deployment | `dpl_ByyAUBK5MF8rkuPfGreCJqnDnZxe` — READY | VERIFIED |
+| Current main commit | `8f6463485c32f7931ff263adeaf4b35771a3e084` (`8f64634`) | VERIFIED |
+| Commit subject | `Merge pull request #7 from LAPASSIIOON/ui/service-template` | VERIFIED |
+| Production deployment | `dpl_HKC9qd985KwVPgm5w9u2tr5wCvSr` — READY | VERIFIED |
 | Production URL | `https://al-aoun-law-firm-legal-consultation.vercel.app` | LIVE VERIFIED |
 | Repository | `github.com/LAPASSIIOON/Al-Aoun-Law-Firm-Legal-Consultations` (branch `main`) | VERIFIED |
 | Framework | Next.js 15.5.23 (App Router), React 19 | VERIFIED |
@@ -97,7 +97,7 @@ VERIFIED unless marked otherwise.
 |---|---|
 | Homepage | Focused hero (search + 2 CTAs), dual client/firm fork, practice areas high in the page, merged "Why AL OUN" section, real counters (48 practice areas). Insights section **fully hidden** (0 approved articles). LIVE VERIFIED |
 | Expertise / services | 48 real areas, 10 UX category chips + search combining as AND, no-results state with clear-filters and soft contact CTA. LIVE VERIFIED |
-| Practice detail | Content, visual breadcrumb + BreadcrumbList JSON-LD, LegalService schema, related areas, consultation CTA carrying `intent` + `from`. LIVE VERIFIED (4 sample areas) |
+| Practice detail | Approved template (15 Oct 2026), same for all areas: hero with in-area consultation + WhatsApp CTAs; overview (approved `body`); "how we work with you" (approved intake steps); both lawyers at equal weight; 3 approved consultation FAQs; sticky consultation card + on-page index (horizontal sticky index on phones); related-area cards; closing CTA. Visual breadcrumb + BreadcrumbList JSON-LD; LegalService schema is site-wide in the layout. Consultation CTAs carry `intent` + `from`. Area-specific scope cards / FAQ are **not** rendered — no approved per-area data beyond title, summary, body. BROWSER VERIFIED on Preview · LIVE VERIFIED (HTML) — see §22 |
 | Professionals | Unified background, equal weight, editorial divider, proof lines from real credentials only, closing CTA. LIVE VERIFIED |
 | International | Hero is now the Kuwait-anchored coordination map (`IntlMap`, 15 Oct 2026) — routes to the 11 current jurisdictions (live coverage + China), names always visible, chip list for touch/keyboard; homepage carries a compact preview in place of the old coordination strip. 3 distinct paths (Kuwait counsel / matter abroad / work with AL OUN), 3 sub-pages. LIVE VERIFIED (HTML + assets) · BROWSER VERIFIED on the identical Preview — see §22 |
 | Contact / intake | 8 intents: 5 open the form (`legalConsultation`, `corporate`, `kuwaitCounsel`, `internationalMatter`, `general`), 3 redirect (`foreignFirm`, `professionalCoop`, `career`). Invalid/missing intent → default selector, no crash. Two-step form, conflict-check messaging, Turnstile. LIVE VERIFIED |
@@ -345,6 +345,19 @@ Do not accidentally reverse:
 Known trap: local `git status` can show phantom differences due to index artifacts from file-tool-created files. Always confirm with a direct content diff against `origin/main` before concluding anything changed.
 
 ## 22. Last Claude Technical State
+
+**15 Oct 2026 — PR #7 merged by the owner, production deployment `dpl_HKC9qd985KwVPgm5w9u2tr5wCvSr` READY (main `8f64634`; `src` identical to the tested Preview commit `8dcda5b`).**
+
+- **Practice-area page template** (`src/app/[locale]/services/[slug]/page.js` + `service-detail.module.css`), applied to all published areas. Content sources:
+  - DB: `title`, `summary`, `body`;
+  - copy: `intake.step1–3`, `faq.items[2,3,4]`, `consultCta`;
+  - people: `TEAM`.
+  - A section without data is not rendered.
+- **Team heading:** "محامو المجموعة" / "Our lawyers", not "lawyers in this area" — there is no approved area-to-lawyer mapping.
+- **Not built:** the mockup's per-area scope cards, chips, pull-quote and area FAQ. They need new per-area copy plus legal approval first.
+- **Verification:**
+  - BROWSER VERIFIED on Preview `cr37tnta2`: litigation (AR, desktop 1440×900 + mobile 390×844) and criminal-law (EN, no hero image); sections overview → process → team → FAQ → consult; 2 team cards, 3 FAQ items; no console errors; no horizontal overflow.
+  - LIVE VERIFIED at HTML level: `/ar/services/litigation` 200 with all five sections, 3 FAQ items, 2 team cards; no runtime errors.
 
 **15 Oct 2026 — PR #5 merged by the owner, production deployment `dpl_ByyAUBK5MF8rkuPfGreCJqnDnZxe` READY (main `0935cd3`; tree identical to the tested Preview commit `45d36fa`).**
 
